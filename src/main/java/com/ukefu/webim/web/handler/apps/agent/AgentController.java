@@ -147,16 +147,19 @@ public class AgentController extends Handler {
 						onlineUser.setBetweentime((int) (System.currentTimeMillis() - onlineUser.getLogintime().getTime()));
 					}
 					view.addObject("onlineUser",onlineUser);
-					
-					if(UKDataContext.model.get("contacts")!=null && !StringUtils.isBlank(onlineUser.getContactsid())){
+				}
+			}
+			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
+				AgentService agentService = this.agentServiceRepository.findOne(agentUser.getAgentserviceid()) ;
+				if(agentService!=null && !StringUtils.isBlank(agentService.getContactsid())){
+					if(UKDataContext.model.get("contacts")!=null && !StringUtils.isBlank(agentService.getContactsid())){
 						DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("contacts") ;
 						if(dataExchange!=null){
-							view.addObject("contacts", dataExchange.getDataByIdAndOrgi(onlineUser.getContactsid(), super.getOrgi(request))) ;
+							view.addObject("contacts", dataExchange.getDataByIdAndOrgi(agentService.getContactsid(), super.getOrgi(request))) ;
 						}
 					}
 				}
 			}
-
 			view.addObject("serviceCount", Integer
 					.valueOf(this.agentServiceRepository
 							.countByUseridAndOrgiAndStatus(agentUser
@@ -215,11 +218,16 @@ public class AgentController extends Handler {
 					onlineUser.setBetweentime((int) (System.currentTimeMillis() - onlineUser.getLogintime().getTime()));
 				}
 				view.addObject("onlineUser",onlineUser);
-				
-				if(UKDataContext.model.get("contacts")!=null && !StringUtils.isBlank(onlineUser.getContactsid())){
+			}
+		}
+		
+		if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
+			AgentService agentService = this.agentServiceRepository.findOne(agentUser.getAgentserviceid()) ;
+			if(agentService!=null && !StringUtils.isBlank(agentService.getContactsid())){
+				if(UKDataContext.model.get("contacts")!=null && !StringUtils.isBlank(agentService.getContactsid())){
 					DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("contacts") ;
 					if(dataExchange!=null){
-						view.addObject("contacts", dataExchange.getDataByIdAndOrgi(onlineUser.getContactsid(), super.getOrgi(request))) ;
+						view.addObject("contacts", dataExchange.getDataByIdAndOrgi(agentService.getContactsid(), super.getOrgi(request))) ;
 					}
 				}
 			}
