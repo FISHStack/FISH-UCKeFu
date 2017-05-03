@@ -104,8 +104,9 @@
 			<div class="layui-tab layui-tab-card" style="margin-top:0px;">
 			  <ul class="layui-tab-title">
 			    <li class="layui-this">访客</li>
-			    <!-- 
+			    
 			    <li>快捷</li>
+			    <!-- 
 			    <li>工单</li>
 			    <li>历史</li>
 			    <li>知识库</li>
@@ -148,6 +149,7 @@
 					</div>
 					</#if>
 			    </div>
+			    
 			    <div class="layui-tab-item">
 			    	<div class="box">
 						<div class="box-title">
@@ -157,7 +159,7 @@
 						</div>
 						<div class="box-body" style="padding:0px 10px;">
 							<ul class="info-list ukefu-quick-reply">
-								<#if quickReplyList??>
+								<#if quickReplyList?? && quickReplyList?size gt 0>
 								<#list quickReplyList as quickReply>
 								<li>
 									<span class="quick-reply" data-id="content_${quickReply.id!''}">${quickReply.title!''}</span>
@@ -166,12 +168,18 @@
 									</div>
 								</li>
 								</#list>
+								<#else>
+								<li style="list-style: none;background-image: url();padding: 50px 0 50px;">
+									<div class="ukefu-empty">
+										<i class="layui-icon"></i>
+										<div style="">还没有快捷回复</div>
+									</div>
+								</li>
 								</#if>
 							</ul>
 						</div>
 					</div>
 			    </div>
-			    <div class="layui-tab-item">内容3</div>
 			    <div class="layui-tab-item">内容4</div>
 			    <div class="layui-tab-item">内容5</div>
 			  </div>
