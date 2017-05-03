@@ -449,7 +449,9 @@ public class AgentController extends Handler {
 			if(onlineUser!=null){
 				onlineUser.setContactsid(contactsid);
 				this.onlineUserRes.save(onlineUser) ;
-				AgentService agentService = this.agentServiceRepository.findOne(agentserviceid) ;
+			}
+			AgentService agentService = this.agentServiceRepository.findOne(agentserviceid) ;
+			if(agentService!=null){
 				agentService.setContactsid(contactsid);
 				this.agentServiceRepository.save(agentService) ;
 				
