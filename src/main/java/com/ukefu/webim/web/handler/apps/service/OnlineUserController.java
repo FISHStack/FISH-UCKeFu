@@ -25,10 +25,12 @@ import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.TagRelationRepository;
 import com.ukefu.webim.service.repository.TagRepository;
 import com.ukefu.webim.service.repository.UserRepository;
+import com.ukefu.webim.service.repository.WeiXinUserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentService;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.OnlineUser;
+import com.ukefu.webim.web.model.WeiXinUser;
 
 @Controller
 @RequestMapping("/service")
@@ -52,6 +54,9 @@ public class OnlineUserController extends Handler{
 	private UserRepository userRes ;
 	
 	@Autowired
+	private WeiXinUserRepository weiXinUserRes;
+	
+	@Autowired
 	private TagRepository tagRes ;
 	
 	@Autowired
@@ -63,18 +68,22 @@ public class OnlineUserController extends Handler{
 	@RequestMapping("/online/index")
     @Menu(type = "service" , subtype = "online" , admin= true)
     public ModelAndView index(ModelMap map , HttpServletRequest request , String userid , String agentservice) {
-		OnlineUser onlineUser = onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ; 
-		if(onlineUser!=null){
-			map.put("onlineUser", onlineUser) ;
-			map.put("tags", tagRes.findByOrgi(super.getOrgi(request))) ;
-			map.put("tagRelationList", tagRelationRes.findByUserid(onlineUser.getUserid())) ;
-			map.put("onlineUserHistList", onlineUserHisRes.findByUseridAndOrgi(onlineUser.getUserid(), super.getOrgi(request))) ;
-			map.put("agentServicesAvg", onlineUserRes.countByUserForAvagTime(super.getOrgi(request), UKDataContext.AgentUserStatusEnum.END.toString(),onlineUser.getUserid())) ;
+		if(!StringUtils.isBlank(userid)){
+			map.put("inviteResult", UKTools.getWebIMInviteResult(onlineUserRes.findByOrgiAndUserid(super.getOrgi(request), userid))) ;
+			map.put("tagRelationList", tagRelationRes.findByUserid(userid)) ;
+			map.put("onlineUserHistList", onlineUserHisRes.findByUseridAndOrgi(userid, super.getOrgi(request))) ;
+			map.put("agentServicesAvg", onlineUserRes.countByUserForAvagTime(super.getOrgi(request), UKDataContext.AgentUserStatusEnum.END.toString(),userid)) ;
 			
-			List<AgentService> agentServiceList = agentServiceRes.findByUseridAndOrgi(onlineUser.getUserid(), super.getOrgi(request)) ; 
-			map.put("inviteResult", UKTools.getWebIMInviteResult(onlineUserRes.findByOrgiAndUserid(super.getOrgi(request), onlineUser.getUserid()))) ;
+			List<AgentService> agentServiceList = agentServiceRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ; 
+			
 			map.put("agentServiceList", agentServiceList) ;
 			if(agentServiceList.size()>0){
+				
+				map.put("serviceCount", Integer
+						.valueOf(this.agentServiceRes
+								.countByUseridAndOrgiAndStatus(userid, super.getOrgi(request),
+										UKDataContext.AgentUserStatusEnum.END.toString())));
+				
 				AgentService agentService = agentServiceList.get(0) ;
 				if(!StringUtils.isBlank(agentservice)){
 					for(AgentService as : agentServiceList){
@@ -83,8 +92,18 @@ public class OnlineUserController extends Handler{
 						}
 					}
 				}
+				if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentService.getChannel())){
+					WeiXinUser weiXinUser = weiXinUserRes.findByOpenidAndOrgi(userid, super.getOrgi(request)) ;
+					map.addAttribute("weiXinUser",weiXinUser);
+				}else if(UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(agentService.getChannel())){
+					OnlineUser onlineUser = onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ; 
+					map.put("onlineUser", onlineUser) ;
+				}
+				map.put("tags", tagRes.findByOrgiAndTagtype(super.getOrgi(request) , UKDataContext.ModelType.USER.toString())) ;
 				AgentUser curragentuser = agentUserRes.findByUseridAndOrgi(agentService.getUserid(), super.getOrgi(request)) ;
 				map.put("curAgentService", agentService) ;
+				
+				
 				map.put("curragentuser", curragentuser) ;
 				map.put("agentUserMessageList", chatMessageRepository.findByAgentserviceidAndOrgi(agentService.getId() , super.getOrgi(request), new PageRequest(0, 50, Direction.DESC , "createtime")));
 			}

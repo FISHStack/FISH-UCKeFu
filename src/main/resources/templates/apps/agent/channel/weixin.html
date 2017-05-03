@@ -30,7 +30,7 @@
 	</li>
 	<li>
 	    停留时间：
-		<#if curagentuser.servicetime??>${curagentuser.servicetime?string("yyyy-MM-dd HH:mm:ss")}</#if>
+		<#if curAgentService.servicetime??>${curAgentService.servicetime?string("yyyy-MM-dd HH:mm:ss")}</#if>
 	</li>
 	
 	<li style="position: relative;">
@@ -53,7 +53,7 @@
 			<dl class="ukefu-tag-list layui-anim layui-anim-upbit" id="taglist">
 				<#if tags??>
 				<#list tags as tag>
-				<dd><a href="javascript:void(0)" data-href="/agent/tagrelation.html?tagid=${tag.id!''}&userid=${curagentuser.userid!''}&dataid=${weiXinUser.id!''}" data-theme="theme${tag.color!'1'}" data-id="${tag.id!''}" data-name="${tag.tag!''}" class="tag-switch">${tag.tag!''}</a></dd>
+				<dd><a href="javascript:void(0)" data-href="/agent/tagrelation.html?tagid=${tag.id!''}&userid=${curAgentService.userid!''}&dataid=${weiXinUser.id!''}" data-theme="theme${tag.color!'1'}" data-id="${tag.id!''}" data-name="${tag.tag!''}" class="tag-switch">${tag.tag!''}</a></dd>
 				</#list>
 				</#if>
 			</dl>

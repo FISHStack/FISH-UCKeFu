@@ -151,6 +151,7 @@ public class AgentController extends Handler {
 			}
 			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
 				AgentService agentService = this.agentServiceRepository.findOne(agentUser.getAgentserviceid()) ;
+				view.addObject("curAgentService", agentService) ;
 				if(agentService!=null && !StringUtils.isBlank(agentService.getContactsid())){
 					if(UKDataContext.model.get("contacts")!=null && !StringUtils.isBlank(agentService.getContactsid())){
 						DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("contacts") ;

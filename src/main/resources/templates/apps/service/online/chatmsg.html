@@ -4,21 +4,21 @@
 	</h1>
 	<div id="chat_msg_list" class="chat-message chat_msg_list">
 		<#if agentUserMessageList?? && agentUserMessageList.content??>
-		<#list agentUserMessageList.content?reverse as chatmessage>
-		<div class="clearfix chat-block">
-			<div class="<#if chatmessage.userid?? && chatmessage.userid == user.id>chat-right<#else>chat-left</#if>">
-				<img alt="" src="/images/im/user.png" class="user-img">
-				<div class="chat-message">
-					<span class="user">${chatmessage.username!''}</span> 
-					<span class="time">${chatmessage.createtime!''}</span>
-				</div>
-				<div class="<#if chatmessage.userid?? && chatmessage.userid == user.id>chatting-right<#else>chatting-left</#if>">
-					<i class="userarrow"></i>
-					<div class="chat-content">${(chatmessage.message!'')?no_esc}</div>
+			<#list agentUserMessageList.content?reverse as chatmessage>
+			<div class="clearfix chat-block">
+				<div class="<#if (chatmessage.userid?? && chatmessage.userid == user.id) || (chatmessage.calltype?? && chatmessage.calltype == 'out')>chat-right<#else>chat-left</#if>">
+					<img alt="" src="<#if chatmessage.userid?? && chatmessage.userid == user.id>/images/im/user.png<#else><#if curagentuser.headimgurl?? && curagentuser.headimgurl !=''>${curagentuser.headimgurl}<#else>/images/im/user.png</#if></#if>" style="width:45px;height:45px;" class="user-img">
+					<div class="chat-message">
+						<span class="user">${chatmessage.username!''}</span> 
+						<span class="time">${chatmessage.createtime!''}</span>
+					</div>
+					<div class="<#if (chatmessage.userid?? && chatmessage.userid == user.id) || (chatmessage.calltype?? && chatmessage.calltype == 'out')>chatting-right<#else>chatting-left</#if>">
+						<i class="userarrow"></i>
+						<div class="chat-content"><#include "/apps/agent/media/message.html"></div>
+					</div>
 				</div>
 			</div>
-		</div>
-		</#list>
+			</#list>
 		<#elseif curagentuser??>
 			<#if curagentuser.status?? && curagentuser.status == "end">
 				<div class="clearfix chat-block connect-end" id="agentuser-curstatus">

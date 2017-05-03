@@ -9,10 +9,10 @@
 					<span class="user-webim-icon"><i class="layui-icon ukewo-btn" style="font-size:40px;">&#xe612;</i></span>
 					<div class="ukefu-user-index">
 						<h1>
-							${onlineUser.username!''}
+							${curAgentService.username!''}
 						</h1>
 						<div class="ukefu-join-time ukefu-text-muted" title="访问时间">
-							${onlineUser.createtime}
+							${curAgentService.createtime}
 						</div>
 					</div>
 				</div>
@@ -48,67 +48,19 @@
 					<div class="box-title">
 						<h1 class="site-h1" style="background-color:#EEEEEE;">
 							访问信息
+							<!-- 
 							<div style="float:right;">
 								<button class="layui-btn layui-btn-small layui-btn-radius layui-btn-danger" data-href="/agent/blacklist.html?userid=${curagentuser.userid!''}&agentserviceid=${curagentuser.agentserviceid!''}&agentuserid=${curagentuser.id}&times=${serviceCount!0}&chattime=<#if onlineUser?? && onlineUser.betweentime??>${onlineUser.betweentime}<#else>0</#if>" data-toggle="tip" data-title="拉黑访客后，此访客不会再接入人工坐席，当前对话会立即结束，可以在“客服设置->黑名单”中取消拉黑，请确认是否拉黑该访客？" data-callback="Proxy.tipMsgForm">拉黑访客</button>	
 							</div>
+							 -->
 						</h1>
 					</div>
-					<div class="box-body" style="padding:0px 10px;">
-						<ul class="info-list">
-							<li>首次访问来源： <span class="tgreen">
-									${onlineUser.source!''} </span>
-							</li>
-							<li>IP：${onlineUser.ip!''}</li>
-							<li>位置：<#if onlineUser.province?? && onlineUser.province ==
-								"0">未知<#else>${onlineUser.province!''} ${onlineUser.city!''}</#if>
-							</li>
-							<li>访问次数：${serviceCount!0}次</li>
-							<li>停留时间： <#if onlineUser?? && onlineUser.betweentime??>
-								${(onlineUser.betweentime/(1000*60*60))?string('00')}:${((onlineUser.betweentime%(1000*60*60))/(1000*60))?string('00')}:${((onlineUser.betweentime%(1000*60))/(1000))?string('00')}
-								</#if></li>
-							<li>访问浏览器： ${onlineUser.browser!''}</li>
-							<li>操作系统： <span class="ukefu-online-user"> <#if
-									onlineUser.opersystem?? && onlineUser.opersystem == "windows"> <i
-									class="kfont">&#xe801;</i> <#elseif onlineUser.opersystem?? &&
-									onlineUser.opersystem == "linux"> <i class="kfont">&#xe726;</i>
-									<#elseif onlineUser.opersystem?? && onlineUser.opersystem ==
-									"mac"> <i class="kfont">&#xe6be;</i> </#if>
-									${onlineUser.opersystem!''}
-							</span>
-							</li>
-							<li>访问终端： <span class="ukefu-online-user"> <#if
-									onlineUser.mobile?? && onlineUser.mobile == "1"> <i class="kfont">&#xe603;</i>
-									移动 <#else> <i class="kfont">&#xe601;</i> PC </#if>
-							</span>
-							</li>
-							<#if tags?? && tags?size gt 0>
-							<li style="position: relative;">
-								标签： 
-								<span id="tags">
-									<#if tagRelationList??> <#list tagRelationList as tagRelation>
-									<#if tags??> <#list tags as tag> <#if tag.id ==
-									tagRelation.tagid> <small id="tag_${tag.id}"
-									class="ukefu-label theme${tag.color!'1'}">${tag.tag!''}</small>
-									</#if> </#list> </#if> </#list> </#if>
-								</span>
-								<div class="ukefu-tag-add">
-									<a href="javascript:void(0)" id="tag"><i class="layui-icon">&#xe608;</i></a>
-									<dl class="ukefu-tag-list layui-anim layui-anim-upbit"
-										id="taglist">
-										<#list tags as tag>
-										<dd>
-											<a href="javascript:void(0)"
-												data-href="/agent/tagrelation.html?tagid=${tag.id!''}&userid=${onlineUser.userid!''}&dataid=${onlineUser.id!''}"
-												data-theme="theme${tag.color!'1'}" data-id="${tag.id!''}"
-												data-name="${tag.tag!''}" class="tag-switch">${tag.tag!''}</a>
-										</dd>
-										</#list> 
-										
-									</dl>
-								</div>
-							</li>
-							</#if>
-						</ul>
+					<div class="box-body" style="padding:0px 10px;position: relative;">
+						<#if curAgentService.channel?? && curAgentService.channel == "webim">
+								<#include "/apps/agent/channel/webim.html">
+						<#elseif curAgentService.channel?? && curAgentService.channel == "weixin">
+								<#include "/apps/agent/channel/weixin.html">
+						</#if>
 					</div>
 				</div>
 			</div>
