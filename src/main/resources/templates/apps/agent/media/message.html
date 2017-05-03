@@ -2,14 +2,14 @@
 	<img src="${(chatmessage.message!'')?no_esc}" class="ukefu-media-image">
 <#elseif chatmessage.msgtype?? && chatmessage.msgtype == "location">
 	<div>${chatmessage.message!''}</div>
-	<div class="ukefu-map" id="map_${chatmessage.id!''}">
-		
-	</div>
-	<script type="text/javascript"> 
-	var map = new BMap.Map("map_${chatmessage.id!''}");          // 创建地图实例  
-	var ggPoint = new BMap.Point(${chatmessage.locy!'0'}, ${chatmessage.locx!'0'});  // 创建点坐标  
-	MapUtil.convert(map,ggPoint , "${chatmessage.message!''}" , ${chatmessage.scale!'15'}) ;
-	</script> 
+	<#if systemConfig?? && systemConfig.mapkey?? && systemConfig.mapkey != ''>
+		<div class="ukefu-map" id="map_${chatmessage.id!''}"></div>
+		<script type="text/javascript"> 
+		var map = new BMap.Map("map_${chatmessage.id!''}");          // 创建地图实例  
+		var ggPoint = new BMap.Point(${chatmessage.locy!'0'}, ${chatmessage.locx!'0'});  // 创建点坐标  
+		MapUtil.convert(map,ggPoint , "${chatmessage.message!''}" , ${chatmessage.scale!'15'}) ;
+		</script>
+	</#if> 
 <#elseif chatmessage.msgtype?? && chatmessage.msgtype == "voice">
 	<p class="weixinAudio" id="voice_media_${chatmessage.id!''}" style="<#if chatmessage.duration?? && chatmessage.duration!= ''><#if chatmessage.duration gt 30>width:300px;<#else>width:${50+chatmessage.duration * 10}px;</#if><#else>width:50px</#if>">
 		<audio src="${chatmessage.message!''}" id="media" width="1" height="1" preload></audio>
