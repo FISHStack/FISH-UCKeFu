@@ -32,7 +32,7 @@
 	<script src="/js/template.js"></script>
 	
 	<script src="/js/weixinAudio.js"></script>
-	<#if systemConfig?? && systemConfig.mapkey??>
+	<#if systemConfig?? && systemConfig.mapkey?? && systemConfig.mapkey!=''>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=${systemConfig.mapkey}"></script>
 	</#if>
 	
