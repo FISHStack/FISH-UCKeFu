@@ -189,8 +189,10 @@ public class AgentController extends Handler {
 		view.addObject("curagentuser", agentUser) ;
 		
 		AgentUserTask agentUserTask = agentUserTaskRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
-		agentUserTask.setTokenum(0);
-		agentUserTaskRes.save(agentUserTask) ;
+		if(agentUserTask!=null){
+			agentUserTask.setTokenum(0);
+			agentUserTaskRes.save(agentUserTask) ;
+		}
 		
 		if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
 			AgentServiceSummary summary = this.serviceSummaryRes.findByAgentserviceidAndOrgi(agentUser.getAgentserviceid(), super.getOrgi(request)) ;
