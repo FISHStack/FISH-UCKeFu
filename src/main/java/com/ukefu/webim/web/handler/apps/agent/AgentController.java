@@ -454,11 +454,10 @@ public class AgentController extends Handler {
 			if(agentService!=null){
 				agentService.setContactsid(contactsid);
 				this.agentServiceRepository.save(agentService) ;
-				
-				DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("contacts") ;
-				if(dataExchange!=null){
-					map.addAttribute("contacts", dataExchange.getDataByIdAndOrgi(contactsid, super.getOrgi(request))) ;
-				}
+			}
+			DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("contacts") ;
+			if(dataExchange!=null){
+				map.addAttribute("contacts", dataExchange.getDataByIdAndOrgi(contactsid, super.getOrgi(request))) ;
 			}
 		}
 		
