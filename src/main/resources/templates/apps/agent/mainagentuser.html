@@ -1,0 +1,238 @@
+<script language="javascript">
+	cursession = "<#if curagentuser??>${curagentuser.userid!''}</#if>" ;
+	var userid = "${curagentuser.userid!''}" , agentserviceid = "${curagentuser.agentserviceid!''}" , agentuserid = "${curagentuser.id}";
+</script>
+
+<div class="main-agentuser">
+	<div class="chat-agent">
+		<h1 class="site-h1">
+			<#if curagentuser??>${curagentuser.username!''}（${curagentuser.region!''}）
+			<div style="float:right;">
+				<a href="/agent/summary.html?userid=${curagentuser.userid!''}&agentserviceid=${curagentuser.agentserviceid!''}&agentuserid=${curagentuser.id}" data-toggle="ajax" data-width="950" data-height="450" title="记录服务小结"><button class="layui-btn layui-btn-small"><i class="kfont">&#xe65c;</i> 服务小结</button></a>
+				<a href="/agent/transfer.html?userid=${curagentuser.userid!''}&agentserviceid=${curagentuser.agentserviceid!''}&agentuserid=${curagentuser.id}" data-toggle="ajax" data-width="950" data-height="450" title="选择转接对象"><button class="layui-btn layui-btn-small"><i class="kfont">&#xe7be;</i> 转接坐席</button></a>
+				<a href="/agent/end.html?userid=${curagentuser.id!''}" data-toggle="tip" data-title="请确认是否关闭和用户“${curagentuser.username!''}”的对话？"><button class="layui-btn layui-btn-small layui-btn-danger"><i class="kfont">&#xe621;</i> 结束对话</button></a>
+			</div>
+			<#else>
+				&nbsp;
+			</#if>
+		</h1>
+		<div id="chat_msg_list" class="chat-message chat_msg_list">
+			<#if agentUserMessageList?? && agentUserMessageList.content??>
+			<#list agentUserMessageList.content?reverse as chatmessage>
+			<div class="clearfix chat-block">
+				<div class="<#if (chatmessage.userid?? && chatmessage.userid == user.id) || (chatmessage.calltype?? && chatmessage.calltype == 'out')>chat-right<#else>chat-left</#if>">
+					<img alt="" src="<#if chatmessage.userid?? && chatmessage.userid == user.id>/images/im/user.png<#else><#if curagentuser.headimgurl?? && curagentuser.headimgurl !=''>${curagentuser.headimgurl}<#else>/images/im/user.png</#if></#if>" style="width:45px;height:45px;" class="user-img">
+					<div class="chat-message">
+						<span class="user">${chatmessage.username!''}</span> 
+						<span class="time">${chatmessage.createtime!''}</span>
+					</div>
+					<div class="<#if (chatmessage.userid?? && chatmessage.userid == user.id) || (chatmessage.calltype?? && chatmessage.calltype == 'out')>chatting-right<#else>chatting-left</#if>">
+						<i class="userarrow"></i>
+						<div class="chat-content"><#include "/apps/agent/media/message.html"></div>
+					</div>
+				</div>
+			</div>
+			</#list>
+			<#elseif curagentuser??>
+				<#if curagentuser.status?? && curagentuser.status == "end">
+					<div class="clearfix chat-block connect-end" id="agentuser-curstatus">
+						<span class="connect-message">用户“${curagentuser.username!''}”已经离开</span>
+					</div>
+				<#else>
+					<div class="clearfix chat-block connect-begin" id="agentuser-curstatus">
+						<span class="connect-message">用户“${curagentuser.username!''}”开始对话</span>
+					</div>
+				</#if>
+			</#if>
+		</div>
+	</div>
+	<div class="chat-bottom">
+		<div class="row">
+			<div class="col-lg-12">
+				<textarea id="message" name="message"></textarea>
+				<button type="button" class="send-btn" onclick="sendMessage()">
+					发送
+				</button>
+				<style>
+					.ke-container{
+						border: 0px solid #E0E0E0 !important;
+					}
+				</style>
+				<script language="javascript">
+					var editor , layer;
+					$(document).ready(function(){		
+						KindEditor.ready(function(K) {
+							editor = K.create('#message', {
+								height:"160px",
+								themeType : 'simple',
+								width:"100%",
+								items:['undo', 'redo' , 'emoticons', 'image'],
+								resizeType:0,
+								uploadJson : "/agent/image/upload.html?id=${curagentuser.id!''}",
+				                allowFileManager : false,
+								newlineTag : "br" , 
+								fontsize:16,
+								allowInsertUpload:false,		//增加的参数，上传图片后是否插入到当前区域
+								allowImageRemote:false,
+								afterUpload: function (url) {  
+							    	return false;  
+							    },  
+								afterCreate : function() { //设置编辑器创建后执行的回调函数
+						            var self = this;
+						            //Ctrl+Enter提交表单
+						            K.ctrl(document, 13, function() {
+						                self.sync();
+						                sendMessage();
+						            });
+						            K.ctrl(self.edit.doc, 13, function() {
+						                self.sync();
+						                sendMessage();
+						            });
+						        }
+							});
+						});
+						KindEditor.options.cssData = "body { font-size: 15px; font-family:'Microsoft Yahei', 'Helvetica', 'Simsun', 'Arial';}";
+					});
+				</script>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="ukefu-chat-prop">
+	<div class="ukefu-prop-list">
+		<div class="layui-side-scroll">
+			<div class="layui-tab layui-tab-card" style="margin-top:0px;">
+			  <ul class="layui-tab-title">
+			    <li class="layui-this">访客</li>
+			    <!-- 
+			    <li>快捷</li>
+			    <li>工单</li>
+			    <li>历史</li>
+			    <li>知识库</li>
+			     -->
+			  </ul>
+			  <div class="layui-tab-content" style="padding: 5px 0px 0px;">
+			    <div class="layui-tab-item layui-show">
+			    	<div class="box">
+						<div class="box-title">
+							<h1 class="site-h1" style="background-color:#EEEEEE;">
+								访问信息
+								<div style="float:right;">
+									<button class="layui-btn layui-btn-small layui-btn-radius layui-btn-danger" data-href="/agent/blacklist.html?userid=${curagentuser.userid!''}&agentserviceid=${curagentuser.agentserviceid!''}&agentuserid=${curagentuser.id}&times=${serviceCount!0}&chattime=<#if onlineUser?? && onlineUser.betweentime??>${onlineUser.betweentime}<#else>0</#if>" data-toggle="tip" data-title="拉黑访客后，此访客不会再接入人工坐席，当前对话会立即结束，可以在“客服设置->黑名单”中取消拉黑，请确认是否拉黑该访客？" data-callback="Proxy.tipMsgForm">拉黑访客</button>	
+								</div>
+							</h1>
+						</div>
+						<div class="box-body" style="padding:0px 10px;position: relative;">
+							<#if curagentuser.channel?? && curagentuser.channel == "webim">
+								<#include "/apps/agent/channel/webim.html">
+							<#elseif curagentuser.channel?? && curagentuser.channel == "weixin">
+								<#include "/apps/agent/channel/weixin.html">
+							</#if>
+						</div>
+					</div>
+					<#if models?? && models["contacts"]?? && models["contacts"] == true>
+					<div class="box">
+						<div class="box-title">
+							<h1 class="site-h1" style="background-color:#EEEEEE;">
+								联系人
+								<div style="float:right;">
+									<button class="layui-btn layui-btn-small layui-btn-normal" href="/apps/contacts/embed/index.html?userid=${curagentuser.userid!''}&agentserviceid=${curagentuser.agentserviceid!''}&agentuserid=${curagentuser.id}&times=${serviceCount!0}&chattime=<#if onlineUser?? && onlineUser.betweentime??>${onlineUser.betweentime}<#else>0</#if>" data-toggle="ajax" title="请选择联系人" data-width="950" data-height="500">关联联系人</button>	
+								</div>
+							</h1>
+						</div>
+						<div class="box-body" style="padding:0px 10px;" id="ukefu_contacts_info">
+							<#include "/apps/agent/contacts.html">
+						</div>
+					</div>
+					</#if>
+			    </div>
+			    <div class="layui-tab-item">
+			    	<div class="box">
+						<div class="box-title">
+							<h1 class="site-h1" style="background-color:#EEEEEE;">
+								快捷回复
+							</h1>
+						</div>
+						<div class="box-body" style="padding:0px 10px;">
+							<ul class="info-list ukefu-quick-reply">
+								<#if quickReplyList??>
+								<#list quickReplyList as quickReply>
+								<li>
+									<span class="quick-reply" data-id="content_${quickReply.id!''}">${quickReply.title!''}</span>
+									<div id="content_${quickReply.id!''}" class="quick-reply-content" style="padding-left:23px;color:#333;display:none;">
+										${quickReply.content!''}
+									</div>
+								</li>
+								</#list>
+								</#if>
+							</ul>
+						</div>
+					</div>
+			    </div>
+			    <div class="layui-tab-item">内容3</div>
+			    <div class="layui-tab-item">内容4</div>
+			    <div class="layui-tab-item">内容5</div>
+			  </div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<script>
+	document.getElementById('chat_msg_list').scrollTop = document.getElementById('chat_msg_list').scrollHeight  ;
+	layui.use('element', function(){
+		  var element = layui.element();
+	});
+	layui.use('layer', function() {
+		layer = layui.layer;
+		$('#tag').click(function() {
+			$('#taglist').show();
+		})
+		$('.tag-switch').click(
+				function() {
+					if ($('#tag_' + $(this).data("id")).length > 0) {
+						$('#tag_' + $(this).data("id")).remove();
+					} else {
+						$("#tags").append(
+								"<small id='tag_" + $(this).data("id")
+										+ "' class='ukefu-label "
+										+ $(this).data("theme") + "'>"
+										+ $(this).data("name") + "</small>");
+					}
+					loadURL($(this).data("href"));
+				});
+		$("#taglist").hover(null, function() {
+			$(this).hide();
+		});
+		$('.quick-reply').click(function(){
+			var target = $(this).data("id") ;
+			if($('#'+target).is(":hidden")){
+				$('#'+target).show() ;
+			}else{
+				$('#'+target).hide() ;
+			}
+		});
+		$('.quick-reply-content').click(function(){
+			if(editor != null){
+				var quickReply = $(this).html() ;
+				if(editor.count("text") == 0 ){
+					editor.html(quickReply);
+				}else{
+					top.layer.confirm("您已经输入了内容，覆盖当前输入框中内容？", {icon: 3, title:'覆盖提示'}, function(index){
+						top.layer.close(index);
+						editor.html(quickReply);
+					});
+				}
+			}
+		});
+	});
+	function sendMessage(){
+		editor.sync();
+		var count = editor.count("text");
+		if(count>0){
+			var message = document.getElementById('message').value;
+			top.WebIM.sendMessage(message , '${user.id!''}' , "${curagentuser.appid!''}" , "${user.sessionid!''}" , "${orgi!''}" , "<#if curagentuser??>${curagentuser.userid!''}</#if>" , "${user.username!''}");
+		}
+		editor.html('');
+	}
+</script>

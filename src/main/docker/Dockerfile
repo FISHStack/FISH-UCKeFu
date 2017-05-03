@@ -1,0 +1,4 @@
+FROM centos:uckefu
+VOLUME /tmp
+ADD UCKeFu-WebIM-1.3.0-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java","-server -Djava.security.egd=file:/dev/./urandom -Xms2g -Xmx2g -Xmn1g -XX:PermSize=512M  -XX:MaxPermSize=512m -XX:+UseG1GC -XX:G1HeapRegionSize=16m -XX:G1ReservePercent=25 -XX:InitiatingHeapOccupancyPercent=30 -XX:SoftRefLRUPolicyMSPerMB=0 -XX:SurvivorRatio=8 -XX:+DisableExplicitGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCApplicationStoppedTime -XX:+PrintAdaptiveSizePolicy -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 -XX:GCLogFileSize=30m -verbose:gc -Xloggc:ukefu_gc.log","-jar","/app.jar"]

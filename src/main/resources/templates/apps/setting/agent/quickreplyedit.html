@@ -1,0 +1,38 @@
+<div class="uk-layui-form">
+	<form class="layui-form uk-form" method="post" action="/setting/quickreply/update.html">
+	  <input type="hidden" name="id" value="${quickReply.id!''}">
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">标题：</label>
+	    <div class="layui-input-inline" style="width:520px;">
+	      <input type="text" name="title" max-lenght="100" required value="${quickReply.title!''}" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+	  <div class="layui-form-item" style="margin-top:20px;">
+	    <label class="layui-form-label">内容：</label>
+	    <div class="layui-input-inline" style="width:520px;">
+	     	<textarea name="content" id="content" autocomplete="off" lay-verify="required" required class="layui-input" resize="false" placeholder="请输入内容" style="height:170px;line-height:22px;resize: none;">${quickReply.content!''}</textarea> 	
+	    </div>
+	  </div>
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">用户可见：</label>
+	    <div class="layui-input-block">
+	      <input type="radio" name="type" value="1" lay-verify="required" title="所有人" <#if quickReply.type == '1'>checked</#if>>
+	      <input type="radio" name="type" value="0" lay-verify="required" title="仅限我" <#if quickReply.type == '0'>checked</#if>>
+	    </div>
+	  </div>
+	  <div class="layui-form-button">
+	    <div class="layui-button-block">
+	      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+	      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+	    </div>
+	  </div>
+	</form>
+</div>
+ 
+<script>
+//Demo
+layui.use('form', function(){
+  var form = layui.form();
+  form.render(); //更新全部
+});
+</script>

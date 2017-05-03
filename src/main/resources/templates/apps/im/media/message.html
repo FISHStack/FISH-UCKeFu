@@ -1,0 +1,5 @@
+<#if chatMessage.msgtype?? && chatMessage.msgtype == "image">
+	<img src="${(chatMessage.message!'')?no_esc}" class="ukefu-media-image">
+<#else>
+	${(chatMessage.message!'')?no_esc}
+</#if>

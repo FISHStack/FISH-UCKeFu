@@ -1,0 +1,31 @@
+<ul class="layui-nav layui-nav-tree" lay-filter="setting">
+	<li class="layui-nav-item layui-nav-itemed">
+		<a class="layui-nav-title" href="javascript:;">会话信息</a>
+		<dl class="layui-nav-child">
+			<dd <#if subtype?? && subtype == 'history'>class="layui-this"</#if>>
+				
+				<a href="/service/history/index.html">历史会话</a>
+			</dd>
+			<dd <#if subtype?? && subtype == 'current'>class="layui-this"</#if>>
+				<a href="/service/current/index.html">当前会话</a>
+			</dd>
+			<dd <#if subtype?? && subtype == 'quene'>class="layui-this"</#if>>
+				<a href="/service/quene/index.html">排队队列</a>
+			</dd>
+		</dl>
+	</li>
+	
+	<li class="layui-nav-item layui-nav-itemed">
+		<a class="layui-nav-title" href="javascript:;">坐席信息</a>
+		<dl class="layui-nav-child">
+			<dd <#if subtype?? && subtype == 'onlineagent'>class="layui-this"</#if>>
+				
+				<a href="/service/agent/index.html">在线坐席</a>
+			</dd>
+			<dd <#if subtype?? && subtype == 'userlist'>class="layui-this"</#if>>
+				<a href="/service/user/index.html">全部坐席</a>
+			</dd>
+		</dl>
+	</li>
+	
+</ul>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<meta name="viewport"
+			content="width=device-width, maximum-scale=1.0, initial-scale=1.0,initial-scale=1.0,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+	    <title>在线咨询</title>
+	    
+		<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?t=1489039620156"/>
+	    <link rel="stylesheet" type="text/css" href="/im/css/ukefu.css">
+	    <link rel="stylesheet" id="skin" type="text/css" href="/im/css/default/ukefu.css">
+	</head>
+	<body style="overflow:hidden;" class="<#if type?? && type='text'>ukefu-point-text</#if>">
+		<div class="large ukefu-im-theme <#if type?? && type='text'>ukefu-theme-border-${inviteData.consult_dialog_color!''}</#if>">
+		    <div id="containter" class="clearfix">
+		    	<div id="header" class="theme${inviteData.consult_dialog_color!''}">
+			   		<img src="<#if inviteData?? && inviteData.consult_dialog_logo??>/res/image.html?id=${inviteData.consult_dialog_logo?url}<#else>/images/logo.png</#if>" style="height:30px;padding:10px;">
+			    </div>
+			    <div class="ukef-leavemsg-tip">
+			    	<#if sessionConfig?? && sessionConfig.notinwhmsg??>${(sessionConfig.notinwhmsg!'')?no_esc}</#if>
+			    </div>
+		    	<div class="leaveCon">
+				    <form action="" method="" name="">
+				    	<#if inviteData?? && inviteData.lvmname == true>
+				        <p>
+				            <span>您的姓名：<b>*</b></span>
+				            <input type="text" class="txt01 txt02">
+				            
+				        </p>
+				        </#if>
+				        <#if inviteData?? && inviteData.lvmphone == true>
+				        <p>
+				            <span>您的电话：<b>*</b></span>
+				            <input type="text" class="txt01 txt02">
+				            
+				        </p>
+				        </#if>
+				        <#if inviteData?? && inviteData.lvmemail == true>
+				        <p>
+				            <span>您的邮箱：<b>*</b></span>
+				            <input type="text" class="txt01 txt02">
+				            
+				        </p>
+				        </#if>
+				        <#if inviteData?? && inviteData.lvmaddress == true>
+				        <p>
+				            <span>您的地址：<b>*</b></span>
+				            <input type="text" class="txt01 txt02">
+				            
+				        </p>
+				        </#if>
+				        <#if inviteData?? && inviteData.lvmqq == true>
+				        <p>
+				            <span>您的QQ：<b>*</b></span>
+				            <input type="text" class="txt01 txt02">
+				            
+				        </p>
+				        </#if>
+				        <p>
+				            <span>留言内容：</span>
+				            <textarea name="" id="" class="txt01 txt03" style="position: relative; overflow: hidden;">
+				                
+				            </textarea>
+				        </p>
+				        <p class="submitBtnWrap">
+				            <input type="submit" class="btn submitBtn theme${inviteData.consult_dialog_color!''}" value="提 交"></p>
+					</form>
+				</div>
+		    </div>
+		</div>
+	</body>
+</html>
