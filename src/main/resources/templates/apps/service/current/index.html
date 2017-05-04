@@ -15,6 +15,7 @@
 						<tr class="design-sortable-tr">
 							<th>用户名</th>
 							<th>接入渠道</th>
+							<th>状态</th>
 							<th>服务坐席</th>
 							<th>咨询时间</th>
 							<th>服务时间</th>
@@ -36,7 +37,10 @@
 								${agentService.channel!''}
 							</td>
 							<td>
-								${agentService.agentusernmae!''}
+								<#if agentService.status?? && agentService.status == 'end'>已结束<#elseif agentService.status?? && agentService.status == 'inservice'>服务中</#if>
+							</td>
+							<td>
+								${agentService.agentusername!''}
 							</td>
 							<td><#if agentService.logindate??>${agentService.logindate?string('yyyy-MM-dd HH:mm:ss')}</#if></td>
 							<td>

@@ -20,4 +20,6 @@ public abstract interface AgentServiceRepository
   public abstract List<AgentService> findByAgentnoAndStatusAndOrgi(String agentno, String status , String orgi);
   
   public abstract int countByUseridAndOrgiAndStatus(String userid, String orgi, String status);
+  
+  public abstract List<AgentService> findByUseridAndOrgiAndStatus(String userid, String orgi, String status);
 }

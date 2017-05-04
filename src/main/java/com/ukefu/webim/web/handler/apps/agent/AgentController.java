@@ -41,6 +41,7 @@ import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.QuickReplyRepository;
+import com.ukefu.webim.service.repository.SNSAccountRepository;
 import com.ukefu.webim.service.repository.ServiceSummaryRepository;
 import com.ukefu.webim.service.repository.TagRelationRepository;
 import com.ukefu.webim.service.repository.TagRepository;
@@ -108,6 +109,9 @@ public class AgentController extends Handler {
 	private AgentUserTaskRepository agentUserTaskRes ;
 	
 	@Autowired
+	private SNSAccountRepository snsAccountRes ;
+	
+	@Autowired
 	private UserRepository userRes ;
 	
 	@Value("${web.upload-path}")
@@ -115,7 +119,7 @@ public class AgentController extends Handler {
 	
 	@RequestMapping("/index")
 	@Menu(type = "apps", subtype = "agent")
-	public ModelAndView index(HttpServletRequest request) {
+	public ModelAndView index(ModelMap map , HttpServletRequest request) {
 		ModelAndView view = request(super.createAppsTempletResponse("/apps/agent/index")) ; 
 		User user = super.getUser(request) ;
 		List<AgentUser> agentUserList = agentUserRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
@@ -160,6 +164,12 @@ public class AgentController extends Handler {
 						}
 					}
 				}
+				if(agentService!=null){
+					/**
+					 * 获取关联数据
+					 */
+					processRelaData(request, agentService, map);
+				}
 			}
 			view.addObject("serviceCount", Integer
 					.valueOf(this.agentServiceRepository
@@ -185,9 +195,16 @@ public class AgentController extends Handler {
 		return view ;
 	}
 	
+	private void processRelaData(HttpServletRequest request , AgentService agentService , ModelMap map){
+		map.addAttribute("agentServiceList", agentServiceRepository.findByUseridAndOrgiAndStatus(agentService.getUserid() , super.getOrgi(request), UKDataContext.AgentUserStatusEnum.END.toString())) ;
+		if(!StringUtils.isBlank(agentService.getAppid())){
+			map.addAttribute("snsAccount", snsAccountRes.findBySnsidAndOrgi(agentService.getAppid(), super.getOrgi(request))  ); 
+		}
+	}
+	
 	@RequestMapping("/agentuser")
 	@Menu(type = "apps", subtype = "agent")
-	public ModelAndView agentuser(HttpServletRequest request , String id) {
+	public ModelAndView agentuser(ModelMap map , HttpServletRequest request , String id) {
 		ModelAndView view = request(super.createRequestPageTempletResponse("/apps/agent/mainagentuser")) ;
 		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(id, super.getOrgi(request));
 		view.addObject("curagentuser", agentUser) ;
@@ -231,6 +248,12 @@ public class AgentController extends Handler {
 						view.addObject("contacts", dataExchange.getDataByIdAndOrgi(agentService.getContactsid(), super.getOrgi(request))) ;
 					}
 				}
+			}
+			if(agentService!=null){
+				/**
+				 * 获取关联数据
+				 */
+				processRelaData(request, agentService, map);
 			}
 		}
 
@@ -303,11 +326,16 @@ public class AgentController extends Handler {
 	@Menu(type = "apps", subtype = "clean" , access= false)
     public ModelAndView clean(HttpServletRequest request) throws Exception{ 
 		List<AgentUser> agentUserList = agentUserRepository.findByAgentnoAndStatusAndOrgi(super.getUser(request).getId(), UKDataContext.AgentUserStatusEnum.END.toString(), super.getOrgi(request));
+		List<AgentService> agentServiceList = new ArrayList<AgentService>();
 		for(AgentUser agentUser : agentUserList){
 			if(agentUser!=null && super.getUser(request).getId().equals(agentUser.getAgentno())){
 				ServiceQuene.deleteAgentUser(agentUser, super.getOrgi(request));
+				AgentService agentService = agentServiceRepository.findByIdAndOrgi(agentUser.getAgentserviceid(), super.getOrgi(request)) ;
+				agentService.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
+				agentServiceList.add(agentService) ;
 			}
 		}
+		agentServiceRepository.save(agentServiceList) ;
 		return request(super
 				.createRequestPageTempletResponse("redirect:/agent/index.html"));
     }
@@ -321,6 +349,11 @@ public class AgentController extends Handler {
 		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(userid, super.getOrgi(request));
 		if(agentUser!=null && super.getUser(request).getId().equals(agentUser.getAgentno())){
 			ServiceQuene.deleteAgentUser(agentUser, user.getOrgi());
+			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
+				AgentService agentService = agentServiceRepository.findByIdAndOrgi(agentUser.getAgentserviceid(), super.getOrgi(request)) ;
+				agentService.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
+				agentServiceRepository.save(agentService) ;
+			}
 		}
 		return request(super
 				.createRequestPageTempletResponse("redirect:/agent/index.html"));
