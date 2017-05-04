@@ -93,8 +93,11 @@ public class OnlineUserController extends Handler{
 					}
 				}
 				if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentService.getChannel())){
-					WeiXinUser weiXinUser = weiXinUserRes.findByOpenidAndOrgi(userid, super.getOrgi(request)) ;
-					map.addAttribute("weiXinUser",weiXinUser);
+					List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentService.getUserid(), super.getOrgi(request)) ;
+					if(weiXinUserList.size() > 0){
+						WeiXinUser weiXinUser = weiXinUserList.get(0) ;
+						map.put("weiXinUser",weiXinUser);
+					}
 				}else if(UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(agentService.getChannel())){
 					OnlineUser onlineUser = onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ; 
 					map.put("onlineUser", onlineUser) ;

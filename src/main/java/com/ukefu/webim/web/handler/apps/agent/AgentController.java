@@ -140,8 +140,11 @@ public class AgentController extends Handler {
 			view.addObject("agentUserMessageList", this.chatMessageRepository.findBySessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime")));
 			
 			if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentUser.getChannel())){
-				WeiXinUser weiXinUser = weiXinUserRes.findByOpenidAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
-				view.addObject("weiXinUser",weiXinUser);
+				List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
+				if(weiXinUserList.size() > 0){
+					WeiXinUser weiXinUser = weiXinUserList.get(0) ;
+					view.addObject("weiXinUser",weiXinUser);
+				}
 			}else if(UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(agentUser.getChannel())){
 				OnlineUser onlineUser = this.onlineUserRes.findByUseridAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
 				if(onlineUser!=null){
@@ -225,8 +228,11 @@ public class AgentController extends Handler {
 		view.addObject("agentUserMessageList", this.chatMessageRepository.findBySessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime")));
 		
 		if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentUser.getChannel())){
-			WeiXinUser weiXinUser = weiXinUserRes.findByOpenidAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
-			view.addObject("weiXinUser",weiXinUser);
+			List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
+			if(weiXinUserList.size() > 0){
+				WeiXinUser weiXinUser = weiXinUserList.get(0) ;
+				view.addObject("weiXinUser",weiXinUser);
+			}
 		}else if(UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(agentUser.getChannel())){
 			OnlineUser onlineUser = this.onlineUserRes.findByUseridAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
 			if(onlineUser!=null){
