@@ -56,11 +56,13 @@ public class ExcelExporterProcess {
 	 * 构建头部
 	 */
 	private void createHead(){
-		Row row = sheet.createRow(rowNum); 
-		for(TableProperties tp : table.getTableproperty()){
-			Cell cell2 = row.createCell(table.getTableproperty().indexOf(tp)); 
-			cell2.setCellStyle(firstStyle); 
-			cell2.setCellValue(new HSSFRichTextString(tp.getName()));
+		Row row = sheet.createRow(rowNum);
+		if(table!=null && table.getTableproperty()!=null){
+			for(TableProperties tp : table.getTableproperty()){
+				Cell cell2 = row.createCell(table.getTableproperty().indexOf(tp)); 
+				cell2.setCellStyle(firstStyle); 
+				cell2.setCellValue(new HSSFRichTextString(tp.getName()));
+			}
 		}
 		rowNum ++ ;
 	}

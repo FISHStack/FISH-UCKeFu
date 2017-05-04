@@ -64,7 +64,7 @@ public class LoginController extends Handler{
     	if(request.getSession(true).getAttribute(UKDataContext.USER_SESSION_NAME) ==null){
 	        if(user!=null && user.getUsername()!=null){
 		    	User loginUser = userRepository.findByUsernameAndPassword(user.getUsername() , UKTools.md5(user.getPassword())) ;
-		        if(loginUser!=null){
+		        if(loginUser!=null && !StringUtils.isBlank(loginUser.getId())){
 		        	loginUser.setLogin(true);
 		        	super.setUser(request, loginUser);
 		        	if(!StringUtils.isBlank(referer)){
