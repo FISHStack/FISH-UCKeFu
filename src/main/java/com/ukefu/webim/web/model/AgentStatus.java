@@ -165,6 +165,6 @@ public class AgentStatus implements java.io.Serializable ,  Comparable<AgentStat
 	}
 	@Override
 	public int compareTo(AgentStatus o) {
-		return o.users - this.getUsers();
+		return this.users - o.users;
 	}
 }
