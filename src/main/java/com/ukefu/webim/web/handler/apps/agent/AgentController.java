@@ -159,14 +159,7 @@ public class AgentController extends Handler {
 			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
 				AgentService agentService = this.agentServiceRepository.findOne(agentUser.getAgentserviceid()) ;
 				view.addObject("curAgentService", agentService) ;
-				if(agentService!=null && !StringUtils.isBlank(agentService.getContactsid())){
-					if(UKDataContext.model.get("contacts")!=null && !StringUtils.isBlank(agentService.getContactsid())){
-						DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("contacts") ;
-						if(dataExchange!=null){
-							view.addObject("contacts", dataExchange.getDataByIdAndOrgi(agentService.getContactsid(), super.getOrgi(request))) ;
-						}
-					}
-				}
+				
 				if(agentService!=null){
 					/**
 					 * 获取关联数据
@@ -202,6 +195,21 @@ public class AgentController extends Handler {
 		map.addAttribute("agentServiceList", agentServiceRepository.findByUseridAndOrgiAndStatus(agentService.getUserid() , super.getOrgi(request), UKDataContext.AgentUserStatusEnum.END.toString())) ;
 		if(!StringUtils.isBlank(agentService.getAppid())){
 			map.addAttribute("snsAccount", snsAccountRes.findBySnsidAndOrgi(agentService.getAppid(), super.getOrgi(request))  ); 
+		}
+		
+		if(agentService!=null && !StringUtils.isBlank(agentService.getContactsid())){
+			if(UKDataContext.model.get("contacts")!=null && !StringUtils.isBlank(agentService.getContactsid())){
+				DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("contacts") ;
+				if(dataExchange!=null){
+					map.addAttribute("contacts", dataExchange.getDataByIdAndOrgi(agentService.getContactsid(), super.getOrgi(request))) ;
+				}
+			}
+			if(UKDataContext.model.get("workorders")!=null && !StringUtils.isBlank(agentService.getContactsid())){
+				DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("workorders") ;
+				if(dataExchange!=null){
+					map.addAttribute("workordersList", dataExchange.getListDataByIdAndOrgi(agentService.getContactsid(), super.getOrgi(request))) ;
+				}
+			}
 		}
 	}
 	
@@ -247,14 +255,7 @@ public class AgentController extends Handler {
 		
 		if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
 			AgentService agentService = this.agentServiceRepository.findOne(agentUser.getAgentserviceid()) ;
-			if(agentService!=null && !StringUtils.isBlank(agentService.getContactsid())){
-				if(UKDataContext.model.get("contacts")!=null && !StringUtils.isBlank(agentService.getContactsid())){
-					DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("contacts") ;
-					if(dataExchange!=null){
-						view.addObject("contacts", dataExchange.getDataByIdAndOrgi(agentService.getContactsid(), super.getOrgi(request))) ;
-					}
-				}
-			}
+			
 			if(agentService!=null){
 				/**
 				 * 获取关联数据
