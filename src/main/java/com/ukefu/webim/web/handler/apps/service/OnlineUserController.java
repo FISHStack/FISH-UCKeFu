@@ -116,12 +116,15 @@ public class OnlineUserController extends Handler{
 	
 	@RequestMapping("/online/chatmsg")
     @Menu(type = "service" , subtype = "chatmsg" , admin= true)
-    public ModelAndView onlinechat(ModelMap map , HttpServletRequest request , String id) {
+    public ModelAndView onlinechat(ModelMap map , HttpServletRequest request , String id , String title) {
 		AgentService agentService = agentServiceRes.getOne(id) ; 
 		AgentUser curragentuser = agentUserRes.findByUseridAndOrgi(agentService.getUserid(), super.getOrgi(request)) ;
 		
 		map.put("curAgentService", agentService) ;
 		map.put("curragentuser", curragentuser) ;
+		if(!StringUtils.isBlank(title)){
+			map.put("title", title) ;
+		}
 		
 		map.put("agentUserMessageList", chatMessageRepository.findByAgentserviceidAndOrgi(agentService.getId() , super.getOrgi(request), new PageRequest(0, 50, Direction.DESC , "createtime")));
 		

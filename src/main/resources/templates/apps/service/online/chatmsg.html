@@ -1,7 +1,10 @@
 <div class="ukefu-chat-history">
+	<#if title??>
+	<#else>
 	<h1 class="site-h1">
 		咨询内容
 	</h1>
+	</#if>
 	<div id="chat_msg_list" class="chat-message chat_msg_list">
 		<#if agentUserMessageList?? && agentUserMessageList.content??>
 			<#list agentUserMessageList.content?reverse as chatmessage>

@@ -109,7 +109,7 @@
 							<tbody>
 								<#if agentServiceList?? && agentServiceList?size gt 0>
 								<#list agentServiceList as agentService>
-								<tr class="tdHasContorllor design-dropable-td <#if curAgentService?? && curAgentService.id == agentService.id>ukefu-current-agentservice</#if>">
+								<tr class="tdHasContorllor design-dropable-td <#if curAgentService?? && curAgentService.id == agentService.id>ukefu-current-agentservice</#if> ukefu-agentservice-list">
 									<td class=" first_td_head">
 										<a href="/service/online/chatmsg.html?id=${agentService.id!''}" data-toggle="load" data-target="#onlinecontent">
 										${agentService.username!''}
@@ -242,6 +242,10 @@
 			});
 	$("#taglist").hover(null, function() {
 		$(this).hide();
+	});
+	$('.ukefu-agentservice-list').on("click" , function(){
+		$('.ukefu-agentservice-list').removeClass("ukefu-current-agentservice");
+		$(this).addClass("ukefu-current-agentservice");
 	});
 	$('.quick-reply').click(function(){
 		var target = $(this).data("id") ;

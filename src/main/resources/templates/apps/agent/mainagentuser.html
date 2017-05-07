@@ -106,9 +106,11 @@
 			    <li class="layui-this">访客</li>
 			    
 			    <li>快捷</li>
-			    <!-- 
-			    <li>工单</li>
 			    <li>历史</li>
+			    <#if models?? && models["workorders"]?? && models["workorders"] == true>
+			    <li>工单</li>
+			    </#if>
+			    <!-- 
 			    <li>知识库</li>
 			     -->
 			  </ul>
@@ -180,8 +182,47 @@
 						</div>
 					</div>
 			    </div>
-			    <div class="layui-tab-item">内容4</div>
-			    <div class="layui-tab-item">内容5</div>
+			    <div class="layui-tab-item">
+			    	<div class="box">
+						<div class="box-title">
+							<h1 class="site-h1" style="background-color:#EEEEEE;">
+								历史记录
+							</h1>
+						</div>
+						<div class="box-body" style="padding:0px 10px;">
+							<ul class="info-list ukefu-quick-reply">
+								<#if agentServiceList?? && agentServiceList?size gt 0>
+								<#list agentServiceList as agentService>
+								<li class="ukefu-agentservice-list">
+									<a href="/service/online/chatmsg.html?id=${agentService.id!''}&title=false" data-toggle="ajax" data-width="950" data-height="500" data-title="服务记录">
+										<span class="quick-reply" data-id="content_${agentService.id!''}">${agentService.username!''}</span>
+										<div class="ukefu-agentservice-his">坐席：${agentService.agentusername!''}</div>
+										<div style="color:#333;position: relative;">
+											${agentService.servicetime?string("yyyy-MM-dd HH:mm:ss")}
+											<div class="ukefu-agentservice-his">时长：${(agentService.sessiontimes/(1000*60*60))?string('00')}:${((agentService.sessiontimes%(1000*60*60))/(1000*60))?string('00')}:${((agentService.sessiontimes%(1000*60))/(1000))?string('00')}</div>
+										</div>
+									</a>
+								</li>
+								</#list>
+								<#else>
+								<li style="list-style: none;background-image: url();padding: 50px 0 50px;">
+									<div class="ukefu-empty">
+										<i class="layui-icon"></i>
+										<div style="">还没有咨询记录</div>
+									</div>
+								</li>
+								</#if>
+							</ul>
+						</div>
+					</div>
+			    </div>
+			    <#if models?? && models["workorders"]?? && models["workorders"] == true>
+			    <div class="layui-tab-item" id="workorders">
+			    	<#if workOrdersList?? && workOrdersList?size gt 0>
+			    	<#include "/apps/agent/workorders.html">
+			    	</#if>
+			    </div>
+			    </#if>
 			  </div>
 			</div>
 			

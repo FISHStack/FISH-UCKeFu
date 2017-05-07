@@ -56,7 +56,6 @@ $(document).ready(function(){
 						var img = $(target).data("icon") ? $(target).data("icon") : "/images/workorders.png" ;
 						var name = title ;
 						var text = $(target).data("text") ? $(target).data("text") : title ;
-						
 						top.layerwin = top.layer.open({
 							title: ["<div style='position: relative;height: 42px;padding: 5px 15px 5px 0px;line-height: 20px;cursor: pointer;display: inline-block;vertical-align: top;'><img src='"+img+"' style='max-height:50px;'><div style='padding:0px 5px;line-height: 23px;display: inline-block;vertical-align: top;'><span style='vertical-align: top;font-size:18px;'>"+name+"</span><p style='vertical-align: top;font-size: 12px;color: #999;'>"+text+"</p></div></div>" , "height:55px"], 
 							type: 1, 

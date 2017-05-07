@@ -34,4 +34,11 @@
 		备注：${contacts.memo!''} 
 	</li>
 </ul>
+<#if models?? && models["workorders"]?? && models["workorders"] == true>
+<script language="javascript">
+	$(document).ready(function(){
+		loadURL("/agent/workorders/list.html?contactsid=${contacts.id!''}", "#workorders");
+	});		
+</script>
+</#if>
 </#if>

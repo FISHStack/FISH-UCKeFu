@@ -29,6 +29,11 @@
 <script src="/im/js/socket.io.js"></script>	
 <script src="/js/UCKeFu_IM.v1.js"></script>	
 
+<script src="/js/weixinAudio.js"></script>
+<#if systemConfig?? && systemConfig.mapkey?? && systemConfig.mapkey!=''>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=${systemConfig.mapkey}"></script>
+</#if>
+
 <script type="text/javascript" src="/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript" src="/js/kindeditor/lang/zh-CN.js"></script>
 

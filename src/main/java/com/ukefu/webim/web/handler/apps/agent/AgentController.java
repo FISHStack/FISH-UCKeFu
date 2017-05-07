@@ -207,8 +207,9 @@ public class AgentController extends Handler {
 			if(UKDataContext.model.get("workorders")!=null && !StringUtils.isBlank(agentService.getContactsid())){
 				DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("workorders") ;
 				if(dataExchange!=null){
-					map.addAttribute("workordersList", dataExchange.getListDataByIdAndOrgi(agentService.getContactsid(), super.getOrgi(request))) ;
+					map.addAttribute("workOrdersList", dataExchange.getListDataByIdAndOrgi(agentService.getContactsid(), super.getUser(request).getId(),  super.getOrgi(request))) ;
 				}
+				map.addAttribute("contactsid", agentService.getContactsid()) ;
 			}
 		}
 	}
@@ -277,6 +278,20 @@ public class AgentController extends Handler {
 
 		return view ;
 	}
+	
+	@RequestMapping("/workorders/list")
+	@Menu(type = "apps", subtype = "workorderslist")
+	public ModelAndView workorderslist(HttpServletRequest request , String contactsid , ModelMap map) {
+		if(UKDataContext.model.get("workorders")!=null && !StringUtils.isBlank(contactsid)){
+			DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("workorders") ;
+			if(dataExchange!=null){
+				map.addAttribute("workOrdersList", dataExchange.getListDataByIdAndOrgi(contactsid , super.getUser(request).getId(), super.getOrgi(request))) ;
+			}
+			map.addAttribute("contactsid", contactsid) ;
+		}
+		return request(super.createRequestPageTempletResponse("/apps/agent/workorders")) ;
+	}
+	
 	
 	@RequestMapping(value="/ready")  
 	@Menu(type = "apps", subtype = "agent")
