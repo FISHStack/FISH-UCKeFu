@@ -145,7 +145,7 @@
 						series: [{
 							name: '坐席咨询量',
 							type: 'line',
-							data: [<#if agentConsultReport??><#list agentConsultReport as consult><#if consult_index gt 0>,</#if>"${consult.ipnums!''}"</#list></#if>]
+							data: [<#if agentConsultReport??><#list agentConsultReport as consult><#if consult_index gt 0>,</#if>"${consult.users!''}"</#list></#if>]
 						}]
 					};
 			
