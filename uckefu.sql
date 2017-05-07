@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : 127.0.0.1
 Source Server Version : 50554
 Source Host           : localhost:3306
-Source Database       : ukefu
+Source Database       : uckefu
 
 Target Server Type    : MYSQL
 Target Server Version : 50554
 File Encoding         : 65001
 
-Date: 2017-05-02 17:39:42
+Date: 2017-05-07 22:38:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -615,8 +615,8 @@ CREATE TABLE `uk_historyreport` (
   `STATUS` varchar(255) DEFAULT NULL,
   `ERRORMSG` varchar(255) DEFAULT NULL,
   `CREATETIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `STARTTIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `ENDTIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `STARTTIME` timestamp NOT NULL DEFAULT '1970-01-01 00:00:00',
+  `ENDTIME` timestamp NOT NULL DEFAULT '1970-01-01 00:00:00',
   `AMOUNT` varchar(255) DEFAULT NULL,
   `PAGES` int(11) NOT NULL,
   `ERRORS` int(11) NOT NULL,
@@ -4988,7 +4988,7 @@ CREATE TABLE `uk_tabletask` (
   `GROUPID` varchar(255) DEFAULT NULL,
   `CREATER` varchar(32) DEFAULT NULL,
   `CREATERNAME` varchar(255) DEFAULT NULL,
-  `CREATETIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `CREATETIME` timestamp NOT NULL DEFAULT '1970-01-01 00:00:00',
   `TASKTYPE` varchar(255) DEFAULT NULL,
   `TASKNAME` varchar(255) DEFAULT NULL,
   `TASKPLAN` varchar(255) DEFAULT NULL,
@@ -5000,7 +5000,7 @@ CREATE TABLE `uk_tabletask` (
   `TABLENAME` varchar(255) DEFAULT NULL,
   `TABLETYPE` varchar(255) DEFAULT NULL,
   `STARTINDEX` int(11) NOT NULL,
-  `UPDATETIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `UPDATETIME` timestamp NOT NULL DEFAULT '1970-01-01 00:00:00',
   `UPDATETIMENUMBER` bigint(20) NOT NULL,
   `DATASQL` longtext,
   `DATABASETASK` varchar(32) DEFAULT NULL,
@@ -5112,8 +5112,7 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-03-16 18:36:15', '4028838b5b772bc4015b772ddec70001', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-05-02 15:11:42', null, null, null, '0');
-INSERT INTO `uk_user` VALUES ('4028838b5b772bc4015b772d60a50000', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-04-16 22:31:54', null, '2017-04-16 22:31:54', '4028838b5b772bc4015b772ddec70001', '18513939455', '2017-04-16 22:31:54', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-04-29 22:30:08', null, null, null, '0');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-03-16 18:36:15', '4028838b5b772bc4015b772ddec70001', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-05-07 22:08:00', null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
