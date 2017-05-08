@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : 127.0.0.1
 Source Server Version : 50554
 Source Host           : localhost:3306
-Source Database       : test
+Source Database       : uckefu
 
 Target Server Type    : MYSQL
 Target Server Version : 50554
 File Encoding         : 65001
 
-Date: 2017-05-08 11:14:56
+Date: 2017-05-08 23:00:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -330,13 +330,20 @@ CREATE TABLE `uk_consult_invite` (
   `lvmopentype` varchar(32) DEFAULT NULL,
   `skill` tinyint(4) DEFAULT '0',
   `notinwhmsg` text,
+  `consult_skill_logo` varchar(100) DEFAULT NULL,
+  `consult_skill_title` varchar(50) DEFAULT NULL,
+  `consult_skill_img` varchar(100) DEFAULT NULL,
+  `consult_skill_msg` text,
+  `consult_skill_numbers` int(11) DEFAULT NULL,
+  `consult_skill_maxagent` int(11) DEFAULT NULL,
+  `consult_skill_bottomtitle` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uk_consult_invite
 -- ----------------------------
-INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '297e8c7b455798280145579c73e501c1', 'right,middle', '在线客服', null, null, null, '4', '1', null, null, null, null, '4', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '0', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30');
+INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '297e8c7b455798280145579c73e501c1', 'right,middle', '在线客服', null, null, null, '4', '1', null, null, null, null, '4', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '0', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, null, null, null, '0', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_contacts`
