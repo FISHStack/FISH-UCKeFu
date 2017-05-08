@@ -192,7 +192,7 @@
 	    </div>
         <div class="content-left">
             <div class="chat-above" id="above">
-            	<div class="clearfix message  welcome"> <span id="welcome-message">${inviteData.dialog_message!'欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.'}</span></div>
+            	<div class="clearfix message  welcome"> <span id="welcome-message">${(inviteData.dialog_message!'欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.')?no_esc}</span></div>
 				<#if chatMessageList?? && chatMessageList.content??>
 					<#list chatMessageList.content?reverse as chatMessage>
 						<#if chatMessage.userid?? && userid?? && userid == chatMessage.userid>
