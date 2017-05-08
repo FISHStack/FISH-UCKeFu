@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : 127.0.0.1
 Source Server Version : 50554
 Source Host           : localhost:3306
-Source Database       : uckefu
+Source Database       : test
 
 Target Server Type    : MYSQL
 Target Server Version : 50554
 File Encoding         : 65001
 
-Date: 2017-05-08 23:00:45
+Date: 2017-05-08 23:23:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -5136,7 +5136,7 @@ CREATE TABLE `uk_userevent` (
   `subtype` varchar(32) DEFAULT NULL,
   `name` varchar(32) DEFAULT NULL,
   `admin` tinyint(32) DEFAULT NULL,
-  `access` tinyint(32) DEFAULT NULL,
+  `accessnum` tinyint(32) DEFAULT NULL,
   `ip` varchar(20) DEFAULT NULL,
   `hostname` varchar(50) DEFAULT NULL,
   `country` varchar(50) DEFAULT NULL,
