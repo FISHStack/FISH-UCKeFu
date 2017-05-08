@@ -68,9 +68,9 @@ public class AdminController extends Handler{
 		
 		map.put("agentConsultReport", UKTools.getWebIMDataAgg(onlineUserRes.findByOrgiAndCreatetimeRangeForAgent(super.getOrgi(request), UKTools.getLast30Day(), UKTools.getEndTime()))) ;
 		
-		map.put("clentConsultReport", UKTools.getWebIMDataAgg(onlineUserRes.findByOrgiAndCreatetimeRangeForClient(super.getOrgi(request), UKTools.getLast30Day(), UKTools.getEndTime()))) ;
+		map.put("clentConsultReport", UKTools.getWebIMDataAgg(onlineUserRes.findByOrgiAndCreatetimeRangeForClient(super.getOrgi(request), UKTools.getLast30Day(), UKTools.getEndTime() , UKDataContext.ChannelTypeEnum.WEBIM.toString()))) ;
 		
-		map.put("browserConsultReport", UKTools.getWebIMDataAgg(onlineUserRes.findByOrgiAndCreatetimeRangeForBrowser(super.getOrgi(request), UKTools.getLast30Day(), UKTools.getEndTime()))) ;
+		map.put("browserConsultReport", UKTools.getWebIMDataAgg(onlineUserRes.findByOrgiAndCreatetimeRangeForBrowser(super.getOrgi(request), UKTools.getLast30Day(), UKTools.getEndTime(), UKDataContext.ChannelTypeEnum.WEBIM.toString()))) ;
 	}
     
     

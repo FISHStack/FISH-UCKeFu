@@ -43,17 +43,17 @@ public abstract interface OnlineUserRepository extends JpaRepository<OnlineUser,
 	@Query("select avg(sessiontimes) from AgentService where orgi = ?1 and status = ?2 and userid = ?3")
 	Long countByUserForAvagTime(String orgi ,String status,String userid);
 	
-	@Query("select date_format(createtime , '%Y-%m-%d') as dt, count(distinct ip) as ips ,  count(id) as records from UserHistory where orgi = ?1 and model = ?2 and createtime > ?3 and createtime < ?4 group by date_format(createtime , '%Y-%m-%d') order by dt asc")
+	@Query("select createdate as dt, count(distinct ip) as ips ,  count(id) as records from UserHistory where orgi = ?1 and model = ?2 and createtime > ?3 and createtime < ?4 group by createdate order by dt asc")
 	List<Object> findByOrgiAndCreatetimeRange(String orgi , String model ,Date start , Date end);
 	
-	@Query("select date_format(createtime , '%Y-%m-%d') as dt, count(id) as users from AgentService where orgi = ?1 and createtime > ?2 and createtime < ?3 group by date_format(createtime , '%Y-%m-%d') order by dt asc")
+	@Query("select createdate as dt, count(id) as users from AgentService where orgi = ?1 and createtime > ?2 and createtime < ?3 group by createdate order by dt asc")
 	List<Object> findByOrgiAndCreatetimeRangeForAgent(String orgi , Date start , Date end);
 	
-	@Query("select osname, count(id) as users from AgentService where orgi = ?1 and createtime > ?2 and createtime < ?3 group by osname")
-	List<Object> findByOrgiAndCreatetimeRangeForClient(String orgi , Date start , Date end);
+	@Query("select osname, count(id) as users from AgentService where orgi = ?1 and createtime > ?2 and createtime < ?3 and channel = ?4 group by osname")
+	List<Object> findByOrgiAndCreatetimeRangeForClient(String orgi , Date start , Date end , String channel);
 	
-	@Query("select browser, count(id) as users from AgentService where orgi = ?1 and createtime > ?2 and createtime < ?3 group by browser")
-	List<Object> findByOrgiAndCreatetimeRangeForBrowser(String orgi , Date start , Date end);
+	@Query("select browser, count(id) as users from AgentService where orgi = ?1 and createtime > ?2 and createtime < ?3 and channel = ?4 group by browser")
+	List<Object> findByOrgiAndCreatetimeRangeForBrowser(String orgi , Date start , Date end , String channel);
 	
 	@Query("select agentno, count(id) as users from AgentService where orgi = ?1 and userid = ?2 group by agentno")
 	List<Object> findByOrgiForDistinctAgent(String orgi , String userid);

@@ -11,9 +11,9 @@ import com.ukefu.webim.util.server.message.ChatMessage;
 public abstract interface ChatMessageRepository
   extends JpaRepository<ChatMessage, String>
 {
-  public abstract List<ChatMessage> findBySessionAndOrgi(String session , String orgi);
+  public abstract List<ChatMessage> findByUsessionAndOrgi(String usession , String orgi);
   
-  public abstract Page<ChatMessage> findBySessionAndOrgi(String session, String orgi , Pageable page );
+  public abstract Page<ChatMessage> findByUsessionAndOrgi(String usession, String orgi , Pageable page );
   
   public abstract List<ChatMessage> findByContextidAndOrgi(String contextid , String orgi);
   

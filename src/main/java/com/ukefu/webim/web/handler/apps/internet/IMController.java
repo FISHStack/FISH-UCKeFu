@@ -102,7 +102,7 @@ public class IMController extends Handler{
 				userHistory.setSubtype("point");
 				userHistory.setName("online");
 				userHistory.setAdmin(false);
-				userHistory.setAccess(true);
+				userHistory.setAccessnum(true);
 			}
 			User imUser = super.getIMUser(request , userid) ;
 			if(imUser!=null){
@@ -214,7 +214,7 @@ public class IMController extends Handler{
 			}
 			
 			view.addObject("type", type) ;
-			view.addObject("chatMessageList", chatMessageRes.findBySessionAndOrgi(sessionid , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime"))) ;
+			view.addObject("chatMessageList", chatMessageRes.findByUsessionAndOrgi(sessionid , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime"))) ;
 	    	
 	//    	OnlineUserUtils.sendWebIMClients(userid , "accept");
 	    	Page<InviteRecord> inviteRecordList = inviteRecordRes.findByUseridAndOrgi(userid, orgi , new PageRequest(0, 1, Direction.DESC, "createtime")) ;

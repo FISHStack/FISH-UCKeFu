@@ -254,7 +254,7 @@ var Proxy = {
 		}
 	},
 	newAgentUserMessage:function(data){
-		if(data.session == cursession){
+		if(data.usession == cursession){
 			if(data.type == 'writing' && $('#writing').length > 0){
 				$('#writing').remove();		
 			}

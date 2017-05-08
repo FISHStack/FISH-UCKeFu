@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
+import com.ukefu.util.UKTools;
 import com.ukefu.util.event.UserEvent;
 
 @Entity
@@ -32,7 +33,7 @@ public class UserHistory implements UserEvent {
 	private String mobile ;
 	private String name;
 	private boolean admin;
-	private boolean access;
+	private boolean accessnum;
 	private String ip;
 	private String hostname;
 	private String country;
@@ -44,6 +45,7 @@ public class UserHistory implements UserEvent {
 	private String sessionid ;
 	private String param ;
 	private int times ;		
+	private String createdate = UKTools.simpleDateFormat.format(new Date());
 	private String model = "webim";
 	@Id
 	@Column(length=32)
@@ -109,11 +111,11 @@ public class UserHistory implements UserEvent {
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
-	public boolean isAccess() {
-		return access;
+	public boolean isAccessnum() {
+		return accessnum;
 	}
-	public void setAccess(boolean access) {
-		this.access = access;
+	public void setAccessnum(boolean accessnum) {
+		this.accessnum = accessnum;
 	}
 	public String getIp() {
 		return ip;
@@ -216,5 +218,11 @@ public class UserHistory implements UserEvent {
 	}
 	public void setAppid(String appid) {
 		this.appid = appid;
+	}
+	public String getCreatedate() {
+		return createdate;
+	}
+	public void setCreatedate(String createdate) {
+		this.createdate = createdate;
 	}
 }

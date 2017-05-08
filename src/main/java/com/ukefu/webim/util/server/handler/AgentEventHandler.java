@@ -117,7 +117,7 @@ public class AgentEventHandler
     		}
     		data.setChannel(agentUser.getChannel());
     		
-    		data.setSession(agentUser.getUserid());
+    		data.setUsession(agentUser.getUserid());
     		
     		outMessage.setContextid(agentUser.getContextid());
     		outMessage.setFromUser(data.getUserid());

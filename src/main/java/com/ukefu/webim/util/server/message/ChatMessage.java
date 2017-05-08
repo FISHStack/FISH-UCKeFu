@@ -34,7 +34,7 @@ public class ChatMessage implements java.io.Serializable{
 	
 	private String msgtype ;
 	private String creater; 
-	private String session ;
+	private String usession ;
 	private String agentserviceid ;
 	private String message ;
 	private String orgi ;
@@ -67,11 +67,11 @@ public class ChatMessage implements java.io.Serializable{
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	public String getSession() {
-		return session;
+	public String getUsession() {
+		return usession;
 	}
-	public void setSession(String session) {
-		this.session = session;
+	public void setUsession(String usession) {
+		this.usession = usession;
 	}
 	public String getMessage() {
 		return message;

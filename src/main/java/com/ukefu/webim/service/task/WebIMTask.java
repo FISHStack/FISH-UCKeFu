@@ -162,7 +162,7 @@ public class WebIMTask {
 	    		data.setAppid(agentUser.getAppid());
 	    		
 	    		data.setUserid(agentStatus.getAgentno());
-	    		data.setSession(agentUser.getUserid());
+	    		data.setUsession(agentUser.getUserid());
 	    		data.setTouser(agentUser.getUserid());
 	    		data.setOrgi(agentUser.getOrgi());
 	    		data.setUsername(agentStatus.getUsername());
@@ -179,7 +179,7 @@ public class WebIMTask {
 	    		}
 	    		data.setChannel(agentUser.getChannel());
 	    		
-	    		data.setSession(agentUser.getUserid());
+	    		data.setUsession(agentUser.getUserid());
 	    		
 	    		outMessage.setContextid(agentUser.getContextid());
 	    		outMessage.setFromUser(data.getUserid());

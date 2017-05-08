@@ -70,7 +70,7 @@ public class MessageUtils {
     		
     		
     		data.setUsername(agentUser.getUsername());
-    		data.setSession(agentUser.getUserid());				//agentUser作为 session id
+    		data.setUsession(agentUser.getUserid());				//agentUser作为 session id
     		data.setContextid(agentUser.getContextid());
     		data.setCalltype(UKDataContext.CallTypeEnum.IN.toString());
     		if(!StringUtils.isBlank(agentUser.getAgentno())){

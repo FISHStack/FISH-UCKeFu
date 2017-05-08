@@ -122,7 +122,7 @@ public class EntIMEventHandler
     	data.setUserid(user);
 //		data.setUsername(name);
 		data.setId(UKTools.getUUID());
-		data.setSession(user);	
+		data.setUsession(user);	
 		data.setCalltype(UKDataContext.CallTypeEnum.OUT.toString());
 		
 		

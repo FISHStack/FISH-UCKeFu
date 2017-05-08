@@ -1,13 +1,16 @@
 package com.ukefu.webim.web.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
@@ -42,6 +45,8 @@ public class AgentService implements Serializable {
 	private int waittingtime;
 	private int tokenum;
 	private Date createtime = new Date();
+	
+	private String createdate = new SimpleDateFormat("yyyy-MM-dd").format(new Date()) ;
 	private Date updatetime;
 	private String appid;
 	private String sessiontype;
@@ -463,5 +468,13 @@ public class AgentService implements Serializable {
 
 	public void setContactsid(String contactsid) {
 		this.contactsid = contactsid;
+	}
+
+	public String getCreatedate() {
+		return createdate;
+	}
+
+	public void setCreatedate(String createdate) {
+		this.createdate = createdate;
 	}
 }

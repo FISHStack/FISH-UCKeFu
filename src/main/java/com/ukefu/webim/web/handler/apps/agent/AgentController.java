@@ -137,7 +137,7 @@ public class AgentController extends Handler {
 				}
 			}
 
-			view.addObject("agentUserMessageList", this.chatMessageRepository.findBySessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime")));
+			view.addObject("agentUserMessageList", this.chatMessageRepository.findByUsessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime")));
 			
 			if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentUser.getChannel())){
 				List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
@@ -234,7 +234,7 @@ public class AgentController extends Handler {
 			}
 		}
 		
-		view.addObject("agentUserMessageList", this.chatMessageRepository.findBySessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime")));
+		view.addObject("agentUserMessageList", this.chatMessageRepository.findByUsessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime")));
 		
 		if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentUser.getChannel())){
 			List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
@@ -481,7 +481,7 @@ public class AgentController extends Handler {
 	    		}
 	    		data.setChannel(agentUser.getChannel());
 	    		
-	    		data.setSession(agentUser.getUserid());
+	    		data.setUsession(agentUser.getUserid());
 	    		data.setAppid(agentUser.getAppid());
 	    		data.setUserid(super.getUser(request).getId());
 	    		data.setMessage(outMessage.getMessage());
