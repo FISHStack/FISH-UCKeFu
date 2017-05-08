@@ -132,6 +132,12 @@ public class WebIMController extends Handler{
     			tempInviteData.setLvmqq(inviteData.isLvmqq());
     			tempInviteData.setSkill(inviteData.isSkill());
     			
+    			tempInviteData.setConsult_skill_title(inviteData.getConsult_skill_title());
+    			tempInviteData.setConsult_skill_msg(inviteData.getConsult_skill_msg());
+    			tempInviteData.setConsult_skill_bottomtitle(inviteData.getConsult_skill_bottomtitle());
+    			tempInviteData.setConsult_skill_maxagent(inviteData.getConsult_skill_maxagent());
+    			tempInviteData.setConsult_skill_numbers(inviteData.getConsult_skill_numbers());
+    			
     			if(dialogad!=null && !StringUtils.isBlank(dialogad.getName()) && dialogad.getBytes()!=null && dialogad.getBytes().length >0){
 	    			String fileName = "ad/"+inviteData.getId()+dialogad.getOriginalFilename().substring(dialogad.getOriginalFilename().lastIndexOf(".")) ;
 	    			File file = new File(path , fileName) ;

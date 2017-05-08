@@ -38,6 +38,8 @@ import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
+import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
@@ -70,6 +72,13 @@ public class IMController extends Handler{
 	
 	@Autowired
 	private InviteRecordRepository inviteRecordRes ;
+	
+	
+	@Autowired
+	private OrganRepository organRes ;
+	
+	@Autowired
+	private UserRepository agentRes ;
 
     @RequestMapping("/{id}")
     @Menu(type = "im" , subtype = "point" , access = true)
@@ -132,6 +141,16 @@ public class IMController extends Handler{
 		    userHistory.setOstype(client.getOs());
 		    userHistory.setBrowser(client.getBrowser());
 		    userHistory.setMobile(CheckMobile.check(request.getHeader("User-Agent")) ? "1" : "0");
+		    
+		    
+		    /***
+		     * 查询 技能组 ， 缓存？ 
+		     */
+		    view.addObject("skillList", organRes.findByOrgiAndSkill(invite.getOrgi(), true))  ;
+		    /**
+		     * 查询坐席 ， 缓存？
+		     */
+		    view.addObject("agentList", agentRes.findByOrgiAndAgent(invite.getOrgi(), true))  ;
 		    
 			UKTools.published(userHistory);
 		}

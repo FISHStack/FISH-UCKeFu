@@ -64,6 +64,14 @@ public class CousultInvite implements java.io.Serializable{
 	private String consult_vsitorbtn_bottom	;
 	private String consult_invite_backimg;
 	
+	private String consult_skill_logo ;		//显示技能组  logo
+	private String consult_skill_title ;	//显示技能组标题
+	private String consult_skill_img ;		//显示技能组 图片
+	private String consult_skill_msg ;		//显示技能组 提示信息
+	private int consult_skill_numbers ;		//显示最大 分组数
+	private int consult_skill_maxagent ;	//每个技能组最多显示多少坐席
+	private String consult_skill_bottomtitle ;	//显示技能组底部标题
+	
 	private int consult_vsitorbtn_display	;
 	
 	
@@ -487,5 +495,47 @@ public class CousultInvite implements java.io.Serializable{
 	}
 	public void setLvmqq(boolean lvmqq) {
 		this.lvmqq = lvmqq;
+	}
+	public String getConsult_skill_logo() {
+		return consult_skill_logo;
+	}
+	public void setConsult_skill_logo(String consult_skill_logo) {
+		this.consult_skill_logo = consult_skill_logo;
+	}
+	public String getConsult_skill_title() {
+		return consult_skill_title;
+	}
+	public void setConsult_skill_title(String consult_skill_title) {
+		this.consult_skill_title = consult_skill_title;
+	}
+	public String getConsult_skill_img() {
+		return consult_skill_img;
+	}
+	public void setConsult_skill_img(String consult_skill_img) {
+		this.consult_skill_img = consult_skill_img;
+	}
+	public String getConsult_skill_msg() {
+		return consult_skill_msg;
+	}
+	public void setConsult_skill_msg(String consult_skill_msg) {
+		this.consult_skill_msg = consult_skill_msg;
+	}
+	public int getConsult_skill_numbers() {
+		return consult_skill_numbers;
+	}
+	public void setConsult_skill_numbers(int consult_skill_numbers) {
+		this.consult_skill_numbers = consult_skill_numbers;
+	}
+	public int getConsult_skill_maxagent() {
+		return consult_skill_maxagent;
+	}
+	public void setConsult_skill_maxagent(int consult_skill_maxagent) {
+		this.consult_skill_maxagent = consult_skill_maxagent;
+	}
+	public String getConsult_skill_bottomtitle() {
+		return consult_skill_bottomtitle;
+	}
+	public void setConsult_skill_bottomtitle(String consult_skill_bottomtitle) {
+		this.consult_skill_bottomtitle = consult_skill_bottomtitle;
 	}
 }
