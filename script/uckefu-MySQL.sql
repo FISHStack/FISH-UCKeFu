@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : 127.0.0.1
 Source Server Version : 50554
 Source Host           : localhost:3306
-Source Database       : test
+Source Database       : uckefu
 
 Target Server Type    : MYSQL
 Target Server Version : 50554
 File Encoding         : 65001
 
-Date: 2017-05-08 23:23:26
+Date: 2017-05-09 16:18:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -737,6 +737,29 @@ CREATE TABLE `uk_inviterecord` (
 
 -- ----------------------------
 -- Records of uk_inviterecord
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_leavemsg`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_leavemsg`;
+CREATE TABLE `uk_leavemsg` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `mobile` varchar(32) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `qq` varchar(30) DEFAULT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `msgstatus` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_leavemsg
 -- ----------------------------
 
 -- ----------------------------
