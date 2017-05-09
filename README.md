@@ -8,7 +8,7 @@
 #访问地址
 DEMO访问地址：[优客服（UCKeFu-WebIM）](http://112.74.54.80/login.html) ， 访问账号：admin，密码：123456
 
-
+v2.0.0-M1一键启动包下载[输入链接说明](http://pan.baidu.com/s/1nuCjWcL)
 
 #优客服组件结构
 ![输入图片说明](http://git.oschina.net/uploads/images/2017/0315/075025_c1add38b_1200081.png "在这里输入图片标题")
