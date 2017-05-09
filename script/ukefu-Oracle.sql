@@ -1388,6 +1388,21 @@ CREATE TABLE wf_task_actor
    actor_Id varchar2(50) NOT NULL
 )
 ;
+CREATE TABLE uk_leavemsg
+(
+   id varchar(32) PRIMARY KEY NOT NULL,
+   name varchar(50),
+   mobile varchar(32),
+   email varchar(100),
+   address varchar(255),
+   qq varchar(30),
+   content varchar(255),
+   orgi varchar(32),
+   creater varchar(32),
+   createtime timestamp,
+   msgstatus varchar(20)
+)
+;
 
 INSERT INTO uk_sysdic (ID,NAME,TITLE,CODE,ORGI,CTYPE,PARENTID,DESCRIPTION,MEMO,ICONSTR,ICONSKIN,CATETYPE,CREATER,CREATETIME,UPDATETIME,HASCHILD,SORTINDEX,DICID,DEFAULTVALUE,DISCODE) VALUES ('297e1e874f5ae37e014f5af969e30120','ÐÔ±ð','pub','com.dic.contacts.sex','ukewo','data','0','',null,null,null,null,'297e8c7b455798280145579c73e501c1',{ts '2015-08-23 22:32:19.'},{ts '2015-08-23 22:32:19.'},1,0,null,0,0);
 INSERT INTO uk_sysdic (ID,NAME,TITLE,CODE,ORGI,CTYPE,PARENTID,DESCRIPTION,MEMO,ICONSTR,ICONSKIN,CATETYPE,CREATER,CREATETIME,UPDATETIME,HASCHILD,SORTINDEX,DICID,DEFAULTVALUE,DISCODE) VALUES ('297e1e874f5ae37e014f5af9ceba0126','ÄÐ','pub','01','ukewo','data','297e1e874f5ae37e014f5af969e30120','',null,'','',null,'297e8c7b455798280145579c73e501c1',{ts '2015-08-23 22:32:44.'},{ts '2016-10-13 16:37:40.'},0,1,'297e1e874f5ae37e014f5af969e30120',0,0);
