@@ -4,6 +4,7 @@ package com.ukefu.webim.web.handler.apps.internet;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +39,7 @@ import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
+import com.ukefu.webim.service.repository.LeaveMsgRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.MessageUtils;
@@ -45,6 +47,7 @@ import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.InviteRecord;
+import com.ukefu.webim.web.model.LeaveMsg;
 import com.ukefu.webim.web.model.SessionConfig;
 import com.ukefu.webim.web.model.UploadStatus;
 import com.ukefu.webim.web.model.User;
@@ -79,6 +82,9 @@ public class IMController extends Handler{
 	
 	@Autowired
 	private UserRepository agentRes ;
+	
+	@Autowired
+	private LeaveMsgRepository leaveMsgRes ;
 
     @RequestMapping("/{id}")
     @Menu(type = "im" , subtype = "point" , access = true)
@@ -276,6 +282,21 @@ public class IMController extends Handler{
     	}
     	
 		return view;
+    }
+    
+    
+    @RequestMapping("/leavemsg/save")
+    @Menu(type = "admin" , subtype = "user")
+    public ModelAndView leavemsgsave(HttpServletRequest request ,@Valid String appid ,@Valid LeaveMsg msg) {
+    	if(!StringUtils.isBlank(appid)){
+    		CousultInvite invite = inviteRepository.findOne(appid) ;
+	    	List<LeaveMsg> msgList = leaveMsgRes.findByOrgiAndMobile(invite.getOrgi(), msg.getMobile()) ;
+	    	if(msg!=null && msgList.size() == 0){
+	    		msg.setOrgi(invite.getOrgi());
+	    		leaveMsgRes.save(msg) ;
+	    	}
+    	}
+    	return request(super.createRequestPageTempletResponse("/apps/im/leavemsgsave"));
     }
     
     @RequestMapping("/refuse")

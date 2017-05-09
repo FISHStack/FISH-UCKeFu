@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,10 +22,12 @@ import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
 import com.ukefu.webim.service.repository.AgentStatusRepository;
 import com.ukefu.webim.service.repository.AgentUserRepository;
+import com.ukefu.webim.service.repository.LeaveMsgRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
+import com.ukefu.webim.web.model.LeaveMsg;
 import com.ukefu.webim.web.model.User;
 
 @Controller
@@ -39,6 +42,9 @@ public class ChatServiceController extends Handler{
 	
 	@Autowired
 	private AgentStatusRepository agentStatusRepository ;
+	
+	@Autowired
+	private LeaveMsgRepository leaveMsgRes ;
 	
 	@Autowired
 	private UserRepository userRes ;
@@ -112,5 +118,22 @@ public class ChatServiceController extends Handler{
 		}
 		map.put("userList", userList) ;
         return request(super.createAppsTempletResponse("/apps/service/user/index"));
+    }
+	
+	@RequestMapping("/leavemsg/index")
+    @Menu(type = "service" , subtype = "leavemsg" , admin= true)
+    public ModelAndView leavemsg(ModelMap map , HttpServletRequest request) {
+		Page<LeaveMsg> leaveMsgList = leaveMsgRes.findByOrgi(super.getOrgi(request),new PageRequest(super.getP(request), super.getPs(request), Direction.DESC , "createtime")) ;
+		map.put("leaveMsgList", leaveMsgList) ;
+        return request(super.createAppsTempletResponse("/apps/service/leavemsg/index"));
+    }
+	
+	@RequestMapping("/leavemsg/delete")
+    @Menu(type = "service" , subtype = "leavemsg" , admin= true)
+    public ModelAndView leavemsg(ModelMap map , HttpServletRequest request , @Valid String id) {
+		if(!StringUtils.isBlank(id)){
+			leaveMsgRes.delete(id);
+		}
+		return request(super.createRequestPageTempletResponse("redirect:/service/leavemsg/index.html"));
     }
 }
