@@ -41,7 +41,7 @@ DEMO访问地址：[优客服（UCKeFu-WebIM）](http://112.74.54.80/login.html)
 本项目有三个依赖包，IP2REGION 和 UCKeFu-Core，通过以下指令加入到本地Mavenue仓库：
 1、mvn install:install-file  -Dfile=src/main/resources/WEB-INF/lib/ip2region-1.2.3.jar -DgroupId=org.lionsoul.ip2region -DartifactId=ip2region -Dversion=1.2.3 -Dpackaging=jar
 
-2、mvn install:install-file  -Dfile=src/main/resources/WEB-INF/lib/UCKeFu-Core-1.2.3-SNAPSHOT.jar -DgroupId=com.ukefu -DartifactId=UCKeFu-Core -Dversion=1.2.3-SNAPSHOT -Dpackaging=jar
+2、mvn install:install-file  -Dfile=src/main/resources/WEB-INF/lib/UCKeFu-Core-2.0.0-M1.jar -DgroupId=com.ukefu -DartifactId=UCKeFu-Core -Dversion=2.0.0-M1 -Dpackaging=jar
 
 3、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/jave-1.0.2.jar -DgroupId=lt.jave -DartifactId=jave -Dversion=1.0.2 -Dpackaging=jar
 
