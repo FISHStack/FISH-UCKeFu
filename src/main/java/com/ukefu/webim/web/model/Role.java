@@ -28,6 +28,7 @@ public class Role implements java.io.Serializable{
 	private String username ;
 	private Date updatetime ;
 	private String orgi ;
+	
 	public Role(){}
 	
 	public Role(String id){

@@ -36,14 +36,14 @@ public class UserRole implements java.io.Serializable{
 	public void setId(String id) {
 		this.id = id;
 	}
-	@OneToOne
+	@OneToOne(optional = true)
 	public User getUser() {
 		return user;
 	}
 	public void setUser(User user) {
 		this.user = user;
 	}
-	@OneToOne
+	@OneToOne(optional = true)
 	public Role getRole() {
 		return role;
 	}

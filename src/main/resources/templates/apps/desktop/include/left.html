@@ -8,7 +8,7 @@
 				alt="admin">
 			<div class="ukefu-user-index">
 				<h1>
-					admin
+					${user.username!''}（${user.uname!''}）
 				  	<span style="color:#c00;">
 				  		<#if user?? && user.roleList??>
 				  			<#list user.roleList as role>
