@@ -36,6 +36,7 @@ import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.webim.WebIMClient;
 import com.ukefu.webim.service.acd.ServiceQuene;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
@@ -45,6 +46,7 @@ import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.InviteRecord;
 import com.ukefu.webim.web.model.LeaveMsg;
@@ -321,7 +323,8 @@ public class IMController extends Handler{
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/upload")) ; 
     	UploadStatus upload = null ;
     	String fileName = null ;
-    	if(imgFile!=null && imgFile.getOriginalFilename().lastIndexOf(".") > 0 && !StringUtils.isBlank(userid)){
+    	AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI);
+    	if(imgFile!=null && imgFile.getOriginalFilename().lastIndexOf(".") > 0 && !StringUtils.isBlank(userid) && agentUser!= null){
     		File uploadDir = new File(path , "upload");
     		if(!uploadDir.exists()){
     			uploadDir.mkdirs() ;
