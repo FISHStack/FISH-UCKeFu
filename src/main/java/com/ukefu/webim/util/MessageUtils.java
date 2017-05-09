@@ -27,14 +27,16 @@ public class MessageUtils {
 	public static void createMessage(String message , String msgtype , String userid){
 		AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI);
 		ChatMessage data = new ChatMessage() ;
-		data.setUserid(agentUser.getUserid());
-		data.setUsername(agentUser.getUsername());
-		data.setTouser(agentUser.getAgentno());
-		data.setAppid(agentUser.getAppid());
-		data.setOrgi(agentUser.getOrgi());
-		data.setMessage(message);
-		data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
-		createMessage(data, msgtype, userid);
+		if(agentUser != null){
+			data.setUserid(agentUser.getUserid());
+			data.setUsername(agentUser.getUsername());
+			data.setTouser(agentUser.getAgentno());
+			data.setAppid(agentUser.getAppid());
+			data.setOrgi(agentUser.getOrgi());
+			data.setMessage(message);
+			data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
+			createMessage(data, msgtype, userid);
+		}
 	}
 	
 	public static void createMessage(ChatMessage data , String msgtype , String userid){
