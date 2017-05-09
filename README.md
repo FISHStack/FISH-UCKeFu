@@ -10,6 +10,7 @@ DEMO访问地址：[优客服（UCKeFu-WebIM）](http://112.74.54.80/login.html)
 
 #一键启动包
 [v2.0.0-M1一键启动包下载](http://pan.baidu.com/s/1nuCjWcL)
+一键启动包是独立的Tomat启动，部署的War包，包含WebIM+Contacts模块，使用H2数据库
 
 #优客服组件结构
 ![输入图片说明](http://git.oschina.net/uploads/images/2017/0315/075025_c1add38b_1200081.png "在这里输入图片标题")
