@@ -263,16 +263,16 @@ CREATE TABLE `uk_chat_message` (
 -- ----------------------------
 DROP TABLE IF EXISTS `uk_consult_invite`;
 CREATE TABLE `uk_consult_invite` (
-  `id` varchar(255) NOT NULL,
-  `impid` varchar(255) DEFAULT NULL,
-  `orgi` varchar(255) DEFAULT NULL,
-  `owner` varchar(255) DEFAULT NULL,
-  `processid` varchar(255) DEFAULT NULL,
-  `shares` varchar(255) DEFAULT NULL,
+  `id` varchar(32) NOT NULL,
+  `impid` varchar(32) DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  `owner` varchar(32) DEFAULT NULL,
+  `processid` varchar(32) DEFAULT NULL,
+  `shares` varchar(32) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
-  `update_user` varchar(255) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
-  `wfstatus` varchar(255) DEFAULT NULL,
+  `update_user` varchar(32) DEFAULT NULL,
+  `username` varchar(32) DEFAULT NULL,
+  `wfstatus` varchar(32) DEFAULT NULL,
   `consult_invite_model` varchar(32) DEFAULT NULL,
   `consult_invite_content` varchar(255) DEFAULT NULL,
   `consult_invite_position` varchar(32) DEFAULT NULL,
@@ -282,7 +282,7 @@ CREATE TABLE `uk_consult_invite` (
   `consult_invite_bottom` int(11) DEFAULT NULL,
   `consult_invite_top` int(11) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
   `consult_invite_width` int(32) DEFAULT NULL,
   `consult_invite_poptype` varchar(32) DEFAULT NULL,
   `consult_invite_fontsize` int(32) DEFAULT NULL,
@@ -301,14 +301,14 @@ CREATE TABLE `uk_consult_invite` (
   `consult_vsitorbtn_model` varchar(32) DEFAULT NULL,
   `consult_vsitorbtn_bottom` varchar(32) DEFAULT NULL,
   `consult_invite_backimg` varchar(32) DEFAULT NULL,
-  `datadept` varchar(255) DEFAULT NULL,
+  `datadept` varchar(32) DEFAULT NULL,
   `agent_online` varchar(32) DEFAULT NULL,
   `consult_dialog_color` varchar(32) DEFAULT NULL,
   `consult_dialog_logo` varchar(100) DEFAULT NULL,
   `consult_dialog_headimg` varchar(100) DEFAULT NULL,
   `consult_vsitorbtn_display` int(11) DEFAULT NULL,
   `dialog_name` varchar(100) DEFAULT NULL,
-  `dialog_address` varchar(255) DEFAULT NULL,
+  `dialog_address` varchar(100) DEFAULT NULL,
   `dialog_phone` varchar(32) DEFAULT NULL,
   `dialog_mail` varchar(100) DEFAULT NULL,
   `dialog_introduction` text,
@@ -343,7 +343,7 @@ CREATE TABLE `uk_consult_invite` (
 -- ----------------------------
 -- Records of uk_consult_invite
 -- ----------------------------
-INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '297e8c7b455798280145579c73e501c1', 'right,middle', '在线客服', null, null, null, '4', '1', null, null, null, null, '4', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '0', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, null, null, null, '0', '0', null);
+INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '297e8c7b455798280145579c73e501c1', 'right,middle', '在线客服', null, null, null, '4', '1', null, null, null, null, '4', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '1', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统');
 
 -- ----------------------------
 -- Table structure for `uk_contacts`
