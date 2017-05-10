@@ -140,7 +140,7 @@ var ukefu = {
 								<#assign skillNum = skillNum+1 >
 								</#if>
 							</#list>
-							"<div style='padding:5px;color:#555;border:1px solid #dddddd;background-color:#efefef;'>售前咨询（${skillNum}）</div>"+
+							"<div style='padding:5px;color:#555;border:1px solid #dddddd;background-color:#efefef;'>${skill.name!''}（${skillNum}）</div>"+
 							"<ul class='ichat-list-ul' style='border: 0 none;list-style: none outside none;margin: 0;padding: 0;width: 150px;'>"+
 							<#if agentList??>
 							<#assign agentNum = 0>
