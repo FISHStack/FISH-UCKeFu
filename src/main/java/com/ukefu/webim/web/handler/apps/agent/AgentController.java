@@ -219,58 +219,60 @@ public class AgentController extends Handler {
 	public ModelAndView agentuser(ModelMap map , HttpServletRequest request , String id) {
 		ModelAndView view = request(super.createRequestPageTempletResponse("/apps/agent/mainagentuser")) ;
 		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(id, super.getOrgi(request));
-		view.addObject("curagentuser", agentUser) ;
-		
-		AgentUserTask agentUserTask = agentUserTaskRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
-		if(agentUserTask!=null){
-			agentUserTask.setTokenum(0);
-			agentUserTaskRes.save(agentUserTask) ;
-		}
-		
-		if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
-			AgentServiceSummary summary = this.serviceSummaryRes.findByAgentserviceidAndOrgi(agentUser.getAgentserviceid(), super.getOrgi(request)) ;
-			if(summary!=null){
-				view.addObject("summary", summary) ;
-			}
-		}
-		
-		view.addObject("agentUserMessageList", this.chatMessageRepository.findByUsessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime")));
-		
-		if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentUser.getChannel())){
-			List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
-			if(weiXinUserList.size() > 0){
-				WeiXinUser weiXinUser = weiXinUserList.get(0) ;
-				view.addObject("weiXinUser",weiXinUser);
-			}
-		}else if(UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(agentUser.getChannel())){
-			OnlineUser onlineUser = this.onlineUserRes.findByUseridAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
-			if(onlineUser!=null){
-				if(UKDataContext.OnlineUserOperatorStatus.OFFLINE.toString().equals(onlineUser.getStatus())){
-					onlineUser.setBetweentime((int) (onlineUser.getUpdatetime().getTime() - onlineUser.getLogintime().getTime()));
-				}else{
-					onlineUser.setBetweentime((int) (System.currentTimeMillis() - onlineUser.getLogintime().getTime()));
-				}
-				view.addObject("onlineUser",onlineUser);
-			}
-		}
-		
-		if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
-			AgentService agentService = this.agentServiceRepository.findOne(agentUser.getAgentserviceid()) ;
+		if(agentUser!=null){
+			view.addObject("curagentuser", agentUser) ;
 			
-			if(agentService!=null){
-				/**
-				 * 获取关联数据
-				 */
-				processRelaData(request, agentService, map);
+			AgentUserTask agentUserTask = agentUserTaskRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
+			if(agentUserTask!=null){
+				agentUserTask.setTokenum(0);
+				agentUserTaskRes.save(agentUserTask) ;
 			}
+			
+			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
+				AgentServiceSummary summary = this.serviceSummaryRes.findByAgentserviceidAndOrgi(agentUser.getAgentserviceid(), super.getOrgi(request)) ;
+				if(summary!=null){
+					view.addObject("summary", summary) ;
+				}
+			}
+			
+			view.addObject("agentUserMessageList", this.chatMessageRepository.findByUsessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime")));
+			
+			if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentUser.getChannel())){
+				List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
+				if(weiXinUserList.size() > 0){
+					WeiXinUser weiXinUser = weiXinUserList.get(0) ;
+					view.addObject("weiXinUser",weiXinUser);
+				}
+			}else if(UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(agentUser.getChannel())){
+				OnlineUser onlineUser = this.onlineUserRes.findByUseridAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
+				if(onlineUser!=null){
+					if(UKDataContext.OnlineUserOperatorStatus.OFFLINE.toString().equals(onlineUser.getStatus())){
+						onlineUser.setBetweentime((int) (onlineUser.getUpdatetime().getTime() - onlineUser.getLogintime().getTime()));
+					}else{
+						onlineUser.setBetweentime((int) (System.currentTimeMillis() - onlineUser.getLogintime().getTime()));
+					}
+					view.addObject("onlineUser",onlineUser);
+				}
+			}
+			
+			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
+				AgentService agentService = this.agentServiceRepository.findOne(agentUser.getAgentserviceid()) ;
+				
+				if(agentService!=null){
+					/**
+					 * 获取关联数据
+					 */
+					processRelaData(request, agentService, map);
+				}
+			}
+	
+			view.addObject("serviceCount", Integer
+					.valueOf(this.agentServiceRepository
+							.countByUseridAndOrgiAndStatus(agentUser
+									.getUserid(), super.getOrgi(request),
+									UKDataContext.AgentUserStatusEnum.END
+											.toString())));
 		}
-
-		view.addObject("serviceCount", Integer
-				.valueOf(this.agentServiceRepository
-						.countByUseridAndOrgiAndStatus(agentUser
-								.getUserid(), super.getOrgi(request),
-								UKDataContext.AgentUserStatusEnum.END
-										.toString())));
 		
 		view.addObject("tags", tagRes.findByOrgiAndTagtype(super.getOrgi(request) , UKDataContext.ModelType.USER.toString())) ;
 		view.addObject("tagRelationList", tagRelationRes.findByUserid(agentUser.getUserid())) ;
