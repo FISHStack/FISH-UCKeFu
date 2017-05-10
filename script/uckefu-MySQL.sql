@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `uk_agentservice`;
 CREATE TABLE `uk_agentservice` (
-  `id` varchar(100) NOT NULL DEFAULT '',
+  `id` varchar(32) NOT NULL DEFAULT '',
   `username` varchar(100) DEFAULT '',
   `agentno` varchar(100) DEFAULT '',
   `userid` varchar(100) DEFAULT '',
@@ -84,7 +84,7 @@ CREATE TABLE `uk_agentservice` (
 -- ----------------------------
 DROP TABLE IF EXISTS `uk_agentstatus`;
 CREATE TABLE `uk_agentstatus` (
-  `id` varchar(100) NOT NULL DEFAULT '',
+  `id` varchar(32) NOT NULL DEFAULT '',
   `agentno` varchar(100) DEFAULT '',
   `logindate` datetime DEFAULT NULL,
   `status` varchar(100) DEFAULT '',
@@ -122,7 +122,7 @@ CREATE TABLE `uk_agentstatus` (
 -- ----------------------------
 DROP TABLE IF EXISTS `uk_agentuser`;
 CREATE TABLE `uk_agentuser` (
-  `id` varchar(100) NOT NULL DEFAULT '',
+  `id` varchar(32) NOT NULL DEFAULT '',
   `username` varchar(100) DEFAULT '',
   `agentno` varchar(100) DEFAULT '',
   `userid` varchar(100) DEFAULT '',
@@ -216,7 +216,7 @@ CREATE TABLE `uk_blacklist` (
 DROP TABLE IF EXISTS `uk_chat_message`;
 CREATE TABLE `uk_chat_message` (
   `type` varchar(100) DEFAULT '',
-  `id` varchar(100) NOT NULL DEFAULT '',
+  `id` varchar(32) NOT NULL DEFAULT '',
   `calltype` varchar(32) DEFAULT NULL,
   `contextid` varchar(50) DEFAULT NULL,
   `usession` varchar(100) DEFAULT NULL,
@@ -350,7 +350,7 @@ INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null
 -- ----------------------------
 DROP TABLE IF EXISTS `uk_contacts`;
 CREATE TABLE `uk_contacts` (
-  `id` varchar(60) NOT NULL COMMENT '联系人ID',
+  `id` varchar(32) NOT NULL COMMENT '联系人ID',
   `gender` varchar(60) DEFAULT NULL COMMENT '联系人性别',
   `birthday` date DEFAULT NULL COMMENT '出生日期',
   `ctype` varchar(60) DEFAULT NULL COMMENT '联系人类型',
@@ -454,7 +454,7 @@ CREATE TABLE `uk_dataevent` (
 -- ----------------------------
 DROP TABLE IF EXISTS `uk_entcustomer`;
 CREATE TABLE `uk_entcustomer` (
-  `id` varchar(60) NOT NULL COMMENT '单位ID',
+  `id` varchar(32) NOT NULL COMMENT '单位ID',
   `name` varchar(255) DEFAULT NULL COMMENT '企(事)业单位名称',
   `etype` varchar(60) DEFAULT NULL COMMENT '单位性质',
   `ekind` varchar(60) DEFAULT NULL COMMENT '客户类别',
@@ -791,7 +791,7 @@ CREATE TABLE `uk_onlineuser` (
   `assignedto` varchar(255) NOT NULL DEFAULT '',
   `creater` varchar(255) DEFAULT NULL,
   `datastatus` varchar(255) DEFAULT NULL,
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `impid` varchar(255) DEFAULT NULL,
   `ipcode` varchar(255) DEFAULT NULL,
   `orgi` varchar(255) DEFAULT NULL,
@@ -849,7 +849,7 @@ CREATE TABLE `uk_onlineuser_his` (
   `assignedto` varchar(255) NOT NULL DEFAULT '',
   `creater` varchar(255) DEFAULT NULL,
   `datastatus` varchar(255) DEFAULT NULL,
-  `id` varchar(255) NOT NULL,
+  `id` varchar(32) NOT NULL,
   `impid` varchar(255) DEFAULT NULL,
   `ipcode` varchar(255) DEFAULT NULL,
   `orgi` varchar(255) DEFAULT NULL,
