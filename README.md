@@ -38,12 +38,11 @@ DEMO访问地址：[优客服（UCKeFu-WebIM）](http://112.74.54.80/login.html)
 ### 1.  将代码拉取下来
 
 ### 1. 编译pom.xml文件，下载好jar包
-本项目有三个依赖包，IP2REGION 和 UCKeFu-Core，通过以下指令加入到本地Mavenue仓库：
+本项目有两个依赖包，IP2REGION 和 UCKeFu-Core，通过以下指令加入到本地Mavenue仓库：
 1、mvn install:install-file  -Dfile=src/main/resources/WEB-INF/lib/ip2region-1.2.3.jar -DgroupId=org.lionsoul.ip2region -DartifactId=ip2region -Dversion=1.2.3 -Dpackaging=jar
 
-2、mvn install:install-file  -Dfile=src/main/resources/WEB-INF/lib/UCKeFu-Core-2.0.0-GA.jar -DgroupId=com.ukefu -DartifactId=UCKeFu-Core -Dversion=2.0.0-GA -Dpackaging=jar
 
-3、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/jave-1.0.2.jar -DgroupId=lt.jave -DartifactId=jave -Dversion=1.0.2 -Dpackaging=jar
+2、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/jave-1.0.2.jar -DgroupId=lt.jave -DartifactId=jave -Dversion=1.0.2 -Dpackaging=jar
 
  **确保两个依赖都安装成功** 
 
@@ -53,8 +52,7 @@ DEMO访问地址：[优客服（UCKeFu-WebIM）](http://112.74.54.80/login.html)
 
 ### 1. 配置项目中的application.properties文件中的数据库连接
 
-### 启动运行：
-java -Xms1240m -Xmx1240m -Xmn450m -XX:PermSize=512M  -XX:MaxPermSize=512m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseTLAB -XX:NewSize=128m -XX:MaxNewSize=128m -XX:MaxTenuringThreshold=0 -XX:SurvivorRatio=1024 -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=60 -Djava.awt.headless=true  -XX:+PrintGCDetails -Xloggc:gc.log -XX:+PrintGCTimeStamps -jar UCKeFu-WebIM-1.2.3-SNAPSHOT.jar
+### 2. 将生成的WAR文件部署到 Tomcat 即可。
 
 
 运行一下查看效果吧！
