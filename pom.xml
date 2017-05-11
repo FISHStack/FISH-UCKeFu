@@ -286,6 +286,16 @@
 			    <artifactId>maven-war-plugin</artifactId>  
 			    <configuration>  
 			        <attachClasses>true</attachClasses>
+			        <warSourceExcludes>**/WEB-INF</warSourceExcludes>
+			        <webResources>
+				        <resource>  
+					        <directory>src/main/resources</directory>  
+					        <filtering>true</filtering>  
+					        <excludes>
+				                <exclude>**/WEB-INF/**</exclude>
+				            </excludes>
+					    </resource>  
+				    </webResources>
 			    </configuration>  
 			    <version>2.1.1</version>  
 			</plugin>  
