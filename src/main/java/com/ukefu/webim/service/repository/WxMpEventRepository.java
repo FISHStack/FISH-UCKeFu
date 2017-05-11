@@ -12,7 +12,7 @@ public abstract interface WxMpEventRepository extends JpaRepository<WxMpEvent, S
 	
 	public abstract WxMpEvent findByIdAndOrgi(String id, String orgi);
 	
-	@Query("select event, count(distinct creater) as users from WxMpEvent where orgi = ?1 and createtime > ?2 and createtime < ?3 group by event")
-	List<Object> findByOrgiAndCreatetimeRangeForClient(String orgi , Date start , Date end);
+	@Query("select event, count(distinct creater) as users from WxMpEvent where orgi = ?1 and appid = ?2 and createtime > ?3 and createtime < ?4 group by event")
+	List<Object> findByOrgiAndCreatetimeRangeForClient(String orgi , String appid , Date start , Date end);
 
 }

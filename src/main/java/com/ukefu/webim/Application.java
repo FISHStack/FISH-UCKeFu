@@ -22,6 +22,11 @@ import com.ukefu.webim.config.web.StartedEventListener;
 @EnableAsync
 public class Application {
 	
+	static{
+    	UKDataContext.model.put("contacts", true) ;
+    	UKDataContext.model.put("im", true) ;
+    }
+	
     @Bean   
     public MultipartConfigElement multipartConfigElement() {   
             MultipartConfigFactory factory = new MultipartConfigFactory();  
