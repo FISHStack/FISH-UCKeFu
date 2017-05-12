@@ -16,6 +16,8 @@ DEMO访问地址：[优客服（UCKeFu-WebIM）](http://112.74.54.80/login.html)
 
 [一键启动包（需安装MySQL数据库并导入数据）](http://http://pan.baidu.com/s/1eRK5UJw)
 
+包含WebIM+Contacts模块，使用MySQL数据库，需要导入数据脚本
+
 
 
 #优客服组件结构
