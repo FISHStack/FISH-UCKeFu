@@ -429,7 +429,7 @@ CREATE TABLE uk_entcustomer
    owner varchar2(255),
    datadept varchar2(255),
    batid varchar2(32),
-   maturity varchar2(10),
+   maturity varchar2(32),
    entcusid varchar2(32),
    pinyin varchar2(10),
    organ varchar2(32)

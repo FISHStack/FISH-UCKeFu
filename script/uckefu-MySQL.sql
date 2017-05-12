@@ -514,7 +514,7 @@ CREATE TABLE `uk_entcustomer` (
   `owner` varchar(255) DEFAULT NULL COMMENT '所属人',
   `datadept` varchar(255) DEFAULT NULL COMMENT '创建人部门',
   `batid` varchar(32) DEFAULT NULL,
-  `maturity` varchar(10) DEFAULT NULL,
+  `maturity` varchar(32) DEFAULT NULL,
   `entcusid` varchar(32) DEFAULT NULL,
   `pinyin` varchar(10) DEFAULT NULL,
   `organ` varchar(32) DEFAULT NULL,
