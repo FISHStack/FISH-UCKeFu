@@ -6,7 +6,7 @@
 优客服，是一个多渠道融合的客户支持服务平台，包含WebIM，微信，电话，邮件，短信等接入渠道!
 
 #访问地址
-DEMO访问地址：[优客服（UCKeFu-WebIM）](http://112.74.54.80/login.html) ， 访问账号：admin，密码：123456
+DEMO访问地址：[优客服（UCKeFu-WebIM）](http://uk.ukewo.cn/) ， 访问账号：admin，密码：123456
 
 #一键启动包
 [v2.0.0-M1一键启动包下载](http://pan.baidu.com/s/1nuCjWcL)
@@ -14,7 +14,7 @@ DEMO访问地址：[优客服（UCKeFu-WebIM）](http://112.74.54.80/login.html)
 一键启动包是独立的Tomat启动，部署的War包，包含WebIM+Contacts模块，使用H2数据库
 
 
-[一键启动包（需安装MySQL数据库并导入数据）](http://http://pan.baidu.com/s/1eRK5UJw)
+[一键启动包（需安装MySQL数据库并导入数据）](http://pan.baidu.com/s/1eRK5UJw)
 
 包含WebIM+Contacts模块，使用MySQL数据库，需要导入数据脚本
 
