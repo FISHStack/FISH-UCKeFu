@@ -157,11 +157,6 @@
 		    <version>3.8</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
-		    <groupId>com.google.collections</groupId>
-		    <artifactId>google-collections</artifactId>
-		    <version>1.0</version>
-		</dependency>
-		<dependency>
 	        <groupId>com.fasterxml.jackson.dataformat</groupId>
 	        <artifactId>jackson-dataformat-xml</artifactId>
 	    </dependency>
@@ -195,6 +190,13 @@
 		    <artifactId>poi-ooxml</artifactId>
 		    <version>3.15</version>
 		</dependency>
+		
+		<dependency>
+		  <groupId>com.github.binarywang</groupId>
+		  <artifactId>weixin-java-mp</artifactId>
+		  <version>2.6.0</version>
+		</dependency>
+				
 		
 		<dependency>
 		    <groupId>org.apache.httpcomponents</groupId>

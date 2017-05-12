@@ -10,7 +10,7 @@ import com.ukefu.util.webim.WebIMClient;
 
 public class WebSseEmitterClient{
 	
-	private ConcurrentMap<String, WebIMClient> imClientsMap = new MapMaker().softKeys().weakValues().makeMap();
+	private ConcurrentMap<String, WebIMClient> imClientsMap = new MapMaker().weakValues().makeMap();
 	
 	public List<WebIMClient> getClients(String userid){
 		Collection<WebIMClient> values = imClientsMap.values() ;
