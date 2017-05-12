@@ -111,8 +111,6 @@
 	        <groupId>lt.jave</groupId>
 	        <artifactId>jave</artifactId>
 	        <version>1.0.2</version>
-	        <scope>system</scope>
-	        <systemPath>${project.basedir}/src/main/resources/WEB-INF/lib/jave-1.0.2.jar</systemPath>
 	    </dependency> 
 		
 		<dependency>
@@ -174,8 +172,6 @@
 	        <groupId>org.lionsoul.ip2region</groupId>
 	        <artifactId>ip2region</artifactId>
 	        <version>1.2.3</version>
-	        <scope>system</scope>
-	        <systemPath>${project.basedir}/src/main/resources/WEB-INF/lib/ip2region-1.2.3.jar</systemPath>
 	    </dependency>
 	    
 	    <dependency>
