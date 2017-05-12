@@ -7,11 +7,6 @@ import com.ukefu.core.UKDataContext;
 
 public class ServletInitializer extends SpringBootServletInitializer{
 	
-	static{
-    	UKDataContext.model.put("weixin", true) ;
-    	UKDataContext.model.put("contacts", true) ;
-    }
-	
 	@Override  
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {  
         return application.sources(Application.class);  
