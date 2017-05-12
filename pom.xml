@@ -21,6 +21,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<spring.version>4.3.6.RELEASE</spring.version>
+		<elasticsearch.version>1.7.2</elasticsearch.version>
 	</properties>
 
 	<dependencies>
@@ -196,12 +197,6 @@
 		</dependency>
 		
 		<dependency>
-		  <groupId>com.github.binarywang</groupId>
-		  <artifactId>weixin-java-mp</artifactId>
-		  <version>2.5.0</version>
-		</dependency>
-		
-		<dependency>
 		    <groupId>org.apache.httpcomponents</groupId>
 		    <artifactId>httpclient</artifactId>
 		    <version>4.5.3</version>
@@ -287,15 +282,7 @@
 			    <configuration>  
 			        <attachClasses>true</attachClasses>
 			        <warSourceExcludes>**/WEB-INF</warSourceExcludes>
-			        <webResources>
-				        <resource>  
-					        <directory>src/main/resources</directory>  
-					        <filtering>true</filtering>  
-					        <excludes>
-				                <exclude>**/WEB-INF/**</exclude>
-				            </excludes>
-					    </resource>  
-				    </webResources>
+			        <packagingExcludes>**/WEB-INF,**/resources</packagingExcludes>
 			    </configuration>  
 			    <version>2.1.1</version>  
 			</plugin>  
