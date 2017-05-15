@@ -41,6 +41,14 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum AgentInterType{
+		SKILL , 
+		AGENT ;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	public enum MultiUpdateType{
 		SAVE , 
 		UPDATE,
