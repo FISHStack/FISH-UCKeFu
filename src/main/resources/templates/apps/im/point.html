@@ -126,9 +126,9 @@ var ukefu = {
 	},
 	writepoint:function(){
 		var skillHtml = "<#if inviteData?? && inviteData.skill == true><div id='ichatContent' class='ichat-content ichat-float-left' style='display: block;font-size:14px;;${theme!''};box-shadow: 0 0 10px #DDDDDD;border: 1px solid #DDDDDD;overflow: hidden;text-align: left;'><div>" +
-						"<div class='ichat-title ichat-cursor' style='color: #FFFFFF;font-weight:400;font-size: 14px;font-weight: 400;height: 28px;line-height: 28px;overflow: hidden;padding: 0 5px;background-repeat: repeat-x;'><img src='/images/logo-icon.png' style='height:20px;'/> <#if inviteData.consult_skill_title??>${inviteData.consult_skill_title!''}</#if></div>"+
+						"<div class='ichat-title ichat-cursor' style='color: #FFFFFF;font-weight:400;font-size: 14px;font-weight: 400;height: 28px;line-height: 28px;overflow: hidden;padding: 0 5px;background-repeat: repeat-x;'><img src='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/images/logo-icon.png' style='height:20px;vertical-align: middle;'/> <#if inviteData.consult_skill_title??>${inviteData.consult_skill_title!''}</#if></div>"+
 						"<div id='ichatItem0' class='ichat-list' style='background: none repeat scroll 0 0 #FFFFFF;overflow-x: hidden;overflow-y: auto;padding: 5px 0;margin: 0;'>"+
-						"<img src='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/images/title.jpg' style='width:140px;margin:0 5px;'/>"+
+						"<img src='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/images/title.jpg' style='width:140px;margin:0 5px;vertical-align: middle;'/>"+
 						"<div style='padding:10px 5px;text-align:center;color:#555;'><#if inviteData?? && inviteData.skill == true && inviteData.consult_skill_msg??>${(inviteData.consult_skill_msg!'')?no_esc}</#if></div>"+
 						
 						<#if skillList??>
@@ -148,7 +148,7 @@ var ukefu = {
 								<#if agent.organ?? && agent.organ == skill.id && agentNum lt inviteData.consult_skill_maxagent >
 								<#assign agentNum = agentNum + 1>
 								"<li style='height: 23px;list-style: none outside none;margin-left: 6px;overflow: hidden;padding: 2px;'>"+
-								"<a href='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/text/${appid!''}.html?skill=${skill.id!''}&agent=${agent.id!''}' onclick='return openAgentChatDialog(this.href)'> <img src='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/images/creater.png'></img> ${agent.username!''}</a></li>"+
+								"<a href='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/text/${appid!''}.html?skill=${skill.id!''}&agent=${agent.id!''}' onclick='return openAgentChatDialog(this.href)' style='color: #777;    text-decoration: none;'> <img src='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/images/creater.png' style='vertical-align: middle;'></img> ${agent.username!''}</a></li>"+
 								"</li>"+
 								</#if>
 							</#list>
