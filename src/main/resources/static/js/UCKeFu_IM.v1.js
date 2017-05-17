@@ -1,5 +1,7 @@
-
-var socket ;
+var title = "UCKeFu-全渠道客服系统" ;
+var socket  , newuser = [] , newmessage = [];
+newuser['mp3'] = '/images/new.mp3'; 
+newmessage['mp3'] = '/images/message.mp3';
 $(document).ready(function(){
     socket = io.connect(schema+'://'+hostname+':'+port+'/im/agent?orgi='+orgi+"&userid="+userid );
     socket.on('connect',function() {
@@ -21,11 +23,15 @@ $(document).ready(function(){
     		//来电弹屏
     		$('#agentdesktop').attr('data-href' , '/agent/index.html?userid='+data.userid).click();
     	}
+    	WebIM.audioplayer('audioplane', newuser, false); // 播放
     }).on('status', function(data) {
     	$('#agents_status').html("服务中的人数："+data.users+"人，当前排队人数："+data.inquene+"人，在线坐席数："+data.agents+"人");	        
     }).on('message', function(data) {
     	if($('#multiMediaDialogWin').length > 0 && multiMediaDialogWin != null && multiMediaDialogWin.$ && multiMediaDialogWin.$('#agentusers').length > 0){
     		multiMediaDialogWin.Proxy.newAgentUserMessage(data);
+    		if(data.type == 'message'){
+        		WebIM.audioplayer('audioplane', newmessage, false); // 播放
+        	}
     	}else{
     		//来电弹屏
     		$('#agentdesktop').attr('data-href' , '/agent/index.html?userid='+data.userid).click();
@@ -65,6 +71,39 @@ var WebIM = {
 	ping : function(){
 		loadURL("/message/ping.html") ;	
 		console.log("ping:" + new Date().getTime());
+	},
+	audioplayer:function(id, file, loop) {
+	    var audioplayer = document.getElementById(id);
+	    if (audioplayer != null) {
+	        document.body.removeChild(audioplayer);
+	    }
+
+	    if (typeof(file) != 'undefined') {
+	        if (navigator.userAgent.indexOf("MSIE") > 0) { // IE 
+	            var player = document.createElement('bgsound');
+	            player.id = id;
+	            player.src = file['mp3'];
+	            player.setAttribute('autostart', 'true');
+	            if (loop) {
+	                player.setAttribute('loop', 'infinite');
+	            }
+	            document.body.appendChild(player);
+
+	        } else { // Other FF Chome Safari Opera 
+	            var player = document.createElement('audio');
+	            player.id = id;
+	            player.setAttribute('autoplay', 'autoplay');
+	            if (loop) {
+	                player.setAttribute('loop', 'loop');
+	            }
+	            document.body.appendChild(player);
+
+	            var mp3 = document.createElement('source');
+	            mp3.src = file['mp3'];
+	            mp3.type = 'audio/mpeg';
+	            player.appendChild(mp3);
+	        }
+	    }
 	}
 }
 

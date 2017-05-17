@@ -267,6 +267,7 @@ var Proxy = {
 		}else{
 			if(data.type == 'message'){
 				$('#last_msg_'+data.userid).text(data.tokenum).show();
+				Proxy.addTopMsgTip(1) ;
 			}
 		}
 	},
@@ -292,6 +293,25 @@ var Proxy = {
 	},
 	updateData : function(inner , data){
 		$(inner).empty().append(data) ;
+	},
+	addTopMsgTip : function(num){
+		var msgNum = top.$('#ukefu-last-msg').data("num");
+		msgNum = msgNum + num ;
+		if(msgNum > 0){
+			top.$('#ukefu-last-msg').data("num" , msgNum).show();
+		}
+		top.$('#msgnum').text(msgNum);
+	},
+	cleanTopMsgTip : function(num){
+		var msgNum = top.$('#ukefu-last-msg').data("num");
+		msgNum = msgNum - num ;
+		if(msgNum > 0){
+			top.$('#ukefu-last-msg').data("num" , msgNum).show();
+			top.$('#msgnum').text(msgNum);
+		}else{
+			top.$('#ukefu-last-msg').data("num" , 0).hide();
+			top.$('#msgnum').text(0);
+		}
 	}
 }
 var MapUtil = {
