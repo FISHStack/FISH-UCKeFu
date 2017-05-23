@@ -119,13 +119,13 @@ input,textarea{
 }
 .content-left{
 	height: 100%;
-	margin-right: 230px;
+	margin-right: 280px;
 }
 .content-left form{
 	height: 40%;
 }
 .content-rig{
-	width: 230px;
+	width: 280px;
 	height: 100%;
 	border-left:1px solid #c9c9c9;
 	background-color: #fff;
@@ -211,7 +211,8 @@ input,textarea{
 	background-color:#FFFFFF;
 }
 .chat-above{
-	padding: 50px 5px;
+	margin-top:51px;
+	padding: 0px 5px;
 	height: 60%;
 	overflow: auto;
 }
@@ -323,7 +324,7 @@ input,textarea{
     border-color: #ffffff #ffffff #c7dcfa;
 }
 .chatting-left div.chat-content {
-    font-size: 13px;
+    font-size: 14px;
     border-radius: 3px;
     padding: 4px;
     margin-bottom: 0;
@@ -333,6 +334,7 @@ input,textarea{
     border: 1px solid #DDDDDD;
     float: left;
     min-width: 25px;
+    line-height:25px;
 }
 .chatting-left div.chat-content *{
 	background-color: #EDEDED !important;
@@ -340,7 +342,9 @@ input,textarea{
 .chatting-right div.chat-content *{
 	background-color: #c7dcfa !important;
 }
-
+.chatting-left div.chat-content img{
+	max-width:460px;
+}
 .chatting-left div.chat-content a{
     color:#4665d4;
     text-decoration: none;
@@ -365,14 +369,14 @@ input,textarea{
 
 .chatting-left div.chat-content span{
 	color: #000000;
-	font-size: 13px;
+	font-size: 14px;
 }
 .chat-bottom{
 	/*height: 40%;*/
 	position: absolute;
 	background-color: #edf0f2;
 	bottom: 0;
-    right:230px;
+    right:280px;
     left: 0;
 }
 .chat-bottom .ke-edit{
@@ -781,8 +785,8 @@ p.submitBtnWrap {
 	max-width:200px;
 }
 .ukefu-point-text{
-	max-width:750px;
-	max-height:600px;
+	max-width:850px;
+	max-height:610px;
 	margin: 0 auto;
 }
 .leaveCon{
@@ -868,4 +872,42 @@ p.submitBtnWrap{
 	width: 520px;
     margin: 30px auto;
     font-size: 16px;
+}
+.ukefu-func-tab{
+	position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+.ukefu-func-tab li{
+	float:left;
+	padding: 5px 10px 5px 10px;
+	border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    color:#FFFFFF;
+}
+.ukefu-func-tab li a{
+	text-decoration: none;
+	color:#ffffff;
+}
+.ukefu-func-tab li.cur{
+	border: 1px solid #FFFFFF;
+    border-bottom: 0px;
+    background-color: #FFFFFF;
+}
+.ukefu-func-tab li.cur a{
+	border: 1px solid #FFFFFF;
+    border-bottom: 0px;
+    background-color: #FFFFFF;
+    color: #333333 !important;
+}
+.ukefu-ask-item{
+	border-bottom: 1px solid #F0F0F0; 
+    position: relative;
+    width: 100%;
+    line-height: 1.5em;
+    padding: 10px 0 10px 10px;
+}
+.ukefu-ask-item a{
+	text-decoration: none;
+    color: #555555;
 }

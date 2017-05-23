@@ -102,8 +102,8 @@ public class Contacts extends ESBean implements java.io.Serializable{
 	
 	@Id
 	@Column(length = 32)
-	@GeneratedValue(generator= "paymentableGenerator")
-	@GenericGenerator(name= "paymentableGenerator",strategy = "assigned")
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")	
 	public String getId() {
 		return id;
 	}

@@ -18,6 +18,7 @@
 							<th>地域</th>
 							<th>接入时间</th>
 							<th>等待时长</th>
+							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -36,6 +37,9 @@
 							<td><#if agentUser.createtime??>${agentUser.createtime?string('yyyy-MM-dd HH:mm:ss')}</#if></td>
 							<td>
 								${(agentUser.waittingtime/(1000*60*60))?string('00')}:${((agentUser.waittingtime%(1000*60*60))/(1000*60))?string('00')}:${((agentUser.waittingtime%(1000*60))/(1000))?string('00')}
+							</td>
+							<td>
+								<a href="/service/quene/clean.html?id=${agentUser.id!''}" data-toggle="tip" data-title="转队列后会随机分配坐席，请确认是否转队列或技能组？">转队列</a>
 							</td>
 							
 						</tr>

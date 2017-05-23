@@ -26,25 +26,6 @@ import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpVersion;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.params.ConnManagerParams;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
 import org.jasypt.util.text.BasicTextEncryptor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -58,12 +39,12 @@ import org.springframework.util.ClassUtils;
 
 import com.lmax.disruptor.dsl.Disruptor;
 import com.ukefu.core.UKDataContext;
+import com.ukefu.util.event.AiEvent;
 import com.ukefu.util.event.MultiUpdateEvent;
 import com.ukefu.util.event.UserDataEvent;
 import com.ukefu.util.event.UserEvent;
 
 
-@SuppressWarnings("deprecation")
 public class UKTools {
 	private static MD5 md5 = new MD5();
 	
@@ -73,7 +54,6 @@ public class UKTools {
 	
 	public static SimpleDateFormat timeRangeDateFormat = new SimpleDateFormat("HH:mm");
 	
-	private static HttpClient httpclient = initHttpClientPool();
 	/**
 	 * 当前时间+已过随机生成的 长整形数字
 	 * @return
@@ -102,39 +82,6 @@ public class UKTools {
 		return md5.getMD5ofByte(bytes);
 	}
 	
-	public static HttpClient getHttpClient(){
-		return httpclient ;
-	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static String postData(String url, List<NameValuePair> nvps) {
-		HttpPost httpost = new HttpPost(url);
-		try {
-			httpost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
-			ResponseHandler responseHandler = new BasicResponseHandler();
-			return (String) httpclient.execute(httpost, responseHandler);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return "";
-	}
-	
-	
-	private static HttpClient initHttpClientPool() {
-		HttpParams params = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(params, 40000);
-		HttpConnectionParams.setSoTimeout(params, 40000);
-		ConnManagerParams.setMaxTotalConnections(params, 5);
-		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-
-		SchemeRegistry schemeRegistry = new SchemeRegistry();
-		schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-		schemeRegistry.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
-
-		ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
-		return new DefaultHttpClient(cm, params);
-	}
-
 	public static void copyProperties(Object source, Object target,String... ignoreProperties)  
 	        throws BeansException {  
 	  
@@ -235,6 +182,14 @@ public class UKTools {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void multiupdate(MultiUpdateEvent event){
 		Disruptor<UserDataEvent> disruptor = (Disruptor<UserDataEvent>) UKDataContext.getContext().getBean("multiupdate") ;
+		long seq = disruptor.getRingBuffer().next();
+		disruptor.getRingBuffer().get(seq).setEvent(event); 
+		disruptor.getRingBuffer().publish(seq);
+	}
+	
+	@SuppressWarnings({ "unchecked"})
+	public static void ai(UserEvent event){
+		Disruptor<AiEvent> disruptor = (Disruptor<AiEvent>) UKDataContext.getContext().getBean("ai") ;
 		long seq = disruptor.getRingBuffer().next();
 		disruptor.getRingBuffer().get(seq).setEvent(event); ;
 		disruptor.getRingBuffer().publish(seq);

@@ -15,6 +15,7 @@ public class MultiUpdateEventHandler implements EventHandler<UserDataEvent>{
 		if(event.getEvent()!=null){
 			MultiUpdateEvent multiEventEvent = (MultiUpdateEvent)event.getEvent() ;
 			if(UKDataContext.MultiUpdateType.SAVE.toString().equals(multiEventEvent.getEventype())){
+				multiEventEvent.getCrudRes().delete(multiEventEvent.getData()) ;
 				multiEventEvent.getCrudRes().save(multiEventEvent.getData()) ;
 			}else if(UKDataContext.MultiUpdateType.DELETE.toString().equals(multiEventEvent.getEventype())){
 				multiEventEvent.getCrudRes().delete(multiEventEvent.getData()) ;

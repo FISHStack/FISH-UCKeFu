@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.ukefu.core.UKDataContext;
+
 public class CrossInterceptorHandler extends HandlerInterceptorAdapter {
 	
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -20,6 +22,9 @@ public class CrossInterceptorHandler extends HandlerInterceptorAdapter {
 
     public void postHandle(HttpServletRequest arg0, HttpServletResponse response, Object arg2,
             ModelAndView view) throws Exception {
+    	if(view!=null){
+    		view.addObject("models", UKDataContext.model) ;
+    	}
     }
 
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)

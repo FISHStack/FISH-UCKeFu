@@ -12,14 +12,15 @@ import org.springframework.stereotype.Component;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.event.MultiUpdateEvent;
-import com.ukefu.webim.service.repository.DbDataRepository;
+import com.ukefu.webim.service.hibernate.BaseService;
+import com.ukefu.webim.web.model.ESBean;
 
 @Aspect
 @Component
 public class SyncDatabaseExt {
 	
 	@Autowired
-	private DbDataRepository dbDataRes ;
+	private BaseService<?> dbDataRes ;
 	/** 
      * 定义拦截规则：拦截org.springframework.data.elasticsearch.repository。 
      */  
@@ -64,7 +65,11 @@ public class SyncDatabaseExt {
     				UKTools.multiupdate(new MultiUpdateEvent<Object>(dbData , dbDataRes, UKDataContext.MultiUpdateType.SAVE.toString()));
     			}
     		}else{
-    			UKTools.multiupdate(new MultiUpdateEvent<Object>(data, dbDataRes, UKDataContext.MultiUpdateType.SAVE.toString()));
+    			if(data instanceof ESBean){
+    				UKTools.multiupdate(new MultiUpdateEvent<Object>(data, dbDataRes, UKDataContext.MultiUpdateType.SAVE.toString()));
+    			}else{
+    				UKTools.multiupdate(new MultiUpdateEvent<Object>(data, dbDataRes, UKDataContext.MultiUpdateType.DELETE.toString()));
+    			}
     		}
     	}
         return pjp.proceed();  

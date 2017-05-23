@@ -238,8 +238,70 @@
 										</div>
 									</div>
 								</div>
-								
-								
+								<#if models?? && models["xiaoe"]?? && models["xiaoe"] == true>
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">10、启用智能机器人</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>启用智能机器人回复，系统通过智能机器人回复客户消息</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">开启后会启用智能机器人功能，并且可以选择是否默认接入智能机器人</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<input type="checkbox" title="启用" name="ai" lay-filter="ai" <#if inviteData?? && inviteData.ai == true>checked="checked"</#if>>
+											</div>
+										</div>
+									</div>
+									<div class="box-item" id="ai" style="position: relative;<#if inviteData?? && inviteData.ai == true><#else>display:none;</#if>">
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>a、智能机器人优先</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">默认接入咨询的应答方式是智能机器人</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												    <input type="checkbox" title="启用" name="aifirst" <#if inviteData?? && inviteData.aifirst == true>checked="checked"</#if>>
+												</div>	
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>b、智能机器人名字</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">智能机器人回复消息的时候显示的名称</p>
+											</div>
+											<div class="col-lg-4">
+												<div class="layui-input-block">
+												    <input type="text" name="ainame" maxlength="100" value="${inviteData.ainame!'小E'}" autocomplete="off" class="layui-input">
+												</div>	
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>c、智能机器人欢迎语</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">接入智能机器人之后，对话窗口顶部显示的欢迎语，支持HTML代码</p>
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-12">
+												<div class="layui-input-block">
+												    <textarea name="aimsg" autocomplete="off" class="layui-input" style="height:90px;line-height:22px;">${inviteData.aimsg!'欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.'}</textarea>
+												</div>	
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>d、智能机器人对话服务连接成功提示</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">智能机器人服务连接成功的提示用语</p>
+											</div>
+											<div class="col-lg-4">
+												<div class="layui-input-block">
+												    <input type="text" name="aisuccesstip" maxlength="100" value="${inviteData.aisuccesstip!'欢迎使用优客服小E，我来帮您解答问题'}" autocomplete="off" class="layui-input">
+												</div>	
+											</div>
+										</div>
+									</div>
+								</div>
+								</#if>
 							</div>
 							<div class="col-md-5">
 								<div class="ukefu-im-preview ukefu-im-preview-dialog" id="pv" style="width:380px;position: fixed;">
@@ -344,6 +406,13 @@
 				$('#skill').show();		
 			}else{
 				$('#skill').hide();
+			}
+		});
+		form.on("checkbox(ai)" , function(data){
+			if(data.elem.checked == true){
+				$('#ai').show();		
+			}else{
+				$('#ai').hide();
 			}
 		});
 	});

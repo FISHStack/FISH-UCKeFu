@@ -13,4 +13,6 @@ public abstract class ESBean {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	public abstract boolean isDatastatus() ;
 }

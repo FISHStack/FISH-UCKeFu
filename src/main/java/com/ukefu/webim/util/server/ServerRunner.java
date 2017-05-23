@@ -9,6 +9,7 @@ import com.corundumstudio.socketio.SocketIONamespace;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.webim.util.server.handler.AgentEventHandler;
+import com.ukefu.webim.util.server.handler.AiIMEventHandler;
 import com.ukefu.webim.util.server.handler.EntIMEventHandler;
 import com.ukefu.webim.util.server.handler.IMEventHandler;
   
@@ -18,6 +19,7 @@ public class ServerRunner implements CommandLineRunner {
     private final SocketIONamespace imSocketNameSpace ;
     private final SocketIONamespace agentSocketIONameSpace ;
     private final SocketIONamespace entIMSocketIONameSpace ;
+    private final SocketIONamespace aiIMSocketIONameSpace ;
     
     @Autowired  
     public ServerRunner(SocketIOServer server) {  
@@ -25,6 +27,7 @@ public class ServerRunner implements CommandLineRunner {
         imSocketNameSpace = server.addNamespace(UKDataContext.NameSpaceEnum.IM.getNamespace())  ;
         agentSocketIONameSpace = server.addNamespace(UKDataContext.NameSpaceEnum.AGENT.getNamespace()) ;
         entIMSocketIONameSpace = server.addNamespace(UKDataContext.NameSpaceEnum.ENTIM.getNamespace()) ;
+        aiIMSocketIONameSpace = server.addNamespace(UKDataContext.NameSpaceEnum.AIIM.getNamespace()) ;
     }
     
     @Bean(name="imNamespace")
@@ -43,6 +46,12 @@ public class ServerRunner implements CommandLineRunner {
     public SocketIONamespace getEntIMSocketIONameSpace(SocketIOServer server){
     	entIMSocketIONameSpace.addListeners(new EntIMEventHandler(server));
     	return entIMSocketIONameSpace;
+    }
+    
+    @Bean(name="aiimNamespace")
+    public SocketIONamespace getAiIMSocketIONameSpace(SocketIOServer server){
+    	aiIMSocketIONameSpace.addListeners(new AiIMEventHandler(server));
+    	return aiIMSocketIONameSpace;
     }
 
     public void run(String... args) throws Exception { 

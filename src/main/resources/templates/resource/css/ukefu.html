@@ -75,6 +75,8 @@
 
 .icon-discharge_summary:before { content: "\e757"; }
 
+.icon-zhishiguanli:before { content: "\e704"; }
+
 .icon-words2:before { content: "\e614"; }
 
 .icon-orders:before { content: "\e606"; }
@@ -133,13 +135,19 @@
 
 .icon-userrole:before { content: "\e90b"; }
 
+.icon-zhishi:before { content: "\e615"; }
+
 .icon-userrole1:before { content: "\e7d0"; }
 
 .icon-show_summary_img:before { content: "\e7c8"; }
 
 .icon-ai1:before { content: "\e676"; }
 
+.icon-zhishi1:before { content: "\e616"; }
+
 .icon-priority:before { content: "\e82d"; }
+
+.icon-zhishifenlei:before { content: "\e66c"; }
 
 .icon-AI:before { content: "\e66e"; }
 
@@ -154,6 +162,8 @@
 .icon-history3:before { content: "\e7eb"; }
 
 .icon-import5:before { content: "\e60c"; }
+
+.icon-zhishi2:before { content: "\e699"; }
 
 .icon-icon-test:before { content: "\e67b"; }
 
@@ -200,9 +210,11 @@ a{
 .layui-colla-title{
 	height:30px;
 	line-height:30px;
-	padding-left:10px;
 	color:${systemConfig.styleColor!'#32c24d'};
 	font-size:15px;
+}
+.ke-dialog{
+	z-index:1000000000 !important;
 }
 .layui-form-label{
 	width:100px;
@@ -2961,7 +2973,6 @@ select{
     background-color:#efefef !important;    	
 }
 .ukefu-xiaoe-words li{
-	float:left;
 	padding:5px 10px 5px 10px;
 	width:10%;
 }
@@ -2990,4 +3001,74 @@ select{
     white-space: nowrap;
     vertical-align: top;
     border-radius: 10px;
+}
+.ukefu-xiaoe-knowledge li{
+	clean:both;
+	padding-bottom:15px;
+	padding-left:20px;
+	position: relative;
+}
+.ukefu-xiaoe-knowledge li div{
+	width:80%;
+}
+.ukefu-xiaoe-knowledge li:hover{
+	background-color:#efefef;
+}
+.ukefu-xiaoe-knowledge-item .title{
+	font-size:15px;
+	padding:5px 0 5px 0;
+	text-decoration: underline;
+}
+.ukefu-xiaoe-knowledge-item .content{
+	font-size:14px;
+	line-height:25px;
+	padding:0px 0 5px 0;
+}
+.ukefu-xiaoe-knowledge-item .msgtext{
+	font-size:14px;
+}
+.ukefu-xiaoe-knowledge-item .msgtext .validity{
+	text-align:left;
+	color:green;
+	font-size:13px;
+}
+.ukefu-xiaoe-knowledge-item .msgtext .priority{
+	color:#666;
+	font-size:13px;
+	margin-left:20px;
+}
+.ukefu-xiaoe-knowledge-item .toolbox{
+	position: absolute;
+    right: 0px;
+    top: 10px;
+    display:none;
+}
+.ukefu-xiaoe-knowledge li:hover .toolbox{
+	display:block;
+}
+.ukefu_topic_title em{
+	color:red;
+	font-style: initial;
+}
+.ukefu-xiaoe-scene li{
+	border-bottom: 1px solid #F0F0F0;
+    position: relative;
+    width: 100%;
+    line-height: 1.5em;
+    padding: 5px 0 5px 5px;
+}
+.ukefu-xiaoe-scene li a{
+	color:#333333;
+}
+.ukefu-xiaoe-scene li:hover{
+    background-color:#efefef;
+}
+.layui-form-pane .layui-input-block{
+	padding:0px;
+}
+#userinput div:first-child .ukefu-group-remove{
+	display:none;
+}
+#airp div:first-child .ukefu-group-remove{
+	display:none;
 }

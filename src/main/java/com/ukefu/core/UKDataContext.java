@@ -16,6 +16,7 @@ public class UKDataContext {
 	public static final String GUEST_USER_ID_CODE = "R3GUESTUSEKEY" ;
 	public static final String WORKORDERS_CLOSED_STATUS = "uckefu_workorders_closed" ;
 	public static final String SERVICE_QUENE_NULL_STR = "service_quene_null" ;
+	public static final String DEFAULT_TYPE = "default"	;		//默认分类代码
 	
 	private static boolean imServerRunning = false ;			//IM服务状态
 	
@@ -44,6 +45,14 @@ public class UKDataContext {
 	public enum AgentInterType{
 		SKILL , 
 		AGENT ;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum AiItemType{
+		USERINPUT , 
+		AIREPLY;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}
@@ -194,7 +203,8 @@ public class UKDataContext {
 		
 		IM("/im/user") ,
 		AGENT("/im/agent"), 
-		ENTIM("/im/ent") ;
+		ENTIM("/im/ent") ,
+		AIIM("/im/ai") ;
 		
 		private String namespace ;
 		

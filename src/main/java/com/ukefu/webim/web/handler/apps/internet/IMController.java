@@ -34,6 +34,7 @@ import com.ukefu.util.IP;
 import com.ukefu.util.IPTools;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.util.extra.DataExchangeInterface;
 import com.ukefu.util.webim.WebIMClient;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
@@ -87,7 +88,7 @@ public class IMController extends Handler{
 	
 	@Autowired
 	private LeaveMsgRepository leaveMsgRes ;
-
+	
     @RequestMapping("/{id}")
     @Menu(type = "im" , subtype = "point" , access = true)
     public ModelAndView point(HttpServletRequest request , HttpServletResponse response, @PathVariable String id , @Valid String orgi , @Valid String userid , @Valid String title) {
@@ -213,19 +214,37 @@ public class IMController extends Handler{
     
     @RequestMapping("/index")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView index(HttpServletRequest request , HttpServletResponse response, @Valid String orgi , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent) throws Exception {
+    public ModelAndView index(HttpServletRequest request , HttpServletResponse response, @Valid String orgi , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	if(!StringUtils.isBlank(appid)){
     		CousultInvite invite = inviteRepository.findOne(appid) ;
     		if(invite!=null){
     			SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
-	    		if(sessionConfig.isHourcheck() && !UKTools.isInWorkingHours(sessionConfig.getWorkinghours()) && invite.isLeavemessage()){		//非工作时间段，跳转到留言页面
-	    			view = request(super.createRequestPageTempletResponse("/apps/im/leavemsg")) ;
-	    			view.addObject("sessionConfig", sessionConfig);
-	    		}
+    			if(UKDataContext.model.get("xiaoe")!=null  && invite.isAi() && ((!StringUtils.isBlank(ai) && ai.equals("true")) || (invite.isAifirst() && ai == null))){	//启用 AI ， 并且 AI优先 接待
+    				view = request(super.createRequestPageTempletResponse("/apps/im/ai/index")) ;
+    				String userID = UKTools.genIDByKey(sessionid);
+    				String nickname = "Guest_" + userID;
+    				view.addObject("username", nickname) ;
+    				if(UKDataContext.model.get("xiaoe")!=null){
+    					DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("topic") ;
+    					if(dataExchange!=null){
+    						view.addObject("topicList", dataExchange.getListDataByIdAndOrgi(super.getUser(request).getId(), super.getUser(request).getId(),  super.getOrgi(request))) ;
+    					}
+    				}
+    			}else{
+    				if(sessionConfig.isHourcheck() && !UKTools.isInWorkingHours(sessionConfig.getWorkinghours()) && invite.isLeavemessage()){		//非工作时间段，跳转到留言页面
+		    			view = request(super.createRequestPageTempletResponse("/apps/im/leavemsg")) ;
+		    		}else{
+		    			view.addObject("chatMessageList", chatMessageRes.findByUsessionAndOrgi(sessionid , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime"))) ;
+		    		}
+		    		view.addObject("sessionConfig", sessionConfig);
+    			}
 	    		view.addObject("inviteData", invite);
 	    		view.addObject("orgi",invite.getOrgi());
 	    	}
+    		
+    		
+    		
 	    	view.addObject("hostname", request.getServerName()) ;
 			view.addObject("port", port) ;
 			view.addObject("appid", appid) ;
@@ -233,6 +252,9 @@ public class IMController extends Handler{
 			view.addObject("schema", request.getScheme()) ;
 			view.addObject("sessionid", sessionid) ;
 			
+			if(!StringUtils.isBlank(client)){
+				view.addObject("client", client) ;
+			}
 			if(!StringUtils.isBlank(skill)){
 				view.addObject("skill", skill) ;
 			}
@@ -240,8 +262,9 @@ public class IMController extends Handler{
 				view.addObject("agent", agent) ;
 			}
 			
-			view.addObject("type", type) ;
-			view.addObject("chatMessageList", chatMessageRes.findByUsessionAndOrgi(sessionid , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime"))) ;
+			if(!StringUtils.isBlank(type)){
+				view.addObject("type", type) ;
+			}
 	    	
 	//    	OnlineUserUtils.sendWebIMClients(userid , "accept");
 	    	Page<InviteRecord> inviteRecordList = inviteRecordRes.findByUseridAndOrgi(userid, orgi , new PageRequest(0, 1, Direction.DESC, "createtime")) ;

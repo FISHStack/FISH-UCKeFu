@@ -13,11 +13,12 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.ukefu.util.UKTools;
+import com.ukefu.util.event.UserEvent;
 
 @Entity
 @Table(name = "uk_chat_message")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class ChatMessage implements java.io.Serializable{
+public class ChatMessage implements java.io.Serializable ,UserEvent{
 	/**
 	 * 
 	 */

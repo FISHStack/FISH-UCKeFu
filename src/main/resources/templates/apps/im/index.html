@@ -184,11 +184,21 @@
     </script>
     <!-- kindeditor -->
 </head>
-<body style="overflow:hidden;" class="<#if type?? && type='text'>ukefu-point-text</#if>">
+<body style="overflow:hidden;" class="ukefu-point-text">
 <div class="large ukefu-im-theme <#if type?? && type='text'>ukefu-theme-border-${inviteData.consult_dialog_color!''}</#if>">
     <div id="containter" class="clearfix">
     	<div id="header" class="theme${inviteData.consult_dialog_color!''}">
 	   		<img src="<#if inviteData?? && inviteData.consult_dialog_logo??>/res/image.html?id=${inviteData.consult_dialog_logo?url}<#else>/images/logo.png</#if>" style="height:30px;padding:10px;">
+	   		<div class="ukefu-func-tab">
+		   		<ul>
+		   			<#if models?? && models["xiaoe"]?? && models["xiaoe"] == true>
+		   				<li><a href="/im/index.html?appid=${appid!''}&orgi=${orgi!''}&ai=true<#if client??>&client=${client!''}</#if><#if type??>&type=text</#if><#if skill??>&skill=${skill!''}</#if><#if agent??>&agent=${agent!''}</#if>&userid=${userid!''}&sessionid=${sessionid!''}&t=${.now?long}">智能客服</a></li>
+		   				<li class="cur"><a href="javascript:void(0)">人工坐席</a></li>
+		   			<#else>
+		   				<li class="cur"><a href="javascript:void(0)">人工坐席</a></li>
+		   			</#if>
+		   		</ul>
+	   		</div>
 	    </div>
         <div class="content-left">
             <div class="chat-above" id="above">

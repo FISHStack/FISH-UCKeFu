@@ -96,6 +96,12 @@ public class CousultInvite implements java.io.Serializable{
 	private boolean lvmcontent = true;
 	private boolean skill ;		//启用技能组功能
 	
+	private boolean ai ;		//是否启用 AI
+	private boolean aifirst ;	//AI优先接入
+	private boolean aisearch ;	//AI允许使用 搜索引擎， 例如百度 等
+	private String aimsg ;		//AI欢迎信息，可以使用 HTML
+	private String aisuccesstip ;//AI服务连接成功的消息提示
+	private String ainame ;		//AI服务 昵称
 	
 	private String datadept;
 	private String agent_online;
@@ -537,5 +543,41 @@ public class CousultInvite implements java.io.Serializable{
 	}
 	public void setConsult_skill_bottomtitle(String consult_skill_bottomtitle) {
 		this.consult_skill_bottomtitle = consult_skill_bottomtitle;
+	}
+	public boolean isAi() {
+		return ai;
+	}
+	public void setAi(boolean ai) {
+		this.ai = ai;
+	}
+	public boolean isAifirst() {
+		return aifirst;
+	}
+	public void setAifirst(boolean aifirst) {
+		this.aifirst = aifirst;
+	}
+	public boolean isAisearch() {
+		return aisearch;
+	}
+	public void setAisearch(boolean aisearch) {
+		this.aisearch = aisearch;
+	}
+	public String getAimsg() {
+		return aimsg;
+	}
+	public void setAimsg(String aimsg) {
+		this.aimsg = aimsg;
+	}
+	public String getAisuccesstip() {
+		return aisuccesstip;
+	}
+	public void setAisuccesstip(String aisuccesstip) {
+		this.aisuccesstip = aisuccesstip;
+	}
+	public String getAiname() {
+		return ainame;
+	}
+	public void setAiname(String ainame) {
+		this.ainame = ainame;
 	}
 }

@@ -118,4 +118,53 @@ public class MessageUtils {
     	}
 	}
 	
+	public static ChatMessage createAiMessage(ChatMessage data , String direction , String msgtype , String userid){
+    	MessageOutContent outMessage = new MessageOutContent() ;
+    	outMessage.setMessage(data.getMessage());
+    	outMessage.setMessageType(msgtype);
+    	outMessage.setCalltype(direction);
+    	outMessage.setAgentUser(null);
+    	outMessage.setSnsAccount(null);
+    	
+    	{
+    		data.setUserid(userid);
+    		data.setUsername(data.getUsername());
+    		data.setId(UKTools.getUUID());
+    		data.setTouser(UKDataContext.SYSTEM_ORGI);
+    		
+    		data.setAgentuser(userid);
+    		
+    		data.setAgentserviceid(data.getContextid());
+    		
+    		data.setAppid(data.getAppid());
+    		data.setOrgi(data.getOrgi());
+    		
+    		data.setMsgtype(msgtype);
+    		
+    		data.setUsername(data.getUsername());
+    		data.setUsession(data.getUserid());				//agentUser作为 session id
+    		data.setContextid(data.getContextid());
+    		data.setCalltype(direction);
+    		
+    		outMessage.setContextid(data.getContextid());
+    		outMessage.setFromUser(data.getUserid());
+    		outMessage.setToUser(data.getTouser());
+    		outMessage.setChannelMessage(data);
+    		outMessage.setNickName(data.getUsername());
+    		outMessage.setCreatetime(data.getCreatetime());
+    		
+    		
+    		/**
+    		 * 保存消息
+    		 */
+    		if(UKDataContext.MessageTypeEnum.MESSAGE.toString().equals(data.getType())){
+    			UKDataContext.getContext().getBean(ChatMessageRepository.class).save(data) ;
+    		}
+    	}
+    	if(!StringUtils.isBlank(data.getUserid()) && UKDataContext.MessageTypeEnum.MESSAGE.toString().equals(data.getType())){
+    		NettyClients.getInstance().sendIMEventMessage(data.getUserid(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), outMessage);
+    	}
+    	return data ;
+	}
+	
 }

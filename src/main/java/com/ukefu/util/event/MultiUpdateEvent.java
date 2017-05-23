@@ -1,14 +1,14 @@
 package com.ukefu.util.event;
 
-import org.springframework.data.repository.CrudRepository;
+import com.ukefu.webim.service.hibernate.BaseService;
 
 public class MultiUpdateEvent<S> implements UserEvent{
 	
 	private S data ;
-	private CrudRepository<?, ?> crudRes ;
+	private BaseService<?> crudRes ;
 	private String eventype ;
 	
-	public MultiUpdateEvent(S data , CrudRepository<?, ?> crudRes , String eventype){
+	public MultiUpdateEvent(S data , BaseService<?> crudRes , String eventype){
 		this.data = data ;
 		this.crudRes = crudRes ;
 		this.eventype= eventype ;
@@ -20,12 +20,14 @@ public class MultiUpdateEvent<S> implements UserEvent{
 	public void setData(S data) {
 		this.data = data;
 	}
-	public CrudRepository<?, ?> getCrudRes() {
+	public BaseService<?> getCrudRes() {
 		return crudRes;
 	}
-	public void setCrudRes(CrudRepository<?, ?> crudRes) {
+
+	public void setCrudRes(BaseService<?> crudRes) {
 		this.crudRes = crudRes;
 	}
+
 	public String getEventype() {
 		return eventype;
 	}

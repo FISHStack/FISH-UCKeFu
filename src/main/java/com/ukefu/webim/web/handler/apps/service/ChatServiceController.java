@@ -73,6 +73,20 @@ public class ChatServiceController extends Handler{
         return request(super.createAppsTempletResponse("/apps/service/quene/index"));
     }
 	
+	@RequestMapping("/quene/clean")
+    @Menu(type = "service" , subtype = "queneclean" , admin= true)
+    public ModelAndView clean(ModelMap map , HttpServletRequest request ,@Valid String id) {
+		AgentUser agentUser = agentUserRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
+		if(agentUser!=null && agentUser.getStatus().equals(UKDataContext.AgentUserStatusEnum.INQUENE.toString())){
+			agentUser.setAgent(null);
+			agentUser.setSkill(null);
+			agentUserRes.save(agentUser) ;
+			CacheHelper.getAgentUserCacheBean().put(agentUser.getUserid(), agentUser, super.getOrgi(request));
+			ServiceQuene.allotAgent(agentUser, super.getOrgi(request)) ;
+		}
+        return request(super.createRequestPageTempletResponse("redirect:/service/quene/index.html"));
+    }
+	
 	@RequestMapping("/agent/index")
     @Menu(type = "service" , subtype = "onlineagent" , admin= true)
     public ModelAndView agent(ModelMap map , HttpServletRequest request) {
