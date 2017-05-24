@@ -43,7 +43,7 @@ public class MediaController extends Handler{
     			orgFile.renameTo(file) ;
     		}
     		UKTools.processImage(id, orgFile, path) ;
-    	}else if(file.exists() && !id.endsWith("_original")){
+    	}else if(!StringUtils.isBlank(id) && file.exists() && !id.endsWith("_original")){
     		File destFile = new File(path , id+"_original") ;
     		file.renameTo(destFile) ;
     		UKTools.processImage(id, destFile, path) ;
