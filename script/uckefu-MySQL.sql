@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 127.0.0.1
-Source Server Version : 50554
+Source Server         : UCKeFu
+Source Server Version : 50717
 Source Host           : localhost:3306
-Source Database       : uckefu
+Source Database       : test
 
 Target Server Type    : MYSQL
-Target Server Version : 50554
+Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-05-09 16:18:51
+Date: 2017-05-24 11:36:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -337,13 +337,19 @@ CREATE TABLE `uk_consult_invite` (
   `consult_skill_numbers` int(11) DEFAULT NULL,
   `consult_skill_maxagent` int(11) DEFAULT NULL,
   `consult_skill_bottomtitle` varchar(50) DEFAULT NULL,
+  `ai` tinyint(4) DEFAULT '0',
+  `aifirst` tinyint(4) DEFAULT '0',
+  `aisearch` tinyint(4) DEFAULT '0',
+  `aimsg` text,
+  `aisuccesstip` varchar(100) DEFAULT NULL,
+  `ainame` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uk_consult_invite
 -- ----------------------------
-INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '297e8c7b455798280145579c73e501c1', 'right,middle', '在线客服', null, null, null, '4', '1', null, null, null, null, '4', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '1', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统');
+INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '297e8c7b455798280145579c73e501c1', 'right,middle', '在线客服', null, null, null, '6', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '1', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '1', '0', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E机器人');
 
 -- ----------------------------
 -- Table structure for `uk_contacts`
@@ -4895,6 +4901,13 @@ INSERT INTO `uk_sysdic` VALUES ('4028838b5b565caf015b56689012000f', '紧急', 'p
 INSERT INTO `uk_sysdic` VALUES ('4028838b5b565caf015b566d11d80010', '标签类型', 'pub', 'com.dic.tag.type', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-10 13:54:00', null, '1', '0', null, '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028838b5b565caf015b566de3180011', '咨询客户', 'pub', 'user', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-04-10 13:54:53', '2017-04-10 13:54:53', '0', '1', '4028838b5b565caf015b566d11d80010', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028838b5b565caf015b566de32a0012', '工单', 'pub', 'workorders', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-04-10 13:54:53', '2017-04-10 13:54:53', '0', '2', '4028838b5b565caf015b566d11d80010', '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815c2e2f66015c2f07827e0002', '智能机器人输入条件', 'pub', 'com.dic.xiaoe.input', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-05-22 15:20:40', null, '1', '0', null, '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815c2e2f66015c2f07c6190003', '智能机器人输出条件', 'pub', 'com.dic.xiaoe.output', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-05-22 15:20:57', null, '1', '0', null, '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815c2e2f66015c2f083d010004', '姓名', 'pub', '01', 'ukewo', null, '402888815c2e2f66015c2f07827e0002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-05-22 15:21:28', '2017-05-22 15:21:28', '0', '1', '402888815c2e2f66015c2f07827e0002', '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815c2e2f66015c2f083d180005', '性别', 'pub', '02', 'ukewo', null, '402888815c2e2f66015c2f07827e0002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-05-22 15:21:28', '2017-05-22 15:21:28', '0', '2', '402888815c2e2f66015c2f07827e0002', '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815c2e2f66015c2f083d250006', '年龄', 'pub', '03', 'ukewo', null, '402888815c2e2f66015c2f07827e0002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-05-22 15:21:28', '2017-05-22 15:21:28', '0', '3', '402888815c2e2f66015c2f07827e0002', '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815c2e2f66015c2f087e510007', '姓名', 'pub', '01', 'ukewo', null, '402888815c2e2f66015c2f07c6190003', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-05-22 15:21:44', '2017-05-22 15:21:44', '0', '1', '402888815c2e2f66015c2f07c6190003', '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815c2e2f66015c2f087e660008', '年龄', 'pub', '02', 'ukewo', null, '402888815c2e2f66015c2f07c6190003', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-05-22 15:21:44', '2017-05-22 15:21:44', '0', '2', '402888815c2e2f66015c2f07c6190003', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafaa94015bafb14edf0002', '服务类型', 'pub', 'summary', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-04-27 21:54:44', null, '1', '0', '4028838b5b565caf015b566d11d80010', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe5c8180009', '服务小结预约方式', 'pub', 'com.dic.summary.reservtype', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:03', null, '1', '0', null, '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64be2000a', '电话', 'pub', 'phone', 'ukewo', null, '4028e3815bafb323015bafe5c8180009', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:37', '2017-04-27 22:52:37', '0', '1', '4028e3815bafb323015bafe5c8180009', '0', '0');
@@ -5143,7 +5156,7 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-03-16 18:36:15', '4028838b5b772bc4015b772ddec70001', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-05-07 22:08:00', null, null, null, '0');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-03-16 18:36:15', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-05-24 11:18:15', null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -5318,6 +5331,232 @@ CREATE TABLE `uk_wxmpevent` (
 
 -- ----------------------------
 -- Records of uk_wxmpevent
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_xiaoe_config`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_xiaoe_config`;
+CREATE TABLE `uk_xiaoe_config` (
+  `id` varchar(32) NOT NULL DEFAULT '',
+  `orgi` varchar(32) DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `username` varchar(32) DEFAULT NULL,
+  `name` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `enableask` tinyint(4) DEFAULT NULL,
+  `askfirst` tinyint(4) DEFAULT NULL,
+  `enablescene` tinyint(4) DEFAULT NULL,
+  `scenefirst` tinyint(4) DEFAULT NULL,
+  `enablekeyword` tinyint(4) DEFAULT NULL,
+  `keywordnum` int(11) DEFAULT NULL,
+  `noresultmsg` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_xiaoe_config
+-- ----------------------------
+INSERT INTO `uk_xiaoe_config` VALUES ('402888815c3857f9015c385a97810003', 'ukewo', '297e8c7b455798280145579c73e501c1', null, null, '2017-05-24 10:49:13', '1', '1', '1', '0', '1', '5', null);
+
+-- ----------------------------
+-- Table structure for `uk_xiaoe_kbs_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_xiaoe_kbs_type`;
+CREATE TABLE `uk_xiaoe_kbs_type` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_xiaoe_kbs_type
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_xiaoe_scene`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_xiaoe_scene`;
+CREATE TABLE `uk_xiaoe_scene` (
+  `id` varchar(32) NOT NULL,
+  `sessionid` varchar(32) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `content` text,
+  `keyword` varchar(100) DEFAULT NULL,
+  `summary` varchar(255) DEFAULT NULL,
+  `anonymous` tinyint(4) DEFAULT NULL,
+  `begintime` datetime DEFAULT NULL,
+  `endtime` datetime DEFAULT NULL,
+  `top` tinyint(4) DEFAULT NULL,
+  `essence` tinyint(4) DEFAULT NULL,
+  `accept` tinyint(4) DEFAULT NULL,
+  `finish` tinyint(4) DEFAULT NULL,
+  `answers` int(11) DEFAULT NULL,
+  `views` int(11) DEFAULT NULL,
+  `followers` int(11) DEFAULT NULL,
+  `collections` int(11) DEFAULT NULL,
+  `comments` int(11) DEFAULT NULL,
+  `mobile` tinyint(4) DEFAULT NULL,
+  `status` varchar(32) DEFAULT NULL,
+  `tptype` varchar(32) DEFAULT NULL,
+  `cate` varchar(32) DEFAULT NULL,
+  `username` varchar(32) DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `memo` varchar(32) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  `organ` varchar(32) DEFAULT NULL,
+  `replaytype` varchar(32) DEFAULT NULL,
+  `allowask` tinyint(4) DEFAULT NULL,
+  `inputcon` varchar(255) DEFAULT NULL,
+  `outputcon` varchar(255) DEFAULT NULL,
+  `userinput` text,
+  `aireply` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_xiaoe_scene
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_xiaoe_sceneitem`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_xiaoe_sceneitem`;
+CREATE TABLE `uk_xiaoe_sceneitem` (
+  `id` varchar(32) NOT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `sceneid` varchar(32) DEFAULT NULL,
+  `inx` int(11) DEFAULT NULL,
+  `itemtype` varchar(32) DEFAULT NULL,
+  `replaytype` varchar(32) DEFAULT NULL,
+  `allowask` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_xiaoe_sceneitem
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_xiaoe_scene_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_xiaoe_scene_type`;
+CREATE TABLE `uk_xiaoe_scene_type` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_xiaoe_scene_type
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_xiaoe_topic`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_xiaoe_topic`;
+CREATE TABLE `uk_xiaoe_topic` (
+  `id` varchar(32) NOT NULL,
+  `sessionid` varchar(32) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `content` text,
+  `keyword` varchar(100) DEFAULT NULL,
+  `summary` varchar(255) DEFAULT NULL,
+  `anonymous` tinyint(4) DEFAULT NULL,
+  `begintime` datetime DEFAULT NULL,
+  `endtime` datetime DEFAULT NULL,
+  `top` tinyint(4) DEFAULT NULL,
+  `essence` tinyint(4) DEFAULT NULL,
+  `accept` tinyint(4) DEFAULT NULL,
+  `finish` tinyint(4) DEFAULT NULL,
+  `answers` int(11) DEFAULT NULL,
+  `views` int(11) DEFAULT NULL,
+  `followers` int(11) DEFAULT NULL,
+  `collections` int(11) DEFAULT NULL,
+  `comments` int(11) DEFAULT NULL,
+  `mobile` tinyint(4) DEFAULT NULL,
+  `status` varchar(32) DEFAULT NULL,
+  `tptype` varchar(32) DEFAULT NULL,
+  `cate` varchar(32) DEFAULT NULL,
+  `username` varchar(32) DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `memo` varchar(32) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  `organ` varchar(32) DEFAULT NULL,
+  `sms` varchar(255) DEFAULT NULL,
+  `tts` varchar(255) DEFAULT NULL,
+  `email` text,
+  `weixin` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_xiaoe_topic
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_xiaoe_words`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_xiaoe_words`;
+CREATE TABLE `uk_xiaoe_words` (
+  `ID` varchar(32) NOT NULL,
+  `KEYWORD` varchar(50) DEFAULT NULL,
+  `CONTENT` text,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `SUPERORDINATE` varchar(50) DEFAULT NULL,
+  `PARTOFSPEECH` varchar(50) DEFAULT NULL,
+  `CATE` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_xiaoe_words
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_xiaoe_words_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_xiaoe_words_type`;
+CREATE TABLE `uk_xiaoe_words_type` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_xiaoe_words_type
 -- ----------------------------
 
 -- ----------------------------

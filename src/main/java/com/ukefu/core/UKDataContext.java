@@ -24,6 +24,8 @@ public class UKDataContext {
 	
 	public static final String SYSTEM_CACHE_SESSION_CONFIG = "session_config";
 	
+	public static final String SYSTEM_CACHE_AI_CONFIG = "ai_config";
+	
 	public static String SYSTEM_ORGI = "ukewo" ;
 	public static Map<String , Boolean> model = new HashMap<String,Boolean>();
 	

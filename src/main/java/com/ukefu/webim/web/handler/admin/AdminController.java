@@ -40,7 +40,7 @@ public class AdminController extends Handler{
 	
     @RequestMapping("/admin")
     public ModelAndView index(ModelMap map ,HttpServletRequest request) {
-    	ModelAndView view = request(super.createRequestPageTempletResponse("/admin/index"));
+    	ModelAndView view = request(super.createRequestPageTempletResponse("redirect:/"));
         User user = super.getUser(request) ;
         view.addObject("agentStatusReport",ServiceQuene.getAgentReport(user.getOrgi())) ;
 		view.addObject("agentStatus",CacheHelper.getAgentStatusCacheBean().getCacheObject(user.getId(), user.getOrgi())) ;
