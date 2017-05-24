@@ -37,6 +37,13 @@ public class MediaController extends Handler{
     @Menu(type = "resouce" , subtype = "image" , access = true)
     public void index(HttpServletResponse response, @Valid String id) throws IOException {
     	File file = new File(path ,id) ;
+    	if(id.endsWith("_original") && !file.exists()){
+    		File orgFile = new File(path , id.substring(0 , id.indexOf("_original"))) ;
+    		if(orgFile.exists()){
+    			orgFile.renameTo(file) ;
+    		}
+    		UKTools.processImage(id, orgFile, path) ;
+    	}
     	if(file.exists() && file.isFile()){
     		response.getOutputStream().write(FileUtils.readFileToByteArray(new File(path ,id)));
     	}
