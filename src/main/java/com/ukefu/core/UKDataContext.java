@@ -18,6 +18,8 @@ public class UKDataContext {
 	public static final String SERVICE_QUENE_NULL_STR = "service_quene_null" ;
 	public static final String DEFAULT_TYPE = "default"	;		//默认分类代码
 	
+	public static final int MAX_IMAGE_WIDTH = 460 ;		
+	
 	private static boolean imServerRunning = false ;			//IM服务状态
 	
 	public static final int AGENT_STATUS_MAX_USER = 10 ; 		//每个坐席 最大接待的 咨询数量

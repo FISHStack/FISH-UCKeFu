@@ -352,8 +352,14 @@ public class IMController extends Handler{
     		if(!uploadDir.exists()){
     			uploadDir.mkdirs() ;
     		}
-    		fileName = "upload/"+UKTools.md5(imgFile.getBytes())+imgFile.getOriginalFilename().substring(imgFile.getOriginalFilename().lastIndexOf(".")) ;
-    		FileCopyUtils.copy(imgFile.getBytes(), new File(path , fileName));
+    		String fileid = UKTools.md5(imgFile.getBytes()) ;
+    		fileName = "upload/"+fileid+"_original" ;
+    		File imageFile = new File(path , fileName) ;
+    		FileCopyUtils.copy(imgFile.getBytes(), imageFile);
+    		
+    		fileName = UKTools.processImage("upload/"+fileid, imageFile , path) ;
+    		
+    		
     		upload = new UploadStatus("0" , "/res/image.html?id="+fileName);
     		
     		String image =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+fileName ;

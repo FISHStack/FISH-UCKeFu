@@ -193,7 +193,7 @@ $(document).ready(function(){
 			  maxmin: true,
 			  area: ['750px','500px'],
 			  shadeClose: true,
-			  content: "<div class='ukefu-preview-image'><img src='"+html+"'></div>"
+			  content: "<div class='ukefu-preview-image'><img src='"+html+"_original'></div>"
 			});
 	});
 	

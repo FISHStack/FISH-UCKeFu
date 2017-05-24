@@ -445,8 +445,13 @@ public class AgentController extends Handler {
     		if(!uploadDir.exists()){
     			uploadDir.mkdirs() ;
     		}
-    		fileName = "upload/"+UKTools.md5(imgFile.getBytes())+imgFile.getOriginalFilename().substring(imgFile.getOriginalFilename().lastIndexOf(".")) ;
-    		FileCopyUtils.copy(imgFile.getBytes(), new File(path , fileName));
+    		String fileid = UKTools.md5(imgFile.getBytes()) ;
+    		fileName = "upload/"+fileid+"_original"  ;
+    		File imageFile = new File(path , fileName) ;
+    		FileCopyUtils.copy(imgFile.getBytes(), imageFile);
+    		
+    		fileName = UKTools.processImage("upload/"+fileid, imageFile , path) ;
+    		
     		
     		String fileURL =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+fileName ;
     		if(request.getServerPort() == 80){
@@ -486,7 +491,7 @@ public class AgentController extends Handler {
 	    		data.setUsession(agentUser.getUserid());
 	    		data.setAppid(agentUser.getAppid());
 	    		data.setUserid(super.getUser(request).getId());
-	    		data.setMessage(outMessage.getMessage());
+	    		data.setMessage("/res/image.html?id="+fileName);
 	    		
 	    		data.setOrgi(super.getUser(request).getOrgi());
 	    		

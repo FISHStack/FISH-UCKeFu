@@ -355,7 +355,7 @@
         var chat=document.getElementsByClassName('chatting-left').innerText;
         chat = data.message;
         if(data.messageType == "image"){
-        	chat = "<img src='"+data.message+"' class='ukefu-media-image'>" ;
+        	chat = "<a href='"+data.message+"_original' target='_blank'><img src='"+data.message+"' class='ukefu-media-image'/></a>" ;
         }
 		if(data.calltype == "in"){
 			output('<div class="chat-right"> <img class="user-img" src="/im/img/user.png" alt=""><div class="chat-message"><label class="time">'+data.createtime+'</label><label  class="user">'+data.nickName+'</label> </div><div class="chatting-right"><i class="arrow arrow${inviteData.consult_dialog_color!''}"></i><div class="chat-content theme${inviteData.consult_dialog_color!''}">'+chat+'</div></div>' , "chat-block");
