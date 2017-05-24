@@ -27,9 +27,11 @@
 	<li>
 		类型：${uKeFuDic[contacts.ckind!''].name!''} 
 	</li>
+	<#if contacts?? && contacts.touchtime??>
 	<li>
 		获得时间：${contacts.touchtime?string('yyyy-MM-dd')}
 	</li>
+	</#if>
 	<li>
 		备注：${contacts.memo!''} 
 	</li>
