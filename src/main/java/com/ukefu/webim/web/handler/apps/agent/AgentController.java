@@ -272,10 +272,10 @@ public class AgentController extends Handler {
 									.getUserid(), super.getOrgi(request),
 									UKDataContext.AgentUserStatusEnum.END
 											.toString())));
+			view.addObject("tagRelationList", tagRelationRes.findByUserid(agentUser.getUserid())) ;
 		}
 		
 		view.addObject("tags", tagRes.findByOrgiAndTagtype(super.getOrgi(request) , UKDataContext.ModelType.USER.toString())) ;
-		view.addObject("tagRelationList", tagRelationRes.findByUserid(agentUser.getUserid())) ;
 		view.addObject("quickReplyList", quickReplyRes.findByOrgi(super.getOrgi(request))) ;
 
 		return view ;
