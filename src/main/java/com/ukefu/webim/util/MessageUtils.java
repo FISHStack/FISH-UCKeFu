@@ -118,7 +118,7 @@ public class MessageUtils {
     	}
 	}
 	
-	public static ChatMessage createAiMessage(ChatMessage data , String direction , String msgtype , String userid){
+	public static ChatMessage createAiMessage(ChatMessage data , String direction , String chatype, String msgtype , String userid){
     	MessageOutContent outMessage = new MessageOutContent() ;
     	outMessage.setMessage(data.getMessage());
     	outMessage.setMessageType(msgtype);
@@ -135,6 +135,7 @@ public class MessageUtils {
     		data.setAgentuser(userid);
     		
     		data.setAgentserviceid(data.getContextid());
+    		data.setChatype(chatype);
     		
     		data.setAppid(data.getAppid());
     		data.setOrgi(data.getOrgi());

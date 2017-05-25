@@ -41,7 +41,7 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	private String orgi ;
 	private String channel ;
 	private String model ;			//消息所属模块， WebIM/EntIM
-	private String chatype ;		//对话类型，是私聊还是群聊
+	private String chatype ;		//对话类型，是私聊还是群聊 或者是智能机器人对话
 	
 	private String headimgurl ;		//用户头像 ，临时用
 	
