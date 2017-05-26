@@ -198,10 +198,10 @@ var ukefu = {
 				url = url + "&name="+encodeURIComponent(data.name);	
 			}
 			if(data.email){
-				url = url + "&name="+encodeURIComponent(data.email);	
+				url = url + "&email="+encodeURIComponent(data.email);	
 			}
 			if(data.mobile){
-				url = url + "&name="+encodeURIComponent(data.mobile);	
+				url = url + "&mobile="+encodeURIComponent(data.mobile);	
 			}
 		}
 		window.open(url+"&t="+new Date().getTime(), "ukefu-chat", "height=600, width=850, top="+ (window.screen.availHeight - 30 - 600) /2+", left="+(window.screen.availWidth - 10 - 750)/2+",toolbar=no, menubar=no, scrollbars=no, resizable=no, directories=no,location=no, status=no");
