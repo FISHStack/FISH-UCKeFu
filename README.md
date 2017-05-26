@@ -3,7 +3,7 @@
 
 [![输入图片说明](http://git.oschina.net/uploads/images/2017/0123/001823_7efad50c_1200081.png "在这里输入图片标题")](http://shang.qq.com/wpa/qunwpa?idkey=637134af30a27220211c843d801ada14700aca69ee8f4acf13f795fe38ea7b94)
 
-优客服，是一个多渠道融合的客户支持服务平台，包含WebIM，微信，电话，邮件，短信等接入渠道!
+优客服，是一个多渠道融合的客户支持服务平台，包含WebIM，微信，电话，邮件，短信等接入渠道，最新的2.2.0版本已支持智能机器人!
 
 #访问地址
 DEMO访问地址：[优客服（UCKeFu-WebIM）](http://uk.ukewo.cn/) ， 访问账号：admin，密码：123456
