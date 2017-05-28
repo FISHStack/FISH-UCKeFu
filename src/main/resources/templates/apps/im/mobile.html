@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="viewport"
+		content="width=device-width, maximum-scale=1.0, initial-scale=1.0,initial-scale=1.0,user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>智能客服</title>
+    
+	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?t=1489039620156"/>
+    <link rel="stylesheet" type="text/css" href="/im/css/ukefu.css">
+    <link rel="stylesheet" id="skin" type="text/css" href="/im/css/default/ukefu.css">
+    
+    <!-- kindeditor -->
+    <link rel="stylesheet" type="text/css" href="/im/js/kindeditor/themes/default/default.css">
+    
+    <script type="text/javascript" src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/jquery.form.js"></script>
+    
+    <script type="text/javascript" src="/im/js/kindeditor/kindeditor.js"></script>
+    <script type="text/javascript" src="/im/js/kindeditor/lang/zh-CN.js"></script>
+    <style>
+    	* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			-webkit-tap-highlight-color: transparent;
+			outline: none;
+		}
+		*:not(input,textarea) { 
+			-webkit-touch-callout: none; 
+		  -webkit-user-select: none; 
+		}
+    </style>
+    
+    <script src="/im/js/socket.io.js"></script>
+    <script type="text/javascript">
+    	
+    var editor , words , textheight ;
+    KindEditor.ready(function (K) {
+        editor = K.create('textarea[name="content"]', {
+            autoHeightMode: false,
+            width: "100%",
+            resizeType: 0,
+            themeType: 'simple',
+            fontsize: 16,
+			newlineTag : "br" , 
+			uploadJson : "/im/image/upload.html?userid=${userid!''}",
+            allowFileManager : false,
+            allowInsertUpload:false,		//增加的参数，上传图片后是否插入到当前区域
+            allowImageRemote:false,
+			filterMode:true,
+			height:"40px",
+			minHeight:"40px",
+            items: ['emoticons', 'cut' , 'image'],
+			htmlTags: {img : ['src', 'width', 'height', 'border', 'alt', 'title', 'align', '.width', '.height', '.border'] , br:[]}  ,
+			afterChange : function() {
+				document.getElementById("bottom").style.height = this.edit.doc.body.offsetHeight +  20 + "px";
+				this.edit.setHeight(this.edit.doc.body.offsetHeight);
+				document.getElementById("above").style.height = "calc(100% - "+(this.edit.doc.body.offsetHeight + 30)+"px)"
+				
+				var count = this.count() ;
+				var limitNum = 300;  //设定限制字数
+				var strValue = this.html();
+				if(count > limitNum) {
+					//超过字数限制自动截取		
+					alert("字数超过300，请适当删除部分内容");
+					strValue = strValue.substring(0,limitNum);
+					editor.html(strValue);      
+				}
+			},
+	        afterFocus : function() {
+	        	if(document.getElementById("faceindex").style.display != "none"){
+		        	document.getElementById("faceindex").style.display= "none";
+		        	document.getElementById("bottom").style.height = editor.edit.doc.body.offsetHeight +  20 + "px" ;
+		        	document.getElementById("above").style.height = "calc(100% - "+(this.edit.doc.body.offsetHeight + 30)+"px)"
+	        	}
+	        }
+        });
+    });
+	KindEditor.options.cssData = "body { min-height:30px;display:inline-block;font-size: 16px; font-family:'Microsoft Yahei', 'Helvetica', 'Simsun', 'Arial';}";
+	function openFaceDialog(){
+		if(document.getElementById("faceindex").style.display == "none"){
+			document.getElementById("faceindex").style.display= "block";
+			document.getElementById("bottom").style.height = editor.edit.doc.body.offsetHeight +  20 + document.getElementById("faceindex").offsetHeight + "px" ;
+			document.getElementById("above").style.height = "calc(100% - "+(editor.edit.doc.body.offsetHeight +  20 + document.getElementById("faceindex").offsetHeight + 10)+"px)"
+		}else{
+			document.getElementById("faceindex").style.display= "none";
+			document.getElementById("bottom").style.height = editor.edit.doc.body.offsetHeight +  20 + "px" ;
+			document.getElementById("above").style.height = "calc(100% - "+(editor.edit.doc.body.offsetHeight + 30)+"px)"
+		}
+		return false ;
+	}	
+	function insertImg(obj){
+		var startOffset = editor.cmd.range.startOffset;//kindEditor中当前光标的位置索引值startOffset
+	    editor.insertHtml(obj.outerHTML);//js插入指定的HTML内容到光标处。
+	}
+	$(document).ready(function(){
+		window.addEventListener('resize', function () {
+		     if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+		        window.setTimeout(function () {
+		          document.activeElement.scrollIntoViewIfNeeded()
+		        }, 0)
+		      }
+		});
+		// 在输入框获取焦点, 键盘弹起后, 真的是一行代码
+		var interval = setInterval(function() {
+		    document.body.scrollTop = document.body.scrollHeight
+		}, 100)
+
+		$(document).on('submit.form.data-api','[data-toggle="ajax-form"]', function ( e ) {
+			var formValue = $(e.target) ;
+			$(this).ajaxSubmit({	  
+				url:formValue.attr("action"),
+				success: function(data){
+					
+				},
+				error:function(xhr, type, s){  				
+					//notification("",false);	//结束
+				}
+			}); 
+			return false;
+		});
+	});
+  </script>
+    <!-- kindeditor -->
+</head>
+<body class="ukefu-im-theme" style="overflow:hidden;height:calc(100% - 50px);overflow-y: atuo;/* 或者scroll */-webkit-overflow-scrolling: touch;/* 解决ios滑动不流畅问题 */" class="ukefu-point-text">
+	<div id="header" class="theme${inviteData.consult_dialog_color!''}">
+		<img
+			src="<#if inviteData?? && inviteData.consult_dialog_logo??>/res/image.html?id=${inviteData.consult_dialog_logo?url}<#else>/images/logo.png</#if>"
+			style="height:50px;padding:10px;">
+		
+		<div class="ukefu-func-tab">
+		   		<ul>
+		   			<#if models?? && models["xiaoe"]?? && models["xiaoe"] == true>
+		   				<li><a href="/im/index.html?appid=${appid!''}&orgi=${orgi!''}&ai=true<#if client??>&client=${client!''}</#if><#if type??>&type=text</#if><#if skill??>&skill=${skill!''}</#if><#if agent??>&agent=${agent!''}</#if>&userid=${userid!''}&sessionid=${sessionid!''}&t=${.now?long}">智能客服</a></li>
+		   				<li class="cur"><a href="javascript:void(0)">人工坐席</a></li>
+		   			<#else>
+		   				<li class="cur"><a href="javascript:void(0)">人工坐席</a></li>
+		   			</#if>
+		   		</ul>
+	   		</div>
+	</div>
+	<div class="chat-above" id="above">
+		<div class="clearfix message  welcome">
+			<span id="welcome-message"><#if inviteData.aimsg?? &&
+				inviteData.aimsg!=''>${inviteData.aimsg?no_esc}<#else>${(inviteData.dialog_message!'欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.')?no_esc}</#if></span>
+		</div>
+		<#if chatMessageList?? && chatMessageList.content??> <#list
+		chatMessageList.content?reverse as chatMessage> <#if
+		chatMessage.userid?? && userid?? && userid == chatMessage.userid>
+		<div class="clearfix chat-block">
+			<div class="chat-right">
+				<img class="user-img" src="/im/img/user.png" alt="">
+				<div class="chat-message">
+					<label class="time">${chatMessage.createtime!''}</label> <label
+						class="user">${chatMessage.username!''}</label>
+				</div>
+				<div class="chatting-right">
+					<i class="arrow arrow${inviteData.consult_dialog_color!''}"></i>
+					<div
+						class="chat-content theme${inviteData.consult_dialog_color!''}"><#include
+						"/apps/im/media/message.html"></div>
+				</div>
+			</div>
+		</div>
+		<#else>
+		<div class="clearfix chat-block">
+			<div class="chat-left">
+				<img class="user-img"
+					src="<#if inviteData?? && inviteData.consult_dialog_headimg??>/res/image.html?id=${inviteData.consult_dialog_headimg?url}<#else>/images/agent.png</#if>"
+					alt="">
+				<div class="chat-message">
+					<label class="user">${inviteData.ainame!'小E'}</label> <label
+						class="time">${chatMessage.createtime!''}</label>
+				</div>
+				<div class="chatting-left">
+					<i class="arrow"></i>
+					<div class="chat-content"><#include
+						"/apps/im/media/message.html"></div>
+				</div>
+			</div>
+		</div>
+		</#if> </#list> </#if>
+	</div>
+	<div class="mobile-chat-bottom" id="bottom">
+		<form id="imgForm" action="/im/image/upload.html?userid=${userid!''}&appid=${appid!''}&channel=h5&username=${username!''}&orgi=${orgi!''}" data-toggle="ajax-form"" enctype="multipart/form-data">
+			<a href="javascript:;" class="imgFile" >
+				<img src="/im/img/img.png" class="chat-type" style="width:32px;height:32px;">
+				<input type="file" name="imgFile" id="imgFile" accept="image/*" onChange="$('#imgForm').submit();$(this).val('');">
+			</a>
+		</form>
+		<textarea id="message" name="content" style="visibility:hidden;display:none;"></textarea>
+		<div class="btn-push clearfix" class="tools">
+			<img id="facedialog" onclick="return openFaceDialog()" src="/im/img/face.png" style="width:32px;height:32px;"></a>
+			<a href="javascript:void(0)" onClick="sendMessage();return false;"><img src="/im/img/send.png" style="width:32px;height:32px;"></a>
+		</div>
+		
+		<div id="faceindex" style="display:none;height:200px;position: absolute;bottom: 0px;width:100%;overflow-x:auto;">
+			<table class="ke-table" cellpadding="0" cellspacing="0" border="0" style="min-width:100%;">
+				<tbody>
+					<#list 0..4 as row>
+					<tr>
+						<#list 0..20 as col>
+						<td class="ke-cell"><span class="ke-img"><img
+								src="/im/js/kindeditor/plugins/emoticons/images/${row*20 + col}.gif"
+								border="0" alt="" onClick="insertImg(this)"></span></td>
+						</#list>
+					</tr>
+					</#list>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script>
+	var service_end = false;
+	// 调查问卷
+	var diaShade = document.getElementById('diaShade');
+	var dialogWrap = document.getElementById('dialogWrap');
+	function popup(para) {
+		diaShade.style.display = para;
+		dialogWrap.style.display = para;
+	}
+	document.getElementById('above').scrollTop = document
+			.getElementById('above').scrollHeight; //滚动到 对话内容的 底部
+	// 参数连接
+	// 参数连接
+	var hostname = location.hostname ;
+    var socket = io.connect('${schema!'http'}://'+hostname+':${port}/im/user?userid=${userid!''}&orgi=${orgi!''}&session=${sessionid!''}&appid=${appid!''}&osname=${(osname!'')?url}&browser=${(browser!'')?url}<#if skill??>&skill=${skill}</#if><#if agent??>&agent=${agent}</#if>');
+    socket.on('connect',function(){
+        //service.sendRequestMessage(); 
+		//output('<span id="connect-message">'+ new Date().format("yyyy-MM-dd hh:mm:ss") + ' 开始沟通' +'</span>' , 'message connect-message');	 		
+    })
+    socket.on("agentstatus",function(data){
+       document.getElementById('connect-message').innerHTML=data.message;
+    })
+    socket.on("status",function(data){
+		output('<span id="connect-message">'+data.message+'</span>' , 'message connect-message');     
+		if(data.messageType == "end"){
+			service_end = true ;
+			editor.readonly();
+		}
+    })
+    socket.on('message', function(data) {
+        var chat=document.getElementsByClassName('chatting-left').innerText;
+        chat = data.message;
+        if(data.messageType == "image"){
+        	chat = "<a href='"+data.message+"_original' target='_blank'><img src='"+data.message+"' class='ukefu-media-image'/></a>" ;
+        }
+		if(data.calltype == "in"){
+			output('<div class="chat-right"> <img class="user-img" src="/im/img/user.png" alt=""><div class="chat-message"><label class="time">'+data.createtime+'</label><label  class="user">'+data.nickName+'</label> </div><div class="chatting-right"><i class="arrow arrow${inviteData.consult_dialog_color!''}"></i><div class="chat-content theme${inviteData.consult_dialog_color!''}">'+chat+'</div></div>' , "chat-block");
+		}else if(data.calltype == "out"){
+			output('<div class="chat-left"> <img class="user-img" src="<#if inviteData?? && inviteData.consult_dialog_headimg??>/res/image.html?id=${inviteData.consult_dialog_headimg?url}<#else>/images/agent.png</#if>" alt=""><div class="chat-message"><label  class="user">'+data.nickName+'</label><label class="time">'+data.createtime+'</label> </div><div class="chatting-left"><i class="arrow"></i><div class="chat-content">'+chat+'</div></div>' , "chat-block");	
+		}
+    });
+    
+    socket.on('disconnect',function() {
+        output('<span id="connect-message">连接坐席失败，在线咨询服务不可用</span>' , 'message connect-message');
+    });
+    function sendDisconnect(){
+        socket.disconnect();
+    }
+    function sendMessage() {
+		editor.sync();
+		var count = editor.count("text");
+		if(count>0 && service_end == false){
+	        var message = document.getElementById('message').value;
+	        if(message!= ""){ 
+				socket.emit('message', {
+						appid : "${appid!''}",
+						userid:"${userid!''}",
+						type:"message" ,
+						session:"${sessionid!''}",
+						orgi:"${orgi!''}",
+						message : message
+				});
+			}
+		}else if(service_end == true){
+			alert("坐席已断开和您的对话");	
+		}
+		editor.html('');
+    }
+    function output(message , clazz) {
+		if(clazz == "message connect-message"){
+			var messages = document.getElementsByClassName("connect-message") ;
+			for(inx =0 ; inx < messages.length ; ){
+				document.getElementById('above').removeChild(messages[inx]) ;
+				inx++ ;
+			}			
+		}
+        var element = ("<div class='clearfix "+clazz+"'>" +" " + message + "</div>");
+        document.getElementById('above').innerHTML= (document.getElementById('above').innerHTML + element);
+		document.getElementById('above').scrollTop = document.getElementById('above').scrollHeight  ;
+    }
+	function update(id , message) {
+        document.getElementById(id).innerHTML= message;
+    }
+
+	var message = {
+	// text:data.message,
+	// picture:function(){
+
+	// }
+	// file:function(){
+
+	// }
+	// lang:function(){
+
+	// }
+	// goods:function(){
+
+	// }
+	// POI:function(){
+
+	// }
+
+	}
+	
+</script>
+</body>
+</html>

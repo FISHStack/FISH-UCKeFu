@@ -15,6 +15,8 @@ public abstract interface ChatMessageRepository
   
   public abstract Page<ChatMessage> findByUsessionAndOrgi(String usession, String orgi , Pageable page );
   
+  public abstract Page<ChatMessage> findByUseridAndOrgi(String userid, String orgi , Pageable page );
+  
   public abstract List<ChatMessage> findByContextidAndOrgi(String contextid , String orgi);
   
   public abstract Page<ChatMessage> findByContextidAndOrgi(String contextid , String orgi, Pageable page );

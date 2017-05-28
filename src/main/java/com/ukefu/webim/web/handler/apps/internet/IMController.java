@@ -37,7 +37,6 @@ import com.ukefu.util.UKTools;
 import com.ukefu.util.extra.DataExchangeInterface;
 import com.ukefu.util.webim.WebIMClient;
 import com.ukefu.webim.service.acd.ServiceQuene;
-import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
@@ -47,7 +46,6 @@ import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
-import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.InviteRecord;
 import com.ukefu.webim.web.model.LeaveMsg;
@@ -100,6 +98,8 @@ public class IMController extends Handler{
 		view.addObject("appid", id) ;
 		view.addObject("client", UKTools.getUUID()) ;
 		view.addObject("sessionid", request.getSession().getId()) ;
+		
+		view.addObject("mobile", CheckMobile.check(request.getHeader("User-Agent"))) ;
 		
 		CousultInvite invite = inviteRepository.findOne(id) ;
     	if(invite!=null){
@@ -214,7 +214,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/index")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView index(HttpServletRequest request , HttpServletResponse response, @Valid String orgi , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent) throws Exception {
+    public ModelAndView index(HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	if(!StringUtils.isBlank(appid)){
     		CousultInvite invite = inviteRepository.findOne(appid) ;
@@ -222,6 +222,9 @@ public class IMController extends Handler{
     			SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
     			if(UKDataContext.model.get("xiaoe")!=null  && invite.isAi() && ((!StringUtils.isBlank(ai) && ai.equals("true")) || (invite.isAifirst() && ai == null))){	//启用 AI ， 并且 AI优先 接待
     				view = request(super.createRequestPageTempletResponse("/apps/im/ai/index")) ;
+    				if(CheckMobile.check(request.getHeader("User-Agent")) || !StringUtils.isBlank(mobile)){
+    					view = request(super.createRequestPageTempletResponse("/apps/im/ai/mobile")) ;		//智能机器人 移动端
+    				}
     				String userID = UKTools.genIDByKey(sessionid);
     				String nickname = "Guest_" + userID;
     				view.addObject("username", nickname) ;
@@ -232,13 +235,16 @@ public class IMController extends Handler{
     					}
     				}
     			}else{
-    				if(sessionConfig.isHourcheck() && !UKTools.isInWorkingHours(sessionConfig.getWorkinghours()) && invite.isLeavemessage()){		//非工作时间段，跳转到留言页面
-		    			view = request(super.createRequestPageTempletResponse("/apps/im/leavemsg")) ;
-		    		}else{
-		    			view.addObject("chatMessageList", chatMessageRes.findByUsessionAndOrgi(sessionid , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime"))) ;
-		    		}
-		    		view.addObject("sessionConfig", sessionConfig);
+    				if(CheckMobile.check(request.getHeader("User-Agent"))){
+    					view = request(super.createRequestPageTempletResponse("/apps/im/mobile")) ;	//WebIM移动端。再次点选技能组？
+    				}
     			}
+    			if(sessionConfig.isHourcheck() && !UKTools.isInWorkingHours(sessionConfig.getWorkinghours()) && invite.isLeavemessage()){		//非工作时间段，跳转到留言页面
+	    			view = request(super.createRequestPageTempletResponse("/apps/im/leavemsg")) ;
+	    		}else{
+	    			view.addObject("chatMessageList", chatMessageRes.findByUsessionAndOrgi(userid , orgi, new PageRequest(0, 20, Direction.DESC , "createtime"))) ;
+	    		}
+	    		view.addObject("sessionConfig", sessionConfig);
 	    		view.addObject("inviteData", invite);
 	    		view.addObject("orgi",invite.getOrgi());
 	    	}
@@ -342,12 +348,11 @@ public class IMController extends Handler{
     
     @RequestMapping("/image/upload")
     @Menu(type = "im" , subtype = "image" , access = true)
-    public ModelAndView upload(ModelMap map,HttpServletRequest request , @RequestParam(value = "imgFile", required = false) MultipartFile imgFile , @Valid String userid) throws IOException {
+    public ModelAndView upload(ModelMap map,HttpServletRequest request , @RequestParam(value = "imgFile", required = false) MultipartFile imgFile , @Valid String channel, @Valid String userid, @Valid String username , @Valid String appid , @Valid String orgi) throws IOException {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/upload")) ; 
     	UploadStatus upload = null ;
     	String fileName = null ;
-    	AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI);
-    	if(imgFile!=null && imgFile.getOriginalFilename().lastIndexOf(".") > 0 && !StringUtils.isBlank(userid) && agentUser!= null){
+    	if(imgFile!=null && imgFile.getOriginalFilename().lastIndexOf(".") > 0 && !StringUtils.isBlank(userid)){
     		File uploadDir = new File(path , "upload");
     		if(!uploadDir.exists()){
     			uploadDir.mkdirs() ;
@@ -368,7 +373,11 @@ public class IMController extends Handler{
 			}else{
 				image = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/image.html?id="+fileName;
 			}
-    		MessageUtils.uploadImage(image, userid);
+    		if(!StringUtils.isBlank(channel)){
+    			MessageUtils.uploadImage(image, userid , username , appid , orgi);
+    		}else{
+    			MessageUtils.uploadImage(image, userid);
+    		}
     	}else{
     		upload = new UploadStatus("请选择图片文件");
     	}

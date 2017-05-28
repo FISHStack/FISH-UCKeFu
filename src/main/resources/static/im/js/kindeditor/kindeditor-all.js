@@ -3865,9 +3865,7 @@ _extend(KEdit, KWidget, {
 	afterChange : function(fn) {
 		var self = this, doc = self.doc, body = doc.body;
 		K(doc).keyup(function(e) {
-			if (!e.ctrlKey && !e.altKey && _CHANGE_KEY_MAP[e.which]) {
-				fn(e);
-			}
+			fn(e);
 		});
 		K(doc).mouseup(fn).contextmenu(fn);
 		K(self.win).blur(fn);

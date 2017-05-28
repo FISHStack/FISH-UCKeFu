@@ -24,6 +24,9 @@ public class MessageUtils {
 	public static void uploadImage(String image , String userid){
 		createMessage(image, UKDataContext.MediaTypeEnum.IMAGE.toString(), userid);
 	}
+	public static void uploadImage(String image , String userid , String username , String appid , String orgi){
+		createMessage(image, UKDataContext.MediaTypeEnum.IMAGE.toString(), userid , username, appid , orgi);
+	}
 	public static void createMessage(String message , String msgtype , String userid){
 		AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI);
 		ChatMessage data = new ChatMessage() ;
@@ -36,6 +39,20 @@ public class MessageUtils {
 			data.setMessage(message);
 			data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
 			createMessage(data, msgtype, userid);
+		}
+	}
+	
+	public static void createMessage(String message , String msgtype , String userid , String username , String appid , String orgi){
+		ChatMessage data = new ChatMessage() ;
+		if(!StringUtils.isBlank(userid)){
+			data.setUserid(userid);
+			data.setUsername(username);
+			data.setTouser(userid);
+			data.setAppid(appid);
+			data.setOrgi(orgi);
+			data.setMessage(message);
+			data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
+			createAiMessage(data , UKDataContext.CallTypeEnum.IN.toString() , UKDataContext.AiItemType.USERINPUT.toString() , UKDataContext.MediaTypeEnum.IMAGE.toString(), data.getUserid());
 		}
 	}
 	
