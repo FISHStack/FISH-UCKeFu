@@ -201,8 +201,8 @@ var editor , words , textheight , wordinx = 0 ;
 		<div class="ukefu-func-tab">
 		   		<ul>
 		   			<#if models?? && models["xiaoe"]?? && models["xiaoe"] == true>
-		   				<li class="cur"><a href="javascript:void(0)">智能客服</a></li>
-		   				<li><a href="/im/index.html?appid=${appid!''}&orgi=${orgi!''}&ai=false<#if client??>&client=${client!''}</#if><#if type??>&type=text</#if><#if skill??>&skill=${skill!''}</#if><#if agent??>&agent=${agent!''}</#if>&userid=${userid!''}&sessionid=${sessionid!''}&t=${.now?long}">人工坐席</a></li>
+		   				<li><a href="/im/index.html?appid=${appid!''}&orgi=${orgi!''}&ai=true<#if client??>&client=${client!''}</#if><#if type??>&type=text</#if><#if skill??>&skill=${skill!''}</#if><#if agent??>&agent=${agent!''}</#if>&userid=${userid!''}&sessionid=${sessionid!''}&t=${.now?long}">智能客服</a></li>
+		   				<li class="cur"><a href="javascript:void(0)">人工坐席</a></li>
 		   			<#else>
 		   				<li class="cur"><a href="javascript:void(0)">人工坐席</a></li>
 		   			</#if>

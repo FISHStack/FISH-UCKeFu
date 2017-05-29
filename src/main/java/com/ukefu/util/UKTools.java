@@ -734,7 +734,7 @@ public class UKTools {
 	    Matcher matcher = pattern.matcher(message);
 	    StringBuffer strb = new StringBuffer();
 	    while(matcher.find()) {
-	        matcher.appendReplacement(strb,"<img src='/im/js/kindeditor/plugins/emoticons/images/"+matcher.group(1)+".png' style='width:32px;height:32px;'>");
+	        matcher.appendReplacement(strb,"<img src='/im/js/kindeditor/plugins/emoticons/images/"+matcher.group(1)+".png'>");
 	    }
 	    if(strb.length() == 0){
 	    	strb.append(message) ;
