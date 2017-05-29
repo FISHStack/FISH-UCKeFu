@@ -346,10 +346,10 @@ input,textarea{
     min-width: 25px;
     line-height:25px;
 }
-.chatting-left div.chat-content *{
+.chatting-left div.chat-content *:not(img){
 	background-color: #EDEDED !important;
 }
-.chatting-right div.chat-content *{
+.chatting-right div.chat-content *:not(img){
 	background-color: #c7dcfa !important;
 }
 .chatting-left div.chat-content img{
