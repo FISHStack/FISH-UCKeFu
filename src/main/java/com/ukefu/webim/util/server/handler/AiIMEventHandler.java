@@ -94,6 +94,10 @@ public class AiIMEventHandler
     	if(!StringUtils.isBlank(data.getMessage()) && data.getMessage().length() > 300){
     		data.setMessage(data.getMessage().substring(0 , 300));
     	}
+    	/**
+		 * 处理表情
+		 */
+    	data.setMessage(UKTools.processEmoti(data.getMessage()));
     	UKTools.ai(MessageUtils.createAiMessage(data , UKDataContext.CallTypeEnum.IN.toString() , UKDataContext.AiItemType.USERINPUT.toString() , UKDataContext.MediaTypeEnum.TEXT.toString(), data.getUserid()));
     } 
 }  

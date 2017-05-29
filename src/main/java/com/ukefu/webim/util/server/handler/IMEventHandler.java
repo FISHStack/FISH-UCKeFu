@@ -116,6 +116,11 @@ public class IMEventHandler
     	if(!StringUtils.isBlank(data.getMessage()) && data.getMessage().length() > 300){
     		data.setMessage(data.getMessage().substring(0 , 300));
     	}
+    	/**
+		 * 处理表情
+		 */
+    	data.setMessage(UKTools.processEmoti(data.getMessage()));
+		
     	MessageUtils.createMessage(data , UKDataContext.MediaTypeEnum.TEXT.toString(), data.getUserid());
     } 
 }  

@@ -59,6 +59,7 @@ public class MessageUtils {
 	public static void createMessage(ChatMessage data , String msgtype , String userid){
 		AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI);
     	MessageOutContent outMessage = new MessageOutContent() ;
+    	
     	outMessage.setMessage(data.getMessage());
     	outMessage.setMessageType(msgtype);
     	outMessage.setCalltype(UKDataContext.CallTypeEnum.IN.toString());
@@ -137,6 +138,7 @@ public class MessageUtils {
 	
 	public static ChatMessage createAiMessage(ChatMessage data , String direction , String chatype, String msgtype , String userid){
     	MessageOutContent outMessage = new MessageOutContent() ;
+    	
     	outMessage.setMessage(data.getMessage());
     	outMessage.setMessageType(msgtype);
     	outMessage.setCalltype(direction);
@@ -150,6 +152,7 @@ public class MessageUtils {
     		data.setTouser(UKDataContext.SYSTEM_ORGI);
     		
     		data.setAgentuser(userid);
+    		
     		
     		data.setAgentserviceid(data.getContextid());
     		data.setChatype(chatype);

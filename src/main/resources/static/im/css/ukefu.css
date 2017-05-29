@@ -28,6 +28,9 @@ input,textarea{
 	vertical-align: middle;
 	/*width: 206px;*/
 }
+input,textarea{
+    -webkit-appearance: none;
+}
 /*万能清浮动*/
 .clearfix:before,.clearfix:after{
 	display:block;
@@ -458,6 +461,14 @@ input,textarea{
     text-decoration: none;
     text-indent: 0;
     line-height: 20px;
+}
+.mobile-chat-bottom #message {
+    position: absolute;
+    left: 45px;
+    width: calc(100% - 130px);
+    border:1px solid #cccccc;
+    font-size:16px;
+    height:40px;
 }
 .mobile-chat-bottom .imgFile input {
     position: absolute;

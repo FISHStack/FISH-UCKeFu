@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -726,4 +728,17 @@ public class UKTools {
 		Thumbnails.of(imageFile).size((int)width, (int)height).toFile(new File(path , destFile));
 		return destFile ;
     }
+
+	public static String processEmoti(String message) {
+		Pattern pattern = Pattern.compile("\\[([\\d]*?)\\]");
+	    Matcher matcher = pattern.matcher(message);
+	    StringBuffer strb = new StringBuffer();
+	    while(matcher.find()) {
+	        matcher.appendReplacement(strb,"<img src='/im/js/kindeditor/plugins/emoticons/images/"+matcher.group(1)+".png' style='width:32px;height:32px;'>");
+	    }
+	    if(strb.length() == 0){
+	    	strb.append(message) ;
+	    }
+	    return strb.toString() ;
+	}
 }
