@@ -5559,6 +5559,22 @@ CREATE TABLE `uk_xiaoe_words_type` (
 -- Records of uk_xiaoe_words_type
 -- ----------------------------
 
+DROP TABLE IF EXISTS `uk_agentuser_contacts`;
+CREATE TABLE `uk_agentuser_contacts` (
+  `id` varchar(32) NOT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  `appid` varchar(32) DEFAULT NULL,
+  `channel` varchar(32) DEFAULT NULL,
+  `userid` varchar(32) DEFAULT NULL,
+  `contactsid` varchar(32) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 -- ----------------------------
 -- Table structure for `wf_cc_order`
 -- ----------------------------
