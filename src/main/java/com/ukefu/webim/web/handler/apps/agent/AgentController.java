@@ -34,6 +34,7 @@ import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
 import com.ukefu.webim.service.repository.AgentStatusRepository;
+import com.ukefu.webim.service.repository.AgentUserContactsRepository;
 import com.ukefu.webim.service.repository.AgentUserRepository;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
 import com.ukefu.webim.service.repository.BlackListRepository;
@@ -54,6 +55,7 @@ import com.ukefu.webim.web.model.AgentService;
 import com.ukefu.webim.web.model.AgentServiceSummary;
 import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
+import com.ukefu.webim.web.model.AgentUserContacts;
 import com.ukefu.webim.web.model.AgentUserTask;
 import com.ukefu.webim.web.model.BlackEntity;
 import com.ukefu.webim.web.model.MessageOutContent;
@@ -113,6 +115,9 @@ public class AgentController extends Handler {
 	
 	@Autowired
 	private UserRepository userRes ;
+	
+	@Autowired
+	private AgentUserContactsRepository agentUserContactsRes; 
 	
 	@Value("${web.upload-path}")
 	private String path;	
@@ -196,20 +201,21 @@ public class AgentController extends Handler {
 		if(!StringUtils.isBlank(agentService.getAppid())){
 			map.addAttribute("snsAccount", snsAccountRes.findBySnsidAndOrgi(agentService.getAppid(), super.getOrgi(request))  ); 
 		}
-		
-		if(agentService!=null && !StringUtils.isBlank(agentService.getContactsid())){
-			if(UKDataContext.model.get("contacts")!=null && !StringUtils.isBlank(agentService.getContactsid())){
+		List<AgentUserContacts> relaList = agentUserContactsRes.findByUseridAndOrgi(agentService.getUserid(), agentService.getOrgi()) ;
+		if(relaList.size() > 0){
+			AgentUserContacts agentUserContacts = relaList.get(0) ;
+			if(UKDataContext.model.get("contacts")!=null && !StringUtils.isBlank(agentUserContacts.getContactsid())){
 				DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("contacts") ;
 				if(dataExchange!=null){
-					map.addAttribute("contacts", dataExchange.getDataByIdAndOrgi(agentService.getContactsid(), super.getOrgi(request))) ;
+					map.addAttribute("contacts", dataExchange.getDataByIdAndOrgi(agentUserContacts.getContactsid(), super.getOrgi(request))) ;
 				}
 			}
-			if(UKDataContext.model.get("workorders")!=null && !StringUtils.isBlank(agentService.getContactsid())){
+			if(UKDataContext.model.get("workorders")!=null && !StringUtils.isBlank(agentUserContacts.getContactsid())){
 				DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("workorders") ;
 				if(dataExchange!=null){
-					map.addAttribute("workOrdersList", dataExchange.getListDataByIdAndOrgi(agentService.getContactsid(), super.getUser(request).getId(),  super.getOrgi(request))) ;
+					map.addAttribute("workOrdersList", dataExchange.getListDataByIdAndOrgi(agentUserContacts.getContactsid(), super.getUser(request).getId(),  super.getOrgi(request))) ;
 				}
-				map.addAttribute("contactsid", agentService.getContactsid()) ;
+				map.addAttribute("contactsid", agentUserContacts.getContactsid()) ;
 			}
 		}
 	}
@@ -525,6 +531,19 @@ public class AgentController extends Handler {
 			if(agentService!=null){
 				agentService.setContactsid(contactsid);
 				this.agentServiceRepository.save(agentService) ;
+			
+				List<AgentUserContacts> agentUserContactsList = agentUserContactsRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
+				if(agentUserContactsList.size() == 0){
+					AgentUserContacts agentUserContacts = new AgentUserContacts() ;
+					agentUserContacts.setAppid(agentService.getAppid());
+					agentUserContacts.setChannel(agentService.getChannel());
+					agentUserContacts.setContactsid(contactsid);
+					agentUserContacts.setUserid(userid);
+					agentUserContacts.setCreater(super.getUser(request).getId());
+					agentUserContacts.setOrgi(super.getOrgi(request));
+					agentUserContacts.setCreatetime(new Date());
+					agentUserContactsRes.save(agentUserContacts) ;
+				}
 			}
 			DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("contacts") ;
 			if(dataExchange!=null){
