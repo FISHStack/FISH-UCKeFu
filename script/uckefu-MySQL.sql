@@ -358,7 +358,7 @@ DROP TABLE IF EXISTS `uk_contacts`;
 CREATE TABLE `uk_contacts` (
   `id` varchar(32) NOT NULL COMMENT '联系人ID',
   `gender` varchar(60) DEFAULT NULL COMMENT '联系人性别',
-  `birthday` date DEFAULT NULL COMMENT '出生日期',
+  `birthday` varchar(50) DEFAULT NULL COMMENT '出生日期',
   `ctype` varchar(60) DEFAULT NULL COMMENT '联系人类型',
   `ckind` varchar(60) DEFAULT NULL COMMENT '联系人类别',
   `clevel` varchar(60) DEFAULT NULL COMMENT '联系人级别',
