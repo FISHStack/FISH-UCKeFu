@@ -9,7 +9,7 @@ import com.ukefu.webim.web.model.AgentUserTask;
 
 public abstract interface AgentUserTaskRepository  extends JpaRepository<AgentUserTask, String>{
 	
-	public abstract AgentUserTask findByIdAndOrgi(String id , String orgi);
+	public List<AgentUserTask> findByIdAndOrgi(String id , String orgi);
 	
 	public List<AgentUserTask> findByLastmessageLessThanAndStatusAndOrgi(Date start , String status , String orgi) ;
 	

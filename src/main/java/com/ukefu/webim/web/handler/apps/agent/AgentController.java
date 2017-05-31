@@ -228,8 +228,9 @@ public class AgentController extends Handler {
 		if(agentUser!=null){
 			view.addObject("curagentuser", agentUser) ;
 			
-			AgentUserTask agentUserTask = agentUserTaskRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
-			if(agentUserTask!=null){
+			List<AgentUserTask> agentUserTaskList = agentUserTaskRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
+			if(agentUserTaskList.size() > 0){
+				AgentUserTask agentUserTask = agentUserTaskList.get(0) ;
 				agentUserTask.setTokenum(0);
 				agentUserTaskRes.save(agentUserTask) ;
 			}
@@ -393,8 +394,9 @@ public class AgentController extends Handler {
 	@Menu(type = "apps", subtype = "agent")
 	public ModelAndView readmsg(HttpServletRequest request, @Valid String userid)
 			throws Exception {
-		AgentUserTask agentUserTask = agentUserTaskRes.findByIdAndOrgi(userid, super.getOrgi(request));
-		if(agentUserTask!=null){
+		List<AgentUserTask> agentUserTaskList = agentUserTaskRes.findByIdAndOrgi(userid, super.getOrgi(request)) ;
+		if(agentUserTaskList.size() > 0){
+			AgentUserTask agentUserTask = agentUserTaskList.get(0) ;
 			agentUserTask.setTokenum(0);
 			agentUserTaskRes.save(agentUserTask);
 		}
