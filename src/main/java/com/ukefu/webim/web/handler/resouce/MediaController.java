@@ -36,6 +36,9 @@ public class MediaController extends Handler{
     @RequestMapping("/image")
     @Menu(type = "resouce" , subtype = "image" , access = true)
     public void index(HttpServletResponse response, @Valid String id) throws IOException {
+    	if(!StringUtils.isBlank(id) && id.endsWith(".png")){
+    		id = id.substring(0 , id.lastIndexOf(".png")) ;
+    	}
     	File file = new File(path ,id) ;
     	if(id.endsWith("_original") && !file.exists()){
     		File orgFile = new File(path , id.substring(0 , id.indexOf("_original"))) ;
@@ -55,6 +58,8 @@ public class MediaController extends Handler{
     		file = new File(path , id) ;
     	}
     	if(file.exists() && file.isFile()){
+    		response.setHeader("Content-Type","image/png");
+    		response.setContentType("image/png");
     		response.getOutputStream().write(FileUtils.readFileToByteArray(new File(path ,id)));
     	}
     }
