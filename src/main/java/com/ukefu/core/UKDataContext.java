@@ -46,6 +46,14 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum WxMpFileType{
+		JPG,
+		PNG;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	public enum AgentInterType{
 		SKILL , 
 		AGENT ;
