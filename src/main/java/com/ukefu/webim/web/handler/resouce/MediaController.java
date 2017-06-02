@@ -36,7 +36,7 @@ public class MediaController extends Handler{
     @RequestMapping("/image")
     @Menu(type = "resouce" , subtype = "image" , access = true)
     public void index(HttpServletResponse response, @Valid String id) throws IOException {
-    	if(!StringUtils.isBlank(id) && id.endsWith(".png")){
+    	if(!StringUtils.isBlank(id) &&	 id.endsWith(".png")){
     		id = id.substring(0 , id.lastIndexOf(".png")) ;
     	}
     	File file = new File(path ,id) ;
