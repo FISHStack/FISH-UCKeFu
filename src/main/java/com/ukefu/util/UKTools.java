@@ -717,15 +717,17 @@ public class UKTools {
     
     public static String processImage(String destFile,File imageFile , String path) throws FileNotFoundException, IOException{
 		BufferedImage sourceImg =ImageIO.read(new FileInputStream(imageFile));   
-		float width = sourceImg.getWidth() ;
-		float height = sourceImg.getHeight() ;
-		if(width > UKDataContext.MAX_IMAGE_WIDTH){
-			float scale = UKDataContext.MAX_IMAGE_WIDTH / width ;
-			width = 460 ;
-			height = height * scale ;
+		if(sourceImg!=null){
+			float width = sourceImg.getWidth() ;
+			float height = sourceImg.getHeight() ;
+			if(width > UKDataContext.MAX_IMAGE_WIDTH){
+				float scale = UKDataContext.MAX_IMAGE_WIDTH / width ;
+				width = 460 ;
+				height = height * scale ;
+			}
+			
+			Thumbnails.of(imageFile).size((int)width, (int)height).toFile(new File(path , destFile));
 		}
-		
-		Thumbnails.of(imageFile).size((int)width, (int)height).toFile(new File(path , destFile));
 		return destFile ;
     }
 
