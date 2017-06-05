@@ -45,7 +45,7 @@ public class WorkOrders extends ESBean implements UKAgg{
 	private float price ;		//问题价格
 	private String keyword ;	//关键词
 	private String summary ;	//摘要
-	private boolean anonymous ;		//是否匿名提问
+	private boolean anonymous ;		//修改功能 未 是否有上传附件
 	
 	private boolean top ;		//是否置顶
 	private boolean essence ;	//是否精华
@@ -101,6 +101,10 @@ public class WorkOrders extends ESBean implements UKAgg{
 	
 	
 	private User user ;
+	
+	private User current ;	//当前处理人
+	
+	private Organ currentorgan ;	//处理部门
 	
 	private Favorites fav; 
 	
@@ -480,5 +484,21 @@ public class WorkOrders extends ESBean implements UKAgg{
 
 	public void setFav(Favorites fav) {
 		this.fav = fav;
+	}
+	@Transient
+	public User getCurrent() {
+		return current;
+	}
+
+	public void setCurrent(User current) {
+		this.current = current;
+	}
+	@Transient
+	public Organ getCurrentorgan() {
+		return currentorgan;
+	}
+
+	public void setCurrentorgan(Organ currentorgan) {
+		this.currentorgan = currentorgan;
 	}
 }

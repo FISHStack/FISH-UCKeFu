@@ -12,6 +12,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,7 +24,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.webim.service.repository.AttachmentRepository;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.AttachmentFile;
 import com.ukefu.webim.web.model.UploadStatus;
 
 @Controller
@@ -32,6 +35,9 @@ public class MediaController extends Handler{
 	
 	@Value("${web.upload-path}")
     private String path;
+	
+	@Autowired
+	private AttachmentRepository attachementRes;
 	
     @RequestMapping("/image")
     @Menu(type = "resouce" , subtype = "image" , access = true)
@@ -114,6 +120,19 @@ public class MediaController extends Handler{
     	}
     	map.addAttribute("upload", upload) ;
         return view ; 
+    }
+    
+    @RequestMapping("/file")
+    @Menu(type = "resouce" , subtype = "file" , access = false)
+    public void file(HttpServletResponse response,HttpServletRequest request, @Valid String id) throws IOException {
+    	if(!StringUtils.isBlank(id)){
+    		AttachmentFile attachmentFile = attachementRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
+    		if(attachmentFile!=null){
+    			response.setContentType(attachmentFile.getFiletype());  
+    	        response.setHeader("Content-Disposition", "attachment;filename="+java.net.URLEncoder.encode(attachmentFile.getTitle(), "UTF-8"));  
+    			response.getOutputStream().write(FileUtils.readFileToByteArray(new File(path , "app/workorders/"+attachmentFile.getFileid())));
+    		}
+    	}
     }
     
 }

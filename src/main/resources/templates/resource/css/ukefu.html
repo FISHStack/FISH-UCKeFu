@@ -27,6 +27,8 @@
 
 .icon-user1:before { content: "\e60b"; }
 
+.icon-attachment:before { content: "\e617"; }
+
 .icon-linux:before { content: "\e726"; }
 
 .icon-windows:before { content: "\e801"; }
@@ -34,6 +36,8 @@
 .icon-ai:before { content: "\e65f"; }
 
 .icon-msnui-logo-mac:before { content: "\e701"; }
+
+.icon-attachment1:before { content: "\e61b"; }
 
 .icon-import:before { content: "\e609"; }
 
@@ -171,8 +175,9 @@
 
 .icon-Summary_today:before { content: "\e60f"; }
 
-.icon-uicon_ai:before { content: "\e63a"; }
+.icon-attachment2:before { content: "\e61e"; }
 
+.icon-uicon_ai:before { content: "\e63a"; }
 
 body,html{
 	height:100%;
@@ -2509,7 +2514,7 @@ select{
     left: 5px;
     top: 5px;
     color:${systemConfig.styleColor!'#32c24d'};
-    font-size:18px;
+    font-size:14px;
 }
 .ukefu-workorders-number i{
     font-size:20px;
@@ -2730,8 +2735,8 @@ select{
 	margin-top:10px;
 	text-indent:0px;
 	line-height:30px;
-	font-size:16px;
-	color:#333;
+	font-size:14px;
+	color:#000;
 	position: relative;
 }
 .ukefu-workorders-title em , .ukefu-bt-text-title em{
@@ -3083,4 +3088,17 @@ select{
 }
 .layui-layout-content .layui-nav-item  .layui-nav-default{
 	font-size:13px !important;
+}
+.uk-workorders-td{
+	position: relative;
+}
+.tdHasContorllor em{
+	font-style: normal;
+    color: red;
+}
+.ukefu-workorders-attachment{
+	padding:5px 10px 5px 60px;
+}
+.ukefu-chat-prop .ukefu-workorders-number span{
+	margin-left:0px !important;
 }

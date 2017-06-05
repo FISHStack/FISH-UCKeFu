@@ -545,6 +545,10 @@ public class AgentController extends Handler {
 					agentUserContacts.setOrgi(super.getOrgi(request));
 					agentUserContacts.setCreatetime(new Date());
 					agentUserContactsRes.save(agentUserContacts) ;
+				}else{
+					AgentUserContacts agentUserContacts = agentUserContactsList.get(0) ;
+					agentUserContacts.setContactsid(contactsid);
+					agentUserContactsRes.save(agentUserContacts) ;
 				}
 			}
 			DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("contacts") ;
