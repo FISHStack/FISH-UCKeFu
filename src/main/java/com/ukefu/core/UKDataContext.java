@@ -46,6 +46,14 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum SalesNamesStatus{
+		DIST,			//已分配
+		NOTDIST;		//未分配
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	public enum WxMpFileType{
 		JPG,
 		PNG;
