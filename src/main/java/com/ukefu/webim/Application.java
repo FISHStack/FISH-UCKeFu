@@ -41,8 +41,8 @@ public class Application {
         return new EmbeddedServletContainerCustomizer() {
             @Override
             public void customize(ConfigurableEmbeddedServletContainer container) {
-                ErrorPage error = new ErrorPage("/error.html");
-                container.addErrorPages(error);
+            	ErrorPage error = new ErrorPage("/error.html");
+            	container.addErrorPages(error);
             }
         };
     }

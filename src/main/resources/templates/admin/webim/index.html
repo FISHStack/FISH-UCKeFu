@@ -13,7 +13,7 @@
 					<div class="box-body">
 						<div class="ukefu-webim-tip">请将以下代码添加到你的网站 HTML
 							源代码中，放在&lt;head&gt;&lt;/head&gt;标签之间.</div>
-						<textarea class="ukefu-webim-sdk" readonly="readonly"><#if inviteData??>&lt;script async src="${schema!''}://${hostname!''}:${import?string('###')}/im/${inviteData.id!''}.html"&gt;&lt;/script&gt;<#else></#if></textarea>
+						<textarea class="ukefu-webim-sdk" readonly="readonly"><#if inviteData??>&lt;script src="${schema!''}://${hostname!''}:${import?string('###')}/im/${inviteData.id!''}.html"&gt;&lt;/script&gt;<#else></#if></textarea>
 	
 					</div>
 				</div>

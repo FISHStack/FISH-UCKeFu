@@ -223,7 +223,13 @@
 								</a>
 							</dd>
 							</#if>
-							
+							<#if models?? && models["sales"]?? && models["sales"] == true>
+							<dd class="ukefu-left-menu" data-tooltip="电销">
+								<a href="javascript:void(0)" data-title="电销" data-href="/apps/sales/index.html" class="iframe_btn" data-id="maincontent" data-type="tabChange"> 
+								<i class="kfont"	style="position: relative;">&#xe629;</i>
+								</a>
+							</dd>
+							</#if>
 						</dl>
 					</li>
 					<li class="layui-nav-item" style="height: 30px; text-align: center"></li>
