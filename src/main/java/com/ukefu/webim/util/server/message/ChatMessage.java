@@ -49,6 +49,8 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	private String locx ;	//location x
 	private String locy ;	//location y
 	
+	private long updatetime = System.currentTimeMillis();
+	
 	private int duration ;	//音频时长
 	
 	private String scale ;		//地图级别
@@ -246,5 +248,11 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	}
 	public void setScale(String scale) {
 		this.scale = scale;
+	}
+	public long getUpdatetime() {
+		return updatetime;
+	}
+	public void setUpdatetime(long updatetime) {
+		this.updatetime = updatetime;
 	}
 }

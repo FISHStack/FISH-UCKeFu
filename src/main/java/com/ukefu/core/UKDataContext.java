@@ -125,6 +125,7 @@ public class UKDataContext {
 		TEXT,
 		MEDIA,
 		AGENT,
+		XIAOE,
 		INTER;
 		public String toString(){
 			return super.toString().toLowerCase() ;

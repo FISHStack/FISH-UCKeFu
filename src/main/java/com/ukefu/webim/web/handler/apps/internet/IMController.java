@@ -242,7 +242,7 @@ public class IMController extends Handler{
     			if(sessionConfig.isHourcheck() && !UKTools.isInWorkingHours(sessionConfig.getWorkinghours()) && invite.isLeavemessage()){		//非工作时间段，跳转到留言页面
 	    			view = request(super.createRequestPageTempletResponse("/apps/im/leavemsg")) ;
 	    		}else{
-	    			view.addObject("chatMessageList", chatMessageRes.findByUsessionAndOrgi(userid , orgi, new PageRequest(0, 20, Direction.DESC , "createtime"))) ;
+	    			view.addObject("chatMessageList", chatMessageRes.findByUsessionAndOrgi(userid , orgi, new PageRequest(0, 20, Direction.DESC , "updatetime"))) ;
 	    		}
 	    		view.addObject("sessionConfig", sessionConfig);
 	    		view.addObject("inviteData", invite);
@@ -361,20 +361,20 @@ public class IMController extends Handler{
     		fileName = "upload/"+fileid+"_original" ;
     		File imageFile = new File(path , fileName) ;
     		FileCopyUtils.copy(imgFile.getBytes(), imageFile);
+    		String thumbnailsFileName = "upload/"+fileid ;
+    		UKTools.processImage(new File(path , thumbnailsFileName), imageFile) ;
     		
-    		fileName = UKTools.processImage("upload/"+fileid, imageFile , path) ;
     		
+    		upload = new UploadStatus("0" , "/res/image.html?id="+thumbnailsFileName);
     		
-    		upload = new UploadStatus("0" , "/res/image.html?id="+fileName);
-    		
-    		String image =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+fileName ;
+    		String image =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+thumbnailsFileName ;
     		if(request.getServerPort() == 80){
-    			image = request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+fileName;
+    			image = request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+thumbnailsFileName;
 			}else{
-				image = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/image.html?id="+fileName;
+				image = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/image.html?id="+thumbnailsFileName;
 			}
     		if(!StringUtils.isBlank(channel)){
-    			MessageUtils.uploadImage(image, userid , username , appid , orgi);
+    			MessageUtils.uploadImage(image , channel, userid , username , appid , orgi);
     		}else{
     			MessageUtils.uploadImage(image, userid);
     		}

@@ -191,7 +191,7 @@
 	   		<img src="<#if inviteData?? && inviteData.consult_dialog_logo??>/res/image.html?id=${inviteData.consult_dialog_logo?url}<#else>/images/logo.png</#if>" style="height:30px;padding:10px;">
 	   		<div class="ukefu-func-tab">
 		   		<ul>
-		   			<#if models?? && models["xiaoe"]?? && models["xiaoe"] == true>
+		   			<#if models?? && models["xiaoe"]?? && models["xiaoe"] == true && inviteData.ai>
 		   				<li><a href="/im/index.html?appid=${appid!''}&orgi=${orgi!''}&ai=true<#if client??>&client=${client!''}</#if><#if type??>&type=text</#if><#if skill??>&skill=${skill!''}</#if><#if agent??>&agent=${agent!''}</#if>&userid=${userid!''}&sessionid=${sessionid!''}&t=${.now?long}">智能客服</a></li>
 		   				<li class="cur"><a href="javascript:void(0)">人工坐席</a></li>
 		   			<#else>
@@ -205,7 +205,7 @@
             	<div class="clearfix message  welcome"> <span id="welcome-message">${(inviteData.dialog_message!'欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.')?no_esc}</span></div>
 				<#if chatMessageList?? && chatMessageList.content??>
 					<#list chatMessageList.content?reverse as chatMessage>
-						<#if chatMessage.userid?? && userid?? && userid == chatMessage.userid>
+						<#if chatMessage.userid?? && userid?? && chatMessage.calltype?? && chatMessage.calltype = "in">
 							<div class="clearfix chat-block">
 								<div class="chat-right"> 
 									<img class="user-img" src="/im/img/user.png" alt="">

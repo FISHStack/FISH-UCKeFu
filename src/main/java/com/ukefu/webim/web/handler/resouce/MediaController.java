@@ -49,17 +49,17 @@ public class MediaController extends Handler{
     	if(id.endsWith("_original") && !file.exists()){
     		File orgFile = new File(path , id.substring(0 , id.indexOf("_original"))) ;
     		if(orgFile.exists()){
-    			orgFile.renameTo(file) ;
+    			UKTools.processImage(file = new File(path , id), orgFile) ;
     		}
-    		UKTools.processImage(id, orgFile, path) ;
     	}else if(!StringUtils.isBlank(id) && file.exists() && !id.endsWith("_original")){
-    		File destFile = new File(path , id+"_original") ;
-    		file.renameTo(destFile) ;
-    		UKTools.processImage(id, destFile, path) ;
+    		File originalFile = new File( path , id+"_original") ;
+    		if(!originalFile.exists()){
+    			UKTools.processImage(new File( path , id+"_original"), file) ;
+    		}
     	}else if(!StringUtils.isBlank(id) && !file.exists() && !id.endsWith("_original")){
     		File destFile = new File(path , id+"_original") ;
     		if(destFile.exists()){
-    			UKTools.processImage(id, destFile, path) ;
+    			UKTools.processImage(new File(path + id), destFile) ;
     		}
     		file = new File(path , id) ;
     	}

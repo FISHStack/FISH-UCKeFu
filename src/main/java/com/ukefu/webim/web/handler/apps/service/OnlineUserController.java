@@ -108,7 +108,7 @@ public class OnlineUserController extends Handler{
 				
 				
 				map.put("curragentuser", curragentuser) ;
-				map.put("agentUserMessageList", chatMessageRepository.findByAgentserviceidAndOrgi(agentService.getId() , super.getOrgi(request), new PageRequest(0, 50, Direction.DESC , "createtime")));
+				map.put("agentUserMessageList", chatMessageRepository.findByAgentserviceidAndOrgi(agentService.getId() , super.getOrgi(request), new PageRequest(0, 50, Direction.DESC , "updatetime")));
 			}
 		}
         return request(super.createAppsTempletResponse("/apps/service/online/index"));
@@ -126,7 +126,7 @@ public class OnlineUserController extends Handler{
 			map.put("title", title) ;
 		}
 		
-		map.put("agentUserMessageList", chatMessageRepository.findByAgentserviceidAndOrgi(agentService.getId() , super.getOrgi(request), new PageRequest(0, 50, Direction.DESC , "createtime")));
+		map.put("agentUserMessageList", chatMessageRepository.findByAgentserviceidAndOrgi(agentService.getId() , super.getOrgi(request), new PageRequest(0, 50, Direction.DESC , "updatetime")));
 		
         return request(super.createRequestPageTempletResponse("/apps/service/online/chatmsg"));
     }

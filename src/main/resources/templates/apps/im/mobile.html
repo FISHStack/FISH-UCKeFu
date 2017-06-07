@@ -214,9 +214,9 @@ var editor , words , textheight , wordinx = 0 ;
 			<span id="welcome-message"><#if inviteData.aimsg?? &&
 				inviteData.aimsg!=''>${inviteData.aimsg?no_esc}<#else>${(inviteData.dialog_message!'欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.')?no_esc}</#if></span>
 		</div>
-		<#if chatMessageList?? && chatMessageList.content??> <#list
-		chatMessageList.content?reverse as chatMessage> <#if
-		chatMessage.userid?? && userid?? && userid == chatMessage.userid>
+		<#if chatMessageList?? && chatMessageList.content??> 
+		<#list chatMessageList.content?reverse as chatMessage> 
+		<#if chatMessage.userid?? && userid?? && chatMessage.calltype?? && chatMessage.calltype = "in">
 		<div class="clearfix chat-block">
 			<div class="chat-right">
 				<img class="user-img" src="/im/img/user.png" alt="">

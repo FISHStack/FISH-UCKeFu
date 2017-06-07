@@ -142,7 +142,7 @@ public class AgentController extends Handler {
 				}
 			}
 
-			view.addObject("agentUserMessageList", this.chatMessageRepository.findByUsessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime")));
+			view.addObject("agentUserMessageList", this.chatMessageRepository.findByUsessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "updatetime")));
 			
 			if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentUser.getChannel())){
 				List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
@@ -242,7 +242,7 @@ public class AgentController extends Handler {
 				}
 			}
 			
-			view.addObject("agentUserMessageList", this.chatMessageRepository.findByUsessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "createtime")));
+			view.addObject("agentUserMessageList", this.chatMessageRepository.findByUsessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "updatetime")));
 			
 			if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentUser.getChannel())){
 				List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
@@ -457,15 +457,15 @@ public class AgentController extends Handler {
     		fileName = "upload/"+fileid+"_original"  ;
     		File imageFile = new File(path , fileName) ;
     		FileCopyUtils.copy(imgFile.getBytes(), imageFile);
+    		String thumbnailsFileName  = "upload/"+fileid ; 
+    		UKTools.processImage(new File(path , thumbnailsFileName), imageFile) ;
     		
-    		fileName = UKTools.processImage("upload/"+fileid, imageFile , path) ;
     		
-    		
-    		String fileURL =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+fileName ;
+    		String fileURL =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+thumbnailsFileName ;
     		if(request.getServerPort() == 80){
-    			fileURL = request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+fileName;
+    			fileURL = request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+thumbnailsFileName;
 			}else{
-				fileURL = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/image.html?id="+fileName;
+				fileURL = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/image.html?id="+thumbnailsFileName;
 			}
     		upload = new UploadStatus("0" , fileURL); //图片直接发送给 客户，不用返回
     		OutMessageRouter router = null ; 
@@ -499,7 +499,7 @@ public class AgentController extends Handler {
 	    		data.setUsession(agentUser.getUserid());
 	    		data.setAppid(agentUser.getAppid());
 	    		data.setUserid(super.getUser(request).getId());
-	    		data.setMessage("/res/image.html?id="+fileName);
+	    		data.setMessage("/res/image.html?id="+thumbnailsFileName);
 	    		
 	    		data.setOrgi(super.getUser(request).getOrgi());
 	    		

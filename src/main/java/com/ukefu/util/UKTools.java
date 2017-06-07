@@ -1,11 +1,9 @@
 package com.ukefu.util;
 
-import java.awt.image.BufferedImage;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -25,7 +23,6 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -715,18 +712,9 @@ public class UKTools {
     	return workintTime ;
     }
     
-    public static String processImage(String destFile,File imageFile , String path) throws FileNotFoundException, IOException{
-		BufferedImage sourceImg =ImageIO.read(new FileInputStream(imageFile));   
-		if(sourceImg!=null){
-			float width = sourceImg.getWidth() ;
-			float height = sourceImg.getHeight() ;
-			if(width > UKDataContext.MAX_IMAGE_WIDTH){
-				float scale = UKDataContext.MAX_IMAGE_WIDTH / width ;
-				width = 460 ;
-				height = height * scale ;
-			}
-			
-			Thumbnails.of(imageFile).size((int)width, (int)height).toFile(new File(path , destFile));
+    public static File processImage(File destFile,File imageFile) throws FileNotFoundException, IOException{
+		if(imageFile != null && imageFile.exists()){
+			Thumbnails.of(imageFile).width(460).keepAspectRatio(true).toFile(destFile);
 		}
 		return destFile ;
     }

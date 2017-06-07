@@ -15,6 +15,7 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
 import com.ukefu.webim.util.MessageUtils;
+import com.ukefu.webim.util.router.OutMessageRouter;
 import com.ukefu.webim.util.server.message.AgentStatusMessage;
 import com.ukefu.webim.util.server.message.ChatMessage;
 import com.ukefu.webim.util.server.message.NewRequestMessage;
@@ -98,6 +99,16 @@ public class AiIMEventHandler
 		 * 处理表情
 		 */
     	data.setMessage(UKTools.processEmoti(data.getMessage()));
-    	UKTools.ai(MessageUtils.createAiMessage(data , UKDataContext.CallTypeEnum.IN.toString() , UKDataContext.AiItemType.USERINPUT.toString() , UKDataContext.MediaTypeEnum.TEXT.toString(), data.getUserid()));
+    	MessageOutContent outMessage = MessageUtils.createAiMessage(data , data.getAppid() , data.getChannel() , UKDataContext.CallTypeEnum.IN.toString() , UKDataContext.AiItemType.USERINPUT.toString() , UKDataContext.MediaTypeEnum.TEXT.toString(), data.getUserid()) ;
+    	if(!StringUtils.isBlank(data.getUserid()) && UKDataContext.MessageTypeEnum.MESSAGE.toString().equals(data.getType())){
+    		if(!StringUtils.isBlank(data.getTouser())){
+	    		OutMessageRouter router = null ; 
+	    		router  = (OutMessageRouter) UKDataContext.getContext().getBean(data.getChannel()) ;
+	    		if(router!=null){
+	    			router.handler(data.getTouser(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), data.getAppid(), outMessage);
+	    		}
+	    	}
+    	}
+    	UKTools.ai(data);
     } 
 }  

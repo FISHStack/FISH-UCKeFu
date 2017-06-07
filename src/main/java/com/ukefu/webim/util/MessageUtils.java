@@ -21,13 +21,13 @@ public class MessageUtils {
 	 * @param image
 	 * @param userid
 	 */
-	public static void uploadImage(String image , String userid){
-		createMessage(image, UKDataContext.MediaTypeEnum.IMAGE.toString(), userid);
+	public static ChatMessage uploadImage(String image , String userid){
+		return createMessage(image, UKDataContext.MediaTypeEnum.IMAGE.toString(), userid);
 	}
-	public static void uploadImage(String image , String userid , String username , String appid , String orgi){
-		createMessage(image, UKDataContext.MediaTypeEnum.IMAGE.toString(), userid , username, appid , orgi);
+	public static ChatMessage uploadImage(String image , String channel , String userid , String username , String appid , String orgi){
+		return createMessage(image , channel , UKDataContext.MediaTypeEnum.IMAGE.toString(), userid , username, appid , orgi);
 	}
-	public static void createMessage(String message , String msgtype , String userid){
+	public static ChatMessage createMessage(String message , String msgtype , String userid){
 		AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI);
 		ChatMessage data = new ChatMessage() ;
 		if(agentUser != null){
@@ -40,9 +40,10 @@ public class MessageUtils {
 			data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
 			createMessage(data, msgtype, userid);
 		}
+		return data ;
 	}
 	
-	public static void createMessage(String message , String msgtype , String userid , String username , String appid , String orgi){
+	public static ChatMessage createMessage(String message ,String channel ,String msgtype , String userid , String username , String appid , String orgi){
 		ChatMessage data = new ChatMessage() ;
 		if(!StringUtils.isBlank(userid)){
 			data.setUserid(userid);
@@ -52,8 +53,9 @@ public class MessageUtils {
 			data.setOrgi(orgi);
 			data.setMessage(message);
 			data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
-			createAiMessage(data , UKDataContext.CallTypeEnum.IN.toString() , UKDataContext.AiItemType.USERINPUT.toString() , UKDataContext.MediaTypeEnum.IMAGE.toString(), data.getUserid());
+			createAiMessage(data , appid , channel, UKDataContext.CallTypeEnum.IN.toString() , UKDataContext.AiItemType.USERINPUT.toString() , UKDataContext.MediaTypeEnum.IMAGE.toString(), data.getUserid());
 		}
+		return data ;
 	}
 	
 	public static void createMessage(ChatMessage data , String msgtype , String userid){
@@ -136,7 +138,7 @@ public class MessageUtils {
     	}
 	}
 	
-	public static ChatMessage createAiMessage(ChatMessage data , String direction , String chatype, String msgtype , String userid){
+	public static MessageOutContent createAiMessage(ChatMessage data , String appid,String channel , String direction , String chatype, String msgtype , String userid){
     	MessageOutContent outMessage = new MessageOutContent() ;
     	
     	outMessage.setMessage(data.getMessage());
@@ -149,7 +151,7 @@ public class MessageUtils {
     		data.setUserid(userid);
     		data.setUsername(data.getUsername());
     		data.setId(UKTools.getUUID());
-    		data.setTouser(UKDataContext.SYSTEM_ORGI);
+    		data.setTouser(userid);
     		
     		data.setAgentuser(userid);
     		
@@ -174,6 +176,8 @@ public class MessageUtils {
     		outMessage.setNickName(data.getUsername());
     		outMessage.setCreatetime(data.getCreatetime());
     		
+    		data.setUpdatetime(System.currentTimeMillis());
+    		
     		
     		/**
     		 * 保存消息
@@ -182,10 +186,7 @@ public class MessageUtils {
     			UKDataContext.getContext().getBean(ChatMessageRepository.class).save(data) ;
     		}
     	}
-    	if(!StringUtils.isBlank(data.getUserid()) && UKDataContext.MessageTypeEnum.MESSAGE.toString().equals(data.getType())){
-    		NettyClients.getInstance().sendIMEventMessage(data.getUserid(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), outMessage);
-    	}
-    	return data ;
+    	return outMessage ;
 	}
 	
 }
