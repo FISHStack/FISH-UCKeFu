@@ -117,12 +117,12 @@ public class OnlineUserUtils {
 				onlineUser.setCity(ipdata.getCity());
 				onlineUser.setIsp(ipdata.getIsp());
 				onlineUser.setRegion(ipdata.toString() + "（"
-						+ request.getRemoteAddr() + "）");
+						+ UKTools.getIpAddr(request) + "）");
 
 				onlineUser.setDatestr(new SimpleDateFormat("yyyMMdd")
 						.format(new Date()));
 
-				onlineUser.setHostname(request.getRemoteHost());
+				onlineUser.setHostname(UKTools.getIpAddr(request));
 				onlineUser.setSessionid(sessionid);
 				onlineUser.setOptype(optype);
 				onlineUser
