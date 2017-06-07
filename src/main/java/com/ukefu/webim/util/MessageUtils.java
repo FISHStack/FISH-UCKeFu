@@ -51,6 +51,7 @@ public class MessageUtils {
 			data.setTouser(userid);
 			data.setAppid(appid);
 			data.setOrgi(orgi);
+			data.setChannel(channel);
 			data.setMessage(message);
 			data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
 			createAiMessage(data , appid , channel, UKDataContext.CallTypeEnum.IN.toString() , UKDataContext.AiItemType.USERINPUT.toString() , UKDataContext.MediaTypeEnum.IMAGE.toString(), data.getUserid());
@@ -158,6 +159,8 @@ public class MessageUtils {
     		
     		data.setAgentserviceid(data.getContextid());
     		data.setChatype(chatype);
+    		
+    		data.setChannel(channel);
     		
     		data.setAppid(data.getAppid());
     		data.setOrgi(data.getOrgi());

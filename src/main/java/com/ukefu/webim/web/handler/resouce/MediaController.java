@@ -42,26 +42,25 @@ public class MediaController extends Handler{
     @RequestMapping("/image")
     @Menu(type = "resouce" , subtype = "image" , access = true)
     public void index(HttpServletResponse response, @Valid String id) throws IOException {
-    	if(!StringUtils.isBlank(id) &&	 id.endsWith(".png")){
-    		id = id.substring(0 , id.lastIndexOf(".png")) ;
-    	}
     	File file = new File(path ,id) ;
-    	if(id.endsWith("_original") && !file.exists()){
-    		File orgFile = new File(path , id.substring(0 , id.indexOf("_original"))) ;
-    		if(orgFile.exists()){
-    			UKTools.processImage(file = new File(path , id), orgFile) ;
-    		}
-    	}else if(!StringUtils.isBlank(id) && file.exists() && !id.endsWith("_original")){
-    		File originalFile = new File( path , id+"_original") ;
-    		if(!originalFile.exists()){
-    			UKTools.processImage(new File( path , id+"_original"), file) ;
-    		}
-    	}else if(!StringUtils.isBlank(id) && !file.exists() && !id.endsWith("_original")){
-    		File destFile = new File(path , id+"_original") ;
-    		if(destFile.exists()){
-    			UKTools.processImage(new File(path + id), destFile) ;
-    		}
-    		file = new File(path , id) ;
+    	if(!StringUtils.isBlank(id) && !(id.endsWith(".png") || id.endsWith(".jpg"))){
+	    	if(id.endsWith("_original") && !file.exists()){
+	    		File orgFile = new File(path , id.substring(0 , id.indexOf("_original"))) ;
+	    		if(orgFile.exists()){
+	    			UKTools.processImage(file = new File(path , id), orgFile) ;
+	    		}
+	    	}else if(!StringUtils.isBlank(id) && file.exists() && !id.endsWith("_original")){
+	    		File originalFile = new File( path , id+"_original") ;
+	    		if(!originalFile.exists()){
+	    			UKTools.processImage(new File( path , id+"_original"), file) ;
+	    		}
+	    	}else if(!StringUtils.isBlank(id) && !file.exists() && !id.endsWith("_original")){
+	    		File destFile = new File(path , id+"_original") ;
+	    		if(destFile.exists()){
+	    			UKTools.processImage(new File(path + id), destFile) ;
+	    		}
+	    		file = new File(path , id) ;
+	    	}
     	}
     	if(file.exists() && file.isFile()){
     		response.setHeader("Content-Type","image/png");
