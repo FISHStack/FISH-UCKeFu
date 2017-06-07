@@ -111,8 +111,7 @@ public class OnlineUserUtils {
 				onlineUser.setLogintime(new Date());
 				onlineUser.setIp(request.getRemoteAddr());
 
-				IP ipdata = IPTools.getInstance().findGeography(
-						request.getRemoteAddr());
+				IP ipdata = IPTools.getInstance().findGeography(UKTools.getIpAddr(request));
 				onlineUser.setCountry(ipdata.getCountry());
 				onlineUser.setProvince(ipdata.getProvince());
 				onlineUser.setCity(ipdata.getCity());

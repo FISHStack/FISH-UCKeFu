@@ -140,7 +140,7 @@ public class IMController extends Handler{
 			userHistory.setSessionid(request.getSession().getId());
 			userHistory.setHostname(request.getRemoteHost());
 			userHistory.setIp(request.getRemoteAddr());
-			IP ipdata = IPTools.getInstance().findGeography(request.getRemoteAddr());
+			IP ipdata = IPTools.getInstance().findGeography(UKTools.getIpAddr(request));
 			userHistory.setCountry(ipdata.getCountry());
 			userHistory.setProvince(ipdata.getProvince());
 			userHistory.setCity(ipdata.getCity());
