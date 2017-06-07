@@ -108,21 +108,23 @@ public class OnlineUserUtils {
 				onlineUser.setUserid(user.getId());
 				onlineUser.setUsername(user.getUsername());
 
+				String ip = UKTools.getIpAddr(request);
+				
 				onlineUser.setLogintime(new Date());
-				onlineUser.setIp(request.getRemoteAddr());
+				onlineUser.setIp(ip);
 
-				IP ipdata = IPTools.getInstance().findGeography(UKTools.getIpAddr(request));
+				IP ipdata = IPTools.getInstance().findGeography(ip);
 				onlineUser.setCountry(ipdata.getCountry());
 				onlineUser.setProvince(ipdata.getProvince());
 				onlineUser.setCity(ipdata.getCity());
 				onlineUser.setIsp(ipdata.getIsp());
 				onlineUser.setRegion(ipdata.toString() + "（"
-						+ UKTools.getIpAddr(request) + "）");
+						+ ip + "）");
 
 				onlineUser.setDatestr(new SimpleDateFormat("yyyMMdd")
 						.format(new Date()));
 
-				onlineUser.setHostname(UKTools.getIpAddr(request));
+				onlineUser.setHostname(ip);
 				onlineUser.setSessionid(sessionid);
 				onlineUser.setOptype(optype);
 				onlineUser
