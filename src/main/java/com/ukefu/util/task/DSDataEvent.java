@@ -1,8 +1,15 @@
 package com.ukefu.util.task;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class DSDataEvent {
 	public DSData dsData ;
+	
+	private String orgi ;
+	
+	private Map<String , Object> values = new HashMap<String , Object>();
 	
 	private boolean failures;
 	
@@ -42,4 +49,19 @@ public class DSDataEvent {
 		this.times = times;
 	}
 
+	public String getOrgi() {
+		return orgi;
+	}
+
+	public void setOrgi(String orgi) {
+		this.orgi = orgi;
+	}
+
+	public Map<String, Object> getValues() {
+		return values;
+	}
+
+	public void setValues(Map<String, Object> values) {
+		this.values = values;
+	}
 }

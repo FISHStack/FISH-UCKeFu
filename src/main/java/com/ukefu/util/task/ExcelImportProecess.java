@@ -105,7 +105,10 @@ public class ExcelImportProecess extends DataProcess{
 							event.getDSData().getReport().getAtompages().incrementAndGet() ;
 						}
 					}
-					
+					values.put("orgi", event.getOrgi()) ;
+					if(event.getValues()!=null && event.getValues().size() > 0){
+						values.putAll(event.getValues());
+					}
 					UKTools.populate(data, values);
 					event.getDSData().getProcess().process(data);
             	}
