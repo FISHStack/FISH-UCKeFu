@@ -39,7 +39,10 @@
 						<#if onlineUserList?? && onlineUserList.content?? && onlineUserList.content?size gt 0>
 						<#list onlineUserList.content as onlineuser>
 						<tr class="tdHasContorllor design-dropable-td">
-							<td class=" first_td_head">${onlineuser.username!''}</td>
+							<td class=" first_td_head">
+								<a href="/service/online/index.html?userid=${onlineuser.userid!''}">${onlineuser.username!''}
+								<#if onlineuser.contacts??>（${onlineuser.contacts.name!''}）</#if></a>
+							</td>
 							
 							<td class="ukefu-online-client">
 								<#if onlineuser.mobile?? && onlineuser.mobile == "1">

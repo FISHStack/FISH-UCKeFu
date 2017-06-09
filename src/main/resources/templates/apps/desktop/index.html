@@ -83,7 +83,8 @@
 						<#list onlineUserList.content as onlineuser>
 						<tr class="tdHasContorllor design-dropable-td">
 							<td class=" first_td_head">
-								<a href="/service/online/index.html?userid=${onlineuser.userid!''}">${onlineuser.username!''}</a>
+								<a href="/service/online/index.html?userid=${onlineuser.userid!''}">${onlineuser.username!''}
+								<#if onlineuser.contacts??>（${onlineuser.contacts.name!''}）</#if></a>
 							</td>
 							
 							<td class="ukefu-online-client">

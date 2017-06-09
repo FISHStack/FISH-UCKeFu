@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
@@ -63,6 +64,8 @@ public class OnlineUser {
 	private int invitetimes; // 邀请次数
 	private String invitestatus; // 邀请状态
 	private int refusetimes ;
+	
+	private Contacts contacts ;
 
 	public String getCreater() {
 		return this.creater;
@@ -427,4 +430,14 @@ public class OnlineUser {
 	public void setContactsid(String contactsid) {
 		this.contactsid = contactsid;
 	}
+	@Transient
+	public Contacts getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(Contacts contacts) {
+		this.contacts = contacts;
+	}
+	
+	
 }

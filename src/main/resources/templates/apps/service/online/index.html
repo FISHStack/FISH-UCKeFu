@@ -10,6 +10,7 @@
 					<div class="ukefu-user-index">
 						<h1>
 							${curAgentService.username!''}
+							<#if contacts??>（${contacts.name!''}）</#if>
 						</h1>
 						<div class="ukefu-join-time ukefu-text-muted" title="访问时间">
 							${curAgentService.createtime}
@@ -91,6 +92,9 @@
 				  <ul class="layui-tab-title">
 				    <li class="layui-this">咨询记录</li>
 				    <li>访问记录</li>
+				    <#if contacts??>
+				    <li>联系人</li>
+				    </#if>
 				  </ul>
 				  <div class="layui-tab-content">
 				    <div class="layui-tab-item layui-show">
@@ -208,6 +212,15 @@
 								</#if>
 							</tbody>
 						</table>
+				    </div>
+				    <div class="layui-tab-item">
+				    	<h1 class="site-h1">
+							联系人详细信息
+						</h1>
+						<div class="box ukefu-console" style="padding-top:0px !important;">
+							<#include "/apps/service/online/contacts.html">		
+						</div>
+				    	
 				    </div>
 				  </div>
 				</div>

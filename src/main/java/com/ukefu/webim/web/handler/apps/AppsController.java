@@ -1,6 +1,8 @@
 package com.ukefu.webim.web.handler.apps;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -19,12 +21,14 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.acd.ServiceQuene;
+import com.ukefu.webim.service.repository.ContactsRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.UserEventRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.Contacts;
 import com.ukefu.webim.web.model.InviteRecord;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.User;
@@ -43,14 +47,33 @@ public class AppsController extends Handler{
 	
 	@Autowired
 	private InviteRecordRepository inviteRecordRes ;
+	
+	@Autowired
+	private ContactsRepository contactsRes ;
 
 	@RequestMapping({"/apps/content"})
 	@Menu(type="apps", subtype="content")
 	public ModelAndView content(ModelMap map , HttpServletRequest request){
 		
 		Page<OnlineUser> onlineUserList = this.onlineUserRes.findByOrgiAndStatus(super.getOrgi(request), UKDataContext.OnlineUserOperatorStatus.ONLINE.toString(), new PageRequest(super.getP(request), super.getPs(request), Sort.Direction.DESC, new String[] { "createtime" })) ;
+		List<String> ids = new ArrayList<String>();
 		for(OnlineUser onlineUser : onlineUserList.getContent()){
 			onlineUser.setBetweentime((int) (System.currentTimeMillis() - onlineUser.getLogintime().getTime()));
+			if(!StringUtils.isBlank(onlineUser.getContactsid())){
+				ids.add(onlineUser.getContactsid()) ;
+			}
+		}
+		if(ids.size() > 0){
+			Iterable<Contacts> contactsList = contactsRes.findAll(ids) ;
+			for(OnlineUser onlineUser : onlineUserList.getContent()){
+				if(!StringUtils.isBlank(onlineUser.getContactsid())){
+					for(Contacts contacts : contactsList){
+						if(onlineUser.getContactsid().equals(contacts.getId())){
+							onlineUser.setContacts(contacts);
+						}
+					}
+				}
+			}
 		}
 		map.put("onlineUserList", onlineUserList);
 		aggValues(map, request);
@@ -79,10 +102,25 @@ public class AppsController extends Handler{
 	@Menu(type="apps", subtype="onlineuser")
 	public ModelAndView onlineuser(ModelMap map , HttpServletRequest request){
 		Page<OnlineUser> onlineUserList = this.onlineUserRes.findByOrgiAndStatus(super.getOrgi(request), UKDataContext.OnlineUserOperatorStatus.ONLINE.toString(), new PageRequest(super.getP(request), super.getPs(request), Sort.Direction.DESC, new String[] { "createtime" })) ;
+		List<String> ids = new ArrayList<String>();
 		for(OnlineUser onlineUser : onlineUserList.getContent()){
 			onlineUser.setBetweentime((int) (System.currentTimeMillis() - onlineUser.getLogintime().getTime()));
+			if(!StringUtils.isBlank(onlineUser.getContactsid())){
+				ids.add(onlineUser.getContactsid()) ;
+			}
 		}
-
+		if(ids.size() > 0){
+			Iterable<Contacts> contactsList = contactsRes.findAll(ids) ;
+			for(OnlineUser onlineUser : onlineUserList.getContent()){
+				if(!StringUtils.isBlank(onlineUser.getContactsid())){
+					for(Contacts contacts : contactsList){
+						if(onlineUser.getContactsid().equals(contacts.getId())){
+							onlineUser.setContacts(contacts);
+						}
+					}
+				}
+			}
+		}
 		map.put("onlineUserList", onlineUserList);
 		aggValues(map, request);
 		

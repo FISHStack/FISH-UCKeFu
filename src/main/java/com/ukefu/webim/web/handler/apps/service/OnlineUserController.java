@@ -19,7 +19,9 @@ import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.impl.AgentUserService;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
 import com.ukefu.webim.service.repository.AgentStatusRepository;
+import com.ukefu.webim.service.repository.AgentUserContactsRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
+import com.ukefu.webim.service.repository.ContactsRepository;
 import com.ukefu.webim.service.repository.OnlineUserHisRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.TagRelationRepository;
@@ -29,6 +31,7 @@ import com.ukefu.webim.service.repository.WeiXinUserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentService;
 import com.ukefu.webim.web.model.AgentUser;
+import com.ukefu.webim.web.model.AgentUserContacts;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.WeiXinUser;
 
@@ -64,6 +67,12 @@ public class OnlineUserController extends Handler{
 	
 	@Autowired
 	private ChatMessageRepository chatMessageRepository ;
+	
+	@Autowired
+	private ContactsRepository contactsRes ;
+	
+	@Autowired
+	private AgentUserContactsRepository agentUserContactsRes ;
 	
 	@RequestMapping("/online/index")
     @Menu(type = "service" , subtype = "online" , admin= true)
@@ -102,6 +111,12 @@ public class OnlineUserController extends Handler{
 					OnlineUser onlineUser = onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ; 
 					map.put("onlineUser", onlineUser) ;
 				}
+				List<AgentUserContacts> agentUserContactsList = agentUserContactsRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
+				if(agentUserContactsList.size() > 0){
+					AgentUserContacts agentUserContacts = agentUserContactsList.get(0) ;
+					map.put("contacts", contactsRes.findOne(agentUserContacts.getContactsid())) ;
+				}
+				
 				map.put("tags", tagRes.findByOrgiAndTagtype(super.getOrgi(request) , UKDataContext.ModelType.USER.toString())) ;
 				AgentUser curragentuser = agentUserRes.findByUseridAndOrgi(agentService.getUserid(), super.getOrgi(request)) ;
 				map.put("curAgentService", agentService) ;
