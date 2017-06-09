@@ -1,4 +1,4 @@
-package com.ukefu.webim.web.handler.resouce;
+package com.ukefu.webim.web.handler.resource;
 
 import java.io.IOException;
 import java.util.ArrayList;

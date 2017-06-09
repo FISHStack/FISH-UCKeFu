@@ -1,4 +1,4 @@
-package com.ukefu.webim.web.handler.resouce;
+package com.ukefu.webim.web.handler.resource;
 
 import java.io.File;
 import java.io.IOException;

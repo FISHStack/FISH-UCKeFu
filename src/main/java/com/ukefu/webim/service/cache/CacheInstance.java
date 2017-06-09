@@ -35,4 +35,10 @@ public interface CacheInstance {
 	 */
 	public CacheBean getIMRCacheBean();
 	
+	/**
+	 * IMR指令
+	 * @return
+	 */
+	public CacheBean getApiUserCacheBean();
+	
 }

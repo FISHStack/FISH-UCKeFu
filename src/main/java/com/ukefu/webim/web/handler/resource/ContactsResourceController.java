@@ -15,13 +15,12 @@ import com.ukefu.webim.service.repository.ContactsRepository;
 import com.ukefu.webim.web.handler.Handler;
 
 @Controller
-@RequestMapping("/res")
 public class ContactsResourceController extends Handler{
 	
 	@Autowired
 	private ContactsRepository contactsRes ;
 	
-	@RequestMapping("/contacts")
+	@RequestMapping("/res/contacts")
     @Menu(type = "res" , subtype = "contacts")
     public ModelAndView add(ModelMap map , HttpServletRequest request , @Valid String q) {
 		if(q==null){

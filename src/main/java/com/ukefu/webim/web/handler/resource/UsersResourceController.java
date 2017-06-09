@@ -1,4 +1,4 @@
-package com.ukefu.webim.web.handler.resouce;
+package com.ukefu.webim.web.handler.resource;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

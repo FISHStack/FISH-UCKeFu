@@ -1,4 +1,4 @@
-package com.ukefu.webim.web.handler.resouce;
+package com.ukefu.webim.web.handler.resource;
 
 import java.io.IOException;
 
@@ -13,10 +13,9 @@ import com.ukefu.util.Menu;
 import com.ukefu.webim.web.handler.Handler;
 
 @Controller
-@RequestMapping("/res")
 public class CssResourceController extends Handler{
 	
-    @RequestMapping("/css")
+    @RequestMapping("/res/css")
     @Menu(type = "resouce" , subtype = "css" , access = true)
     public ModelAndView index(HttpServletResponse response, @Valid String id) throws IOException {
     	response.setContentType("text/css ; charset=UTF-8");

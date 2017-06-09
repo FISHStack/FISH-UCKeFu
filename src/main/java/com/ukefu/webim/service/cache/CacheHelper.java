@@ -30,4 +30,8 @@ public class CacheHelper {
 		return cacheInstance!=null ? cacheInstance.getIMRCacheBean() : null ;
 	}
 	
+	public static CacheBean getApiUserCacheBean() {
+		return cacheInstance!=null ? cacheInstance.getApiUserCacheBean() : null ;
+	}
+	
 }

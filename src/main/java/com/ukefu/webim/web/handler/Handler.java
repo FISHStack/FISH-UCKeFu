@@ -1,5 +1,6 @@
 package com.ukefu.webim.web.handler;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.UKView;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.web.model.User;
 
 
@@ -24,10 +26,24 @@ public class Handler {
 	public User getUser(HttpServletRequest request){
 		User user = (User) request.getSession(true).getAttribute(UKDataContext.USER_SESSION_NAME)  ;
 		if(user==null){
-			user = new User();
-			user.setId(UKTools.getContextID(request.getSession().getId())) ;
-			user.setUsername(UKDataContext.GUEST_USER+"_"+UKTools.genIDByKey(user.getId())) ;
-			user.setSessionid(user.getId()) ;
+			String authorization = request.getHeader("authorization") ;
+			if(StringUtils.isBlank(authorization) && request.getCookies()!=null){
+				for(Cookie cookie : request.getCookies()){
+					if(cookie.getName().equals("authorization")){
+						authorization = cookie.getValue() ; break ;
+					}
+				}
+			}
+			if(!StringUtils.isBlank(authorization)){
+				user = (User) CacheHelper.getApiUserCacheBean().getCacheObject(authorization, UKDataContext.SYSTEM_ORGI) ;
+			}
+			if(user==null){
+				user = new User();
+				user.setId(UKTools.getContextID(request.getSession().getId())) ;
+				user.setUsername(UKDataContext.GUEST_USER+"_"+UKTools.genIDByKey(user.getId())) ;
+				user.setOrgi(UKDataContext.SYSTEM_ORGI);
+				user.setSessionid(user.getId()) ;
+			}
 		}else{
 			user.setSessionid(user.getId()) ;
 		}
