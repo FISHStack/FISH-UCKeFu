@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import com.lmax.disruptor.YieldingWaitStrategy;
+import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.ukefu.util.event.UserDataEvent;
@@ -22,7 +22,7 @@ public class DisruptorConfigure {
     public Disruptor<UserDataEvent> disruptor() {   
 		Executor executor = Executors.newCachedThreadPool();
     	 UserDataEventFactory factory = new UserDataEventFactory();
-    	 Disruptor<UserDataEvent> disruptor = new Disruptor<UserDataEvent>(factory, 1024, executor, ProducerType.SINGLE , new YieldingWaitStrategy());
+    	 Disruptor<UserDataEvent> disruptor = new Disruptor<UserDataEvent>(factory, 1024, executor, ProducerType.SINGLE , new BlockingWaitStrategy());
     	 disruptor.setDefaultExceptionHandler(new UKeFuExceptionHandler());
     	 disruptor.handleEventsWith(new UserEventHandler());
     	 disruptor.start();
@@ -34,7 +34,7 @@ public class DisruptorConfigure {
     public Disruptor<UserDataEvent> multiupdate() {   
     	Executor executor = Executors.newCachedThreadPool();
     	 MultiUpdateEventFactory factory = new MultiUpdateEventFactory();
-    	 Disruptor<UserDataEvent> disruptor = new Disruptor<UserDataEvent>(factory, 1024, executor, ProducerType.SINGLE , new YieldingWaitStrategy());
+    	 Disruptor<UserDataEvent> disruptor = new Disruptor<UserDataEvent>(factory, 1024, executor, ProducerType.SINGLE , new BlockingWaitStrategy());
     	 disruptor.handleEventsWith(new MultiUpdateEventHandler());
     	 disruptor.setDefaultExceptionHandler(new UKeFuExceptionHandler());
     	 disruptor.start();
