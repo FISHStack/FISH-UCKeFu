@@ -118,13 +118,15 @@ public class MessageUtils {
     		if(data.getType()!=null && data.getType().equals(UKDataContext.MessageTypeEnum.MESSAGE.toString())){
 	    		AgentUserTaskRepository agentUserTaskRes = UKDataContext.getContext().getBean(AgentUserTaskRepository.class) ;
 	    		AgentUserTask agentUserTask = agentUserTaskRes.getOne(agentUser.getId()) ;
-	    		agentUserTask.setLastmessage(new Date());
-	    		agentUserTask.setWarnings("0");
-	    		agentUserTask.setWarningtime(null);
-	    		agentUserTask.setLastmsg(data.getMessage().length() > 100 ? data.getMessage().substring(0 , 100) : data.getMessage());
-	    		agentUserTask.setTokenum(agentUserTask.getTokenum()+1);
-	    		data.setTokenum(agentUserTask.getTokenum());
-	    		agentUserTaskRes.save(agentUserTask) ;
+	    		if(agentUserTask!=null){
+		    		agentUserTask.setLastmessage(new Date());
+		    		agentUserTask.setWarnings("0");
+		    		agentUserTask.setWarningtime(null);
+		    		agentUserTask.setLastmsg(data.getMessage().length() > 100 ? data.getMessage().substring(0 , 100) : data.getMessage());
+		    		agentUserTask.setTokenum(agentUserTask.getTokenum()+1);
+		    		data.setTokenum(agentUserTask.getTokenum());
+		    		agentUserTaskRes.save(agentUserTask) ;
+	    		}
     		}
     	}
     	if(!StringUtils.isBlank(data.getUserid()) && UKDataContext.MessageTypeEnum.MESSAGE.toString().equals(data.getType())){
