@@ -22,7 +22,7 @@ import com.ukefu.webim.util.RestResultType;
 import com.ukefu.webim.web.handler.Handler;
 
 @RestController
-@RequestMapping("/api/sysdic")
+@RequestMapping("/api/tags")
 @Api(value = "标签功能" , description = "获取分类标签")
 public class ApiTagsController extends Handler{
 
