@@ -15,6 +15,8 @@ public abstract interface OnlineUserRepository extends JpaRepository<OnlineUser,
 	
 	public abstract OnlineUser findByUseridAndOrgi(String userid, String orgi);
 	
+	public abstract Page<OnlineUser> findByUseridAndOrgi(String userid, String orgi , Pageable page);
+	
 	public abstract OnlineUser findByOrgiAndSessionid(String orgi , String sessionid);
 	
 	public abstract Page<OnlineUser> findByOrgiAndStatusAndCreatetimeLessThan(String orgi , String status , Date createtime , Pageable paramPageable);
