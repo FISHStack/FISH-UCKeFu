@@ -29,6 +29,7 @@ import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.util.router.RouterHelper;
 import com.ukefu.webim.util.server.message.NewRequestMessage;
 import com.ukefu.webim.web.model.AgentUser;
+import com.ukefu.webim.web.model.Contacts;
 import com.ukefu.webim.web.model.MessageDataBean;
 import com.ukefu.webim.web.model.MessageInContent;
 import com.ukefu.webim.web.model.OnlineUser;
@@ -62,7 +63,7 @@ public class OnlineUserUtils {
 	 * @param service
 	 * @throws Exception
 	 */
-	public static OnlineUser online(User user, String orgi, String sessionid,String optype, HttpServletRequest request , String channel , String appid , boolean update) {
+	public static OnlineUser online(User user, String orgi, String sessionid,String optype, HttpServletRequest request , String channel , String appid , Contacts contacts) {
 		OnlineUser onlineUser = null;
 		if (UKDataContext.getContext() != null) {
 			OnlineUserRepository service = (OnlineUserRepository) UKDataContext
@@ -78,6 +79,10 @@ public class OnlineUserUtils {
 				onlineUser.setUpdatetime(new Date());
 				onlineUser.setUpdateuser(user.getUsername());
 				onlineUser.setSessionid(sessionid);
+				
+				if(contacts!=null){
+					onlineUser.setContactsid(contacts.getId());
+				}
 
 				onlineUser.setOrgi(orgi);
 				onlineUser.setChannel(channel);
@@ -138,6 +143,9 @@ public class OnlineUserUtils {
 				service.save(onlineUser);
 			}else{
 				onlineUser = tempOnlineUser ;
+				if(contacts!=null && StringUtils.isBlank(onlineUser.getContactsid())){
+					onlineUser.setContactsid(contacts.getId());
+				}
 				if((!StringUtils.isBlank(onlineUser.getSessionid()) && !onlineUser.getSessionid().equals(sessionid)) || !UKDataContext.OnlineUserOperatorStatus.ONLINE.toString().equals(onlineUser.getStatus())){
 					onlineUser.setStatus(UKDataContext.OnlineUserOperatorStatus.ONLINE.toString());
 					onlineUser.setChannel(channel);
@@ -150,8 +158,7 @@ public class OnlineUserUtils {
 						onlineUser.setInvitetimes(0);
 					}
 					service.save(onlineUser);
-				}else if(update){
-					onlineUser.setUsername(user.getUsername());
+				}else if(contacts!=null){
 					service.save(onlineUser);
 				}
 			}
