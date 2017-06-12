@@ -1,5 +1,4 @@
-var data ;
-var config = {} ;
+var data = {mobile:'18510224533'};
 /******
 	id:"xxxxxxxxxxxx",
 	name:'UKeFu',
@@ -122,7 +121,22 @@ var ukefu = {
 		}catch(e){}
 	},
 	ping : function(){
-		ukefu.ajax(ukefu.url + "&userid="+result+"&sessionid=${sessionid!''}&sign="+result+"&t="+new Date().getTime() , function(){ukefu.ping();});	
+		var url = ukefu.url ;
+		if(data){
+			if(data.id){
+				url = url + "&id="+data.id ;	
+			}
+			if(data.name){
+				url = url + "&name="+encodeURIComponent(data.name);	
+			}
+			if(data.email){
+				url = url + "&email="+encodeURIComponent(data.email);	
+			}
+			if(data.mobile){
+				url = url + "&mobile="+encodeURIComponent(data.mobile);	
+			}
+		}
+		ukefu.ajax(url + "&userid="+result+"&sessionid=${sessionid!''}&sign="+result+"&t="+new Date().getTime() , function(){ukefu.ping();});	
 	},
 	writepoint:function(){
 		var skillHtml = "<#if inviteData?? && inviteData.skill == true><div id='ichatContent' class='ichat-content ichat-float-left' style='display: block;font-size:14px;;${theme!''};box-shadow: 0 0 10px #DDDDDD;border: 1px solid #DDDDDD;overflow: hidden;text-align: left;'><div>" +

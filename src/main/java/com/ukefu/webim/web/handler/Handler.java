@@ -50,7 +50,7 @@ public class Handler {
 		return user ;
 	}
 	
-	public User getIMUser(HttpServletRequest request , String sign){
+	public User getIMUser(HttpServletRequest request , String sign , String nickname){
 		User user = (User) request.getSession(true).getAttribute(UKDataContext.IM_USER_SESSION_NAME)  ;
 		if(user==null){
 			user = new User();
@@ -59,7 +59,11 @@ public class Handler {
 			}else{
 				user.setId(UKTools.getContextID(request.getSession().getId())) ;
 			}
-			user.setUsername(UKDataContext.GUEST_USER+"_"+UKTools.genIDByKey(user.getId())) ;
+			if(!StringUtils.isBlank(nickname)){
+				user.setUsername(nickname);
+			}else{
+				user.setUsername(UKDataContext.GUEST_USER+"_"+UKTools.genIDByKey(user.getId())) ;
+			}
 			user.setSessionid(user.getId()) ;
 		}else{
 			user.setSessionid(UKTools.getContextID(request.getSession().getId())) ;

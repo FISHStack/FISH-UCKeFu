@@ -23,7 +23,7 @@ public class TestController extends Handler{
 		for(int i=0 ; i<500; i++){
 			String user = UKTools.getUUID();
 			try {
-				OnlineUserUtils.newRequestMessage(user, "ukewo", "user", "system", "localhost" , "win10", "test" , UKDataContext.ChannelTypeEnum.WEBIM.toString() , null , null) ;
+				OnlineUserUtils.newRequestMessage(user, "ukewo", "user", "system", "localhost" , "win10", "test" , UKDataContext.ChannelTypeEnum.WEBIM.toString() , null , null , "admin") ;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

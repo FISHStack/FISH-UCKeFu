@@ -62,7 +62,7 @@ public class OnlineUserUtils {
 	 * @param service
 	 * @throws Exception
 	 */
-	public static OnlineUser online(User user, String orgi, String sessionid,String optype, HttpServletRequest request , String channel , String appid) {
+	public static OnlineUser online(User user, String orgi, String sessionid,String optype, HttpServletRequest request , String channel , String appid , boolean update) {
 		OnlineUser onlineUser = null;
 		if (UKDataContext.getContext() != null) {
 			OnlineUserRepository service = (OnlineUserRepository) UKDataContext
@@ -149,6 +149,9 @@ public class OnlineUserUtils {
 						onlineUser.setLogintime(new Date());
 						onlineUser.setInvitetimes(0);
 					}
+					service.save(onlineUser);
+				}else if(update){
+					onlineUser.setUsername(user.getUsername());
 					service.save(onlineUser);
 				}
 			}
@@ -358,13 +361,15 @@ public class OnlineUserUtils {
 	
 	public static NewRequestMessage newRequestMessage(String userid, String orgi,
 			String session, String appid, String ip, String osname,
-			String browser , String channel , String skill , String agent) throws Exception {
+			String browser , String channel , String skill , String agent , String nickname) throws Exception {
 		IP ipdata = null ;
 		if(!StringUtils.isBlank(ip)){
 			ipdata = IPTools.getInstance().findGeography(ip);
 		}
 		String userID = UKTools.genIDByKey(session);
-		String nickname = "Guest_" + userID;
+		if(!StringUtils.isBlank(nickname)){
+			nickname = "Guest_" + userID;
+		}
 		
 		return newRequestMessage(userid , nickname, orgi, session, appid, ip, osname, browser , "" , ipdata , channel , skill , agent) ;
 	}

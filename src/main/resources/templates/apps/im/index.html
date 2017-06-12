@@ -336,7 +336,7 @@
     document.getElementById('above').scrollTop = document.getElementById('above').scrollHeight  ;	//滚动到 对话内容的 底部
     // 参数连接
 	var hostname = location.hostname ;
-    var socket = io.connect('${schema!'http'}://'+hostname+':${port}/im/user?userid=${userid!''}&orgi=${orgi!''}&session=${sessionid!''}&appid=${appid!''}&osname=${(osname!'')?url}&browser=${(browser!'')?url}<#if skill??>&skill=${skill}</#if><#if agent??>&agent=${agent}</#if>');
+    var socket = io.connect('${schema!'http'}://'+hostname+':${port}/im/user?userid=${userid!''}&orgi=${orgi!''}&session=${sessionid!''}&appid=${appid!''}&osname=${(osname!'')?url}&browser=${(browser!'')?url}<#if skill??>&skill=${skill}</#if><#if username??>&nickname=${username}</#if><#if agent??>&agent=${agent}</#if>');
     socket.on('connect',function(){
         //service.sendRequestMessage(); 
 		//output('<span id="connect-message">'+ new Date().format("yyyy-MM-dd hh:mm:ss") + ' 开始沟通' +'</span>' , 'message connect-message');	 		

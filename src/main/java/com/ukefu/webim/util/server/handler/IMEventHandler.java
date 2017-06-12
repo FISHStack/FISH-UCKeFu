@@ -46,12 +46,14 @@ public class IMEventHandler
 			String agent = client.getHandshakeData().getSingleUrlParam("agent") ;
 			String skill = client.getHandshakeData().getSingleUrlParam("skill") ;
 			
+			String nickname = client.getHandshakeData().getSingleUrlParam("nickname") ;
+			
 			if(!StringUtils.isBlank(user)){
 				/**
 				 * 用户进入到对话连接 ， 排队用户请求 , 如果返回失败，表示当前坐席全忙，用户进入排队状态，当前提示信息 显示 当前排队的队列位置，不可进行对话，用户发送的消息作为留言处理
 				 */
 				InetSocketAddress address = (InetSocketAddress) client.getRemoteAddress()  ;
-				NewRequestMessage newRequestMessage = OnlineUserUtils.newRequestMessage(user, orgi , session , appid , address.getHostString() , client.getHandshakeData().getSingleUrlParam("osname") , client.getHandshakeData().getSingleUrlParam("browser") , UKDataContext.ChannelTypeEnum.WEBIM.toString() , skill , agent) ;
+				NewRequestMessage newRequestMessage = OnlineUserUtils.newRequestMessage(user, orgi , session , appid , address.getHostString() , client.getHandshakeData().getSingleUrlParam("osname") , client.getHandshakeData().getSingleUrlParam("browser") , UKDataContext.ChannelTypeEnum.WEBIM.toString() , skill , agent , nickname) ;
 //				/**
 //				 * 加入到 缓存列表
 //				 */

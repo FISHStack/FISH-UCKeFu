@@ -37,8 +37,10 @@ import com.ukefu.util.UKTools;
 import com.ukefu.util.extra.DataExchangeInterface;
 import com.ukefu.util.webim.WebIMClient;
 import com.ukefu.webim.service.acd.ServiceQuene;
+import com.ukefu.webim.service.repository.AgentUserContactsRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
+import com.ukefu.webim.service.repository.ContactsRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.LeaveMsgRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
@@ -46,6 +48,8 @@ import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.AgentUserContacts;
+import com.ukefu.webim.web.model.Contacts;
 import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.InviteRecord;
 import com.ukefu.webim.web.model.LeaveMsg;
@@ -87,6 +91,12 @@ public class IMController extends Handler{
 	@Autowired
 	private LeaveMsgRepository leaveMsgRes ;
 	
+	@Autowired
+	private ContactsRepository contactsRes ;
+	
+	@Autowired
+	private AgentUserContactsRepository agentUserContactsRes ;
+	
     @RequestMapping("/{id}")
     @Menu(type = "im" , subtype = "point" , access = true)
     public ModelAndView point(HttpServletRequest request , HttpServletResponse response, @PathVariable String id , @Valid String orgi , @Valid String userid , @Valid String title) {
@@ -122,7 +132,7 @@ public class IMController extends Handler{
 				userHistory.setAdmin(false);
 				userHistory.setAccessnum(true);
 			}
-			User imUser = super.getIMUser(request , userid) ;
+			User imUser = super.getIMUser(request , userid, null) ;
 			if(imUser!=null){
 				userHistory.setCreater(imUser.getId());
 				userHistory.setUsername(imUser.getUsername());
@@ -178,7 +188,7 @@ public class IMController extends Handler{
      */
     @RequestMapping("/online")
     @Menu(type = "im" , subtype = "online" , access = true)
-    public SseEmitter callable(HttpServletRequest request , HttpServletResponse response ,final @Valid String orgi , @Valid String appid, final @Valid String userid , @Valid String sign , final @Valid String client) {
+    public SseEmitter callable(HttpServletRequest request , HttpServletResponse response , @Valid Contacts contacts, final @Valid String orgi , @Valid String appid, final @Valid String userid , @Valid String sign , final @Valid String client) {
 		final SseEmitter emitter = new SseEmitter();
 		if(!StringUtils.isBlank(userid)){
 			emitter.onCompletion(new Runnable() {
@@ -202,11 +212,11 @@ public class IMController extends Handler{
 					}
 				}
 			});
-			
+			contacts = processContacts(orgi, contacts, appid, userid);
 	    	if(!StringUtils.isBlank(sign)){
-	    		OnlineUserUtils.online(super.getIMUser(request , sign) , orgi , request.getSession().getId() , UKDataContext.OnlineUserTypeStatus.WEBIM.toString(), request , UKDataContext.ChannelTypeEnum.WEBIM.toString() , appid);
+	    		OnlineUserUtils.online(super.getIMUser(request , sign , contacts!=null ? contacts.getName() : null) , orgi , request.getSession().getId() , UKDataContext.OnlineUserTypeStatus.WEBIM.toString(), request , UKDataContext.ChannelTypeEnum.WEBIM.toString() , appid , contacts!=null);
 	    	}
-			
+	    	
 	    	OnlineUserUtils.webIMClients.putClient(userid, new WebIMClient(userid  , client , emitter)) ;
 		}
 		return emitter;
@@ -214,7 +224,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/index")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView index(HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent) throws Exception {
+    public ModelAndView index(HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	if(!StringUtils.isBlank(appid)){
     		CousultInvite invite = inviteRepository.findOne(appid) ;
@@ -227,6 +237,9 @@ public class IMController extends Handler{
     				}
     				String userID = UKTools.genIDByKey(sessionid);
     				String nickname = "Guest_" + userID;
+    				if(contacts!=null && !StringUtils.isBlank(contacts.getName())){
+    					nickname = contacts.getName() ;
+    				}
     				view.addObject("username", nickname) ;
     				if(UKDataContext.model.get("xiaoe")!=null){
     					DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("topic") ;
@@ -249,8 +262,6 @@ public class IMController extends Handler{
 	    		view.addObject("orgi",invite.getOrgi());
 	    	}
     		
-    		
-    		
 	    	view.addObject("hostname", request.getServerName()) ;
 			view.addObject("port", port) ;
 			view.addObject("appid", appid) ;
@@ -271,6 +282,8 @@ public class IMController extends Handler{
 			if(!StringUtils.isBlank(type)){
 				view.addObject("type", type) ;
 			}
+			
+			contacts = processContacts(invite.getOrgi(), contacts, appid, userid);
 	    	
 	//    	OnlineUserUtils.sendWebIMClients(userid , "accept");
 	    	Page<InviteRecord> inviteRecordList = inviteRecordRes.findByUseridAndOrgi(userid, orgi , new PageRequest(0, 1, Direction.DESC, "createtime")) ;
@@ -284,6 +297,43 @@ public class IMController extends Handler{
 	    	
     	}
         return view;
+    }
+    
+    private Contacts processContacts(String orgi ,Contacts contacts , String appid , String userid){
+    	if(contacts!=null){
+			
+			if(contacts != null && (!StringUtils.isBlank(contacts.getName()) || !StringUtils.isBlank(contacts.getMobile()) || !StringUtils.isBlank(contacts.getEmail()))){
+				StringBuffer query = new StringBuffer();
+				query.append(contacts.getName()) ;
+				if(!StringUtils.isBlank(contacts.getMobile())){
+					query.append(" OR ").append(contacts.getMobile()) ;
+				}
+				if(!StringUtils.isBlank(contacts.getEmail())){
+					query.append(" OR ").append(contacts.getEmail()) ;
+				}
+				Page<Contacts> contactsList = contactsRes.findByOrgi(orgi, false, query.toString(), new PageRequest(0, 1)) ;
+				if(contactsList.getContent().size() > 0){
+					contacts = contactsList.getContent().get(0) ;
+				}else{
+//					contactsRes.save(contacts) ;	//需要增加签名验证，避免随便产生垃圾信息，也可以自行修改？
+					contacts = null ;
+				}
+			}
+			if(contacts!=null){
+				List<AgentUserContacts> agentUserContactsList = agentUserContactsRes.findByUseridAndOrgi(userid, orgi) ;
+				if(agentUserContactsList.size() == 0){
+    				AgentUserContacts agentUserContacts = new AgentUserContacts() ;
+    				agentUserContacts.setAppid(appid);
+    				agentUserContacts.setChannel(UKDataContext.ChannelTypeEnum.WEBIM.toString());
+    				agentUserContacts.setContactsid(contacts.getId());
+    				agentUserContacts.setUserid(userid);
+    				agentUserContacts.setOrgi(orgi);
+    				agentUserContacts.setCreatetime(new Date());
+    				agentUserContactsRes.save(agentUserContacts) ;
+				}
+			} 
+		}
+    	return contacts ;
     }
     
     @RequestMapping("/text/{id}")

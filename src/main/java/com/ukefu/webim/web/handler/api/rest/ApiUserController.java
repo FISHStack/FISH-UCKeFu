@@ -28,7 +28,7 @@ import com.ukefu.webim.web.model.User;
 
 @RestController
 @RequestMapping("/api/user")
-@Api(value = "用户服务")
+@Api(value = "用户服务", description = "用户管理功能")
 public class ApiUserController extends Handler{
 
 	@Autowired
@@ -100,7 +100,7 @@ public class ApiUserController extends Handler{
     		if(!user.getUsertype().equals("0")){	//系统管理员， 不允许 使用 接口删除
     			userRepository.delete(user);
     		}else{
-    			result.setStatus(RestResultType.DELETE);
+    			result.setStatus(RestResultType.USER_DELETE);
     		}
     	}
         return new ResponseEntity<>(result, HttpStatus.OK);
