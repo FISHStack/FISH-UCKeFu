@@ -143,9 +143,6 @@ public class OnlineUserUtils {
 				service.save(onlineUser);
 			}else{
 				onlineUser = tempOnlineUser ;
-				if(contacts!=null && StringUtils.isBlank(onlineUser.getContactsid())){
-					onlineUser.setContactsid(contacts.getId());
-				}
 				if((!StringUtils.isBlank(onlineUser.getSessionid()) && !onlineUser.getSessionid().equals(sessionid)) || !UKDataContext.OnlineUserOperatorStatus.ONLINE.toString().equals(onlineUser.getStatus())){
 					onlineUser.setStatus(UKDataContext.OnlineUserOperatorStatus.ONLINE.toString());
 					onlineUser.setChannel(channel);
@@ -159,7 +156,15 @@ public class OnlineUserUtils {
 					}
 					service.save(onlineUser);
 				}else if(contacts!=null){
-					service.save(onlineUser);
+					if(contacts!=null && (StringUtils.isBlank(onlineUser.getContactsid()) || !contacts.getName().equals(onlineUser.getUsername()))){
+						if(StringUtils.isBlank(onlineUser.getContactsid())){
+							onlineUser.setContactsid(contacts.getId());
+						}
+						if(!contacts.getName().equals(onlineUser.getUsername())){
+							onlineUser.setUsername(contacts.getName());
+						}
+						service.save(onlineUser);
+					}
 				}
 			}
 		}
