@@ -1,5 +1,8 @@
 package com.ukefu.webim.web.handler.api.rest;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -25,6 +28,7 @@ import com.ukefu.webim.web.model.User;
 
 @RestController
 @RequestMapping("/api/user")
+@Api(value = "用户服务")
 public class ApiUserController extends Handler{
 
 	@Autowired
@@ -41,6 +45,7 @@ public class ApiUserController extends Handler{
 	 */
 	@RequestMapping( method = RequestMethod.GET)
 	@Menu(type = "apps" , subtype = "user" , access = true)
+	@ApiOperation("返回用户列表，支持分页，分页参数为 p=1&ps=50，默认分页尺寸为 20条每页")
     public ResponseEntity<RestResult> list(HttpServletRequest request , @Valid String id ,@Valid String username) {
 		Page<User> userList = null ;
 		if(!StringUtils.isBlank(id)){
@@ -63,6 +68,7 @@ public class ApiUserController extends Handler{
 	 */
 	@RequestMapping(method = RequestMethod.PUT)
 	@Menu(type = "apps" , subtype = "user" , access = true)
+	@ApiOperation("新增或修改用户用户 ，在修改用户信息的时候，如果用户 密码未改变，请设置为 NULL")
     public ResponseEntity<RestResult> put(HttpServletRequest request , @RequestParam User user) {
     	if(user != null && !StringUtils.isBlank(user.getUsername())){
     		if(!StringUtils.isBlank(user.getPassword())){
@@ -85,6 +91,7 @@ public class ApiUserController extends Handler{
 	 */
 	@RequestMapping(method = RequestMethod.DELETE)
 	@Menu(type = "apps" , subtype = "user" , access = true)
+	@ApiOperation("删除用户，只提供 按照用户ID删除 ， 并且，不能删除系统管理员")
     public ResponseEntity<RestResult> delete(HttpServletRequest request , @RequestParam String id) {
 		RestResult result = new RestResult(RestResultType.OK) ; 
     	User user = null ;
