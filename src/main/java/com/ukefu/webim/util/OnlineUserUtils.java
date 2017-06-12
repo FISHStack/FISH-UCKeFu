@@ -156,7 +156,7 @@ public class OnlineUserUtils {
 					}
 					service.save(onlineUser);
 				}else if(contacts!=null){
-					if(contacts!=null && (StringUtils.isBlank(onlineUser.getContactsid()) || !contacts.getName().equals(onlineUser.getUsername()))){
+					if(contacts!=null && !StringUtils.isBlank(contacts.getId()) && !StringUtils.isBlank(contacts.getName()) &&(StringUtils.isBlank(onlineUser.getContactsid()) || !contacts.getName().equals(onlineUser.getUsername()))){
 						if(StringUtils.isBlank(onlineUser.getContactsid())){
 							onlineUser.setContactsid(contacts.getId());
 						}

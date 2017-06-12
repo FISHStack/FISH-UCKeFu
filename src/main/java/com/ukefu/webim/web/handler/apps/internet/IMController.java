@@ -316,10 +316,10 @@ public class IMController extends Handler{
 					contacts = contactsList.getContent().get(0) ;
 				}else{
 //					contactsRes.save(contacts) ;	//需要增加签名验证，避免随便产生垃圾信息，也可以自行修改？
-					contacts = null ;
+					contacts.setId(null);
 				}
 			}
-			if(contacts!=null){
+			if(contacts!=null && !StringUtils.isBlank(contacts.getId())){
 				List<AgentUserContacts> agentUserContactsList = agentUserContactsRes.findByUseridAndOrgi(userid, orgi) ;
 				if(agentUserContactsList.size() == 0){
     				AgentUserContacts agentUserContacts = new AgentUserContacts() ;
