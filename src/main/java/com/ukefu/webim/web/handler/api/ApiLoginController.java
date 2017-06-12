@@ -1,5 +1,7 @@
 package com.ukefu.webim.web.handler.api;
 
+import io.swagger.annotations.Api;
+
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +31,7 @@ import com.ukefu.webim.web.model.UserRole;
 
 @RestController
 @RequestMapping("/tokens")
+@Api(value = "登录服务", description = "账号密码登录")
 public class ApiLoginController extends Handler{
 
 	@Autowired
