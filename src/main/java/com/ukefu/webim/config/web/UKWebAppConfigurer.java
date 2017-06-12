@@ -17,7 +17,7 @@ public class UKWebAppConfigurer
         // addPathPatterns 用于添加拦截规则
         // excludePathPatterns 用户排除拦截
         registry.addInterceptor(new UserInterceptorHandler()).addPathPatterns("/**").excludePathPatterns("/login.html").excludePathPatterns("/im/**");
-        registry.addInterceptor(new CrossInterceptorHandler()).addPathPatterns("/im/**");
+        registry.addInterceptor(new CrossInterceptorHandler()).addPathPatterns("/im/**").addPathPatterns("/api/**").addPathPatterns("/tokens");
         super.addInterceptors(registry);
     }
 }

@@ -8,8 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public abstract interface UserRepository
-  extends JpaRepository<User, String>
+public abstract interface UserRepository extends JpaRepository<User, String>
 {
   public abstract User findByIdAndOrgi(String paramString, String orgi);
   
@@ -24,6 +23,8 @@ public abstract interface UserRepository
   public abstract Page<User> findByDatastatusAndOrgi(boolean datastatus , String orgi, Pageable paramPageable);
   
   public abstract Page<User> findByDatastatusAndOrgiAndUsernameLike(boolean datastatus , String orgi ,String username ,Pageable paramPageable);
+  
+  public abstract Page<User> findByIdAndOrgi(String id , String orgi,Pageable paramPageable);
   
   public abstract List<User> findByOrganAndOrgi(String paramString, String orgi);
   
