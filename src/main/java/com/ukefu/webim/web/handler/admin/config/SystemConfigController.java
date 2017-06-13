@@ -72,11 +72,12 @@ public class SystemConfigController extends Handler{
     @RequestMapping("/stopimserver")
     @Menu(type = "admin" , subtype = "stopimserver" , access = false , admin = true)
     public ModelAndView stopimserver(ModelMap map , HttpServletRequest request , @Valid String confirm) throws SQLException {
-    	if(UKTools.secConfirm(secRes, super.getOrgi(request), confirm)){
+    	boolean execute = false ;
+    	if(execute = UKTools.secConfirm(secRes, super.getOrgi(request), confirm)){
 	    	server.stop();
 	    	UKDataContext.setIMServerStatus(false);
     	}
-        return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html"));
+        return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html?execute="+execute));
     }
     
     /**
@@ -89,13 +90,13 @@ public class SystemConfigController extends Handler{
     @RequestMapping("/stop")
     @Menu(type = "admin" , subtype = "stop" , access = false , admin = true)
     public ModelAndView stop(ModelMap map , HttpServletRequest request , @Valid String confirm) throws SQLException {
-    	
-    	if(UKTools.secConfirm(secRes, super.getOrgi(request), confirm)){
+    	boolean execute = false ;
+    	if(execute = UKTools.secConfirm(secRes, super.getOrgi(request), confirm)){
 	    	server.stop();
 	    	UKDataContext.setIMServerStatus(false);
 	    	System.exit(0);
     	}
-        return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html"));
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html?execute="+execute));
     }
     
     
