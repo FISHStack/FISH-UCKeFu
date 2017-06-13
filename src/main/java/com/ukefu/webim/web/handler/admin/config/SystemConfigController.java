@@ -72,23 +72,11 @@ public class SystemConfigController extends Handler{
     @RequestMapping("/stopimserver")
     @Menu(type = "admin" , subtype = "stopimserver" , access = false , admin = true)
     public ModelAndView stopimserver(ModelMap map , HttpServletRequest request , @Valid String confirm) throws SQLException {
-    	boolean execute = false ;
-    	List<Secret> secretConfig = secRes.findByOrgi(super.getOrgi(request)) ;
-    	if(!StringUtils.isBlank(confirm)){
-        	if(secretConfig!=null && secretConfig.size() > 0){
-        		Secret secret = secretConfig.get( 0) ;
-        		if(UKTools.md5(confirm).equals(secret.getPassword())){
-        			execute = true ;
-        		}
-        	}
-    	}else if(secretConfig.size() == 0){
-    		execute = true ;
-    	}
-    	if(execute == true){
+    	if(UKTools.secConfirm(secRes, super.getOrgi(request), confirm)){
 	    	server.stop();
 	    	UKDataContext.setIMServerStatus(false);
     	}
-        return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html?execute="+execute));
+        return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html"));
     }
     
     /**
@@ -101,27 +89,13 @@ public class SystemConfigController extends Handler{
     @RequestMapping("/stop")
     @Menu(type = "admin" , subtype = "stop" , access = false , admin = true)
     public ModelAndView stop(ModelMap map , HttpServletRequest request , @Valid String confirm) throws SQLException {
-    	/**
-    	 * 先调用 IMServer 
-    	 */
-    	boolean execute = false ;
-    	List<Secret> secretConfig = secRes.findByOrgi(super.getOrgi(request)) ;
-    	if(!StringUtils.isBlank(confirm)){
-        	if(secretConfig!=null && secretConfig.size() > 0){
-        		Secret secret = secretConfig.get( 0) ;
-        		if(UKTools.md5(confirm).equals(secret.getPassword())){
-        			execute = true ;
-        		}
-        	}
-    	}else if(secretConfig.size() == 0){
-    		execute = true ;
-    	}
-    	if(execute == true){
+    	
+    	if(UKTools.secConfirm(secRes, super.getOrgi(request), confirm)){
 	    	server.stop();
 	    	UKDataContext.setIMServerStatus(false);
 	    	System.exit(0);
     	}
-        return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html?execute="+execute));
+        return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html"));
     }
     
     

@@ -50,6 +50,8 @@ import com.ukefu.util.event.AiEvent;
 import com.ukefu.util.event.MultiUpdateEvent;
 import com.ukefu.util.event.UserDataEvent;
 import com.ukefu.util.event.UserEvent;
+import com.ukefu.webim.service.repository.SecretRepository;
+import com.ukefu.webim.web.model.Secret;
 
 
 public class UKTools {
@@ -744,5 +746,24 @@ public class UKTools {
 	        ip = request.getRemoteAddr();  
 	    }  
 	    return ip;  
-	}  
+	}
+	
+	public static boolean secConfirm(SecretRepository secRes , String orgi , String confirm){
+		/**
+    	 * 先调用 IMServer 
+    	 */
+    	boolean execute = false ;
+    	List<Secret> secretConfig = secRes.findByOrgi(orgi) ;
+    	if(!StringUtils.isBlank(confirm)){
+        	if(secretConfig!=null && secretConfig.size() > 0){
+        		Secret secret = secretConfig.get( 0) ;
+        		if(UKTools.md5(confirm).equals(secret.getPassword())){
+        			execute = true ;
+        		}
+        	}
+    	}else if(secretConfig.size() == 0){
+    		execute = true ;
+    	}
+    	return execute ;
+	}
 }

@@ -1,6 +1,7 @@
 package com.ukefu.webim.web.handler.api;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 import java.util.Date;
 import java.util.List;
@@ -44,6 +45,7 @@ public class ApiLoginController extends Handler{
     @SuppressWarnings("rawtypes")
 	@RequestMapping(method = RequestMethod.POST)
     @Menu(type = "apps" , subtype = "token" , access = true)
+    @ApiOperation("登录服务，传入登录账号和密码")
     public ResponseEntity login(HttpServletRequest request , HttpServletResponse response , @RequestParam String username, @RequestParam String password) {
     	User loginUser = userRepository.findByUsernameAndPassword(username , UKTools.md5(password)) ;
     	ResponseEntity entity = null ;
