@@ -13,7 +13,7 @@
 			var authorization ;
 			var demo =  {
 				login:function(username , password){
-					$.post("http://127.0.0.1/tokens" , "username=admin&password=123456" , function(data){
+					$.post("http://uk.ukewo.cn/tokens" , "username=admin&password=123456" , function(data){
 						authorization = data ;
 					})
 				},
@@ -24,12 +24,14 @@
 						headers:{"authorization":authorization},
 						success: function (data) {
 							console.log(data);
+							alert("token:"+data);
 						}
 					});
 
 				},
 				getUser:function(current){
-					demo.ajax("http://127.0.0.1/api/user?data="+current,function(data){
+					demo.ajax("http://uk.ukewo.cn/api/user?data="+current,function(data){
+						console.log(data);
 						alert(data);
 					});
 				}
