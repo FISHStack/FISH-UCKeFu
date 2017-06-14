@@ -38,6 +38,7 @@ public class SystemConfig implements java.io.Serializable{
 	private String jksfile ;
 	private String jkspassword ;
 	private String mapkey ;
+	private boolean workorders ;	//工单启用三栏布局
 	
 	@Id
 	@Column(length = 32)
@@ -140,6 +141,13 @@ public class SystemConfig implements java.io.Serializable{
 	}
 	public void setMapkey(String mapkey) {
 		this.mapkey = mapkey;
+	}
+	
+	public boolean isWorkorders() {
+		return workorders;
+	}
+	public void setWorkorders(boolean workorders) {
+		this.workorders = workorders;
 	}
 	@Transient
 	public String getBackgroundColor(){
