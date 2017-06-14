@@ -5042,9 +5042,11 @@ CREATE TABLE `uk_systemconfig` (
   `JKSFILE` varchar(255) DEFAULT NULL,
   `JKSPASSWORD` varchar(255) DEFAULT NULL,
   `MAPKEY` varchar(255) DEFAULT NULL,
+  `WORKORDERS` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `SQL121227155532210` (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 -- ----------------------------
 -- Records of uk_systemconfig
