@@ -168,6 +168,14 @@ public class ContactsController extends Handler{
         return request(super.createRequestPageTempletResponse("/apps/business/contacts/edit"));
     }
     
+    @RequestMapping("/detail")
+    @Menu(type = "contacts" , subtype = "contacts")
+    public ModelAndView detail(ModelMap map , HttpServletRequest request , @Valid String id) {
+    	map.addAttribute("contacts", contactsRes.findOne(id)) ;
+        return request(super.createRequestPageTempletResponse("/apps/business/contacts/detail"));
+    }
+    
+    
     @RequestMapping(  "/update")
     @Menu(type = "contacts" , subtype = "contacts")
     public ModelAndView update(HttpServletRequest request  , @Valid Contacts contacts) {
