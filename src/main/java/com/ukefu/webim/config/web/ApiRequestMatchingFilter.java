@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.elasticsearch.common.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.ukefu.core.UKDataContext;
@@ -26,20 +27,27 @@ public class ApiRequestMatchingFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
          HttpServletRequest request = (HttpServletRequest) req;
+         HttpServletResponse response = (HttpServletResponse) resp;
+         
+         response.setHeader("Access-Control-Allow-Origin", "*");
+         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+         response.setHeader("Access-Control-Max-Age", "3600");
+         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,accept,authorization,content-type");
+         response.setHeader("X-Frame-Options", "SAMEORIGIN");
+         
          boolean matchAnyRoles = false ;
          for(RequestMatcher anyRequest : ignoredRequests ){
         	 if(anyRequest.matches(request)){
         		 matchAnyRoles = true ;
         	 }
          }
-         String authorization = request.getHeader("authorization") ;
          if(matchAnyRoles){
+        	 response.setStatus(HttpStatus.ACCEPTED.value());
+        	 String authorization = request.getHeader("authorization") ;
         	 if(!StringUtils.isBlank(authorization) && CacheHelper.getApiUserCacheBean().getCacheObject(authorization, UKDataContext.SYSTEM_ORGI) != null){
         		 chain.doFilter(req,resp);
-        	 }else{
-        		 HttpServletResponse response = (HttpServletResponse) resp ;
-	        	 response.sendRedirect("/tokens");
         	 }
+        	 return ;
          }else{
         	 chain.doFilter(req,resp);
          }
