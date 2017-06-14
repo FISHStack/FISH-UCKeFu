@@ -32,6 +32,7 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jasypt.util.text.BasicTextEncryptor;
 import org.jsoup.Jsoup;
@@ -43,6 +44,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lmax.disruptor.dsl.Disruptor;
 import com.ukefu.core.UKDataContext;
@@ -50,8 +52,12 @@ import com.ukefu.util.event.AiEvent;
 import com.ukefu.util.event.MultiUpdateEvent;
 import com.ukefu.util.event.UserDataEvent;
 import com.ukefu.util.event.UserEvent;
+import com.ukefu.webim.service.repository.AttachmentRepository;
 import com.ukefu.webim.service.repository.SecretRepository;
+import com.ukefu.webim.web.model.AttachmentFile;
 import com.ukefu.webim.web.model.Secret;
+import com.ukefu.webim.web.model.User;
+import com.ukefu.webim.web.model.WorkOrders;
 
 
 public class UKTools {
@@ -766,4 +772,43 @@ public class UKTools {
     	}
     	return execute ;
 	}
+	
+	public static void  processAttachmentFile(MultipartFile[] files, AttachmentRepository attachementRes , String path,User user , String orgi, WorkOrders workOrders, HttpServletRequest request  , String dataid , String modelid) throws IOException{
+    	if(files!=null && files.length > 0){
+    		workOrders.setAnonymous(true);//变更用途为是否有 附件
+    		//保存附件
+    		for(MultipartFile file : files){
+    			if(file.getSize() > 0){			//文件尺寸 限制 ？在 启动 配置中 设置 的最大值，其他地方不做限制
+    				String fileid = UKTools.md5(file.getBytes()) ;	//使用 文件的 MD5作为 ID，避免重复上传大文件
+    				if(!StringUtils.isBlank(fileid)){
+		    			AttachmentFile attachmentFile = new AttachmentFile() ;
+		    			attachmentFile.setCreater(user.getId());
+		    			attachmentFile.setOrgi(orgi);
+		    			attachmentFile.setOrgan(user.getOrgan());
+		    			attachmentFile.setDataid(dataid);
+		    			attachmentFile.setModelid(modelid);
+		    			attachmentFile.setModel(UKDataContext.ModelType.WORKORDERS.toString());
+		    			attachmentFile.setFilelength((int) file.getSize());
+		    			if(file.getContentType()!=null && file.getContentType().length() > 255){
+		    				attachmentFile.setFiletype(file.getContentType().substring(0 , 255));
+		    			}else{
+		    				attachmentFile.setFiletype(file.getContentType());
+		    			}
+		    			if(file.getOriginalFilename()!=null && file.getOriginalFilename().length() > 255){
+		    				attachmentFile.setTitle(file.getOriginalFilename().substring(0 , 255));
+		    			}else{
+		    				attachmentFile.setTitle(file.getOriginalFilename());
+		    			}
+		    			if(!StringUtils.isBlank(attachmentFile.getFiletype()) && attachmentFile.getFiletype().indexOf("image") >= 0){
+		    				attachmentFile.setImage(true);
+		    			}
+		    			attachmentFile.setFileid(fileid);
+		    			attachementRes.save(attachmentFile) ;
+		    			FileUtils.writeByteArrayToFile(new File(path , "app/workorders/"+fileid), file.getBytes());
+    				}
+    			}
+    		}
+    		
+    	}
+    }
 }

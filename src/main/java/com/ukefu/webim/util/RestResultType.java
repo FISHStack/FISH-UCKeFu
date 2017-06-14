@@ -3,7 +3,9 @@ package com.ukefu.webim.util;
 public enum RestResultType {
 	OK(200, "OK") ,
 	USER_DELETE(400, "ADMIN USER"),
-	ORGAN_DELETE(500, "NOT EXIST");
+	ORGAN_DELETE(500, "NOT EXIST"), 
+	WORKORDERS_DELETE(600 , "WORKORDERS NOT EXIST"),
+	WORKORDERS_NOTEXIST(601 , "WORKORDERS NOT EXIST");
 	
 	public int status ;
 	private String message ;
