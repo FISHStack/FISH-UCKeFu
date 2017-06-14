@@ -3,7 +3,6 @@ package com.ukefu.webim.web.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -18,7 +17,6 @@ public class CrossInterceptorHandler extends HandlerInterceptorAdapter {
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,accept,authorization,content-type");
         response.setHeader("X-Frame-Options", "SAMEORIGIN");
-        response.setStatus(HttpStatus.ACCEPTED.value());
         return true ; 
     }
 

@@ -29,27 +29,32 @@ public class ApiRequestMatchingFilter implements Filter {
          HttpServletRequest request = (HttpServletRequest) req;
          HttpServletResponse response = (HttpServletResponse) resp;
          
-         response.setHeader("Access-Control-Allow-Origin", "*");
-         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
-         response.setHeader("Access-Control-Max-Age", "3600");
-         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,accept,authorization,content-type");
-         response.setHeader("X-Frame-Options", "SAMEORIGIN");
+         String method = request.getMethod() ;
          
-         boolean matchAnyRoles = false ;
-         for(RequestMatcher anyRequest : ignoredRequests ){
-        	 if(anyRequest.matches(request)){
-        		 matchAnyRoles = true ;
-        	 }
-         }
-         if(matchAnyRoles){
-        	 response.setStatus(HttpStatus.ACCEPTED.value());
-        	 String authorization = request.getHeader("authorization") ;
-        	 if(!StringUtils.isBlank(authorization) && CacheHelper.getApiUserCacheBean().getCacheObject(authorization, UKDataContext.SYSTEM_ORGI) != null){
-        		 chain.doFilter(req,resp);
-        	 }
-        	 return ;
+         if(!StringUtils.isBlank(method) && method.equalsIgnoreCase("options")){
+	         response.setHeader("Access-Control-Allow-Origin", "*");
+	         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+	         response.setHeader("Access-Control-Max-Age", "3600");
+	         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,accept,authorization,content-type");
+	         response.setHeader("X-Frame-Options", "SAMEORIGIN");
+	         response.setStatus(HttpStatus.ACCEPTED.value());
          }else{
-        	 chain.doFilter(req,resp);
+	         boolean matchAnyRoles = false ;
+	         for(RequestMatcher anyRequest : ignoredRequests ){
+	        	 if(anyRequest.matches(request)){
+	        		 matchAnyRoles = true ;
+	        	 }
+	         }
+	         if(matchAnyRoles){
+	        	 String authorization = request.getHeader("authorization") ;
+	        	 if(!StringUtils.isBlank(authorization) && CacheHelper.getApiUserCacheBean().getCacheObject(authorization, UKDataContext.SYSTEM_ORGI) != null){
+	        		 chain.doFilter(req,resp);
+	        	 }else{
+		        	 response.sendRedirect("/tokens/error");
+	        	 }
+	         }else{
+	        	 chain.doFilter(req,resp);
+	         }
          }
     }
 

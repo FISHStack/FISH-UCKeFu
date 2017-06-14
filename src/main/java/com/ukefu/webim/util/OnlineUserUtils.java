@@ -379,7 +379,7 @@ public class OnlineUserUtils {
 			ipdata = IPTools.getInstance().findGeography(ip);
 		}
 		String userID = UKTools.genIDByKey(session);
-		if(!StringUtils.isBlank(nickname)){
+		if(StringUtils.isBlank(nickname)){
 			nickname = "Guest_" + userID;
 		}
 		
