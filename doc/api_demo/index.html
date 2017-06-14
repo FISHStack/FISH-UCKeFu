@@ -30,7 +30,7 @@
 
 				},
 				getUser:function(current){
-					demo.ajax("http://uk.ukewo.cn/api/user?data="+current,function(data){
+					demo.ajax("http://uk.ukewo.cn/api/user?username="+current,function(data){
 						console.log(data);
 						alert(data);
 					});
