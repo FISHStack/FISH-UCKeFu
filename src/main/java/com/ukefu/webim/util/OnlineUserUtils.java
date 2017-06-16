@@ -325,6 +325,9 @@ public class OnlineUserUtils {
 			// agentUser.setContextid(session);
 			agentUser.setHeadimgurl(headimg);
 			// agentUser.setId(data.getUserid());
+		}else if(!agentUser.getUsername().equals(nickname)){
+			agentUser.setUsername(nickname);
+			agentUser.setNickname(nickname);
 		}
 		agentUser.setStatus(null); // 修改状态
 

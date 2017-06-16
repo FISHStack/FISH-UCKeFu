@@ -1,4 +1,5 @@
 
+
 var layer , iframe , layerwin , cursession ;
 $(document).ready(function(){
 	var hide ;
@@ -99,6 +100,7 @@ $(document).ready(function(){
 		var title = $(this).attr("title") ? $(this).attr("title") : $(this).attr("data-title");
 		var href = 	$(this).attr('href')  ;
 		var confirm = $(this).data('confirm')  ;
+		var target = $(this).data('target')  ;
 		if(href == null){
 			href = $(this).data('href') ;
 		}
@@ -115,7 +117,7 @@ $(document).ready(function(){
 							href = href + "?confirm="+text ;
 						}
 						if(callback!=null){
-							eval(callback+"('"+href+"')");
+							eval(callback+"('"+href+"' , '"+target+"')");
 						}else{
 							location.href = href ;
 						}
@@ -125,7 +127,7 @@ $(document).ready(function(){
 			}else{
 				if(href){
 					if(callback!=null){
-						eval(callback+"('"+href+"')");
+						eval(callback+"('"+href+"' , '"+target+"')");
 					}else{
 						location.href = href ;
 					}

@@ -228,19 +228,22 @@ public class IMController extends Handler{
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	if(!StringUtils.isBlank(appid)){
     		CousultInvite invite = inviteRepository.findOne(appid) ;
+    		contacts = processContacts(invite.getOrgi(), contacts, appid, userid);
     		if(invite!=null){
+    			String userID = UKTools.genIDByKey(sessionid);
+    			
+				String nickname = "Guest_" + userID;
+				if(contacts!=null && !StringUtils.isBlank(contacts.getName())){
+					nickname = contacts.getName() ;
+				}
+				view.addObject("username", nickname) ;
+				
     			SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
     			if(UKDataContext.model.get("xiaoe")!=null  && invite.isAi() && ((!StringUtils.isBlank(ai) && ai.equals("true")) || (invite.isAifirst() && ai == null))){	//启用 AI ， 并且 AI优先 接待
     				view = request(super.createRequestPageTempletResponse("/apps/im/ai/index")) ;
     				if(CheckMobile.check(request.getHeader("User-Agent")) || !StringUtils.isBlank(mobile)){
     					view = request(super.createRequestPageTempletResponse("/apps/im/ai/mobile")) ;		//智能机器人 移动端
     				}
-    				String userID = UKTools.genIDByKey(sessionid);
-    				String nickname = "Guest_" + userID;
-    				if(contacts!=null && !StringUtils.isBlank(contacts.getName())){
-    					nickname = contacts.getName() ;
-    				}
-    				view.addObject("username", nickname) ;
     				if(UKDataContext.model.get("xiaoe")!=null){
     					DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("topic") ;
     					if(dataExchange!=null){
@@ -283,7 +286,6 @@ public class IMController extends Handler{
 				view.addObject("type", type) ;
 			}
 			
-			contacts = processContacts(invite.getOrgi(), contacts, appid, userid);
 	    	
 	//    	OnlineUserUtils.sendWebIMClients(userid , "accept");
 	    	Page<InviteRecord> inviteRecordList = inviteRecordRes.findByUseridAndOrgi(userid, orgi , new PageRequest(0, 1, Direction.DESC, "createtime")) ;
@@ -301,7 +303,6 @@ public class IMController extends Handler{
     
     private Contacts processContacts(String orgi ,Contacts contacts , String appid , String userid){
     	if(contacts!=null){
-			
 			if(contacts != null && (!StringUtils.isBlank(contacts.getName()) || !StringUtils.isBlank(contacts.getMobile()) || !StringUtils.isBlank(contacts.getEmail()))){
 				StringBuffer query = new StringBuffer();
 				query.append(contacts.getName()) ;
@@ -318,6 +319,8 @@ public class IMController extends Handler{
 //					contactsRes.save(contacts) ;	//需要增加签名验证，避免随便产生垃圾信息，也可以自行修改？
 					contacts.setId(null);
 				}
+			}else{
+				contacts.setId(null);
 			}
 			if(contacts!=null && !StringUtils.isBlank(contacts.getId())){
 				List<AgentUserContacts> agentUserContactsList = agentUserContactsRes.findByUseridAndOrgi(userid, orgi) ;
@@ -331,7 +334,13 @@ public class IMController extends Handler{
     				agentUserContacts.setCreatetime(new Date());
     				agentUserContactsRes.save(agentUserContacts) ;
 				}
-			} 
+			}else if(!StringUtils.isBlank(userid)){
+				List<AgentUserContacts> agentUserContactsList = agentUserContactsRes.findByUseridAndOrgi(userid, orgi) ;
+				if(agentUserContactsList.size() > 0){
+					AgentUserContacts agentUserContacts = agentUserContactsList.get(0) ;
+					contacts = contactsRes.findOne(agentUserContacts.getContactsid()) ;
+				}
+			}
 		}
     	return contacts ;
     }
