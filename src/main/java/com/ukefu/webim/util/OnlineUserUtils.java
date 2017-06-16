@@ -166,6 +166,10 @@ public class OnlineUserUtils {
 						service.save(onlineUser);
 					}
 				}
+				if(StringUtils.isBlank(onlineUser.getUsername()) && !StringUtils.isBlank(user.getUsername())){
+					onlineUser.setUseragent(user.getUsername());
+					service.save(onlineUser);
+				}
 			}
 		}
 		return onlineUser;
