@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : UCKeFu
 Source Server Version : 50717
 Source Host           : localhost:3306
-Source Database       : test
+Source Database       : uckefu
 
 Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-06-07 17:42:01
+Date: 2017-06-19 08:23:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -260,6 +260,74 @@ CREATE TABLE `uk_blacklist` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `uk_callcenter_extention`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_callcenter_extention`;
+CREATE TABLE `uk_callcenter_extention` (
+  `id` varchar(32) NOT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `extention` varchar(100) DEFAULT NULL,
+  `orgi` varchar(100) DEFAULT NULL,
+  `hostid` varchar(100) DEFAULT NULL,
+  `agentno` varchar(50) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `callout` tinyint(4) DEFAULT NULL,
+  `playnum` tinyint(4) DEFAULT NULL,
+  `record` tinyint(4) DEFAULT NULL,
+  `extype` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_callcenter_extention
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_callcenter_pbxhost`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_callcenter_pbxhost`;
+CREATE TABLE `uk_callcenter_pbxhost` (
+  `id` varchar(32) NOT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `orgi` varchar(100) DEFAULT NULL,
+  `hostname` varchar(100) DEFAULT NULL,
+  `port` int(11) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_callcenter_pbxhost
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_callcenter_skill`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_callcenter_skill`;
+CREATE TABLE `uk_callcenter_skill` (
+  `id` varchar(32) NOT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `orgi` varchar(100) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `skill` varchar(50) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `quene` varchar(100) DEFAULT NULL,
+  `hostid` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_callcenter_skill
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `uk_chat_message`
 -- ----------------------------
 DROP TABLE IF EXISTS `uk_chat_message`;
@@ -398,7 +466,7 @@ CREATE TABLE `uk_consult_invite` (
 -- ----------------------------
 -- Records of uk_consult_invite
 -- ----------------------------
-INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '297e8c7b455798280145579c73e501c1', 'right,middle', '在线客服', null, null, null, '6', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '1', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '1', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '1', '1', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E机器人');
+INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '297e8c7b455798280145579c73e501c1', 'right,middle', '在线客服', null, null, null, '6', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '1', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '1', '1', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E机器人');
 
 -- ----------------------------
 -- Table structure for `uk_contacts`
@@ -5005,6 +5073,12 @@ INSERT INTO `uk_sysdic` VALUES ('402888815c2e2f66015c2f083d180005', '性别', 'p
 INSERT INTO `uk_sysdic` VALUES ('402888815c2e2f66015c2f083d250006', '年龄', 'pub', '03', 'ukewo', null, '402888815c2e2f66015c2f07827e0002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-05-22 15:21:28', '2017-05-22 15:21:28', '0', '3', '402888815c2e2f66015c2f07827e0002', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('402888815c2e2f66015c2f087e510007', '姓名', 'pub', '01', 'ukewo', null, '402888815c2e2f66015c2f07c6190003', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-05-22 15:21:44', '2017-05-22 15:21:44', '0', '1', '402888815c2e2f66015c2f07c6190003', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('402888815c2e2f66015c2f087e660008', '年龄', 'pub', '02', 'ukewo', null, '402888815c2e2f66015c2f07c6190003', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-05-22 15:21:44', '2017-05-22 15:21:44', '0', '2', '402888815c2e2f66015c2f07c6190003', '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815cb3fa3b015cb3fe31410001', '呼叫中心分机类型', 'pub', 'com.dic.callcenter.extype', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-06-17 10:59:59', null, '1', '0', null, '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815cb3fa3b015cb3ff6f810002', '直线', 'pub', '01', 'ukewo', null, '402888815cb3fa3b015cb3fe31410001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-06-17 11:01:20', '2017-06-17 11:01:20', '0', '1', '402888815cb3fa3b015cb3fe31410001', '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815cb3fa3b015cb3ff6f8e0003', 'IVR', 'pub', '02', 'ukewo', null, '402888815cb3fa3b015cb3fe31410001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-06-17 11:01:20', '2017-06-17 11:01:20', '0', '2', '402888815cb3fa3b015cb3fe31410001', '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815cb3fa3b015cb3ff6f9a0004', '技能组', 'pub', '03', 'ukewo', null, '402888815cb3fa3b015cb3fe31410001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-06-17 11:01:20', '2017-06-17 11:01:20', '0', '3', '402888815cb3fa3b015cb3fe31410001', '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815cb3fa3b015cb3ff6fa90005', '会议', 'pub', '04', 'ukewo', null, '402888815cb3fa3b015cb3fe31410001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-06-17 11:01:20', '2017-06-17 11:01:20', '0', '4', '402888815cb3fa3b015cb3fe31410001', '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815cb3fa3b015cb3ff6fb30006', '队列', 'pub', '05', 'ukewo', null, '402888815cb3fa3b015cb3fe31410001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-06-17 11:01:20', '2017-06-17 11:01:20', '0', '5', '402888815cb3fa3b015cb3fe31410001', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafaa94015bafb14edf0002', '服务类型', 'pub', 'summary', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-04-27 21:54:44', null, '1', '0', '4028838b5b565caf015b566d11d80010', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe5c8180009', '服务小结预约方式', 'pub', 'com.dic.summary.reservtype', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:03', null, '1', '0', null, '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64be2000a', '电话', 'pub', 'phone', 'ukewo', null, '4028e3815bafb323015bafe5c8180009', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:37', '2017-04-27 22:52:37', '0', '1', '4028e3815bafb323015bafe5c8180009', '0', '0');
@@ -5042,11 +5116,10 @@ CREATE TABLE `uk_systemconfig` (
   `JKSFILE` varchar(255) DEFAULT NULL,
   `JKSPASSWORD` varchar(255) DEFAULT NULL,
   `MAPKEY` varchar(255) DEFAULT NULL,
-  `WORKORDERS` tinyint(4) DEFAULT NULL,
+  `workorders` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `SQL121227155532210` (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 -- ----------------------------
 -- Records of uk_systemconfig
@@ -5204,6 +5277,33 @@ CREATE TABLE `uk_tagrelation` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `uk_templet`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_templet`;
+CREATE TABLE `uk_templet` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(255) DEFAULT NULL,
+  `DESCRIPTION` longtext,
+  `CODE` varchar(255) DEFAULT NULL,
+  `GROUPID` varchar(255) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `USERID` varchar(255) DEFAULT NULL,
+  `TEMPLETTEXT` longtext,
+  `TEMPLETTYPE` varchar(255) DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `ICONSTR` varchar(255) DEFAULT NULL,
+  `MEMO` varchar(255) DEFAULT NULL,
+  `ORDERINDEX` int(11) DEFAULT NULL,
+  `TYPEID` varchar(32) DEFAULT NULL,
+  `SELDATA` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_templet
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `uk_user`
 -- ----------------------------
 DROP TABLE IF EXISTS `uk_user`;
@@ -5255,7 +5355,8 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-03-16 18:36:15', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-06-07 13:43:27', null, null, null, '0');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-03-16 18:36:15', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-06-19 08:09:48', null, null, null, '0');
+INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-05-19 08:19:01', '402883965c1dfe92015c1e1291900003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-06-05 09:16:58', null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
