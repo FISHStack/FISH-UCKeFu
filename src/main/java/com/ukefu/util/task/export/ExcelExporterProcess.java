@@ -109,21 +109,23 @@ public class ExcelExporterProcess {
 	
 	private synchronized void createContent(){
 		CellStyle cellStyle = createContentStyle() ;
-		for(Map<String , Object> value:values){
-			Row row2 = sheet.createRow(rowNum);
-			for(TableProperties tp : table.getTableproperty()){
-				Cell cell2 = row2.createCell(table.getTableproperty().indexOf(tp)); 
-				cell2.setCellStyle(cellStyle); 
-				if(value.get(tp.getFieldname())!=null){
-					if(tp.isSeldata()){
-						SysDic sysDic = UKeFuDic.getInstance().getDicItem(String.valueOf(value.get(tp.getFieldname()))) ;
-						cell2.setCellValue(new HSSFRichTextString(sysDic.getName()));
-					}else{
-						cell2.setCellValue(new HSSFRichTextString(String.valueOf(value.get(tp.getFieldname()))));
+		if(table!=null && table.getTableproperty()!=null){
+			for(Map<String , Object> value:values){
+				Row row2 = sheet.createRow(rowNum);
+				for(TableProperties tp : table.getTableproperty()){
+					Cell cell2 = row2.createCell(table.getTableproperty().indexOf(tp)); 
+					cell2.setCellStyle(cellStyle); 
+					if(value.get(tp.getFieldname())!=null){
+						if(tp.isSeldata()){
+							SysDic sysDic = UKeFuDic.getInstance().getDicItem(String.valueOf(value.get(tp.getFieldname()))) ;
+							cell2.setCellValue(new HSSFRichTextString(sysDic.getName()));
+						}else{
+							cell2.setCellValue(new HSSFRichTextString(String.valueOf(value.get(tp.getFieldname()))));
+						}
 					}
 				}
+				rowNum ++ ;
 			}
-			rowNum ++ ;
 		}
 	}
 	
