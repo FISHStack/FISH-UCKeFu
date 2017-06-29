@@ -171,6 +171,7 @@ public class MetadataController extends Handler{
 	    		        {
 	    		        	try{
 	    				    	for(String table : tables){
+	    				    		table = table.toLowerCase();
 	    				    		int count = metadataRes.countByTablename(table) ;
 	    				    		if(count == 0){
 	    			 		    		MetadataTable metaDataTable = new MetadataTable();
@@ -204,13 +205,13 @@ public class MetadataController extends Handler{
     private MetadataTable processMetadataTable(UKTableMetaData metaData , MetadataTable table){
     	table.setTableproperty(new ArrayList<TableProperties>()); 
     	for(UKColumnMetadata colum : metaData.getColumnMetadatas()){
-    		TableProperties tablePorperties = new TableProperties(colum.getName() , colum.getTypeName() , colum.getColumnSize() , metaData.getName()) ;
+    		TableProperties tablePorperties = new TableProperties(colum.getName().toLowerCase() , colum.getTypeName() , colum.getColumnSize() , metaData.getName().toLowerCase()) ;
 			tablePorperties.setOrgi(table.getOrgi()) ;
 			
 			tablePorperties.setDatatypecode(0);
 			tablePorperties.setLength(colum.getColumnSize());
 			tablePorperties.setDatatypename(getDataTypeName(colum.getTypeName()));
-			tablePorperties.setName(colum.getTitle());
+			tablePorperties.setName(colum.getTitle().toLowerCase());
 			if(tablePorperties.getFieldname().equals("create_time") || tablePorperties.getFieldname().equals("createtime") || tablePorperties.getFieldname().equals("update_time")){
 				tablePorperties.setDatatypename(getDataTypeName("datetime"));
 			}
