@@ -37,7 +37,7 @@
 						</div>
 						
 						<div class="layui-btn-group ukefu-btn-group">
-							<button class="layui-btn layui-btn-small" href="/apps/customer/imp.html" title="导入联系人" data-toggle="ajax" data-width="950" data-height="600">
+							<button class="layui-btn layui-btn-small" href="/apps/contacts/imp.html" title="导入联系人" data-toggle="ajax" data-width="950" data-height="600">
 								<i class="kfont">&#xe641;</i> 导入 
 							</button>
 						</div>
@@ -74,6 +74,9 @@
 				<table class="layui-table" lay-skin="line">
 					<thead>
 						<tr class="design-sortable-tr">
+							<th>
+								<input type="checkbox" id="all" onclick="$('.ids').prop('checked' , $(this).prop('checked'));"/>
+							</th>
 							<th>联系人姓名</th>
 							<th>手机</th>
 							<th>邮件</th>
@@ -88,6 +91,9 @@
 						<#if contactsList?? && contactsList.content?? && contactsList.content?size gt 0>
 						<#list contactsList.content as contacts>
 						<tr class="tdHasContorllor design-dropable-td">
+							<td style="width:1%;">
+								<input type="checkbox" class="ids" name="ids" value="${contacts.id!''}"/>
+							</td>
 							<td class=" first_td_head">
 								${contacts.name!''}
 							</td>

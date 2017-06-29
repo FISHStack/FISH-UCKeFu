@@ -10,9 +10,9 @@
 							<#if contacts.touchtime??>${contacts.touchtime?string('yyyy-MM-dd')}</#if>
 						</div>
 					</div>
-					<div class="layui-inline">
-						<label class="layui-form-label" style="width:60px;line-height: 35px;">类型：</label>
-						<div class="layui-input-inline" style="width:218px;margin-right:0px;padding-top:9px;">
+					<div class="layui-inline uckefu-inline">
+						<label class="layui-form-label" >类型：</label>
+						<div class="layui-input-inline">
 							${uKeFuDic[contacts.ckind!''].name!''} 
 						</div>
 					</div>
@@ -21,13 +21,11 @@
 					<div class="layui-inline">
 						<label class="layui-form-label">共享联系人：</label>
 						<div class="layui-input-inline" style="width:auto;">
-							<div class="layui-input-block">
-								<#if contacts?? && contacts.shares?? && contacts.shares == 'none'>
-									不共享（仅创建人和直属上级可见）
-								<#elseif contacts?? && contacts.shares?? && contacts.shares == 'all'>
-									所有人
-								</#if>
-							</div>
+							<#if contacts?? && contacts.shares?? && contacts.shares == 'none'>
+								不共享（仅创建人和直属上级可见）
+							<#elseif contacts?? && contacts.shares?? && contacts.shares == 'all'>
+								所有人
+							</#if>
 						</div>
 					</div>
 					
@@ -50,11 +48,9 @@
 					<div class="layui-inline">
 						<label class="layui-form-label">性别：</label>
 						<div class="layui-input-inline">
-							<div class="layui-input-block" style="width:220px;">
-								<#if contacts.gender?? && contacts.gender == '1'>男</#if>
-								<#if contacts.gender?? && contacts.gender == '0'>女</#if>
-								<#if contacts.gender?? && contacts.gender == '-1'>未知</#if>
-							</div>
+							<#if contacts.gender?? && contacts.gender == '1'>男</#if>
+							<#if contacts.gender?? && contacts.gender == '0'>女</#if>
+							<#if contacts.gender?? && contacts.gender == '-1'>未知</#if>
 						</div>
 					</div>
 					<div class="layui-inline uckefu-inline">
