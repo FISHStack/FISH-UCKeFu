@@ -171,7 +171,6 @@ public class MetadataController extends Handler{
 	    		        {
 	    		        	try{
 	    				    	for(String table : tables){
-	    				    		table = table.toLowerCase();
 	    				    		int count = metadataRes.countByTablename(table) ;
 	    				    		if(count == 0){
 	    			 		    		MetadataTable metaDataTable = new MetadataTable();
@@ -222,6 +221,7 @@ public class MetadataController extends Handler{
 			}
 			table.getTableproperty().add(tablePorperties) ;
 		}
+    	table.setTablename(table.getTablename().toLowerCase());//转小写
     	return table ;
     }
     
