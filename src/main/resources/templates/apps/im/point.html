@@ -211,6 +211,7 @@ var ukefu = {
 		ukefu.openChatDialogWithURL(ukefu.chat);		
 	},
 	openChatDialogWithURL:function(url){
+		url = url + "&userid="+result+"&sessionid=${sessionid!''}"
 		if(data){
 			if(data.id){
 				url = url + "&id="+data.id ;	
@@ -289,7 +290,6 @@ function openAgentChatDialog(url){
 	return ukefu.openChatDialogWithURL(url);	
 }
 
-ukefu.chat = ukefu.chat + "&userid="+result+"&sessionid=${sessionid!''}";
 ukefu.ping();
 ukefu.check();
 </#if>
