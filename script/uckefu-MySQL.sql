@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : UCKeFu
 Source Server Version : 50717
 Source Host           : localhost:3306
-Source Database       : uckefu
+Source Database       : test
 
 Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-06-19 08:23:10
+Date: 2017-07-03 15:08:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -260,6 +260,92 @@ CREATE TABLE `uk_blacklist` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `uk_callcenter_acl`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_callcenter_acl`;
+CREATE TABLE `uk_callcenter_acl` (
+  `id` varchar(32) NOT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `orgi` varchar(100) DEFAULT NULL,
+  `hostid` varchar(32) DEFAULT NULL,
+  `type` varchar(32) DEFAULT NULL,
+  `strategy` text,
+  `defaultvalue` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_callcenter_acl
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_callcenter_event`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_callcenter_event`;
+CREATE TABLE `uk_callcenter_event` (
+  `ID` varchar(100) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `SOURCE` varchar(50) DEFAULT NULL,
+  `ANSWER` varchar(50) DEFAULT NULL,
+  `CURRENT` tinyint(4) DEFAULT NULL,
+  `INIT` tinyint(4) DEFAULT NULL,
+  `CALLER` varchar(50) DEFAULT NULL,
+  `CALLING` varchar(50) DEFAULT NULL,
+  `CALLED` varchar(50) DEFAULT NULL,
+  `AGENTYPE` varchar(50) DEFAULT NULL,
+  `QUENE` varchar(50) DEFAULT NULL,
+  `ANI` varchar(50) DEFAULT NULL,
+  `TOUSER` varchar(50) DEFAULT NULL,
+  `DIRECTION` varchar(50) DEFAULT NULL,
+  `STATE` varchar(50) DEFAULT NULL,
+  `AGENT` varchar(50) DEFAULT NULL,
+  `ACTION` varchar(50) DEFAULT NULL,
+  `HOST` varchar(50) DEFAULT NULL,
+  `IPADDR` varchar(50) DEFAULT NULL,
+  `LOCALDATETIME` varchar(50) DEFAULT NULL,
+  `STATUS` varchar(50) DEFAULT NULL,
+  `TIME` decimal(20,0) DEFAULT NULL,
+  `STARTTIME` datetime DEFAULT NULL,
+  `ENDTIME` datetime DEFAULT NULL,
+  `DURATION` int(11) DEFAULT NULL,
+  `INSIDE` tinyint(4) DEFAULT NULL,
+  `MISSCALL` tinyint(4) DEFAULT NULL,
+  `RECORD` tinyint(4) DEFAULT NULL,
+  `RECORDTIME` int(11) DEFAULT NULL,
+  `STARTRECORD` datetime DEFAULT NULL,
+  `ENDRECORD` datetime DEFAULT NULL,
+  `ANSWERTIME` datetime DEFAULT NULL,
+  `RINGDURATION` int(11) DEFAULT NULL,
+  `SERVICESUMMARY` tinyint(4) DEFAULT NULL,
+  `SERVICEID` varchar(32) DEFAULT NULL,
+  `RECORDFILE` varchar(100) DEFAULT NULL,
+  `CALLBACK` tinyint(4) DEFAULT NULL,
+  `CCQUENE` varchar(50) DEFAULT NULL,
+  `SERVICESTATUS` varchar(20) DEFAULT NULL,
+  `CHANNELSTATUS` varchar(50) DEFAULT NULL,
+  `COUNTRY` varchar(50) DEFAULT NULL,
+  `PROVINCE` varchar(50) DEFAULT NULL,
+  `CITY` varchar(50) DEFAULT NULL,
+  `ISP` varchar(50) DEFAULT NULL,
+  `VOICECALLED` varchar(50) DEFAULT NULL,
+  `CONTACTSID` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_callcenter_event
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `uk_callcenter_extention`
 -- ----------------------------
 DROP TABLE IF EXISTS `uk_callcenter_extention`;
@@ -277,11 +363,75 @@ CREATE TABLE `uk_callcenter_extention` (
   `playnum` tinyint(4) DEFAULT NULL,
   `record` tinyint(4) DEFAULT NULL,
   `extype` varchar(50) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uk_callcenter_extention
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_callcenter_ivr`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_callcenter_ivr`;
+CREATE TABLE `uk_callcenter_ivr` (
+  `id` varchar(32) NOT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `orgi` varchar(100) DEFAULT NULL,
+  `hostid` varchar(32) DEFAULT NULL,
+  `type` varchar(32) DEFAULT NULL,
+  `greetlong` varchar(100) DEFAULT NULL,
+  `greetshort` varchar(100) DEFAULT NULL,
+  `invalidsound` varchar(100) DEFAULT NULL,
+  `exitsound` varchar(100) DEFAULT NULL,
+  `confirmmacro` varchar(50) DEFAULT NULL,
+  `confirmkey` varchar(50) DEFAULT NULL,
+  `ttsengine` varchar(20) DEFAULT NULL,
+  `ttsvoice` varchar(50) DEFAULT NULL,
+  `confirmattempts` varchar(50) DEFAULT NULL,
+  `timeout` int(11) DEFAULT NULL,
+  `interdigittimeout` int(11) DEFAULT NULL,
+  `maxfailures` int(11) DEFAULT NULL,
+  `maxtimeouts` int(11) DEFAULT NULL,
+  `digitlen` int(11) DEFAULT NULL,
+  `menucontent` text,
+  `action` varchar(50) DEFAULT NULL,
+  `digits` varchar(50) DEFAULT NULL,
+  `param` varchar(255) DEFAULT NULL,
+  `parentid` varchar(32) DEFAULT NULL,
+  `extentionid` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_callcenter_ivr
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_callcenter_media`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_callcenter_media`;
+CREATE TABLE `uk_callcenter_media` (
+  `id` varchar(32) NOT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `orgi` varchar(100) DEFAULT NULL,
+  `hostid` varchar(32) DEFAULT NULL,
+  `type` varchar(32) DEFAULT NULL,
+  `filename` varchar(255) DEFAULT NULL,
+  `content` varchar(50) DEFAULT NULL,
+  `filelength` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_callcenter_media
 -- ----------------------------
 
 -- ----------------------------
@@ -298,11 +448,75 @@ CREATE TABLE `uk_callcenter_pbxhost` (
   `hostname` varchar(100) DEFAULT NULL,
   `port` int(11) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
+  `ipaddr` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uk_callcenter_pbxhost
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_callcenter_router`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_callcenter_router`;
+CREATE TABLE `uk_callcenter_router` (
+  `id` varchar(32) NOT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `orgi` varchar(100) DEFAULT NULL,
+  `hostid` varchar(32) DEFAULT NULL,
+  `type` varchar(32) DEFAULT NULL,
+  `regex` varchar(255) DEFAULT NULL,
+  `allow` tinyint(4) DEFAULT NULL,
+  `falsebreak` tinyint(4) DEFAULT NULL,
+  `routerinx` int(11) DEFAULT NULL,
+  `routercontent` text,
+  `field` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_callcenter_router
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_callcenter_siptrunk`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_callcenter_siptrunk`;
+CREATE TABLE `uk_callcenter_siptrunk` (
+  `id` varchar(32) NOT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `orgi` varchar(100) DEFAULT NULL,
+  `hostid` varchar(32) DEFAULT NULL,
+  `type` varchar(32) DEFAULT NULL,
+  `sipcontent` text,
+  `sipserver` varchar(50) DEFAULT NULL,
+  `extention` varchar(50) DEFAULT NULL,
+  `outnumber` varchar(50) DEFAULT NULL,
+  `prefix` varchar(50) DEFAULT NULL,
+  `port` int(11) DEFAULT NULL,
+  `exptime` int(11) DEFAULT NULL,
+  `retry` int(11) DEFAULT NULL,
+  `register` tinyint(4) DEFAULT NULL,
+  `fromuser` tinyint(4) DEFAULT NULL,
+  `transprotocol` tinyint(4) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  `authuser` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `protocol` varchar(50) DEFAULT NULL,
+  `heartbeat` int(11) DEFAULT NULL,
+  `dtmf` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_callcenter_siptrunk
 -- ----------------------------
 
 -- ----------------------------
@@ -325,6 +539,28 @@ CREATE TABLE `uk_callcenter_skill` (
 
 -- ----------------------------
 -- Records of uk_callcenter_skill
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_callcenter_skillext`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_callcenter_skillext`;
+CREATE TABLE `uk_callcenter_skillext` (
+  `id` varchar(32) NOT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `orgi` varchar(100) DEFAULT NULL,
+  `skillid` varchar(32) DEFAULT NULL,
+  `extention` varchar(32) DEFAULT NULL,
+  `hostid` varchar(32) DEFAULT NULL,
+  `type` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_callcenter_skillext
 -- ----------------------------
 
 -- ----------------------------
@@ -466,7 +702,7 @@ CREATE TABLE `uk_consult_invite` (
 -- ----------------------------
 -- Records of uk_consult_invite
 -- ----------------------------
-INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '297e8c7b455798280145579c73e501c1', 'right,middle', '在线客服', null, null, null, '6', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '1', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '1', '1', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E机器人');
+INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '297e8c7b455798280145579c73e501c1', 'right,middle', '在线客服', null, null, null, '6', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '1', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '0', '0', '0', null, null, null);
 
 -- ----------------------------
 -- Table structure for `uk_contacts`
@@ -1259,7 +1495,9 @@ CREATE TABLE `uk_servicesummary` (
   `summary` text,
   `agentserviceid` varchar(32) DEFAULT NULL,
   `creater` varchar(32) DEFAULT NULL,
-  `createtime` datetime DEFAULT NULL
+  `createtime` datetime DEFAULT NULL,
+  `statuseventid` varchar(50) DEFAULT NULL,
+  `contactsid` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -5079,6 +5317,7 @@ INSERT INTO `uk_sysdic` VALUES ('402888815cb3fa3b015cb3ff6f8e0003', 'IVR', 'pub'
 INSERT INTO `uk_sysdic` VALUES ('402888815cb3fa3b015cb3ff6f9a0004', '技能组', 'pub', '03', 'ukewo', null, '402888815cb3fa3b015cb3fe31410001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-06-17 11:01:20', '2017-06-17 11:01:20', '0', '3', '402888815cb3fa3b015cb3fe31410001', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('402888815cb3fa3b015cb3ff6fa90005', '会议', 'pub', '04', 'ukewo', null, '402888815cb3fa3b015cb3fe31410001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-06-17 11:01:20', '2017-06-17 11:01:20', '0', '4', '402888815cb3fa3b015cb3fe31410001', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('402888815cb3fa3b015cb3ff6fb30006', '队列', 'pub', '05', 'ukewo', null, '402888815cb3fa3b015cb3fe31410001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-06-17 11:01:20', '2017-06-17 11:01:20', '0', '5', '402888815cb3fa3b015cb3fe31410001', '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('402888815cf217cd015cf219f9f80002', '呼叫中心服务类型', 'pub', 'ccsummary', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-06-29 12:26:47', null, '1', '0', '4028838b5b565caf015b566d11d80010', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafaa94015bafb14edf0002', '服务类型', 'pub', 'summary', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-04-27 21:54:44', null, '1', '0', '4028838b5b565caf015b566d11d80010', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe5c8180009', '服务小结预约方式', 'pub', 'com.dic.summary.reservtype', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:03', null, '1', '0', null, '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64be2000a', '电话', 'pub', 'phone', 'ukewo', null, '4028e3815bafb323015bafe5c8180009', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:37', '2017-04-27 22:52:37', '0', '1', '4028e3815bafb323015bafe5c8180009', '0', '0');
@@ -5349,14 +5588,15 @@ CREATE TABLE `uk_user` (
   `deactivetime` datetime DEFAULT NULL,
   `title` varchar(50) DEFAULT NULL,
   `DATASTATUS` tinyint(4) DEFAULT NULL,
+  `callcenter` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-03-16 18:36:15', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-06-19 08:09:48', null, null, null, '0');
-INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-05-19 08:19:01', '402883965c1dfe92015c1e1291900003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-06-05 09:16:58', null, null, null, '0');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-06-19 21:25:46', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-07-03 13:16:09', null, null, null, '0', '1');
+INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-05-19 08:19:01', '402883965c1dfe92015c1e1291900003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-06-05 09:16:58', null, null, null, '0', '0');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -5504,6 +5744,38 @@ CREATE TABLE `uk_workorders` (
 
 -- ----------------------------
 -- Records of uk_workorders
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_worktime`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_worktime`;
+CREATE TABLE `uk_worktime` (
+  `id` varchar(32) NOT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `orgi` varchar(100) DEFAULT NULL,
+  `hostid` varchar(32) DEFAULT NULL,
+  `type` varchar(32) DEFAULT NULL,
+  `day` varchar(0) DEFAULT NULL,
+  `begintime` varchar(20) DEFAULT NULL,
+  `endtime` varchar(20) DEFAULT NULL,
+  `timetype` varchar(10) DEFAULT NULL,
+  `wfrom` int(11) DEFAULT NULL,
+  `wto` int(11) DEFAULT NULL,
+  `dfrom` int(11) DEFAULT NULL,
+  `dto` int(11) DEFAULT NULL,
+  `wbegintime` varchar(20) DEFAULT NULL,
+  `wendtime` varchar(20) DEFAULT NULL,
+  `dbegintime` varchar(20) DEFAULT NULL,
+  `dendtime` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_worktime
 -- ----------------------------
 
 -- ----------------------------
