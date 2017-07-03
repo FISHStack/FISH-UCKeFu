@@ -12,7 +12,7 @@ var config = {} ;
 var result = new Fingerprint().get();
 var ukefu = {
 		time : new Date().getTime(),
-		chat : "${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/index.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}&type=text<#if skill??>&skill=${skill}</#if><#if agent??>&agent=${agent}</#if>" , 
+		chat : "${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/index.html?appid=${appid!''}<#if id??>&id=${id}</#if><#if name??>&name=${name}</#if><#if email??>&id=${email}</#if><#if id??>&mobile=${mobile}</#if>&orgi=${orgi!''}&client=${client}&type=text<#if skill??>&skill=${skill}</#if><#if agent??>&agent=${agent}</#if>" , 
 		config : function(d){
 			data = d ;	
 		},
@@ -35,7 +35,7 @@ var ukefu = {
 			window.location.replace(url+"&t="+new Date().getTime());	
 		}
 }
-ukefu.chat = ukefu.chat + "&userid="+result+"&sessionid=${sessionid!''}";
+ukefu.chat = ukefu.chat + "<#if userid??>&userid=${userid}<#else>&userid="+result+"</#if>&sessionid=${sessionid!''}";
 ukefu.openChatDialog();
 </#if>
 </script>

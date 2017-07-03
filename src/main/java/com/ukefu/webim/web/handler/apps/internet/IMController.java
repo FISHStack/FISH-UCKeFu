@@ -345,15 +345,15 @@ public class IMController extends Handler{
     	return contacts ;
     }
     
-    @RequestMapping("/text/{id}")
+    @RequestMapping("/text/{appid}")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String id , @Valid String skill , @Valid String agent , @Valid String name , @Valid String email ,@Valid String mobile) throws Exception {
+    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid , @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String mobile) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/text")) ; 
     	
     	view.addObject("hostname", request.getServerName()) ;
 		view.addObject("port", request.getServerPort()) ;
 		view.addObject("schema", request.getScheme()) ;
-		view.addObject("appid", id) ;
+		view.addObject("appid", appid) ;
 		if(!StringUtils.isBlank(skill)){
 			view.addObject("skill", skill) ;
 		}
@@ -364,11 +364,17 @@ public class IMController extends Handler{
 		view.addObject("client", UKTools.getUUID()) ;
 		view.addObject("sessionid", request.getSession().getId()) ;
 		
-		CousultInvite invite = inviteRepository.findOne(id) ;
+		view.addObject("id", id) ;
+		view.addObject("name", name) ;
+		view.addObject("emal", email) ;
+		view.addObject("mobile", mobile) ;
+		view.addObject("userid", userid) ;
+		
+		CousultInvite invite = inviteRepository.findOne(appid) ;
     	if(invite!=null){
     		view.addObject("inviteData", invite);
     		view.addObject("orgi",invite.getOrgi());
-    		view.addObject("appid",id);
+    		view.addObject("appid",appid);
     	}
     	
 		return view;
