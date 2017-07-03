@@ -82,6 +82,8 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private int recordtime ;
 	private String recordfile ;
 	
+	private String contactsid ;
+	
 	private boolean misscall = true;
 	
 	private boolean servicesummary ;	//是否记录服务小结
@@ -400,5 +402,10 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	public void setVoicecalled(String voicecalled) {
 		this.voicecalled = voicecalled;
 	}
-	
+	public String getContactsid() {
+		return contactsid;
+	}
+	public void setContactsid(String contactsid) {
+		this.contactsid = contactsid;
+	}
 }
