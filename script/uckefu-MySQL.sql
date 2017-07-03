@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-07-03 15:08:16
+Date: 2017-07-03 23:56:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -327,7 +327,7 @@ CREATE TABLE `uk_callcenter_event` (
   `RINGDURATION` int(11) DEFAULT NULL,
   `SERVICESUMMARY` tinyint(4) DEFAULT NULL,
   `SERVICEID` varchar(32) DEFAULT NULL,
-  `RECORDFILE` varchar(100) DEFAULT NULL,
+  `RECORDFILE` varchar(255) DEFAULT NULL,
   `CALLBACK` tinyint(4) DEFAULT NULL,
   `CCQUENE` varchar(50) DEFAULT NULL,
   `SERVICESTATUS` varchar(20) DEFAULT NULL,
@@ -338,6 +338,8 @@ CREATE TABLE `uk_callcenter_event` (
   `ISP` varchar(50) DEFAULT NULL,
   `VOICECALLED` varchar(50) DEFAULT NULL,
   `CONTACTSID` varchar(32) DEFAULT NULL,
+  `EXTENTION` varchar(32) DEFAULT NULL,
+  `HOSTID` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1497,7 +1499,12 @@ CREATE TABLE `uk_servicesummary` (
   `creater` varchar(32) DEFAULT NULL,
   `createtime` datetime DEFAULT NULL,
   `statuseventid` varchar(50) DEFAULT NULL,
-  `contactsid` varchar(50) DEFAULT NULL
+  `contactsid` varchar(50) DEFAULT NULL,
+  `ani` varchar(50) DEFAULT NULL,
+  `caller` varchar(50) DEFAULT NULL,
+  `called` varchar(50) DEFAULT NULL,
+  `agent` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -5588,14 +5595,13 @@ CREATE TABLE `uk_user` (
   `deactivetime` datetime DEFAULT NULL,
   `title` varchar(50) DEFAULT NULL,
   `DATASTATUS` tinyint(4) DEFAULT NULL,
-  `callcenter` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
+  `callcenter` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-06-19 21:25:46', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-07-03 13:16:09', null, null, null, '0', '1');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-06-19 21:25:46', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-07-03 23:53:14', null, null, null, '0', '1');
 INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-05-19 08:19:01', '402883965c1dfe92015c1e1291900003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-06-05 09:16:58', null, null, null, '0', '0');
 
 -- ----------------------------
