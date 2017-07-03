@@ -1,7 +1,8 @@
 var title = "UCKeFu-全渠道客服系统" ;
-var socket  , newuser = [] , newmessage = [];
+var socket  , newuser = [] , newmessage = [] , ring = [];
 newuser['mp3'] = '/images/new.mp3'; 
 newmessage['mp3'] = '/images/message.mp3';
+ring['mp3'] = '/images/ring.mp3';
 $(document).ready(function(){
     socket = io.connect(schema+'://'+hostname+':'+port+'/im/agent?orgi='+orgi+"&userid="+userid );
     socket.on('connect',function() {

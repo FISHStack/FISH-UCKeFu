@@ -60,6 +60,7 @@ public class User implements java.io.Serializable{
 	private String memo;
 	private String organ;
 	private boolean agent ;	//是否开通坐席功能
+	private boolean callcenter ;	//是否启用呼叫中心 坐席功能
 	private String skill ;
 	private String city ;	//城市
 	private String province ;//省份
@@ -442,5 +443,10 @@ public class User implements java.io.Serializable{
 	public void setAgentStatus(AgentStatus agentStatus) {
 		this.agentStatus = agentStatus;
 	}
-	
+	public boolean isCallcenter() {
+		return callcenter;
+	}
+	public void setCallcenter(boolean callcenter) {
+		this.callcenter = callcenter;
+	}
 }

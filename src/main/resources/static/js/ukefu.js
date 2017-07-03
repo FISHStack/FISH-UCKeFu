@@ -1,5 +1,3 @@
-
-
 var layer , iframe , layerwin , cursession ;
 $(document).ready(function(){
 	var hide ;
@@ -289,8 +287,12 @@ var Proxy = {
 		});
 	},
 	execContactsFunction: function(data){
-		if(data && data != '' && userid && userid != '' && agentserviceid && agentserviceid != '' && agentuserid && agentuserid != ''){
-			loadURL("/agent/contacts.html?userid="+userid+"&agentserviceid="+agentserviceid+"&agentuserid="+agentuserid+"&contactsid="+data , "#ukefu_contacts_info") ;
+		if(data!=null && data!= ""){
+			if(ani!=null && ani != ""){
+				loadURL("/apps/softphone/search.html?display=false&ani="+ani+"&q="+data, "#ukefu-chat-agent") ;
+			}else if(userid && userid != '' && agentserviceid && agentserviceid != '' && agentuserid && agentuserid != ''){
+				loadURL("/agent/contacts.html?userid="+userid+"&agentserviceid="+agentserviceid+"&agentuserid="+agentuserid+"&contactsid="+data , "#ukefu_contacts_info") ;
+			}
 		}
 	},
 	updateData : function(inner , data){
@@ -316,20 +318,42 @@ var Proxy = {
 		}
 	}
 }
-var MapUtil = {
-		convert : function(bm , ggPoint, title , scale){
-			var convertor = new BMap.Convertor();
-		    var pointArr = [];
-		    pointArr.push(ggPoint);
-		    convertor.translate(pointArr, 1, 5, function (data){
-				if(data.status === 0) {
-					var marker = new BMap.Marker(data.points[0]);
-					bm.addOverlay(marker);
-//					var label = new BMap.Label(title,{offset:new BMap.Size(20,-10)});
-//					marker.setLabel(label); //添加百度label
-					bm.centerAndZoom(data.points[0], scale);                 // 初始化地图，设置中心点坐标和地图级别 
-				}
-			}) ;
-		    
+var active = {
+	tabAdd : function(href, title, id , reload) {
+		//新增一个Tab项
+		var layelement = layui.element();
+		if ($('#' + id).length == 0) {
+			layelement.tabAdd('ukefutab', {
+				title : title //用于演示
+				,
+				content : '<iframe frameborder="0" src="' + href + '" id="'
+						+ id + '" name="' + id
+						+ '" width="100%" height="100%"></iframe>',
+				id : id
+			});
 		}
-}
+		layelement.tabChange('ukefutab', id);
+		$(".layui-this").each(function() {
+			if (!$(this).parent().hasClass("layui-tab-title")) {
+				$(this).removeClass("layui-this");
+			}
+		});
+		if(reload == null){
+			$('#' + id).attr("src", href);
+		}
+	},
+	tabChange : function(href, title, id) {
+		var layelement = layui.element();
+		var inx = $('#' + id).parent().index();
+		if ($('#' + id).length > 0) {
+			$('#' + id).attr('src', href);
+			layelement.tabChange('ukefutab', id);
+		}
+		$(".layui-this").each(function() {
+			if (!$(this).parent().hasClass("layui-tab-title")) {
+				$(this).removeClass("layui-this");
+			}
+
+		});
+	}
+};

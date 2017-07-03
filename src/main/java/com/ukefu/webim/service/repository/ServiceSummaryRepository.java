@@ -8,4 +8,6 @@ import com.ukefu.webim.web.model.AgentServiceSummary;
 public interface ServiceSummaryRepository extends JpaRepository<AgentServiceSummary, String>{
 	
 	public abstract AgentServiceSummary findByAgentserviceidAndOrgi(String agentserviceid , String orgi);
+	
+	public abstract AgentServiceSummary findByStatuseventidAndOrgi(String statuseventid , String orgi);
 }

@@ -12,9 +12,14 @@ public class NettyClients {
 	private NettyIMClient imClients = new NettyIMClient();
 	private NettyAgentClient agentClients = new NettyAgentClient();
 	private NettyIMClient entIMClients = new NettyIMClient();
+	private NettyCallCenterClient callCenterClients = new NettyCallCenterClient();
 	
 	public static NettyClients getInstance(){
 		return clients ;
+	}
+	
+	public NettyCallCenterClient getCallCenterClients(){
+		return this.callCenterClients ;
 	}
 
 	public void setImClients(NettyIMClient imClients) {
@@ -66,5 +71,12 @@ public class NettyClients {
 	}
 	public int getEntIMClientsNum(String user){
 		return entIMClients.getClients(user)!=null ? entIMClients.getClients(user).size() : 0;
+	}
+	
+	public void sendCallCenterMessage(String id , String event , Object data){
+		List<SocketIOClient> ccClients = callCenterClients.getClients(id) ;
+		for(SocketIOClient ccClient : ccClients){
+			ccClient.sendEvent(event, data);
+		}
 	}
 }

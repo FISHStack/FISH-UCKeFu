@@ -168,4 +168,14 @@ private SimpleDateFormat dateFromate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss
 		return entCustomerList;
 	}
 
+	@Override
+	public Page<Contacts> findByDataAndOrgi(String orgi, String q, Pageable page) {
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		boolQueryBuilder.must(termQuery("datastatus" , false)) ;
+		if(!StringUtils.isBlank(q)){
+	    	boolQueryBuilder.must(new QueryStringQueryBuilder(q).defaultOperator(Operator.AND)) ;
+	    }
+		return processQuery(boolQueryBuilder , page);
+	}
+
 }

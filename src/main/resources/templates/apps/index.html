@@ -37,6 +37,11 @@
 <script type="text/javascript" src="/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript" src="/js/kindeditor/lang/zh-CN.js"></script>
 
+<#if models?? && models["callcenter"]?? && models["callcenter"] == true>
+<script src="/js/UKeFu-SoftPhone.js"></script>
+<script src="/js/sip-0.7.7.js"></script>
+</#if>
+
 <script type="text/javascript" src="/js/jquery.darktooltip.js"></script>
 <script language="javascript">
 	var hostname = "${hostname!''}"  , schema = "${schema!'http'}", port = "${webimport!''}" , userid = "${user.id!''}" , session = "${sessionid!''}" , orgi = "${orgi!''}";
@@ -109,7 +114,9 @@
 		<div class="layui-header header header-ukefu">
 			<div class="layui-main">
 				<a class="logo" href="/"><img src="images/logo.png"></a>
-				
+				<#if models?? && models["callcenter"]?? && models["callcenter"] == true>
+				<#include "/apps/include/softphone.html">
+				</#if>
 				<ul class="layui-nav">
 					<li class="layui-nav-item layui-this">
 						<a href="javascript:void(0)" onclick="return false;" data-title="首页" data-href="/apps/content.html" class="iframe_btn" data-id="maincontent" data-type="tabChange">
@@ -124,14 +131,14 @@
 						</div>
 						<a href="javascript:void(0)" id="agentdesktop" onclick="return false;"  data-title="坐席对话" data-href="/agent/index.html" class="iframe_btn" data-id="multiMediaDialogWin" data-type="tabAdd">
 							<i class="kfont icon-iconfontagent"	style="position: relative;"></i>
-							坐席工作台
+							坐席
 						</a>
 					</li>
 					</#if>
 					<li class="layui-nav-item ">
 						<a href="javascript:void(0)" onclick="return false;"  data-title="系统管理" data-href="/admin/content.html" class="iframe_btn" data-id="admin" data-type="tabAdd">
 							<i class="layui-icon" style="position: relative;">&#xe631;</i>
-							系统管理
+							系统
 						</a>
 					</li>
 					
@@ -230,6 +237,13 @@
 								</a>
 							</dd>
 							</#if>
+							<#if models?? && models["callcenter"]?? && models["callcenter"] == true>
+							<dd class="ukefu-left-menu" data-tooltip="语音渠道">
+								<a href="javascript:void(0)" data-title="语音渠道" data-href="/apps/callcenter/service/index.html" class="iframe_btn" data-id="maincontent" data-type="tabChange"> 
+								<i class="kfont" style="position: relative;">&#xe625;</i>
+								</a>
+							</dd>
+							</#if>
 						</dl>
 					</li>
 					<li class="layui-nav-item" style="height: 30px; text-align: center"></li>
@@ -256,51 +270,15 @@
 	</div>
 	<script>
 			layui.use('element', function(){
-			  var $ = layui.jquery
-			  ,element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+			  var $ = layui.jquery,element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
 			  //触发事件
-			  var active = {
-				tabAdd: function(){
-				  //新增一个Tab项
-				  var href = $(this).data('href') ;
-				  var title = $(this).data('title') ;
-				  var id = $(this).data("id");
-				  if($('#'+id).length == 0){
-					  element.tabAdd('ukefutab', {
-						title: title //用于演示
-						,content: '<iframe frameborder="0" src="'+href+'" id="'+id+'" name="'+id+'" width="100%" height="100%"></iframe>'
-						,id : id
-					  });  
-				  }
-				  element.tabChange('ukefutab' , id);
-				  $(".layui-this").each(function(){
-					  if(!$(this).parent().hasClass("layui-tab-title")){
-						  $(this).removeClass("layui-this");
-					  }
-					  
-				  });
-				  $('#'+id).attr("src" , href);
-				}
-				,tabChange: function(){
-				  var id = $(this).data("id");
-				  var inx = $('#'+id).parent().index();
-				  var href = $(this).data('href') ;
-				  if($('#'+id).length > 0){
-					  $('#'+id).attr('src' , href) ;
-					  element.tabChange('ukefutab' , id);
-				  }
-				  $(".layui-this").each(function(){
-					  if(!$(this).parent().hasClass("layui-tab-title")){
-						  $(this).removeClass("layui-this");
-					  }
-					  
-				  });
-				}
-			  };
-			  
 			  $('.iframe_btn').on('click', function(){
 				var type = $(this).data('type');
-				active[type] ? active[type].call(this) : '';
+				if(type == "tabAdd"){
+					active.tabAdd($(this).data('href') , $(this).data('title'), $(this).data('id'));
+				}else if(type == "tabChange"){
+					active.tabChange($(this).data('href') , $(this).data('title'), $(this).data('id'));
+				}
 			  });
 			});
 		</script>

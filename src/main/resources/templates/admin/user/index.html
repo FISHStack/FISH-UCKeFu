@@ -3,7 +3,7 @@
 		<h1 class="site-h1" style="background-color:#FFFFFF;">
 			用户列表<#if userList??>（${userList.totalElements!''}）</#if>
 			<span style="float:right;">
-				<button class="layui-btn layui-btn-small green" href="/admin/user/add.html" data-toggle="ajax" data-width="750" data-title="创建新用户">
+				<button class="layui-btn layui-btn-small green" href="/admin/user/add.html" data-toggle="ajax" data-width="750" data-height="450" data-title="创建新用户">
 					创建新用户
 				</button>
 			</span>
@@ -14,10 +14,12 @@
 				  <colgroup>
 						<col width="20%">
 						<col width="15%">
-						<col width="25%">
+						<col width="15%">
 						<col width="15%">
 						<col width="10%">
-						<col width="15%">
+						<#if models?? && models["callcenter"]?? && models["callcenter"] == true>
+						<col width="10%">
+						</#if>
 						<col width="1%">
 						<col>
 				  </colgroup>
@@ -27,8 +29,8 @@
 					  <th>姓名</th>
 					  <th>电子邮件</th>
 					  <th>手机</th>
-					  <th>坐席</th>
-					  <th>注册时间</th>
+					  <th>多媒体</th>
+					  <th>呼叫中心</th>
 					  <th style="white-space:nowrap;" nowrap="nowrap">操作</th>
 					</tr> 
 				  </thead>
@@ -40,8 +42,13 @@
 							<a href="">
 								<i class="layui-icon headimg">&#xe612;</i>
 								<div style="margin-left:50px;margin-top:0px;">
-									${user.username!''}<#if user.datastatus == true><i style="color:red;">（已删除）</i></#if>
+									${user.username!''}
+									<#if user.datastatus == true><i style="color:red;">（已删除）</i></#if>
 								</div>
+								<div title="注册时间" style="margin-left:50px;margin-top:0px;color:#cccccc;font-size:13px;">
+									${user.createtime!''}
+								</div>
+								
 							</a>
 							
 					  </td>
@@ -53,9 +60,15 @@
 					  		<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
 					  	</#if>
 					  </td>
-					  <td>${user.createtime!''}</td>
+					  <#if models?? && models["callcenter"]?? && models["callcenter"] == true>
+					  <td>
+					  	<#if user.callcenter>
+					  		<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
+					  	</#if>
+					  </td>
+					  </#if>
 					  <td style="white-space:nowrap;" nowrap="nowrap">
-					  		<a href="/admin/user/edit.html?id=${user.id!''}" data-toggle="ajax" data-width="750" data-title="编辑用户信息">
+					  		<a href="/admin/user/edit.html?id=${user.id!''}" data-toggle="ajax" data-width="750" data-height="450" data-title="编辑用户信息">
 					  			<i class="layui-icon">&#xe642;</i>
 					  			编辑
 					  		</a>

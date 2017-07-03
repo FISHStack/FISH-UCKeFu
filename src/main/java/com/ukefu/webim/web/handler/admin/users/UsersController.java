@@ -98,6 +98,7 @@ public class UsersController extends Handler{
 	    		tempUser.setMobile(user.getMobile());
 	    		tempUser.setAgent(user.isAgent());
 	    		tempUser.setOrgi(super.getOrgi(request));
+	    		tempUser.setCallcenter(user.isCallcenter());
 	    		if(!StringUtils.isBlank(user.getPassword())){
 	    			tempUser.setPassword(UKTools.md5(user.getPassword()));
 	    		}

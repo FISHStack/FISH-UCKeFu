@@ -54,6 +54,26 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum CallServiceStatus{
+		INQUENE,
+		RING,			//振铃
+		INCALL,			//应答
+		BRIDGE,			//桥接
+		HOLD,			//已挂起
+		HANGUP;			//已挂机
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum CallChannelStatus{
+		EARLY,
+		DOWN;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	public enum WxMpFileType{
 		JPG,
 		PNG;
@@ -69,6 +89,18 @@ public class UKDataContext {
 			return super.toString().toLowerCase() ;
 		}
 	}
+	
+	public enum ExtentionType{
+		LINE, 
+		IVR,
+		SKILL,
+		CONFERENCE,
+		QUENE;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	
 	public enum AiItemType{
 		USERINPUT , 
@@ -114,7 +146,8 @@ public class UKDataContext {
 	public enum ModelType{
 		USER ,
 		WORKORDERS , 
-		SUMMARY;
+		SUMMARY,
+		CCSUMMARY;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}
@@ -225,7 +258,8 @@ public class UKDataContext {
 		IM("/im/user") ,
 		AGENT("/im/agent"), 
 		ENTIM("/im/ent") ,
-		AIIM("/im/ai") ;
+		AIIM("/im/ai") ,
+		CALLCENTER("/callcenter/event");
 		
 		private String namespace ;
 		
@@ -251,6 +285,14 @@ public class UKDataContext {
 		MESSAGE, 
 		END,
 		TRANS, STATUS , AGENTSTATUS , SERVICE, WRITING;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum CallCenterResultStatusEnum{
+		OK;
 		
 		public String toString(){
 			return super.toString().toLowerCase() ;

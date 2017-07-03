@@ -35,11 +35,19 @@
 	    </div>
 	  </div>
 	  <div class="layui-form-item">
-	    <label class="layui-form-label">启用坐席功能：</label>
+	    <label class="layui-form-label">多媒体坐席：</label>
 	    <div class="layui-input-block">
-	      <input type="checkbox" name="agent" lay-skin="switch" value="1">
+	      <input type="checkbox" name="agent" lay-skin="switch" value="1" lay-text="开启|关闭">
 	    </div>
 	  </div>
+	  <#if models?? && models["callcenter"]?? && models["callcenter"] == true>
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">呼叫中心坐席：</label>
+	    <div class="layui-input-block">
+	      <input type="checkbox" name="callcenter" lay-skin="switch" value="1" lay-text="开启|关闭">
+	    </div>
+	  </div>
+	  </#if>
 	  <div class="layui-form-button">
 	    <div class="layui-button-block">
 	      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>

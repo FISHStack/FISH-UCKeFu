@@ -31,6 +31,9 @@ public class AgentServiceSummary implements Serializable{
 	private String agentserviceid ;
 	private String userid;
 	
+	private String statuseventid ;
+	private String contactsid ;
+	
 	private String orgi;
 	private String id;
 	
@@ -223,5 +226,21 @@ public class AgentServiceSummary implements Serializable{
 
 	public void setCreatetime(Date createtime) {
 		this.createtime = createtime;
+	}
+
+	public String getStatuseventid() {
+		return statuseventid;
+	}
+
+	public void setStatuseventid(String statuseventid) {
+		this.statuseventid = statuseventid;
+	}
+
+	public String getContactsid() {
+		return contactsid;
+	}
+
+	public void setContactsid(String contactsid) {
+		this.contactsid = contactsid;
 	}
 }

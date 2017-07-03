@@ -30,7 +30,7 @@ public class UKeFuDic<K,V> extends HashMap<K,V>{
 		Object obj = CacheHelper.getSystemCacheBean().getCacheObject(String.valueOf(key), UKDataContext.SYSTEM_ORGI) ;
 		if(obj!=null && obj instanceof List){
 			obj = getDic((String) key) ;
-		}else if(obj == null && (".subdic").endsWith(String.valueOf(key)) && (String.valueOf(key)).lastIndexOf(".subdic") > 0){
+		}else if(obj == null && (String.valueOf(key)).endsWith(".subdic") && (String.valueOf(key)).lastIndexOf(".subdic") > 0){
 			String id = (String.valueOf(key)).substring(0  , (String.valueOf(key)).lastIndexOf(".subdic")) ;
 			SysDic dic = (SysDic) CacheHelper.getSystemCacheBean().getCacheObject(id, UKDataContext.SYSTEM_ORGI) ;
 			if(dic!=null){

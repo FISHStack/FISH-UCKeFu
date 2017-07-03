@@ -347,7 +347,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/text/{id}")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String id , @Valid String skill , @Valid String agent) throws Exception {
+    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String id , @Valid String skill , @Valid String agent , @Valid String name , @Valid String email ,@Valid String mobile) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/text")) ; 
     	
     	view.addObject("hostname", request.getServerName()) ;

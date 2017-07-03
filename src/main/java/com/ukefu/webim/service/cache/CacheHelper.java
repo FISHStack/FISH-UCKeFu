@@ -29,6 +29,9 @@ public class CacheHelper {
 	public static CacheBean getIMRCacheBean() {
 		return cacheInstance!=null ? cacheInstance.getIMRCacheBean() : null ;
 	}
+	public static CacheBean getCallCenterCacheBean() {
+		return cacheInstance!=null ? cacheInstance.getCallCenterCacheBean() : null ;
+	}
 	
 	public static CacheBean getApiUserCacheBean() {
 		return cacheInstance!=null ? cacheInstance.getApiUserCacheBean() : null ;
