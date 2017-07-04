@@ -15,10 +15,12 @@
 	    <list name="${acl.name!''}" default="${acl.defaultvalue!'allow'}">
 	    	${acl.strategy!''}
 	    </list>
+	    </#list>
 	    </#if>
 	
 		<list name="ukefu_acl" default="allow">
 		  <node type="allow" cidr="0.0.0.0/8" />
+		  <node type="allow" cidr="112.74.54.80/32" />
 	    </list>
 	
 	    <!--
@@ -30,6 +32,7 @@
 	    <list name="domains" default="allow">
 	      <!-- domain= is special it scans the domain from the directory to build the ACL -->
 	      <node type="allow" cidr="0.0.0.0/8" />
+	      <node type="allow" cidr="112.74.54.80/32" />
 	      <!-- use cidr= if you wish to allow ip ranges to this domains acl. -->
 	      <!-- <node type="allow" cidr="192.168.0.0/24"/> -->
 	    </list>
