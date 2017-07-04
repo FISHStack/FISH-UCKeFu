@@ -13,7 +13,7 @@
 		<#if aclList??>
 		<#list aclList as acl>
 	    <list name="${acl.name!''}" default="${acl.defaultvalue!'allow'}">
-	    	${acl.strategy!''}
+	    	${(acl.strategy!'')?no_esc}
 	    </list>
 	    </#list>
 	    </#if>
