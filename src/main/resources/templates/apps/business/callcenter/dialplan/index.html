@@ -8,6 +8,16 @@
 	      </condition>
 	    </extension>
 	    
+	    <#if routerList??>
+	    <#list routerList as router>
+	    <extension name="${router.name!''}">
+	      <condition field="${router.field!''}" expression="${router.regex!''}" break="${router.falsebreak!'never'}">
+			${router.routercontent!''}
+	      </condition>
+	    </extension>
+	    </#list>
+	    </#if>
+	    
 	    <!-- a sample IVR  -->
 	    <extension name="ivr_demo">
 	      <condition field="destination_number" expression="5050">

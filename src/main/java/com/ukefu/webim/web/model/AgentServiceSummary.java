@@ -50,6 +50,11 @@ public class AgentServiceSummary implements Serializable{
 	private String email ;
 	private String phonenumber;
 	
+	private String ani ;
+	private String caller;
+	private String called ;
+	private String agent ;
+	
 	private String summary ;	//服务小结 ， 备注
 
 	public String getAgentusername() {
@@ -242,5 +247,37 @@ public class AgentServiceSummary implements Serializable{
 
 	public void setContactsid(String contactsid) {
 		this.contactsid = contactsid;
+	}
+
+	public String getAni() {
+		return ani;
+	}
+
+	public void setAni(String ani) {
+		this.ani = ani;
+	}
+
+	public String getCaller() {
+		return caller;
+	}
+
+	public void setCaller(String caller) {
+		this.caller = caller;
+	}
+
+	public String getCalled() {
+		return called;
+	}
+
+	public void setCalled(String called) {
+		this.called = called;
+	}
+
+	public String getAgent() {
+		return agent;
+	}
+
+	public void setAgent(String agent) {
+		this.agent = agent;
 	}
 }

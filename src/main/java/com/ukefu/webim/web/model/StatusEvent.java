@@ -76,6 +76,9 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String host ;
 	private String ipaddr ;
 	
+	private String extention ;
+	private String hostid ;
+	
 	private boolean record ;
 	private Date startrecord ;
 	private Date endrecord ;
@@ -407,5 +410,17 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setContactsid(String contactsid) {
 		this.contactsid = contactsid;
+	}
+	public String getExtention() {
+		return extention;
+	}
+	public void setExtention(String extention) {
+		this.extention = extention;
+	}
+	public String getHostid() {
+		return hostid;
+	}
+	public void setHostid(String hostid) {
+		this.hostid = hostid;
 	}
 }

@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.util.Menu;
+import com.ukefu.webim.service.repository.AclRepository;
+import com.ukefu.webim.service.repository.CallCenterSkillRepository;
 import com.ukefu.webim.service.repository.ExtentionRepository;
 import com.ukefu.webim.service.repository.PbxHostRepository;
-import com.ukefu.webim.service.repository.CallCenterSkillRepository;
+import com.ukefu.webim.service.repository.RouterRulesRepository;
+import com.ukefu.webim.service.repository.SkillExtentionRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Extention;
 import com.ukefu.webim.web.model.PbxHost;
@@ -30,6 +33,15 @@ public class ExtentionController extends Handler{
 	
 	@Autowired
 	private ExtentionRepository extentionRes;
+	
+	@Autowired
+	private AclRepository aclRes;
+	
+	@Autowired
+	private RouterRulesRepository routerRes;
+	
+	@Autowired
+	private SkillExtentionRepository skillExtentionRes ;
 	
 	@Autowired
 	private CallCenterSkillRepository skillRes ;
@@ -52,6 +64,18 @@ public class ExtentionController extends Handler{
 	@RequestMapping(value = "/configuration" , method = RequestMethod.POST)
     @Menu(type = "callcenter" , subtype = "configuration" , access = true)
     public ModelAndView configuration(ModelMap map , HttpServletRequest request , @Valid String hostname , @Valid String key_value) {
+		
+		List<PbxHost> pbxHostList = pbxHostRes.findByHostnameOrIpaddrAndOrgi(hostname, hostname, super.getOrgi(request)) ;
+		PbxHost pbxHost = null ;
+		if(pbxHostList!=null && pbxHostList.size() > 0){
+			pbxHost = pbxHostList.get(0) ;
+			map.addAttribute("pbxHost" , pbxHost);
+			map.addAttribute("skillList" , skillRes.findByHostidAndOrgi(pbxHost.getId() , super.getOrgi(request)));
+			map.addAttribute("skillExtentionList" , skillExtentionRes.findByHostidAndOrgi(pbxHost.getId() , super.getOrgi(request)));
+			map.addAttribute("extentionList" , extentionRes.findByHostidAndOrgi(pbxHost.getId() , super.getOrgi(request)));
+			map.addAttribute("aclList" , aclRes.findByHostidAndOrgi(pbxHost.getId() , super.getOrgi(request)));
+		}
+		
 		ModelAndView view = request(super.createRequestPageTempletResponse("/apps/business/callcenter/notfound"));
 		if(key_value!=null && key_value.equals("callcenter.conf")){
 			view = request(super.createRequestPageTempletResponse("/apps/business/callcenter/configure/callcenter"));
@@ -66,6 +90,15 @@ public class ExtentionController extends Handler{
 	@RequestMapping(value = "/dialplan" , method = RequestMethod.POST)
     @Menu(type = "callcenter" , subtype = "dialplan" , access = true)
     public ModelAndView dialplan(ModelMap map , HttpServletRequest request , @Valid String hostname , @Valid String key_value) {
+		
+		List<PbxHost> pbxHostList = pbxHostRes.findByHostnameOrIpaddrAndOrgi(hostname, hostname, super.getOrgi(request)) ;
+		PbxHost pbxHost = null ;
+		if(pbxHostList!=null && pbxHostList.size() > 0){
+			pbxHost = pbxHostList.get(0) ;
+			map.addAttribute("pbxHost" , pbxHost);
+			map.addAttribute("routerList" , routerRes.findByHostidAndOrgi(pbxHost.getId() , super.getOrgi(request)));
+		}
+		
 		return request(super.createRequestPageTempletResponse("/apps/business/callcenter/dialplan/index"));
     }
 	

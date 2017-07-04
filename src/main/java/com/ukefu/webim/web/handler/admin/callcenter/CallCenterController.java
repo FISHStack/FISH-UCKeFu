@@ -74,14 +74,18 @@ public class CallCenterController extends Handler{
     public ModelAndView pbxhostupdate(ModelMap map , HttpServletRequest request , @Valid PbxHost pbxHost) {
 		if(!StringUtils.isBlank(pbxHost.getId())){
 			PbxHost destHost = pbxHostRes.findByIdAndOrgi(pbxHost.getId(), super.getOrgi(request)) ;
-			pbxHost.setOrgi(destHost.getOrgi());
-			pbxHost.setCreater(super.getUser(request).getId());
-			pbxHost.setCreatetime(pbxHost.getCreatetime());
-			pbxHostRes.save(pbxHost) ;
+			destHost.setHostname(pbxHost.getHostname());
+			destHost.setIpaddr(pbxHost.getIpaddr());
+			destHost.setName(pbxHost.getName());
+			destHost.setPort(pbxHost.getPort());
+			if(!StringUtils.isBlank(pbxHost.getPassword())){
+				destHost.setPassword(pbxHost.getPassword());
+			}
+			pbxHostRes.save(destHost) ;
 
 			CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
 			if(callCenterImpl!=null){
-				callCenterImpl.init(pbxHost);
+				callCenterImpl.init(destHost);
 			}
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/pbxhost.html"));

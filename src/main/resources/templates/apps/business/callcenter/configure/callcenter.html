@@ -8,7 +8,9 @@
 	  </settings>
 	
 	  <queues>
-	    <queue name="ukefu">
+	    <#if skillList??>
+	    <#list skillList as skill>
+		<queue name="${skill.skill!''}">
 	      <param name="strategy" value="longest-idle-agent"/>
 	      <param name="moh-sound" value="ivr-welcome.wav"/>
 	      <param name="record-template" value="${r'$${recordings_dir}'}/callcenter/${r'${strftime(%Y-%m-%d)}'}/${r'${strftime(%Y-%m-%d %H-%M-%S)}'}.${r'${destination_number}'}.${r'${caller_id_number}'}.${r'${uuid}'}.wav"/>
@@ -23,6 +25,8 @@
 	      <param name="discard-abandoned-after" value="60"/>
 	      <param name="abandoned-resume-allowed" value="false"/>
 	    </queue>
+	  	</#list>
+	  	</#if>
 	
 	  </queues>
 	
@@ -30,22 +34,27 @@
 	<!-- WARNING: Configuration of XML Tiers will reset the level and position if those were supplied. -->
 	<!-- WARNING: Agents and Tiers XML config shouldn't be used in a multi FS shared DB setup (Not currently supported anyway) -->
 	  <agents>
-	  	<agent name="1006" type="callback" contact="[call_timeout=10]user/1006" status="Logged Out" max-no-answer="3" wrap-up-time="10" reject-delay-time="10" busy-delay-time="60" />
-	  	<agent name="1002" type="callback" contact="[call_timeout=10]user/1002" status="Logged Out" max-no-answer="3" wrap-up-time="10" reject-delay-time="10" busy-delay-time="60" />
+	  	<#if skillExtentionList??>
+	  	<#list skillExtentionList as skillExtention>
+	  	<#if skillExtention.extention?? && skillExtention.extention!="">
+	  	<agent name="${skillExtention.extention}" type="callback" contact="[call_timeout=10]user/${skillExtention.extention}" status="Logged Out" max-no-answer="3" wrap-up-time="10" reject-delay-time="10" busy-delay-time="60" />
+	  	</#if>
+	  	</#list>
+	  	</#if>
 	  </agents>
 	  <tiers>
 	    <!-- If no level or position is provided, they will public to 1.  You should do this to keep db value on restart. -->
-	    <tier agent="1000" queue="ukefu" level="1" position="1"/>
-	    <tier agent="1001" queue="ukefu" level="1" position="1"/>
-	    <tier agent="1002" queue="ukefu" level="1" position="1"/>
-	    <tier agent="1003" queue="ukefu" level="1" position="1"/>
-	    <tier agent="1004" queue="ukefu" level="1" position="1"/>
-	    <tier agent="1005" queue="ukefu" level="1" position="1"/>
-	    <tier agent="1006" queue="ukefu" level="1" position="1"/>
-	    <tier agent="1007" queue="ukefu" level="1" position="1"/>
-	    <tier agent="1008" queue="ukefu" level="1" position="1"/>
-	    <tier agent="1009" queue="ukefu" level="1" position="1"/>
-	    <tier agent="1010" queue="ukefu" level="1" position="1"/>
+	    <#if skillExtentionList??>
+	  	<#list skillExtentionList as skillExtention>
+	  	<#if skillList??>
+		<#list skillList as skill>
+		<#if skill.id == skillExtention.skillid>	  	
+	  	<tier agent="${skillExtention.extention}" queue="${skill.skill!''}" level="1" position="1"/>
+	  	</#if>
+	  	</#list>
+	  	</#if>
+	  	</#list>
+	  	</#if>
 	  </tiers>
 	
 	</configuration> 
