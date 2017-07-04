@@ -288,7 +288,7 @@ var Proxy = {
 	},
 	execContactsFunction: function(data){
 		if(data!=null && data!= ""){
-			if(ani!=null && ani != ""){
+			if(typeof ani != "undefined"){
 				loadURL("/apps/softphone/search.html?display=false&ani="+ani+"&q="+data, "#ukefu-chat-agent") ;
 			}else if(userid && userid != '' && agentserviceid && agentserviceid != '' && agentuserid && agentuserid != ''){
 				loadURL("/agent/contacts.html?userid="+userid+"&agentserviceid="+agentserviceid+"&agentuserid="+agentuserid+"&contactsid="+data , "#ukefu_contacts_info") ;
