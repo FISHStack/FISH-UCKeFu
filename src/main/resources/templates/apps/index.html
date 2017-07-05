@@ -135,12 +135,14 @@
 						</a>
 					</li>
 					</#if>
+					<#if user?? && user.usertype == "0">
 					<li class="layui-nav-item ">
 						<a href="javascript:void(0)" onclick="return false;"  data-title="系统管理" data-href="/admin/content.html" class="iframe_btn" data-id="admin" data-type="tabAdd">
 							<i class="layui-icon" style="position: relative;">&#xe631;</i>
 							系统
 						</a>
 					</li>
+					</#if>
 					
 					<li class="layui-nav-item"><a href="javascript:void(0)">
 						<i class="layui-icon" style="position: relative;">&#xe612;</i>

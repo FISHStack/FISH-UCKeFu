@@ -68,6 +68,11 @@ public class UsersController extends Handler{
     	if(tempUser != null){
     		msg =  "admin_user_save_exist";
     	}else{
+    		if(request.getParameter("admin")!=null){
+    			user.setUsertype("0");
+    		}else{
+    			user.setUsertype(null);
+    		}
     		if(!StringUtils.isBlank(user.getPassword())){
     			user.setPassword(UKTools.md5(user.getPassword()));
     		}
@@ -102,6 +107,13 @@ public class UsersController extends Handler{
 	    		if(!StringUtils.isBlank(user.getPassword())){
 	    			tempUser.setPassword(UKTools.md5(user.getPassword()));
 	    		}
+	    		
+	    		if(request.getParameter("admin")!=null){
+	    			tempUser.setUsertype("0");
+	    		}else{
+	    			tempUser.setUsertype(null);
+	    		}
+	    		
 	    		if(tempUser.getCreatetime() == null){
 	    			tempUser.setCreatetime(new Date());
 	    		}
