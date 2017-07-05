@@ -107,7 +107,7 @@ public class ExcelImportProecess extends DataProcess{
 					}
 					values.put("orgi", event.getOrgi()) ;
 					if(values.get("id")==null){
-						values.put("orgi", UKTools.getUUID()) ;
+						values.put("id", UKTools.getUUID()) ;
 					}
 					if(event.getValues()!=null && event.getValues().size() > 0){
 						values.putAll(event.getValues());
