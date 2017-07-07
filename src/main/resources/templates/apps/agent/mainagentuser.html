@@ -133,6 +133,40 @@
 							<#elseif curagentuser.channel?? && curagentuser.channel == "weixin">
 								<#include "/apps/agent/channel/weixin.html">
 							</#if>
+							<#if curagentuser.name??>
+							<ul class="info-list">
+								<li>
+									姓名：
+									<span class="tgreen">
+									${curagentuser.name!''}
+								    </span>
+								</li>
+								<#if curagentuser.phone??>
+								<li>
+									电话：
+								    <span class="tgreen">
+									${curagentuser.phone!''}
+								    </span>
+								</li>
+								</#if>
+								<#if curagentuser.email??>
+								<li>
+									邮件：
+								    <span class="tgreen">
+									${curagentuser.email!''}
+								    </span>
+								</li>
+								</#if>
+								<#if curagentuser.resion??>
+								<li>
+									来访原因：
+								    <span class="tgreen">
+									${curagentuser.resion!''}
+								    </span>
+								</li>
+								</#if>
+							</ul>
+							</#if>
 						</div>
 					</div>
 					<#if models?? && models["contacts"]?? && models["contacts"] == true>

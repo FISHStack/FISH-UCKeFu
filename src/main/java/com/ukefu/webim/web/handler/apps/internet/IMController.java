@@ -3,9 +3,12 @@ package com.ukefu.webim.web.handler.apps.internet;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -224,21 +227,109 @@ public class IMController extends Handler{
     
     @RequestMapping("/index")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView index(HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
+    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	if(!StringUtils.isBlank(appid)){
     		CousultInvite invite = inviteRepository.findOne(appid) ;
-    		contacts = processContacts(invite.getOrgi(), contacts, appid, userid);
-    		if(invite!=null){
-    			String userID = UKTools.genIDByKey(sessionid);
-    			
-				String nickname = "Guest_" + userID;
+    		String userID = UKTools.genIDByKey(sessionid);
+			String nickname = "Guest_" + userID;
+			boolean consult = true ;				//是否已收集用户信息
+			SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
+			
+			map.addAttribute("sessionConfig", sessionConfig);
+    		map.addAttribute("orgi",invite.getOrgi());
+    		
+    		map.addAttribute("inviteData", invite);
+    		map.addAttribute("contacts", contacts) ;
+    		map.addAttribute("hostname", request.getServerName()) ;
+			map.addAttribute("port", port) ;
+			map.addAttribute("appid", appid) ;
+			map.addAttribute("userid", userid) ;
+			map.addAttribute("schema", request.getScheme()) ;
+			map.addAttribute("sessionid", sessionid) ;
+			
+			map.addAttribute("ukefport", request.getServerPort()) ;
+			
+			if(sessionConfig.isHourcheck() && !UKTools.isInWorkingHours(sessionConfig.getWorkinghours()) && invite.isLeavemessage()){
+				view = request(super.createRequestPageTempletResponse("/apps/im/leavemsg")) ;
+			}else if(invite.isConsult_info()){	//启用了信息收集 , 从Request获取 ， 或从 Cookies 里去
+    			//验证 OnlineUser 信息
+    			if(contacts!=null && !StringUtils.isBlank(contacts.getName())){	//contacts用于传递信息，并不和 联系人表发生 关联，contacts信息传递给 Socket.IO，然后赋值给 AgentUser，最终赋值给 AgentService永久存储
+    				consult = true ;
+    				//存入 Cookies
+    				if(invite.isConsult_info_cookies()){
+	    				Cookie name = new Cookie("name",UKTools.encryption(URLEncoder.encode(contacts.getName(), "UTF-8")));
+	    				response.addCookie(name);
+	    				name.setMaxAge(3600);
+	    				if(!StringUtils.isBlank(contacts.getPhone())){
+		    				Cookie phone = new Cookie("phone",UKTools.encryption(URLEncoder.encode(contacts.getPhone(), "UTF-8")));
+		    				phone.setMaxAge(3600);
+		    				response.addCookie(phone);
+	    				}
+	    				if(!StringUtils.isBlank(contacts.getEmail())){
+		    				Cookie email = new Cookie("email",UKTools.encryption(URLEncoder.encode(contacts.getEmail(), "UTF-8")));
+		    				email.setMaxAge(3600);
+		    				response.addCookie(email);
+	    				}
+	    				if(!StringUtils.isBlank(contacts.getMemo())){
+		    				Cookie memo = new Cookie("memo",UKTools.encryption(URLEncoder.encode(contacts.getName(), "UTF-8")));
+		    				memo.setMaxAge(3600);
+		    				response.addCookie(memo);
+	    				}
+    				}
+    			}else{
+    				//从 Cookies里尝试读取 
+    				if(invite.isConsult_info_cookies()){
+	    				Cookie[] cookies = request.getCookies();//这样便可以获取一个cookie数组
+	    				contacts = new Contacts();
+	    				if(cookies!=null){
+		    				for(Cookie cookie : cookies){
+		    					if(cookie!=null && !StringUtils.isBlank(cookie.getName()) && !StringUtils.isBlank(cookie.getValue())){
+		    						if(cookie.getName().equals("name")){
+		    							contacts.setName(URLDecoder.decode(UKTools.decryption(cookie.getValue()) , "UTF-8"));
+		    						}
+		    						if(cookie.getName().equals("phone")){
+		    							contacts.setPhone(URLDecoder.decode(UKTools.decryption(cookie.getValue()) , "UTF-8"));
+		    						}
+		    						if(cookie.getName().equals("email")){
+		    							contacts.setEmail(URLDecoder.decode(UKTools.decryption(cookie.getValue()) , "UTF-8"));
+		    						}
+		    						if(cookie.getName().equals("memo")){
+		    							contacts.setMemo(URLDecoder.decode(UKTools.decryption(cookie.getValue()) , "UTF-8"));
+		    						}
+		    					}
+		    				}
+	    				}
+    				}
+    				if(StringUtils.isBlank(contacts.getName())){
+    					consult = false ;
+	    				view = request(super.createRequestPageTempletResponse("/apps/im/collecting")) ;
+    				}
+    			}
+    		}else{
+    			contacts = processContacts(invite.getOrgi(), contacts, appid, userid);
+    		}
+			
+			if(!StringUtils.isBlank(client)){
+				map.addAttribute("client", client) ;
+			}
+			if(!StringUtils.isBlank(skill)){
+				map.addAttribute("skill", skill) ;
+			}
+			if(!StringUtils.isBlank(agent)){
+				map.addAttribute("agent", agent) ;
+			}
+			
+			if(!StringUtils.isBlank(type)){
+				map.addAttribute("type", type) ;
+			}
+			
+    		if(invite!=null && consult){
 				if(contacts!=null && !StringUtils.isBlank(contacts.getName())){
 					nickname = contacts.getName() ;
 				}
-				view.addObject("username", nickname) ;
+				map.addAttribute("username", nickname) ;
 				
-    			SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
     			if(UKDataContext.model.get("xiaoe")!=null  && invite.isAi() && ((!StringUtils.isBlank(ai) && ai.equals("true")) || (invite.isAifirst() && ai == null))){	//启用 AI ， 并且 AI优先 接待
     				view = request(super.createRequestPageTempletResponse("/apps/im/ai/index")) ;
     				if(CheckMobile.check(request.getHeader("User-Agent")) || !StringUtils.isBlank(mobile)){
@@ -247,7 +338,7 @@ public class IMController extends Handler{
     				if(UKDataContext.model.get("xiaoe")!=null){
     					DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("topic") ;
     					if(dataExchange!=null){
-    						view.addObject("topicList", dataExchange.getListDataByIdAndOrgi(super.getUser(request).getId(), super.getUser(request).getId(),  super.getOrgi(request))) ;
+    						map.addAttribute("topicList", dataExchange.getListDataByIdAndOrgi(super.getUser(request).getId(), super.getUser(request).getId(),  super.getOrgi(request))) ;
     					}
     				}
     			}else{
@@ -255,37 +346,9 @@ public class IMController extends Handler{
     					view = request(super.createRequestPageTempletResponse("/apps/im/mobile")) ;	//WebIM移动端。再次点选技能组？
     				}
     			}
-    			if(sessionConfig.isHourcheck() && !UKTools.isInWorkingHours(sessionConfig.getWorkinghours()) && invite.isLeavemessage()){		//非工作时间段，跳转到留言页面
-	    			view = request(super.createRequestPageTempletResponse("/apps/im/leavemsg")) ;
-	    		}else{
-	    			view.addObject("chatMessageList", chatMessageRes.findByUsessionAndOrgi(userid , orgi, new PageRequest(0, 20, Direction.DESC , "updatetime"))) ;
-	    		}
-	    		view.addObject("sessionConfig", sessionConfig);
-	    		view.addObject("inviteData", invite);
-	    		view.addObject("orgi",invite.getOrgi());
+    			map.addAttribute("chatMessageList", chatMessageRes.findByUsessionAndOrgi(userid , orgi, new PageRequest(0, 20, Direction.DESC , "updatetime"))) ;
 	    	}
     		
-	    	view.addObject("hostname", request.getServerName()) ;
-			view.addObject("port", port) ;
-			view.addObject("appid", appid) ;
-			view.addObject("userid", userid) ;
-			view.addObject("schema", request.getScheme()) ;
-			view.addObject("sessionid", sessionid) ;
-			
-			if(!StringUtils.isBlank(client)){
-				view.addObject("client", client) ;
-			}
-			if(!StringUtils.isBlank(skill)){
-				view.addObject("skill", skill) ;
-			}
-			if(!StringUtils.isBlank(agent)){
-				view.addObject("agent", agent) ;
-			}
-			
-			if(!StringUtils.isBlank(type)){
-				view.addObject("type", type) ;
-			}
-			
 	    	
 	//    	OnlineUserUtils.sendWebIMClients(userid , "accept");
 	    	Page<InviteRecord> inviteRecordList = inviteRecordRes.findByUseridAndOrgi(userid, orgi , new PageRequest(0, 1, Direction.DESC, "createtime")) ;

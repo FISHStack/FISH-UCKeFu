@@ -53,6 +53,12 @@ public class AgentService implements Serializable {
 	
 	private String contactsid ;
 	
+	
+	private String name ;
+	private String email ;
+	private String phone ;
+	private String resion ;
+	
 	private String contextid;
 	private String dataid; // 用户记录 OnlineUser对象的ID
 	private String agentserviceid;
@@ -476,5 +482,37 @@ public class AgentService implements Serializable {
 
 	public void setCreatedate(String createdate) {
 		this.createdate = createdate;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getResion() {
+		return resion;
+	}
+
+	public void setResion(String resion) {
+		this.resion = resion;
 	}
 }

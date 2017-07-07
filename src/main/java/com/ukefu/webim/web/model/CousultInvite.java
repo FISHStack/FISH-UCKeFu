@@ -96,6 +96,16 @@ public class CousultInvite implements java.io.Serializable{
 	private boolean lvmcontent = true;
 	private boolean skill ;		//启用技能组功能
 	
+	
+	private boolean consult_info;	//启用咨询信息收集功能
+	private boolean consult_info_cookies;	//启用Cookies存储用户录入的信息， 最长有效时间是 3600秒，超时需要重新填写
+	private boolean consult_info_name;//填写姓名
+	private boolean consult_info_email;	//填写 邮件地址
+	private boolean consult_info_phone;//填写 电话号码
+	private boolean consult_info_resion;	//填写咨询问题
+	private String consult_info_message;	//咨询窗口显示的欢迎语
+	
+	
 	private boolean ai ;		//是否启用 AI
 	private boolean aifirst ;	//AI优先接入
 	private boolean aisearch ;	//AI允许使用 搜索引擎， 例如百度 等
@@ -579,5 +589,47 @@ public class CousultInvite implements java.io.Serializable{
 	}
 	public void setAiname(String ainame) {
 		this.ainame = ainame;
+	}
+	public boolean isConsult_info() {
+		return consult_info;
+	}
+	public void setConsult_info(boolean consult_info) {
+		this.consult_info = consult_info;
+	}
+	public boolean isConsult_info_name() {
+		return consult_info_name;
+	}
+	public void setConsult_info_name(boolean consult_info_name) {
+		this.consult_info_name = consult_info_name;
+	}
+	public boolean isConsult_info_email() {
+		return consult_info_email;
+	}
+	public void setConsult_info_email(boolean consult_info_email) {
+		this.consult_info_email = consult_info_email;
+	}
+	public boolean isConsult_info_phone() {
+		return consult_info_phone;
+	}
+	public void setConsult_info_phone(boolean consult_info_phone) {
+		this.consult_info_phone = consult_info_phone;
+	}
+	public boolean isConsult_info_resion() {
+		return consult_info_resion;
+	}
+	public void setConsult_info_resion(boolean consult_info_resion) {
+		this.consult_info_resion = consult_info_resion;
+	}
+	public String getConsult_info_message() {
+		return consult_info_message;
+	}
+	public void setConsult_info_message(String consult_info_message) {
+		this.consult_info_message = consult_info_message;
+	}
+	public boolean isConsult_info_cookies() {
+		return consult_info_cookies;
+	}
+	public void setConsult_info_cookies(boolean consult_info_cookies) {
+		this.consult_info_cookies = consult_info_cookies;
 	}
 }

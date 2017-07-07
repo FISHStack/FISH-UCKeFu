@@ -2,6 +2,7 @@ package com.ukefu.webim.util.server.handler;
 
 import java.net.InetSocketAddress;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,16 @@ import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.impl.AgentUserService;
+import com.ukefu.webim.service.repository.AgentServiceRepository;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.util.server.message.AgentStatusMessage;
 import com.ukefu.webim.util.server.message.ChatMessage;
 import com.ukefu.webim.util.server.message.NewRequestMessage;
+import com.ukefu.webim.web.model.AgentService;
 import com.ukefu.webim.web.model.AgentUser;
+import com.ukefu.webim.web.model.Contacts;
 import com.ukefu.webim.web.model.MessageOutContent;
 
 public class IMEventHandler     
@@ -94,11 +99,37 @@ public class IMEventHandler
 		}
     }  
       
-    //消息接收入口，网站有新用户接入对话  
+    //消息接收入口，用于接受网站资源用户传入的 个人信息
     @OnEvent(value = "new")  
-    public void onEvent(SocketIOClient client, AckRequest request, NewRequestMessage data)   
+    public void onEvent(SocketIOClient client, AckRequest request, Contacts contacts)   
     {
-    	
+    	String user = client.getHandshakeData().getSingleUrlParam("userid") ;
+		String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
+		AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(user, orgi) ;
+		AgentUserService service = UKDataContext.getContext().getBean(
+				AgentUserService.class);
+		if(agentUser == null){
+			agentUser = service.findByUseridAndOrgi(user , orgi);
+		}
+		if(agentUser!=null){
+			agentUser.setName(contacts.getName());
+			agentUser.setPhone(contacts.getPhone());
+			agentUser.setEmail(contacts.getEmail());
+			agentUser.setResion(contacts.getMemo());
+			service.save(agentUser);
+			CacheHelper.getAgentUserCacheBean().put(agentUser.getUserid(), agentUser , UKDataContext.SYSTEM_ORGI) ;
+		}
+			
+		AgentServiceRepository agentServiceRes = UKDataContext.getContext().getBean(AgentServiceRepository.class) ;
+		List<AgentService> agentServiceList = agentServiceRes.findByUseridAndOrgi(user, orgi) ;
+		if(agentServiceList.size() > 0){
+			AgentService agentService = agentServiceList.get(0) ;
+			agentService.setName(contacts.getName());
+			agentService.setPhone(contacts.getName());
+			agentService.setEmail(contacts.getName());
+			agentService.setRegion(contacts.getMemo());
+			agentServiceRes.save(agentService) ;
+		}
     }  
     
   //消息接收入口，坐席状态更新  

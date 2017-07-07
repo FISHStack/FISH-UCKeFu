@@ -59,6 +59,11 @@ public class AgentUser implements Serializable, Comparable<AgentUser> {
 	private String skill ;	//请求的技能组
 	private String agent ;	//请求的坐席
 	
+	private String name ;
+	private String email ;
+	private String phone ;
+	private String resion ;
+	
 	@Transient
 	private boolean tip = false;
 	@Transient
@@ -452,6 +457,38 @@ public class AgentUser implements Serializable, Comparable<AgentUser> {
 
 	public void setAgent(String agent) {
 		this.agent = agent;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getResion() {
+		return resion;
+	}
+
+	public void setResion(String resion) {
+		this.resion = resion;
 	}
 
 	@Override

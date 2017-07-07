@@ -69,6 +69,7 @@ public class User implements java.io.Serializable{
 	private String status ;		//
 	private boolean datastatus ;//数据状态，是否已删除	
 	
+	
 	private Date lastlogintime = new Date();	//最后登录时间
 	
 	private AgentStatus agentStatus ;

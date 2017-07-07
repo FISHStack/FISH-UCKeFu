@@ -238,9 +238,91 @@
 										</div>
 									</div>
 								</div>
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">10、启用咨询前信息录入</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>启用咨询前用户录入个人信息</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">开启后会启用会启用访客信息录入功能，访客需要填写姓名、电话、邮件、咨询原因等内容</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<input type="checkbox" title="启用" name="consult_info" lay-filter="consult_info" <#if inviteData?? && inviteData.consult_info == true>checked="checked"</#if>>
+											</div>
+										</div>
+									</div>
+									<div class="box-item" id="consult_info" style="position: relative;<#if inviteData?? && inviteData.consult_info == true><#else>display:none;</#if>">
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>a、输入访客姓名</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">默认的访客姓名是随机生成的，访客输入后，在坐席对话界面上将会显示访客输入的姓名</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												    <input type="checkbox" title="启用" name="consult_info_name" <#if inviteData?? && inviteData.consult_info_name == true>checked="checked"</#if>>
+												</div>	
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>b、输入访客邮件地址</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">来访访客需要填写电子邮件信息后才能进入咨询</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												    <input type="checkbox" title="启用" name="consult_info_email" <#if inviteData?? && inviteData.consult_info_email == true>checked="checked"</#if>>
+												</div>	
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>c、填写电话号码</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">来访访客需要填写电话号码后才能进入咨询</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												    <input type="checkbox" title="启用" name="consult_info_phone" <#if inviteData?? && inviteData.consult_info_phone == true>checked="checked"</#if>>
+												</div>	
+											</div>
+										</div>
+										
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>d、填写咨询原因或者问题</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">来访访客需要填写咨询原因或者问题后才能进入咨询</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												    <input type="checkbox" title="启用" name="consult_info_resion" <#if inviteData?? && inviteData.consult_info_resion == true>checked="checked"</#if>>
+												</div>	
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-12">
+												<p>e、咨询信息录入窗口填写提示信息</p>
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-12">
+												<textarea name=consult_info_message autocomplete="off" class="layui-input" resize="false" style="height:90px;line-height:22px;resize: none;">${(inviteData.consult_info_message!'您好，请填写以下信息，方便我们更好的为您服务！')?no_esc}</textarea>
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>f、使用Cookies临时存储用户信息</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">来访访客填写的用户信息临时存放在Cookies，默认有效期是3600秒，信息将会被加密后存储</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												    <input type="checkbox" title="启用" name="consult_info_cookies" <#if inviteData?? && inviteData.consult_info_cookies == true>checked="checked"</#if>>
+												</div>	
+											</div>
+										</div>
+									</div>
+								</div>
 								<#if models?? && models["xiaoe"]?? && models["xiaoe"] == true>
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">10、启用智能机器人</div>
+									<div class="ukefu-webim-tl" style="clear:both;">11、启用智能机器人</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -413,6 +495,13 @@
 				$('#ai').show();		
 			}else{
 				$('#ai').hide();
+			}
+		});
+		form.on("checkbox(consult_info)" , function(data){
+			if(data.elem.checked == true){
+				$('#consult_info').show();		
+			}else{
+				$('#consult_info').hide();
 			}
 		});
 	});

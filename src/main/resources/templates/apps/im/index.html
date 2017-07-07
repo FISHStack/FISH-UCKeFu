@@ -338,8 +338,16 @@
 	var hostname = location.hostname ;
     var socket = io.connect('${schema!'http'}://'+hostname+':${port}/im/user?userid=${userid!''}&orgi=${orgi!''}&session=${sessionid!''}&appid=${appid!''}&osname=${(osname!'')?url}&browser=${(browser!'')?url}<#if skill??>&skill=${skill}</#if><#if username??>&nickname=${username}</#if><#if agent??>&agent=${agent}</#if>');
     socket.on('connect',function(){
-        //service.sendRequestMessage(); 
-		//output('<span id="connect-message">'+ new Date().format("yyyy-MM-dd hh:mm:ss") + ' 开始沟通' +'</span>' , 'message connect-message');	 		
+    	<#if contacts?? && contacts.name??>
+    	socket.emit('new', {
+			name : "${contacts.name!''}",
+			phone:"${contacts.phone!''}",
+			email:"${contacts.email}",
+			memo:"${contacts.memo!''}",
+			orgi:"${inviteData.orgi!''}",
+			appid : "${appid!''}"
+		});
+    	</#if>
     })
     socket.on("agentstatus",function(data){
        document.getElementById('connect-message').innerHTML=data.message;

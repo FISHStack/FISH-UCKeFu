@@ -351,6 +351,18 @@ public class ServiceQuene {
 			
 			AgentServiceRepository agentServiceRes = UKDataContext.getContext().getBean(AgentServiceRepository.class) ;
 			
+			if(!StringUtils.isBlank(agentUser.getName())){
+				agentService.setName(agentUser.getName());
+			}
+			if(!StringUtils.isBlank(agentUser.getPhone())){
+				agentService.setPhone(agentUser.getPhone());
+			}
+			if(!StringUtils.isBlank(agentUser.getEmail())){
+				agentService.setEmail(agentUser.getEmail());
+			}
+			if(!StringUtils.isBlank(agentUser.getResion())){
+				agentService.setResion(agentUser.getResion());
+			}
 			
 			agentService.setServicetime(new Date());
 			if(agentUser.getCreatetime()!=null){

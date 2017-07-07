@@ -61,6 +61,7 @@ public class OnlineUser {
 	
 	private String contactsid ;
 
+
 	private int invitetimes; // 邀请次数
 	private String invitestatus; // 邀请状态
 	private int refusetimes ;
@@ -438,6 +439,4 @@ public class OnlineUser {
 	public void setContacts(Contacts contacts) {
 		this.contacts = contacts;
 	}
-	
-	
 }

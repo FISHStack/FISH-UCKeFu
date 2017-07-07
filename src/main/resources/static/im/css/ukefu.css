@@ -887,8 +887,8 @@ p.submitBtnWrap {
 	margin: 0 auto;
 }
 .leaveCon{
-	width: 520px;
-	margin: 30px auto;
+	width: 550px;
+	margin: 10px auto;
 	overflow: hidden;
 	zoom:1;
 }
@@ -967,7 +967,7 @@ p.submitBtnWrap{
 
 .ukef-leavemsg-tip{
 	width: 520px;
-    margin: 30px auto;
+    margin: 60px auto 0px auto;
     font-size: 16px;
 }
 .ukefu-func-tab{
@@ -1007,4 +1007,19 @@ p.submitBtnWrap{
 .ukefu-ask-item a{
 	text-decoration: none;
     color: #555555;
+}
+.ukefu-form-label {
+    text-align: left;
+    padding-left: 0px;
+    padding-bottom: 6px;
+    padding-top: 6px;
+    width: 100%;
+}
+.layui-input-block {
+    padding: 9px 15px 5px 0px;
+    margin-left: 0px;
+    min-height: 20px;
+}
+.ukefu-form-item {
+    margin-bottom:0px !important;
 }
