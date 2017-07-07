@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.elasticsearch.common.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,6 +20,7 @@ import com.ukefu.webim.service.repository.CallCenterSkillRepository;
 import com.ukefu.webim.service.repository.ExtentionRepository;
 import com.ukefu.webim.service.repository.PbxHostRepository;
 import com.ukefu.webim.service.repository.RouterRulesRepository;
+import com.ukefu.webim.service.repository.SipTrunkRepository;
 import com.ukefu.webim.service.repository.SkillExtentionRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Extention;
@@ -46,6 +48,10 @@ public class ExtentionController extends Handler{
 	@Autowired
 	private CallCenterSkillRepository skillRes ;
 	
+	
+	@Autowired
+	private SipTrunkRepository sipTrunkRes ;
+	
 	@RequestMapping(value = "/extention" , method = RequestMethod.POST)
     @Menu(type = "callcenter" , subtype = "extention" , access = true)
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String hostname , @Valid String key_value) {
@@ -63,7 +69,7 @@ public class ExtentionController extends Handler{
 	
 	@RequestMapping(value = "/configuration" , method = RequestMethod.POST)
     @Menu(type = "callcenter" , subtype = "configuration" , access = true)
-    public ModelAndView configuration(ModelMap map , HttpServletRequest request , @Valid String hostname , @Valid String key_value) {
+    public ModelAndView configuration(ModelMap map , HttpServletRequest request , @Valid String hostname , @Valid String key_value ,  @Valid String profile) {
 		
 		List<PbxHost> pbxHostList = pbxHostRes.findByHostnameOrIpaddrAndOrgi(hostname, hostname, super.getOrgi(request)) ;
 		PbxHost pbxHost = null ;
@@ -74,8 +80,9 @@ public class ExtentionController extends Handler{
 			map.addAttribute("skillExtentionList" , skillExtentionRes.findByHostidAndOrgi(pbxHost.getId() , super.getOrgi(request)));
 			map.addAttribute("extentionList" , extentionRes.findByHostidAndOrgi(pbxHost.getId() , super.getOrgi(request)));
 			map.addAttribute("aclList" , aclRes.findByHostidAndOrgi(pbxHost.getId() , super.getOrgi(request)));
+			map.addAttribute("sipTrunkList" , sipTrunkRes.findByHostidAndOrgi(pbxHost.getId() , super.getOrgi(request)));
 		}
-		
+		System.out.println("key_value:"+key_value);
 		ModelAndView view = request(super.createRequestPageTempletResponse("/apps/business/callcenter/notfound"));
 		if(key_value!=null && key_value.equals("callcenter.conf")){
 			view = request(super.createRequestPageTempletResponse("/apps/business/callcenter/configure/callcenter"));
@@ -83,6 +90,12 @@ public class ExtentionController extends Handler{
 			view = request(super.createRequestPageTempletResponse("/apps/business/callcenter/configure/acl"));
 		}else if(key_value!=null && key_value.equals("ivr.conf")){
 			view = request(super.createRequestPageTempletResponse("/apps/business/callcenter/configure/ivr"));
+		}else if(key_value!=null && key_value.equals("sofia.conf")){
+			if(!StringUtils.isBlank(profile)){
+				if(profile.equals("external")){
+					view = request(super.createRequestPageTempletResponse("/apps/business/callcenter/configure/external"));
+				}
+			}
 		}
     	return view;
     }

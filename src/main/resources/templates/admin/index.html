@@ -16,17 +16,18 @@
 <script src="/layui.js"></script>
 <script src="/js/ukefu.js"></script>
 <script src="/im/js/socket.io.js"></script>	
-<script src="/js/UCKeFu_IM.v1.js"></script>	
+<script src="/js/UCKeFu_IM.v1.js"></script>
+
 <script language="javascript">
-	var hostname = "${hostname!''}" , port = "${webimport!''}" , userid = "${user.id!''}" , session = "${sessionid!''}" , orgi = "${orgi!''}";
-	$(document).ready(function(){
-		$('#agentstatus').on("click" , function(){
-			if($(this).hasClass('layui-form-onswitch')){
+	var hostname = "${hostname!''}", port = "${webimport!''}", userid = "${user.id!''}", session = "${sessionid!''}", orgi = "${orgi!''}";
+	$(document).ready(function() {
+		$('#agentstatus').on("click", function() {
+			if ($(this).hasClass('layui-form-onswitch')) {
 				$(this).removeClass("layui-form-onswitch");
 				loadURL("/agent/notready.html")
-			}else{
+			} else {
 				$(this).addClass("layui-form-onswitch");
-				loadURL("/agent/ready.html") ;
+				loadURL("/agent/ready.html");
 			}
 		});
 	});

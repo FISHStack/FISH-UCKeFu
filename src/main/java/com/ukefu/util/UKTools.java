@@ -3,9 +3,13 @@ package com.ukefu.util;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -618,6 +622,19 @@ public class UKTools {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}    
+	}
+	
+	public static byte[] toBytes(Object object) throws Exception {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		ObjectOutputStream objectOutput = new ObjectOutputStream(out);
+		objectOutput.writeObject(object);
+		return out.toByteArray();
+	}
+
+	public static Object toObject(byte[] data) throws Exception {
+		ByteArrayInputStream input = new ByteArrayInputStream(data);
+		ObjectInputStream objectInput = new ObjectInputStream(input);
+		return objectInput.readObject();
 	}
 	
 	/**
