@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-07-06 08:28:20
+Date: 2017-07-07 20:35:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,7 +49,6 @@ CREATE TABLE `uk_agentservice` (
   `lastgetmessage` datetime DEFAULT NULL COMMENT '坐席最后一条消息时间',
   `lastmsg` varchar(100) DEFAULT '' COMMENT '最后一条消息内容',
   `agentskill` varchar(100) DEFAULT '' COMMENT '技能组',
-  `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `creater` varchar(255) DEFAULT NULL COMMENT '创建人',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
@@ -72,6 +71,10 @@ CREATE TABLE `uk_agentservice` (
   `dataid` varchar(32) DEFAULT NULL COMMENT '数据ID',
   `contactsid` varchar(32) DEFAULT NULL COMMENT '联系人ID',
   `createdate` varchar(32) DEFAULT NULL COMMENT '消息到达时间',
+  `name` varchar(100) DEFAULT NULL COMMENT '访客填写的姓名',
+  `email` varchar(100) DEFAULT NULL COMMENT '访客填写的邮件地址',
+  `phone` varchar(100) DEFAULT NULL COMMENT '访客填写的电话号码',
+  `resion` varchar(255) DEFAULT NULL COMMENT '访客填写的来访原因',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -150,7 +153,6 @@ CREATE TABLE `uk_agentuser` (
   `lastgetmessage` datetime DEFAULT NULL COMMENT '最后一条消息时间',
   `lastmsg` varchar(100) DEFAULT '' COMMENT '最后一条消息',
   `agentskill` varchar(100) DEFAULT '' COMMENT '技能组',
-  `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `creater` varchar(255) DEFAULT NULL COMMENT '创建人',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
@@ -175,6 +177,10 @@ CREATE TABLE `uk_agentuser` (
   `reptimes` varchar(10) DEFAULT NULL COMMENT '坐席回复次数',
   `skill` varchar(32) DEFAULT NULL COMMENT '技能组',
   `agent` varchar(32) DEFAULT NULL COMMENT '坐席ID',
+  `name` varchar(100) DEFAULT NULL COMMENT '用户录入的姓名',
+  `phone` varchar(100) DEFAULT NULL COMMENT '访客录入的电话',
+  `email` varchar(100) DEFAULT NULL COMMENT '访客录入的邮件',
+  `resion` varchar(255) DEFAULT NULL COMMENT '访客录入的来访原因',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -697,13 +703,20 @@ CREATE TABLE `uk_consult_invite` (
   `aimsg` text COMMENT 'AI欢迎信息',
   `aisuccesstip` varchar(100) DEFAULT NULL,
   `ainame` varchar(50) DEFAULT NULL,
+  `consult_info` tinyint(4) DEFAULT NULL COMMENT '启用咨询信息收集功能',
+  `consult_info_name` tinyint(4) DEFAULT NULL COMMENT '填写姓名',
+  `consult_info_email` tinyint(4) DEFAULT NULL COMMENT '填写 邮件地址',
+  `consult_info_phone` tinyint(4) DEFAULT NULL COMMENT '填写 电话号码',
+  `consult_info_resion` tinyint(4) DEFAULT NULL COMMENT '填写咨询问题',
+  `consult_info_message` text COMMENT '咨询窗口显示的欢迎语',
+  `consult_info_cookies` tinyint(4) DEFAULT NULL COMMENT '在Cookies中存储用户信息',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uk_consult_invite
 -- ----------------------------
-INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '297e8c7b455798280145579c73e501c1', 'right,middle', '在线客服', null, null, null, '6', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '1', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '0', '0', '0', null, null, null);
+INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '297e8c7b455798280145579c73e501c1', 'right,middle', '在线客服', null, null, null, '6', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '0', '0', '0', null, null, null, '1', '1', '1', '1', '1', '您好，请填写以下信息，方便我们更好的为您服务！', '0');
 
 -- ----------------------------
 -- Table structure for `uk_contacts`
@@ -1254,22 +1267,13 @@ CREATE TABLE `uk_onlineuser_his` (
   `channel` varchar(32) DEFAULT NULL COMMENT '渠道',
   `appid` varchar(32) DEFAULT NULL COMMENT 'SNSID',
   `contactsid` varchar(32) DEFAULT NULL COMMENT '联系人ID',
-  `dataid` varchar(32) DEFAULT NULL COMMENT '对应OnlineUser的ID',
+  `dataid` varchar(32) DEFAULT NULL COMMENT '关联的OnlineUser数据ID',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uk_onlineuser_his
 -- ----------------------------
-INSERT INTO `uk_onlineuser_his` VALUES ('', '502927322', null, '402888815c9a84fe015c9a9b544f000e', null, null, 'ukewo', null, null, null, '2017-06-14 22:36:20', '范冰冰', '范冰冰', null, null, 'windows', '127.0.0.1', '127.0.0.1', 'Chrome', 'offline', '502927322', '2017-06-14 22:34:58', 'DEA16FC5FE3BC37E421E65A5A91CF353', '2017-06-12 12:41:29', null, 'webim', '0', '0', '未分配或者内网IP', '未分配或者内网IP（127.0.0.1）', '0', '0', '0', '82653', '20170612', null, '127.0.0.1', null, 'http://127.0.0.1/login.html', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36', '0', 'default', '15', 'webim', '4028838b5ac815e3015ac81645f90000', null, null);
-INSERT INTO `uk_onlineuser_his` VALUES ('', '2371326471', null, '402888815ca70c09015ca71e763b0002', null, null, 'ukewo', null, null, null, '2017-06-15 00:00:16', 'guest_005asq', 'guest_005asq', null, null, 'windows', '192.168.3.22', '192.168.3.22', 'Chrome', 'offline', '2371326471', '2017-06-14 23:00:10', '049074D2E42BFB8B31A3801681A6A427', '2017-06-14 23:00:10', null, 'webim', '0', '0', '未分配或者内网IP', '未分配或者内网IP（192.168.3.22）', '0', '0', '0', '3606410', '20170614', null, '192.168.3.22', null, 'http://192.168.3.22/login.html', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36', '0', 'default', '0', 'webim', '4028838b5ac815e3015ac81645f90000', '2cf2e231e71e4d26948be8af05f622bc', null);
-INSERT INTO `uk_onlineuser_his` VALUES ('', '2315965411', null, '402888815cabc663015cac0acf270002', null, null, 'ukewo', null, null, null, '2017-06-17 10:37:08', 'guest_00nurw', '3333333', null, null, 'windows', '127.0.0.1', '127.0.0.1', 'Chrome', 'offline', '2315965411', '2017-06-17 07:12:18', 'EB64C30FD1D2E0AF5EAF0704C5FD781E', '2017-06-15 21:56:48', null, 'webim', '0', '0', '未分配或者内网IP', '未分配或者内网IP（127.0.0.1）', '0', '0', '0', '12290351', '20170615', null, '127.0.0.1', null, 'http://127.0.0.1/login.html', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36', '0', 'default', '13', 'webim', '4028838b5ac815e3015ac81645f90000', '414ff769d4f045afb74f239a440e1871', null);
-INSERT INTO `uk_onlineuser_his` VALUES ('', '4185493719', null, '402888815cb32d5d015cb3e92c860050', null, null, 'ukewo', null, null, null, '2017-06-19 08:10:32', '阿斯顿发生地方', '阿斯顿发生地方', null, null, 'windows', '127.0.0.1', '127.0.0.1', 'Chrome', 'offline', '4185493719', '2017-06-19 08:09:46', '9E1933EE5D3A52EF8F60736A0764DE02', '2017-06-17 10:37:01', null, 'webim', '0', '0', '未分配或者内网IP', '未分配或者内网IP（127.0.0.1）', '0', '0', '0', '46170', '20170617', null, '127.0.0.1', null, 'http://127.0.0.1/login.html', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36', '0', 'default', '0', 'webim', '4028838b5ac815e3015ac81645f90000', '3c6dbce670dd4080aa81a0c629bed56e', null);
-INSERT INTO `uk_onlineuser_his` VALUES ('', '3950485105', null, '402888815cc084de015cc085664b0001', null, null, 'ukewo', null, null, null, '2017-06-22 16:53:58', 'guest_0y9sso', 'guest_0y9sso', null, null, 'windows', '127.0.0.1', '127.0.0.1', 'Chrome', 'offline', '3950485105', '2017-06-22 16:52:47', 'E0A16F08E36B1E5FFA821892A7D77A00', '2017-06-19 21:23:06', null, 'webim', '0', '0', '未分配或者内网IP', '未分配或者内网IP（127.0.0.1）', '0', '0', '0', '71385', '20170619', null, '127.0.0.1', null, 'http://127.0.0.1/login.html', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.104 Safari/537.36', '0', 'default', '0', 'webim', '4028838b5ac815e3015ac81645f90000', null, null);
-INSERT INTO `uk_onlineuser_his` VALUES ('', '1771979077', null, '402888815cd2cb68015cd2eff4130001', null, null, 'ukewo', null, null, null, '2017-06-27 00:22:39', 'guest_1qo4bv', 'guest_1qo4bv', null, null, 'windows', '127.0.0.1', '127.0.0.1', 'Chrome', 'offline', '1771979077', '2017-06-27 00:21:15', '4AA76B8724643495D41E30FB381E6B79', '2017-06-23 11:12:39', null, 'webim', '0', '0', '未分配或者内网IP', '未分配或者内网IP（127.0.0.1）', '0', '0', '0', '84263', '20170623', null, '127.0.0.1', null, 'http://127.0.0.1/login.html', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.109 Safari/537.36', '0', 'default', '0', 'webim', '4028838b5ac815e3015ac81645f90000', null, null);
-INSERT INTO `uk_onlineuser_his` VALUES ('', '3226079749', null, '402888815ce49b41015ce6e944690006', null, null, 'ukewo', null, null, null, '2017-07-03 23:46:25', 'guest_0dubcm', 'guest_0dubcm', null, null, 'windows', '127.0.0.1', '127.0.0.1', 'Chrome', 'offline', '3226079749', '2017-07-03 23:45:46', '31BF738945B42CA957C1627CFADB6F63', '2017-06-27 08:17:46', null, 'webim', '0', '0', '未分配或者内网IP', '未分配或者内网IP（127.0.0.1）', '0', '0', '0', '39009', '20170627', null, '127.0.0.1', null, 'http://127.0.0.1/login.html', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36', '0', 'default', '0', 'webim', '4028838b5ac815e3015ac81645f90000', null, null);
-INSERT INTO `uk_onlineuser_his` VALUES ('', '185083104', null, '402888815cf66311015cf6aa4e3d0013', null, null, 'ukewo', null, null, null, '2017-06-30 10:43:36', 'guest_0mt91m', 'guest_0mt91m', null, null, 'windows', '192.168.3.28', '192.168.3.28', 'Chrome', 'offline', '185083104', '2017-06-30 09:42:55', '1F8014DBCEF04E8146B8D7D06A258485', '2017-06-30 09:42:55', null, 'webim', '0', '0', '未分配或者内网IP', '未分配或者内网IP（192.168.3.28）', '0', '0', '0', '3641061', '20170630', null, '192.168.3.28', null, 'http://192.168.3.28/login.html', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36', '0', 'default', '0', 'webim', '4028838b5ac815e3015ac81645f90000', null, null);
-INSERT INTO `uk_onlineuser_his` VALUES ('', '2424242', null, '402888815d03e903015d0419f8ad000e', null, null, 'ukewo', null, null, null, '2017-07-03 23:53:38', '他他他', '他他他', null, null, 'windows', '127.0.0.1', '127.0.0.1', 'Chrome', 'offline', '2424242', '2017-07-03 23:48:47', 'F094BB15945907AA47244F3E8147AB32', '2017-07-03 00:19:57', null, 'webim', '0', '0', '未分配或者内网IP', '未分配或者内网IP（127.0.0.1）', '0', '0', '0', '291365', '20170703', null, '127.0.0.1', null, 'http://127.0.0.1/login.html', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36', '0', 'default', '0', 'webim', '4028838b5ac815e3015ac81645f90000', null, null);
 
 -- ----------------------------
 -- Table structure for `uk_orderscomment`
@@ -5612,7 +5616,7 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-06-19 21:25:46', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-07-05 16:52:25', null, null, null, '0', '1');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-06-19 21:25:46', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-07-07 20:20:37', null, null, null, '0', '1');
 INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402883965c1dfe92015c1e1291900003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-07-05 16:51:31', null, null, null, '0', '0');
 
 -- ----------------------------
