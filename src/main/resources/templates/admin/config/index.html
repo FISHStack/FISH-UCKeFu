@@ -178,7 +178,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">5、工单系统布局方式</div>
+									<div class="ukefu-webim-tl" style="clear:both;">8、工单系统布局方式</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -189,6 +189,127 @@
 												<input type="checkbox" title="启用" name="workorders" lay-filter="workorders" value="1" <#if systemConfig.workorders>checked="checked"</#if>>
 											</div>
 										</div>
+									</div>
+								</div>
+								
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">9、启用语音平台模板配置</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>启用语音接入平台上的模板配置功能</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">开启后语音平台能够从系统模板中的配置信息读取配置文件，具备热更新能力</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<input type="checkbox" title="启用" name="callcenter" lay-filter="callcenter" <#if systemConfig?? && systemConfig.callcenter == true>checked="checked"</#if>>
+											</div>
+										</div>
+									</div>
+									<div class="box-item" id="callcenter" style="position: relative;<#if systemConfig?? && systemConfig.callcenter == true><#else>display:none;</#if>">
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>a、选择分机配置模板</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">语音平台的分机资源模板配置文件，用于配置分机号码资源</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												     <select name="cc_extention" lay-verify="required">
+												     	<#if templateList??>
+												     	<#list templateList as template>
+												        <option value="${template.id!''}" <#if systemConfig.cc_extention?? && template.id == systemConfig.cc_extention>selected="selected"</#if>>${template.name!''}</option>
+												        </#list>
+												        </#if>
+												      </select>
+												</div>	
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>b、呼叫中心配置</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">语音平台的呼叫中心配置模板</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												     <select name="cc_quene" lay-verify="required">
+												     	<#if templateList??>
+												     	<#list templateList as template>
+												        <option value="${template.id!''}" <#if systemConfig.cc_quene?? && template.id == systemConfig.cc_quene>selected="selected"</#if>>${template.name!''}</option>
+												        </#list>
+												        </#if>
+												      </select>
+												</div>	
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>c、拨号计划（路由规则）</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">系统拨号计划、路由规则配置模板</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												    <select name="cc_router" lay-verify="required">
+												     	<#if templateList??>
+												     	<#list templateList as template>
+												        <option value="${template.id!''}" <#if systemConfig.cc_router?? && template.id == systemConfig.cc_router>selected="selected"</#if>>${template.name!''}</option>
+												        </#list>
+												        </#if>
+												      </select>
+												</div>	
+											</div>
+										</div>
+										
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>d、IVR导航语音配置模板</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">语音平台的IVR导航语音菜单配置</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												    <select name="cc_ivr" lay-verify="required">
+												     	<#if templateList??>
+												     	<#list templateList as template>
+												        <option value="${template.id!''}" <#if systemConfig.cc_ivr?? && template.id == systemConfig.cc_ivr>selected="selected"</#if>>${template.name!''}</option>
+												        </#list>
+												        </#if>
+												      </select>
+												</div>	
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>e、访问列表控制（ACL）</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">语音平台的访问控制列表配置模板</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												    <select name="cc_acl" lay-verify="required">
+														<#if templateList??>
+													    <#list templateList as template>
+														<option value="${template.id!''}" <#if systemConfig.cc_acl?? && template.id == systemConfig.cc_acl>selected="selected"</#if>>${template.name!''}</option>
+													  	</#list>
+													   	</#if>
+													</select>
+												</div>	
+											</div>
+										</div>
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>f、语音网关配置（SPI中继）</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">语音平台的语音接入网关配置模板（SIP Trunk）</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												    <select name="cc_siptrunk" lay-verify="required">
+														<#if templateList??>
+													    <#list templateList as template>
+														<option value="${template.id!''}" <#if systemConfig.cc_siptrunk?? && template.id == systemConfig.cc_siptrunk>selected="selected"</#if>>${template.name!''}</option>
+													  	</#list>
+													   	</#if>
+													</select>
+												</div>	
+											</div>
+										</div>
+										
 									</div>
 								</div>
 							</div>
@@ -244,6 +365,7 @@
 	</#if>
 	layui.use('form', function(){
 		var form = layui.form();
+		form.render('select'); //刷新select选择框渲染
 		form.on("checkbox(enablessl)" , function(data){
 			if(data.elem.checked == true){
 				$('.httpsconfig').show();
@@ -258,6 +380,13 @@
 				$('.elablesec').hide();
 			}
 		})
+		form.on("checkbox(callcenter)" , function(data){
+			if(data.elem.checked == true){
+				$('#callcenter').show();		
+			}else{
+				$('#callcenter').hide();
+			}
+		});
 		form.verify({
 			pass:function(value){
 				if(value != $('#password').val()){

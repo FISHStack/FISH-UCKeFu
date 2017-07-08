@@ -40,6 +40,15 @@ public class SystemConfig implements java.io.Serializable{
 	private String mapkey ;
 	private boolean workorders ;	//工单启用三栏布局
 	
+	private boolean callcenter ;	//启用呼叫中心模板配置
+	private String cc_extention ;
+	private String cc_quene ;
+	private String cc_router ;
+	private String cc_ivr ;
+	private String cc_acl ;
+	private String cc_siptrunk ;
+	private String cc_callcenter ;
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -148,6 +157,54 @@ public class SystemConfig implements java.io.Serializable{
 	}
 	public void setWorkorders(boolean workorders) {
 		this.workorders = workorders;
+	}
+	public boolean isCallcenter() {
+		return callcenter;
+	}
+	public void setCallcenter(boolean callcenter) {
+		this.callcenter = callcenter;
+	}
+	public String getCc_extention() {
+		return cc_extention;
+	}
+	public void setCc_extention(String cc_extention) {
+		this.cc_extention = cc_extention;
+	}
+	public String getCc_quene() {
+		return cc_quene;
+	}
+	public void setCc_quene(String cc_quene) {
+		this.cc_quene = cc_quene;
+	}
+	public String getCc_router() {
+		return cc_router;
+	}
+	public void setCc_router(String cc_router) {
+		this.cc_router = cc_router;
+	}
+	public String getCc_ivr() {
+		return cc_ivr;
+	}
+	public void setCc_ivr(String cc_ivr) {
+		this.cc_ivr = cc_ivr;
+	}
+	public String getCc_acl() {
+		return cc_acl;
+	}
+	public void setCc_acl(String cc_acl) {
+		this.cc_acl = cc_acl;
+	}
+	public String getCc_siptrunk() {
+		return cc_siptrunk;
+	}
+	public void setCc_siptrunk(String cc_siptrunk) {
+		this.cc_siptrunk = cc_siptrunk;
+	}
+	public String getCc_callcenter() {
+		return cc_callcenter;
+	}
+	public void setCc_callcenter(String cc_callcenter) {
+		this.cc_callcenter = cc_callcenter;
 	}
 	@Transient
 	public String getBackgroundColor(){

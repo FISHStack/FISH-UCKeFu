@@ -14,6 +14,7 @@ public class UKDataContext {
 	public static final String GUEST_USER = "guest";
 	public static final String IM_USER_SESSION_NAME = "im_user";
 	public static final String UKEFU_SYSTEM_DIC = "com.dic.system.template";
+	public static final String UKEFU_SYSTEM_CALLCENTER = "callcenter";
 	public static final String GUEST_USER_ID_CODE = "R3GUESTUSEKEY" ;
 	public static final String WORKORDERS_CLOSED_STATUS = "uckefu_workorders_closed" ;
 	public static final String SERVICE_QUENE_NULL_STR = "service_quene_null" ;

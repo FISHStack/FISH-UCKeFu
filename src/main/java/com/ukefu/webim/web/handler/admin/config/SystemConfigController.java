@@ -30,9 +30,12 @@ import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.SecretRepository;
 import com.ukefu.webim.service.repository.SystemConfigRepository;
+import com.ukefu.webim.service.repository.TemplateRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Secret;
+import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.SystemConfig;
+import com.ukefu.webim.web.model.UKeFuDic;
 
 @Controller
 @RequestMapping("/admin/config")
@@ -53,6 +56,9 @@ public class SystemConfigController extends Handler{
 	@Autowired
 	private SecretRepository secRes ;
 	
+	@Autowired
+	private TemplateRepository templateRes ;
+	
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "config" , admin = true)
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String execute) throws SQLException {
@@ -62,10 +68,22 @@ public class SystemConfigController extends Handler{
     	if(secretConfig!=null && secretConfig.size() > 0){
     		map.addAttribute("secret", secretConfig.get(0)) ;
     	}
+    	List<SysDic> dicList = UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_DIC) ;
+    	SysDic callCenterDic = null ;
+    	for(SysDic dic : dicList){
+    		if(dic.getCode().equals(UKDataContext.UKEFU_SYSTEM_CALLCENTER)){
+    			callCenterDic = dic ; break ;
+    		}
+    	}
+    	if(callCenterDic!=null){
+    		map.addAttribute("templateList", templateRes.findByTemplettypeAndOrgi(callCenterDic.getId(), super.getOrgi(request))) ;
+    	}
     	if(!StringUtils.isBlank(execute) && execute.equals("false")){
     		map.addAttribute("execute", execute) ;
     	}
-    	
+    	if(!StringUtils.isBlank(request.getParameter("msg"))){
+    		map.addAttribute("msg", request.getParameter("msg")) ;
+    	}
         return request(super.createAdminTempletResponse("/admin/config/index"));
     }
     
@@ -105,6 +123,7 @@ public class SystemConfigController extends Handler{
     public ModelAndView save(ModelMap map , HttpServletRequest request , @Valid SystemConfig config , @RequestParam(value = "keyfile", required = false) MultipartFile keyfile , @Valid Secret secret) throws SQLException, IOException, NoSuchAlgorithmException {
     	SystemConfig systemConfig = systemConfigRes.findByOrgi(super.getOrgi(request)) ;
     	config.setOrgi(super.getOrgi(request));
+    	String msg = "0" ;
     	if(StringUtils.isBlank(config.getJkspassword())){
     		config.setJkspassword(null);
     	}
@@ -132,10 +151,10 @@ public class SystemConfigController extends Handler{
     			sslFile.delete();
     		}
     	}
+    	
     	if(secret!=null && !StringUtils.isBlank(secret.getPassword())){
 	    	List<Secret> secretConfig = secRes.findByOrgi(super.getOrgi(request)) ;
 	    	String repassword = request.getParameter("repassword") ;
-	    	String msg = "0" ;
 	    	if(!StringUtils.isBlank(repassword) && repassword.equals(secret.getPassword())){
 		    	if(secretConfig!=null && secretConfig.size() > 0){
 		    		Secret tempSecret = secretConfig.get(0) ;
@@ -167,6 +186,6 @@ public class SystemConfigController extends Handler{
     	CacheHelper.getSystemCacheBean().put("systemConfig", systemConfig , super.getOrgi(request));
     	map.addAttribute("imServerStatus", UKDataContext.getIMServerStatus()) ;
     	
-        return request(super.createAdminTempletResponse("/admin/config/index"));
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html?msg="+msg));
     }
 }

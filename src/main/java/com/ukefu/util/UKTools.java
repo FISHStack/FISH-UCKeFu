@@ -56,10 +56,15 @@ import com.ukefu.util.event.AiEvent;
 import com.ukefu.util.event.MultiUpdateEvent;
 import com.ukefu.util.event.UserDataEvent;
 import com.ukefu.util.event.UserEvent;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AttachmentRepository;
 import com.ukefu.webim.service.repository.SecretRepository;
+import com.ukefu.webim.service.repository.SystemConfigRepository;
+import com.ukefu.webim.service.repository.TemplateRepository;
 import com.ukefu.webim.web.model.AttachmentFile;
 import com.ukefu.webim.web.model.Secret;
+import com.ukefu.webim.web.model.SystemConfig;
+import com.ukefu.webim.web.model.Template;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.WorkOrders;
 
@@ -828,4 +833,21 @@ public class UKTools {
     		
     	}
     }
+	/**
+	 * 获取系统配置
+	 * @return
+	 */
+	public static SystemConfig getSystemConfig(){
+		SystemConfig systemConfig = (SystemConfig) CacheHelper.getSystemCacheBean().getCacheObject("systemConfig", UKDataContext.SYSTEM_ORGI) ;
+		if(systemConfig == null){
+			SystemConfigRepository systemConfigRes = UKDataContext.getContext().getBean(SystemConfigRepository.class) ;
+			systemConfig = systemConfigRes.findByOrgi(UKDataContext.SYSTEM_ORGI) ;
+		}
+		return systemConfig;
+	}
+	
+	public static Template getTemplate(String id){
+		TemplateRepository templateRes = UKDataContext.getContext().getBean(TemplateRepository.class) ;
+		return templateRes.findByIdAndOrgi(id, UKDataContext.SYSTEM_ORGI);
+	}
 }
