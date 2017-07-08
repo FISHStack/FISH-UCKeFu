@@ -102,14 +102,16 @@ public class OrganController extends Handler{
     @Menu(type = "admin" , subtype = "saveuser" , admin = true)
     public ModelAndView saveuser(HttpServletRequest request ,@Valid String[] users , @Valid String organ) {
     	List<String> userList = new ArrayList<String>();
-    	for(String user : users){
-    		userList.add(user) ;
+    	if(users!=null && users.length > 0){
+	    	for(String user : users){
+	    		userList.add(user) ;
+	    	}
+	    	List<User> organUserList = userRepository.findAll(userList) ;
+	    	for(User user : organUserList){
+	    		user.setOrgan(organ);
+	    	}
+	    	userRepository.save(organUserList) ;
     	}
-    	List<User> organUserList = userRepository.findAll(userList) ;
-    	for(User user : organUserList){
-    		user.setOrgan(organ);
-    	}
-    	userRepository.save(organUserList) ;
     	
     	return request(super.createRequestPageTempletResponse("redirect:/admin/organ/index.html?organ="+organ));
     }
