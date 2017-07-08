@@ -14,6 +14,7 @@
 				  <colgroup>
 						<col width="15%">
 						<col width="20%">
+						<col width="10%">
 						<col width="1%">
 					<col>
 				  </colgroup>
@@ -21,6 +22,7 @@
 					<tr>
 					  <th>模板名称</th>
 					  <th>创建时间</th>
+					  <th>模板内容</th>
 					  <th style="white-space:nowrap;" nowrap="nowrap">操作</th>
 					</tr> 
 				  </thead>
@@ -32,6 +34,11 @@
 					  	  <a href="/admin/template/code.html?type=${sysDic.id!''}&id=${template.id!''}" data-width="750" data-height="450" data-toggle="ajax" title="编辑${template.name!''}">${template.name!''}</a>
 					  </td>
 					  <td><#if template.createtime??>${template.createtime?string("yyyy-MM-dd HH:mm:ss")}</#if></td>
+					  <td>
+					  	<#if template.templettext??>
+					  		<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
+					  	</#if>
+					  </td>
 					  <td style="white-space:nowrap;" nowrap="nowrap">
 							<a href="/admin/template/edit.html?type=${sysDic.id!''}&id=${template.id!''}" data-width="750" data-height="220" data-toggle="ajax" title="编辑${template.name!''}">
 								<i class="layui-icon">&#xe642;</i>
