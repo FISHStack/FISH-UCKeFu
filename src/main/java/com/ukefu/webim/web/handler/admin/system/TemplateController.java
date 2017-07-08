@@ -33,14 +33,14 @@ public class TemplateController extends Handler{
 	private TemplateRepository templateRes;
 
     @RequestMapping("/index")
-    @Menu(type = "admin" , subtype = "template")
+    @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView index(ModelMap map , HttpServletRequest request) {
     	map.addAttribute("sysDicList", UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_DIC));
         return request(super.createAdminTempletResponse("/admin/system/template/index"));
     }
     
     @RequestMapping("/expall")
-    @Menu(type = "admin" , subtype = "template")
+    @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public void expall(ModelMap map , HttpServletRequest request , HttpServletResponse response) throws Exception {
     	List<Template> templateList = templateRes.findByOrgi(super.getOrgi(request)) ;
 		response.setHeader("content-disposition", "attachment;filename=UCKeFu-Template-Export-"+new SimpleDateFormat("yyyy-MM-dd").format(new Date())+".data");  
@@ -49,14 +49,14 @@ public class TemplateController extends Handler{
     }
     
     @RequestMapping("/imp")
-    @Menu(type = "admin" , subtype = "template")
+    @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView imp(ModelMap map , HttpServletRequest request) {
         return request(super.createRequestPageTempletResponse("/admin/system/template/imp"));
     }
     
     @SuppressWarnings("unchecked")
 	@RequestMapping("/impsave")
-    @Menu(type = "admin" , subtype = "template")
+    @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView impsave(ModelMap map , HttpServletRequest request , @RequestParam(value = "dataFile", required = false) MultipartFile dataFile) throws Exception {
     	if(dataFile!=null && dataFile.getSize() > 0){
     		List<Template> templateList = (List<Template>) UKTools.toObject(dataFile.getBytes()) ;
@@ -71,7 +71,7 @@ public class TemplateController extends Handler{
     }
     
     @RequestMapping("/list")
-    @Menu(type = "admin" , subtype = "template")
+    @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView list(ModelMap map , HttpServletRequest request ,@Valid String type) {
     	map.addAttribute("sysDic", UKeFuDic.getInstance().getDicItem(type));
     	map.addAttribute("templateList", templateRes.findByTemplettypeAndOrgi(type, super.getOrgi(request)));
@@ -79,14 +79,14 @@ public class TemplateController extends Handler{
     }
     
     @RequestMapping("/add")
-    @Menu(type = "admin" , subtype = "template")
+    @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView add(ModelMap map , HttpServletRequest request ,@Valid String type) {
     	map.addAttribute("sysDic", UKeFuDic.getInstance().getDicItem(type));
         return request(super.createRequestPageTempletResponse("/admin/system/template/add"));
     }
     
     @RequestMapping(  "/save")
-    @Menu(type = "admin" , subtype = "template")
+    @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView save(HttpServletRequest request  , @Valid Template template) {
     	template.setOrgi(super.getOrgi(request));
     	template.setCreatetime(new Date());
@@ -95,7 +95,7 @@ public class TemplateController extends Handler{
     }
     
     @RequestMapping("/edit")
-    @Menu(type = "admin" , subtype = "template")
+    @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView edit(ModelMap map , HttpServletRequest request , @Valid String id, @Valid String type) {
     	map.addAttribute("sysDic", UKeFuDic.getInstance().getDicItem(type));
     	map.addAttribute("template", templateRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
@@ -103,7 +103,7 @@ public class TemplateController extends Handler{
     }
     
     @RequestMapping(  "/update")
-    @Menu(type = "admin" , subtype = "template")
+    @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView update(HttpServletRequest request  , @Valid Template template) {
     	Template oldTemplate = templateRes.findByIdAndOrgi(template.getId(), super.getOrgi(request)) ;
     	if(oldTemplate!=null){
@@ -114,7 +114,7 @@ public class TemplateController extends Handler{
     }
     
     @RequestMapping("/code")
-    @Menu(type = "admin" , subtype = "template")
+    @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView code(ModelMap map , HttpServletRequest request , @Valid String id, @Valid String type) {
     	map.addAttribute("sysDic", UKeFuDic.getInstance().getDicItem(type));
     	map.addAttribute("template", templateRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
@@ -122,7 +122,7 @@ public class TemplateController extends Handler{
     }
     
     @RequestMapping(  "/codesave")
-    @Menu(type = "admin" , subtype = "template")
+    @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView codesave(HttpServletRequest request  , @Valid Template template) {
     	Template oldTemplate = templateRes.findByIdAndOrgi(template.getId(), super.getOrgi(request)) ;
     	if(oldTemplate!=null){
@@ -133,7 +133,7 @@ public class TemplateController extends Handler{
     }
     
     @RequestMapping("/delete")
-    @Menu(type = "contacts" , subtype = "contacts")
+    @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView delete(HttpServletRequest request ,@Valid Template template) {
     	if(template!=null){
     		templateRes.delete(template) ;
