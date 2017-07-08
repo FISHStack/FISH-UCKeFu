@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-07-07 20:35:49
+Date: 2017-07-08 15:06:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -5211,6 +5211,8 @@ INSERT INTO `uk_sysdic` VALUES ('297e1e874f83129d014f83396c13101b', '石河子�
 INSERT INTO `uk_sysdic` VALUES ('297e1e874f83129d014f83396c20101c', '阿拉尔市', 'pub', '659002', 'ukewo', null, '297e1e874f83129d014f83351347039d', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2015-08-31 18:07:02', '2015-08-31 18:07:02', '0', '3176', '297e1e874f83129d014f832090e200b8', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('297e1e874f83129d014f83396c2e101d', '图木舒克市', 'pub', '659003', 'ukewo', null, '297e1e874f83129d014f83351347039d', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2015-08-31 18:07:02', '2015-08-31 18:07:02', '0', '3177', '297e1e874f83129d014f832090e200b8', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('297e1e874f83129d014f83396c3d101e', '五家渠市', 'pub', '659004', 'ukewo', null, '297e1e874f83129d014f83351347039d', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2015-08-31 18:07:02', '2015-08-31 18:07:02', '0', '3178', '297e1e874f83129d014f832090e200b8', '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('297e63f05d1da6be015d1dae6de20002', '系统模板分类', 'pub', 'com.dic.system.template', null, 'resu', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-07-07 23:32:36', null, '1', '0', null, '0', '0');
+INSERT INTO `uk_sysdic` VALUES ('297e63f05d1da6be015d1daee82c0003', '呼叫中心', 'pub', 'callcenter', 'ukewo', null, '297e63f05d1da6be015d1dae6de20002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-07-07 23:33:08', '2017-07-07 23:33:08', '0', '1', '297e63f05d1da6be015d1dae6de20002', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028838b5ae97036015ae972b6f10003', '客户类型', 'pub', 'com.dic.contacts.entype', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-03-20 10:01:33', null, '1', '0', null, '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028838b5ae97036015ae972d48d0004', '普通客户', 'pub', '01', 'ukewo', null, '4028838b5ae97036015ae972b6f10003', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-03-20 10:01:41', '2017-03-20 10:01:41', '0', '1', '4028838b5ae97036015ae972b6f10003', '0', '0');
 INSERT INTO `uk_sysdic` VALUES ('4028838b5ae97036015ae972d4970005', 'VIP客户', 'pub', '02', 'ukewo', null, '4028838b5ae97036015ae972b6f10003', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-03-20 10:01:41', '2017-03-20 10:01:41', '0', '2', '4028838b5ae97036015ae972b6f10003', '0', '0');
@@ -5377,6 +5379,14 @@ CREATE TABLE `uk_systemconfig` (
   `JKSPASSWORD` varchar(255) DEFAULT NULL COMMENT 'JKS密码',
   `MAPKEY` varchar(255) DEFAULT NULL COMMENT '百度地图授权编码',
   `workorders` tinyint(4) DEFAULT NULL COMMENT '启用工单三栏布局',
+  `callcenter` tinyint(4) DEFAULT NULL COMMENT '启用呼叫中心',
+  `cc_extention` varchar(32) DEFAULT NULL COMMENT '分机',
+  `cc_quene` varchar(32) DEFAULT NULL COMMENT '技能组队列',
+  `cc_router` varchar(32) DEFAULT NULL COMMENT '路由策略',
+  `cc_ivr` varchar(32) DEFAULT NULL COMMENT 'IVR模板',
+  `cc_acl` varchar(32) DEFAULT NULL COMMENT '访问列表模板',
+  `cc_siptrunk` varchar(32) DEFAULT NULL COMMENT 'SIP配置模板',
+  `cc_callcenter` varchar(32) DEFAULT NULL COMMENT '呼叫中心配置',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `SQL121227155532210` (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -5546,7 +5556,7 @@ CREATE TABLE `uk_templet` (
   `DESCRIPTION` longtext COMMENT '描述',
   `CODE` varchar(255) DEFAULT NULL COMMENT '代码',
   `GROUPID` varchar(255) DEFAULT NULL COMMENT '组ID',
-  `CREATETIME` datetime DEFAULT NULL COMMENT '分类iN工程',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '创建时间',
   `USERID` varchar(255) DEFAULT NULL COMMENT '创建人ID',
   `TEMPLETTEXT` longtext COMMENT '模板内容',
   `TEMPLETTYPE` varchar(255) DEFAULT NULL COMMENT '模板类型',
@@ -5616,7 +5626,7 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-06-19 21:25:46', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-07-07 20:20:37', null, null, null, '0', '1');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-06-19 21:25:46', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-07-08 08:49:51', null, null, null, '0', '1');
 INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402883965c1dfe92015c1e1291900003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-07-05 16:51:31', null, null, null, '0', '0');
 
 -- ----------------------------
