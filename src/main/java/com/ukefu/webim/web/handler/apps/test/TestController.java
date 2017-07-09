@@ -18,7 +18,7 @@ public class TestController extends Handler{
 	
 
 	@RequestMapping({"/test/demo"})
-	@Menu(type="apps", subtype="test" , access=false)
+	@Menu(type="apps", subtype="test" , access=false , admin = true)
 	public ModelAndView content(ModelMap map , HttpServletRequest request){
 		for(int i=0 ; i<500; i++){
 			String user = UKTools.getUUID();
