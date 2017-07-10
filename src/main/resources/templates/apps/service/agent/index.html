@@ -14,6 +14,7 @@
 					<thead>
 						<tr class="design-sortable-tr">
 							<th>用户名</th>
+							<th>技能组</th>
 							<th>接入用户数</th>
 							<th>最大用户数</th>
 							<th>在线时间</th>
@@ -30,9 +31,13 @@
 								</a>
 							</td>
 							<td>
-								${agentStatus.users!''}
-							<td>${agentStatus.maxusers!''}</td>
+								${agentStatus.skillname!''}
 							</td>
+							<td>
+								${agentStatus.users!''}
+							</td>
+							<td>${agentStatus.maxusers!''}</td>
+							
 							<td><#if agentStatus.logindate??>${agentStatus.logindate?string('yyyy-MM-dd HH:mm:ss')}</#if></td>
 							<td>
 								<#if agentStatus.agentno != user.id && user.usertype == '0'>

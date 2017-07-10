@@ -59,6 +59,8 @@ public class AgentUser implements Serializable, Comparable<AgentUser> {
 	private String skill ;	//请求的技能组
 	private String agent ;	//请求的坐席
 	
+	private String skillname ;	//技能组名称
+	
 	private String name ;
 	private String email ;
 	private String phone ;
@@ -489,6 +491,14 @@ public class AgentUser implements Serializable, Comparable<AgentUser> {
 
 	public void setResion(String resion) {
 		this.resion = resion;
+	}
+	@Transient
+	public String getSkillname() {
+		return skillname;
+	}
+
+	public void setSkillname(String skillname) {
+		this.skillname = skillname;
 	}
 
 	@Override

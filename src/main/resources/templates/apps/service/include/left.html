@@ -19,6 +19,20 @@
 	</li>
 	
 	<li class="layui-nav-item layui-nav-itemed">
+		<a class="layui-nav-title" href="javascript:;">服务小结</a>
+		<dl class="layui-nav-child">
+			<dd <#if subtype?? && subtype == 'agentsummary'>class="layui-this"</#if>>
+				<a href="/apps/agent/summary/index.html">多媒体客服</a>
+			</dd>
+			<#if models?? && models["callcenter"]?? && models["callcenter"] == true>
+			<dd <#if subtype?? && subtype == 'summary'>class="layui-this"</#if>>
+				<a href="/apps/callcenter/summary/index.html">呼叫中心</a>
+			</dd>
+			</#if>
+		</dl>
+	</li>
+	
+	<li class="layui-nav-item layui-nav-itemed">
 		<a class="layui-nav-title" href="javascript:;">坐席信息</a>
 		<dl class="layui-nav-child">
 			<dd <#if subtype?? && subtype == 'onlineagent'>class="layui-this"</#if>>

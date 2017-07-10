@@ -1,5 +1,6 @@
 package com.ukefu.webim.web.handler.apps.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,11 +24,13 @@ import com.ukefu.webim.service.repository.AgentServiceRepository;
 import com.ukefu.webim.service.repository.AgentStatusRepository;
 import com.ukefu.webim.service.repository.AgentUserRepository;
 import com.ukefu.webim.service.repository.LeaveMsgRepository;
+import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.LeaveMsg;
+import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.User;
 
 @Controller
@@ -45,6 +48,9 @@ public class ChatServiceController extends Handler{
 	
 	@Autowired
 	private LeaveMsgRepository leaveMsgRes ;
+	
+	@Autowired
+	private OrganRepository organRes ;
 	
 	@Autowired
 	private UserRepository userRes ;
@@ -66,8 +72,23 @@ public class ChatServiceController extends Handler{
     @Menu(type = "service" , subtype = "quene" , admin= true)
     public ModelAndView quene(ModelMap map , HttpServletRequest request) {
 		Page<AgentUser> agentUserList = agentUserRes.findByOrgiAndStatus(super.getOrgi(request), UKDataContext.AgentUserStatusEnum.INQUENE.toString() ,new PageRequest(super.getP(request), super.getPs(request), Direction.DESC , "createtime")) ;
+		List<String> skillList = new ArrayList<String>();
 		for(AgentUser agentUser : agentUserList.getContent()){
 			agentUser.setWaittingtime((int) (System.currentTimeMillis() - agentUser.getCreatetime().getTime()));
+			skillList.add(agentUser.getSkill()) ;
+		}
+		if(skillList.size() > 0){
+			List<Organ> organList = organRes.findAll(skillList) ;
+			for(AgentUser agentUser : agentUserList.getContent()){
+				if(!StringUtils.isBlank(agentUser.getSkill())){
+					for(Organ organ : organList){
+						if(agentUser.getSkill().equals(organ.getId())){
+							agentUser.setSkillname(organ.getName());
+							break ;
+						}
+					}
+				}
+			}
 		}
 		map.put("agentUserList", agentUserList) ;
         return request(super.createAppsTempletResponse("/apps/service/quene/index"));
@@ -101,6 +122,25 @@ public class ChatServiceController extends Handler{
 				agentStatusList.set(i, (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentStatus.getAgentno(), super.getOrgi(request))) ;	
 			}
 			i++ ;
+		}
+		List<String> skillList = new ArrayList<String>();
+		for(AgentStatus agentStatus : agentStatusList){
+			if(!StringUtils.isBlank(agentStatus.getSkill())){
+				skillList.add(agentStatus.getSkill()) ;
+			}
+		}
+		if(skillList.size() > 0){
+			List<Organ> organList = organRes.findAll(skillList) ;
+			for(AgentStatus agentStatus : agentStatusList){
+				if(!StringUtils.isBlank(agentStatus.getSkill())){
+					for(Organ organ : organList){
+						if(agentStatus.getSkill().equals(organ.getId())){
+							agentStatus.setSkillname(organ.getName());
+							break ;
+						}
+					}
+				}
+			}
 		}
 		map.put("agentStatusList", agentStatusList) ;
         return request(super.createAppsTempletResponse("/apps/service/agent/index"));

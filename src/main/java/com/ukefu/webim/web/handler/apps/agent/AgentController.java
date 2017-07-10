@@ -587,7 +587,19 @@ public class AgentController extends Handler {
 		if(!StringUtils.isBlank(userid) && !StringUtils.isBlank(agentuserid)){
 			summary.setOrgi(super.getOrgi(request));
 			summary.setCreater(super.getUser(request).getId());
+			
 			summary.setCreatetime(new Date());
+			
+			AgentService service = agentServiceRepository.findByIdAndOrgi(agentserviceid, super.getOrgi(request)) ;
+			summary.setAgent(service.getAgentno());
+			summary.setAgentno(service.getAgentno());
+			summary.setUsername(service.getUsername());
+			summary.setAgentusername(service.getAgentusername());
+			summary.setChannel(service.getChannel());
+			summary.setLogindate(service.getLogindate());
+			summary.setContactsid(service.getContactsid());
+			summary.setEmail(service.getEmail());
+			summary.setPhonenumber(service.getPhone());
 			serviceSummaryRes.save(summary) ;
 		}
 		

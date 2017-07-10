@@ -15,6 +15,7 @@
 						<tr class="design-sortable-tr">
 							<th>用户名</th>
 							<th>接入渠道</th>
+							<th>技能组</th>
 							<th>地域</th>
 							<th>接入时间</th>
 							<th>等待时长</th>
@@ -32,8 +33,9 @@
 							</td>
 							<td>
 								${agentUser.channel!''}
-							<td>${agentUser.region!''}</td>
 							</td>
+							<td>${agentUser.skillname!''}</td>
+							<td>${agentUser.region!''}</td>
 							<td><#if agentUser.createtime??>${agentUser.createtime?string('yyyy-MM-dd HH:mm:ss')}</#if></td>
 							<td>
 								${(agentUser.waittingtime/(1000*60*60))?string('00')}:${((agentUser.waittingtime%(1000*60*60))/(1000*60))?string('00')}:${((agentUser.waittingtime%(1000*60))/(1000))?string('00')}
