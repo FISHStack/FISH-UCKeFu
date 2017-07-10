@@ -12,6 +12,8 @@ public interface ServiceSummaryRepository extends JpaRepository<AgentServiceSumm
 	
 	public abstract AgentServiceSummary findByAgentserviceidAndOrgi(String agentserviceid , String orgi);
 	
+	public abstract AgentServiceSummary findByIdAndOrgi(String id , String orgi) ;
+	
 	public abstract AgentServiceSummary findByStatuseventidAndOrgi(String statuseventid , String orgi);
 	
 	public abstract Page<AgentServiceSummary> findAll(Specification<AgentServiceSummary> spec, Pageable pageable);  //分页按条件查询 

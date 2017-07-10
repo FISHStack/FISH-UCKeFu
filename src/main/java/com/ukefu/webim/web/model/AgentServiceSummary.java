@@ -57,6 +57,11 @@ public class AgentServiceSummary implements Serializable{
 	
 	private String summary ;	//服务小结 ， 备注
 
+	private boolean process ;	//已处理
+	private String updateuser ;	//处理人
+	private Date updatetime ;	//处理时间
+	private String processmemo;	//处理备注
+	
 	public String getAgentusername() {
 		return agentusername;
 	}
@@ -279,5 +284,37 @@ public class AgentServiceSummary implements Serializable{
 
 	public void setAgent(String agent) {
 		this.agent = agent;
+	}
+
+	public boolean isProcess() {
+		return process;
+	}
+
+	public void setProcess(boolean process) {
+		this.process = process;
+	}
+
+	public String getUpdateuser() {
+		return updateuser;
+	}
+
+	public void setUpdateuser(String updateuser) {
+		this.updateuser = updateuser;
+	}
+
+	public Date getUpdatetime() {
+		return updatetime;
+	}
+
+	public void setUpdatetime(Date updatetime) {
+		this.updatetime = updatetime;
+	}
+
+	public String getProcessmemo() {
+		return processmemo;
+	}
+
+	public void setProcessmemo(String processmemo) {
+		this.processmemo = processmemo;
 	}
 }

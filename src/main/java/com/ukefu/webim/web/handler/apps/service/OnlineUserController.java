@@ -24,12 +24,14 @@ import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ContactsRepository;
 import com.ukefu.webim.service.repository.OnlineUserHisRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
+import com.ukefu.webim.service.repository.ServiceSummaryRepository;
 import com.ukefu.webim.service.repository.TagRelationRepository;
 import com.ukefu.webim.service.repository.TagRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.WeiXinUserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentService;
+import com.ukefu.webim.web.model.AgentServiceSummary;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.AgentUserContacts;
 import com.ukefu.webim.web.model.OnlineUser;
@@ -46,6 +48,9 @@ public class OnlineUserController extends Handler{
 	
 	@Autowired
 	private OnlineUserRepository onlineUserRes; 
+	
+	@Autowired
+	private ServiceSummaryRepository serviceSummaryRes; 
 	
 	@Autowired
 	private AgentStatusRepository agentStatusRepository ;
@@ -101,6 +106,13 @@ public class OnlineUserController extends Handler{
 						}
 					}
 				}
+				
+				if(agentService!=null){
+					AgentServiceSummary summary = serviceSummaryRes.findByAgentserviceidAndOrgi(agentService.getId(), super.getOrgi(request)) ;
+					map.put("summary" , summary) ;
+				}
+				
+				
 				if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentService.getChannel())){
 					List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentService.getUserid(), super.getOrgi(request)) ;
 					if(weiXinUserList.size() > 0){
@@ -118,6 +130,7 @@ public class OnlineUserController extends Handler{
 				}
 				
 				map.put("tags", tagRes.findByOrgiAndTagtype(super.getOrgi(request) , UKDataContext.ModelType.USER.toString())) ;
+				map.put("summaryTags", tagRes.findByOrgiAndTagtype(super.getOrgi(request) , UKDataContext.ModelType.SUMMARY.toString())) ;
 				AgentUser curragentuser = agentUserRes.findByUseridAndOrgi(agentService.getUserid(), super.getOrgi(request)) ;
 				map.put("curAgentService", agentService) ;
 				
@@ -139,6 +152,13 @@ public class OnlineUserController extends Handler{
 		map.put("curragentuser", curragentuser) ;
 		if(!StringUtils.isBlank(title)){
 			map.put("title", title) ;
+		}
+		
+		map.put("summaryTags", tagRes.findByOrgiAndTagtype(super.getOrgi(request) , UKDataContext.ModelType.SUMMARY.toString())) ;
+		
+		if(agentService!=null){
+			AgentServiceSummary summary = serviceSummaryRes.findByAgentserviceidAndOrgi(agentService.getId(), super.getOrgi(request)) ;
+			map.put("summary" , summary) ;
 		}
 		
 		map.put("agentUserMessageList", chatMessageRepository.findByAgentserviceidAndOrgi(agentService.getId() , super.getOrgi(request), new PageRequest(0, 50, Direction.DESC , "updatetime")));
