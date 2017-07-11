@@ -1,7 +1,12 @@
 package com.ukefu.webim.web.handler.admin;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.elasticsearch.common.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,9 +20,12 @@ import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
+import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.UserEventRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.SysDic;
+import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
 
 @Controller
@@ -34,6 +42,9 @@ public class AdminController extends Handler{
 	
 	@Autowired
 	private UserEventRepository userEventRes ;
+	
+	@Autowired
+	private SysDicRepository sysDicRes ;
 	
 	@Autowired
 	private InviteRecordRepository inviteRecordRes ;
@@ -79,6 +90,60 @@ public class AdminController extends Handler{
     public ModelAndView content(ModelMap map , HttpServletRequest request) {
     	aggValues(map, request);
     	return request(super.createAdminTempletResponse("/admin/content"));
+    }
+
+    @RequestMapping("/admin/auth/infoacq")
+    @Menu(type = "admin" , subtype = "infoacq" , access= false , admin = true)
+    public ModelAndView infoacq(ModelMap map , HttpServletRequest request) {
+    	String inacq = (String) request.getSession().getAttribute(UKDataContext.UKEFU_SYSTEM_INFOACQ) ;
+    	if(!StringUtils.isBlank(inacq)){
+    		request.getSession().removeAttribute(UKDataContext.UKEFU_SYSTEM_INFOACQ);
+    	}else{
+    		request.getSession().setAttribute(UKDataContext.UKEFU_SYSTEM_INFOACQ , "true");
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/"));
+    }
+    
+    @RequestMapping("/admin/auth/event")
+    @Menu(type = "admin" , subtype = "authevent")
+    public ModelAndView authevent(ModelMap map , HttpServletRequest request , @Valid String title , @Valid String url , @Valid String iconstr, @Valid String icontext) {
+    	map.addAttribute("title", title) ;
+    	map.addAttribute("url", url) ;
+    	if(!StringUtils.isBlank(iconstr) && !StringUtils.isBlank(icontext)){
+    		map.addAttribute("iconstr", iconstr.replaceAll(icontext, "&#x"+UKTools.string2HexString(icontext)+";")) ;
+    	}
+    	return request(super.createRequestPageTempletResponse("/admin/system/auth/event"));
+    }
+    
+    @RequestMapping("/admin/auth/save")
+    @Menu(type = "admin" , subtype = "authsave")
+    public ModelAndView authsave(ModelMap map , HttpServletRequest request , @Valid String title , @Valid SysDic dic) {
+    	int count = sysDicRes.countByName(dic.getName()) ;
+    	SysDic sysDic = sysDicRes.findByCode(UKDataContext.UKEFU_SYSTEM_AUTH_DIC) ;
+    	boolean newdic = false ;
+    	if(sysDic!=null && !StringUtils.isBlank(dic.getName()) && count == 0){
+    		if(!StringUtils.isBlank(dic.getParentid())){
+    			if(dic.getParentid().equals("0")){
+    				dic.setParentid(sysDic.getId());
+    				newdic = true ;
+    			}else{
+    				List<SysDic> dicList = UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_AUTH_DIC) ;
+    				for(SysDic temp : dicList){
+    					if(temp.getCode().equals(dic.getParentid()) || temp.getName().equals(dic.getParentid())){
+    						dic.setParentid(temp.getId());
+    						newdic = true ;
+    					}
+    				}
+    			}
+    		}
+    		if(newdic){
+    			dic.setCreater(super.getUser(request).getId());
+    			dic.setCreatetime(new Date());
+    			dic.setCtype("auth");
+    			sysDicRes.save(dic) ;
+    		}
+    	}
+    	return request(super.createRequestPageTempletResponse("/public/success"));
     }
 
 }

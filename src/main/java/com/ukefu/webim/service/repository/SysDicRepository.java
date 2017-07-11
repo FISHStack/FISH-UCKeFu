@@ -12,6 +12,8 @@ public abstract interface SysDicRepository extends JpaRepository<SysDic, String>
 	
 	
 	public abstract SysDic findById(String id);
+	
+	public abstract SysDic findByCode(String code);
 
 	public abstract Page<SysDic> findAll(Pageable paramPageable);
 
@@ -24,4 +26,6 @@ public abstract interface SysDicRepository extends JpaRepository<SysDic, String>
 	public abstract List<SysDic> findByParentid(String type);
 
 	public abstract List<SysDic> findByDicid(String id);
+	
+	public int countByName(String name);
 }

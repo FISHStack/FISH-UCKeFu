@@ -29,8 +29,8 @@ public class SysDic  implements java.io.Serializable {
 	private String iconstr ;
 	private String iconskin ;
 	private String description;
-	private String catetype ;
-	private String memo ;
+	private String catetype ;				
+	private String memo ;					
 	private String creater;
 	private boolean haschild ;				//修改用处，改为 是否允许租户扩展 字典项目
 	private boolean discode ;				//是否显示code
@@ -38,6 +38,11 @@ public class SysDic  implements java.io.Serializable {
 	private Date updatetime;
 	private int sortindex ;
 	private String dicid ;
+	
+	private String module ;
+	private String url ;
+	private String level ;
+	
 	private boolean defaultvalue = false;
 	@Id
 	@Column(length = 32)
@@ -166,6 +171,24 @@ public class SysDic  implements java.io.Serializable {
 	}
 	public void setDiscode(boolean discode) {
 		this.discode = discode;
+	}
+	public String getModule() {
+		return module;
+	}
+	public void setModule(String module) {
+		this.module = module;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	public String getLevel() {
+		return level;
+	}
+	public void setLevel(String level) {
+		this.level = level;
 	}
 }
 

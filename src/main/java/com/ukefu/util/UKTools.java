@@ -850,4 +850,20 @@ public class UKTools {
 		TemplateRepository templateRes = UKDataContext.getContext().getBean(TemplateRepository.class) ;
 		return templateRes.findByIdAndOrgi(id, UKDataContext.SYSTEM_ORGI);
 	}
+	
+	/** 
+     * 16进制字符串转换为字符串 
+     *  
+     * @param s 
+     * @return 
+     */  
+	public static String string2HexString(String strPart) {  
+        StringBuffer hexString = new StringBuffer();  
+        for (int i = 0; i < strPart.length(); i++) {  
+            int ch = (int) strPart.charAt(i);  
+            String strHex = Integer.toHexString(ch);  
+            hexString.append(strHex);  
+        }  
+        return hexString.toString();  
+    }  
 }

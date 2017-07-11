@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.elasticsearch.common.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.web.BasicErrorController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,6 +40,7 @@ public class UserInterceptorHandler extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest arg0, HttpServletResponse response, Object arg2,
             ModelAndView view) throws Exception {
     	User user = (User) arg0.getSession().getAttribute(UKDataContext.USER_SESSION_NAME) ;
+    	String infoace = (String) arg0.getSession().getAttribute(UKDataContext.UKEFU_SYSTEM_INFOACQ) ;		//进入信息采集模式
     	if( view!=null){
 	    	if(user!=null){
 				view.addObject("user", user) ;
@@ -55,6 +57,9 @@ public class UserInterceptorHandler extends HandlerInterceptorAdapter {
 				}
 				view.addObject("orgi", user.getOrgi()) ;
 			}
+	    	if(!StringUtils.isBlank(infoace)){
+	    		view.addObject("infoace", infoace) ;		//进入信息采集模式
+	    	}
 	    	view.addObject("webimport",UKDataContext.getWebIMPort()) ;
 	    	view.addObject("sessionid", UKTools.getContextID(arg0.getSession().getId())) ;
 	    	
