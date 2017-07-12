@@ -140,6 +140,7 @@ public class AdminController extends Handler{
     			dic.setCreater(super.getUser(request).getId());
     			dic.setCreatetime(new Date());
     			dic.setCtype("auth");
+    			dic.setDicid(sysDic.getId());
     			sysDicRes.save(dic) ;
     		}
     	}

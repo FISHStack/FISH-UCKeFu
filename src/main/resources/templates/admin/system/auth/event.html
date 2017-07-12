@@ -32,13 +32,13 @@
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">样式：</label>
 	    <div class="layui-input-inline">
-	      <input type="text" name="iconstr" value="${iconstr!''}" required lay-verify="required" placeholder="请输入代码" autocomplete="off" class="layui-input">
+	      <input type="text" name="iconstr" value="${iconstr!''}" placeholder="请输入代码" autocomplete="off" class="layui-input">
 	    </div>
 	  </div>
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">URL：</label>
 	    <div class="layui-input-inline">
-	      <input type="text" name="url" value="${url!''}" required lay-verify="required" placeholder="请输入代码" autocomplete="off" class="layui-input">
+	      <input type="text" name="url" value="${url!''}" placeholder="请输入代码" autocomplete="off" class="layui-input">
 	    </div>
 	  </div>
 	  <div class="layui-form-item">
@@ -51,6 +51,15 @@
 			  <option value="xiaoe">智能机器人</option>
 			  <option value="callcenter">呼叫中心</option>
 			</select> 
+	    </div>
+	  </div>
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">角色要求：</label>
+	    <div class="layui-input-inline">
+	      	<input type="checkbox" name="rules" title="用户" lay-skin="primary">
+			<input type="checkbox" name="rules" title="多媒体坐席" lay-skin="primary"> 
+			<input type="checkbox" name="rules" title="语音坐席" lay-skin="primary">
+			<input type="checkbox" name="rules" title="管理员" lay-skin="primary"> 
 	    </div>
 	  </div>
 	  <div class="layui-form-button">

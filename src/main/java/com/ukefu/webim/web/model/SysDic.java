@@ -39,6 +39,8 @@ public class SysDic  implements java.io.Serializable {
 	private int sortindex ;
 	private String dicid ;
 	
+	private String rules ;					//角色要求 ， 管理员 / 普通用户 / 多媒体坐席  / 呼叫中心坐席
+	
 	private String module ;
 	private String url ;
 	private String level ;
@@ -189,6 +191,12 @@ public class SysDic  implements java.io.Serializable {
 	}
 	public void setLevel(String level) {
 		this.level = level;
+	}
+	public String getRules() {
+		return rules;
+	}
+	public void setRules(String rules) {
+		this.rules = rules;
 	}
 }
 
