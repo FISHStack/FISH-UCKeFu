@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -24,6 +25,8 @@ public class PbxHost implements java.io.Serializable{
 	private String ipaddr ;		//IP
 	private int port ;
 	private String password ;	//pbx host password
+	
+	private boolean connected ;
 	
 	private String orgi;
 	private String creater ;
@@ -92,5 +95,12 @@ public class PbxHost implements java.io.Serializable{
 	}
 	public void setIpaddr(String ipaddr) {
 		this.ipaddr = ipaddr;
+	}
+	@Transient
+	public boolean isConnected() {
+		return connected;
+	}
+	public void setConnected(boolean connected) {
+		this.connected = connected;
 	}
 }

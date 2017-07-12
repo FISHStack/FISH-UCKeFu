@@ -121,17 +121,6 @@ public class ExtentionController extends Handler{
 					template = UKTools.getTemplate(systemConfig.getCc_ivr()) ;
 				}
 			}
-		}else if(key_value!=null && key_value.equals("sofia.conf")){
-			if(!StringUtils.isBlank(profile)){
-				if(profile.equals("external")){
-					view = request(super.createRequestPageTempletResponse("/apps/business/callcenter/configure/external"));
-					if(systemConfig!=null && systemConfig.isCallcenter()){
-						if(!StringUtils.isBlank(systemConfig.getCc_siptrunk())){
-							template = UKTools.getTemplate(systemConfig.getCc_siptrunk()) ;
-						}
-					}
-				}
-			}
 		}
 		if(template!=null){
 			map.addAttribute("template" , template);

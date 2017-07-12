@@ -38,6 +38,9 @@
 <#if infoacq?? && infoacq == "true">
 <script src="/js/UKeFu-InfoAcq.js"></script>
 </#if>
+<#if systemConfig?? && systemConfig.callcenter && systemConfig.callout>
+<script src="/js/UKeFu-CallOut.js"></script>
+</#if>
 
 <script type="text/javascript" src="/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript" src="/js/kindeditor/lang/zh-CN.js"></script>

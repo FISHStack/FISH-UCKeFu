@@ -1,5 +1,7 @@
 package com.ukefu.webim.web.handler.admin.callcenter;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -26,15 +28,31 @@ public class CallCenterController extends Handler{
 	
 	@RequestMapping(value = "/index")
     @Menu(type = "callcenter" , subtype = "callcenter" , access = false , admin = true)
-    public ModelAndView index(ModelMap map , HttpServletRequest request) {
-		map.addAttribute("pbxHostList" , pbxHostRes.findByOrgi(super.getOrgi(request)));
+    public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String msg) {
+		List<PbxHost> pbxHostList = pbxHostRes.findByOrgi(super.getOrgi(request)) ;
+		CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
+		
+		for(PbxHost pbxHost : pbxHostList){
+			if(callCenterImpl!=null){
+				pbxHost.setConnected(callCenterImpl.connected(pbxHost.getId()));
+			}
+		}
+		map.addAttribute("pbxHostList" , pbxHostList);
     	return request(super.createAdminTempletResponse("/admin/callcenter/index"));
     }
 	
 	@RequestMapping(value = "/pbxhost")
     @Menu(type = "callcenter" , subtype = "pbxhost" , access = false , admin = true)
     public ModelAndView pbxhost(ModelMap map , HttpServletRequest request) {
-		map.addAttribute("pbxHostList" , pbxHostRes.findByOrgi(super.getOrgi(request)));
+		List<PbxHost> pbxHostList = pbxHostRes.findByOrgi(super.getOrgi(request)) ;
+		CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
+		
+		for(PbxHost pbxHost : pbxHostList){
+			if(callCenterImpl!=null){
+				pbxHost.setConnected(callCenterImpl.connected(pbxHost.getId()));
+			}
+		}
+		map.addAttribute("pbxHostList" , pbxHostList);
     	return request(super.createRequestPageTempletResponse("/admin/callcenter/pbxhost/index"));
     }
 	
@@ -47,6 +65,8 @@ public class CallCenterController extends Handler{
 	@RequestMapping(value = "/pbxhost/save")
     @Menu(type = "callcenter" , subtype = "pbxhost" , access = false , admin = true)
     public ModelAndView pbxhostsave(ModelMap map , HttpServletRequest request , @Valid PbxHost pbxHost) {
+		ModelAndView view = request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/pbxhost.html"));
+		String msg = null ;
 		if(!StringUtils.isBlank(pbxHost.getName()) && !StringUtils.isBlank(pbxHost.getName())){
 			int count = pbxHostRes.countByHostnameAndOrgi(pbxHost.getHostname(), super.getOrgi(request)) ;
 			if(count == 0){	
@@ -55,11 +75,21 @@ public class CallCenterController extends Handler{
 				pbxHostRes.save(pbxHost) ;
 				CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
 				if(callCenterImpl!=null){
-					callCenterImpl.init(pbxHost);
+					if(callCenterImpl!=null){
+						try{
+							callCenterImpl.init(pbxHost);
+						}catch(Exception ex){
+							msg = ex.getMessage() ;
+							ex.printStackTrace();
+						}
+					}
 				}
 			}
 		}
-		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/pbxhost.html"));
+		if(!StringUtils.isBlank(msg)){
+			view = request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/pbxhost.html?msg="+msg));
+		}
+		return view;
     }
 	
 	@RequestMapping(value = "/pbxhost/edit")
@@ -72,6 +102,8 @@ public class CallCenterController extends Handler{
 	@RequestMapping(value = "/pbxhost/update")
     @Menu(type = "callcenter" , subtype = "pbxhost" , access = false , admin = true)
     public ModelAndView pbxhostupdate(ModelMap map , HttpServletRequest request , @Valid PbxHost pbxHost) {
+		ModelAndView view = request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/pbxhost.html"));
+		String msg = null ;
 		if(!StringUtils.isBlank(pbxHost.getId())){
 			PbxHost destHost = pbxHostRes.findByIdAndOrgi(pbxHost.getId(), super.getOrgi(request)) ;
 			destHost.setHostname(pbxHost.getHostname());
@@ -85,10 +117,18 @@ public class CallCenterController extends Handler{
 
 			CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
 			if(callCenterImpl!=null){
-				callCenterImpl.init(destHost);
+				try{
+					callCenterImpl.init(destHost);
+				}catch(Exception ex){
+					msg = ex.getMessage() ;
+					ex.printStackTrace();
+				}
 			}
 		}
-		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/pbxhost.html"));
+		if(!StringUtils.isBlank(msg)){
+			view = request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/pbxhost.html?msg="+msg));
+		}
+		return view;
     }
 	
 	@RequestMapping(value = "/pbxhost/delete")
