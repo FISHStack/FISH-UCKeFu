@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-07-13 12:27:24
+Date: 2017-07-14 17:33:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -345,6 +345,7 @@ CREATE TABLE `uk_callcenter_event` (
   `CONTACTSID` varchar(32) DEFAULT NULL COMMENT '联系人ID',
   `EXTENTION` varchar(32) DEFAULT NULL COMMENT '分机ID',
   `HOSTID` varchar(32) DEFAULT NULL COMMENT 'PBX服务器ID',
+  `CALLTYPE` varchar(20) DEFAULT NULL COMMENT '呼叫方向类型|计费类型',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -456,6 +457,15 @@ CREATE TABLE `uk_callcenter_pbxhost` (
   `port` int(11) DEFAULT NULL COMMENT '端口',
   `password` varchar(100) DEFAULT NULL COMMENT '密码',
   `ipaddr` varchar(32) DEFAULT NULL COMMENT 'IP地址',
+  `callbacknumber` varchar(50) DEFAULT NULL COMMENT '回呼号码',
+  `autoanswer` tinyint(4) DEFAULT NULL COMMENT '启用自动接听',
+  `callcenter` tinyint(4) DEFAULT NULL COMMENT '启用呼叫中心功能',
+  `recordpath` varchar(100) DEFAULT NULL COMMENT '录音文件位置',
+  `ivrpath` varchar(100) DEFAULT NULL COMMENT 'IVR文件位置',
+  `fspath` varchar(100) DEFAULT NULL COMMENT 'FS安装路径',
+  `device` varchar(50) DEFAULT NULL COMMENT '语音设备类型',
+  `callbacktype` varchar(32) DEFAULT NULL COMMENT '回呼送号号码',
+  `sipautoanswer` tinyint(4) DEFAULT NULL COMMENT 'SIP自动应答',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -5350,19 +5360,20 @@ INSERT INTO `uk_sysdic` VALUES ('402888815cb3fa3b015cb3ff6fa90005', '会议', 'p
 INSERT INTO `uk_sysdic` VALUES ('402888815cb3fa3b015cb3ff6fb30006', '队列', 'pub', '05', 'ukewo', null, '402888815cb3fa3b015cb3fe31410001', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-06-17 11:01:20', '2017-06-17 11:01:20', '0', '5', '402888815cb3fa3b015cb3fe31410001', '0', '0', null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402888815cf217cd015cf219f9f80002', '呼叫中心服务类型', 'pub', 'ccsummary', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-06-29 12:26:47', null, '1', '0', '4028838b5b565caf015b566d11d80010', '0', '0', null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402888815d2fe37f015d2fe75cc80002', '系统权限资源数据', 'pub', 'com.dic.auth.resource', null, 'auth', '0', '系统权限资源数据', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-07-11 12:27:58', null, '1', '0', null, '0', '0', null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('402888815d3e8646015d3e87ac140002', '全部联系人', 'pub', 'A', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"layui-icon\" style=\"position: relative;\">&#xe612;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-14 08:37:45', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/apps/contacts/index.html', 'webim', '1', null);
+INSERT INTO `uk_sysdic` VALUES ('402888815d3e8646015d3e87d6900003', '全部客户', 'pub', 'B', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe650;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-14 08:37:55', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/apps/customer/index.html', 'webim', '1', null);
+INSERT INTO `uk_sysdic` VALUES ('402888815d3e8646015d3e8955720006', '工单管理', 'pub', 'C', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe607;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-14 08:39:34', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/apps/workordersthree/index.html', 'workorder', '1', null);
+INSERT INTO `uk_sysdic` VALUES ('402888815d3e8646015d3e8a2a660007', '客服设置', 'pub', 'D', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"layui-icon\" style=\"position: relative;\">&#xe614;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-14 08:40:28', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/setting/agent/index.html', 'webim', '1', 'on');
+INSERT INTO `uk_sysdic` VALUES ('402888815d3e8646015d3e8a67a40008', '会话历史', 'pub', 'E', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe7eb;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-14 08:40:44', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/service/history/index.html', 'webim', '1', null);
+INSERT INTO `uk_sysdic` VALUES ('402888815d3e8646015d3e8bcdb0000b', '智能机器人', 'pub', 'F', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe63a;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-14 08:42:15', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/apps/xiaoe/index.html', 'webim', '1', 'on');
+INSERT INTO `uk_sysdic` VALUES ('402888815d3e8646015d3e8bf0b5000c', '语音渠道', 'pub', 'G', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe625;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-14 08:42:24', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/apps/callcenter/service/index.html', 'webim', '1', null);
+INSERT INTO `uk_sysdic` VALUES ('402888815d3e8646015d3e8dd67e000e', '工单概况', 'pub', 'C01', null, 'auth', '402888815d3e8646015d3e8955720006', null, null, '', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-14 08:44:29', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/apps/workordersthree/index.html', 'webim', '1', null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafaa94015bafb14edf0002', '服务类型', 'pub', 'summary', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-04-27 21:54:44', null, '1', '0', '4028838b5b565caf015b566d11d80010', '0', '0', null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe5c8180009', '服务小结预约方式', 'pub', 'com.dic.summary.reservtype', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:03', null, '1', '0', null, '0', '0', null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64be2000a', '电话', 'pub', 'phone', 'ukewo', null, '4028e3815bafb323015bafe5c8180009', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:37', '2017-04-27 22:52:37', '0', '1', '4028e3815bafb323015bafe5c8180009', '0', '0', null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64bf1000b', '邮件', 'pub', 'email', 'ukewo', null, '4028e3815bafb323015bafe5c8180009', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:37', '2017-04-27 22:52:37', '0', '2', '4028e3815bafb323015bafe5c8180009', '0', '0', null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64c02000c', '短信', 'pub', 'sms', 'ukewo', null, '4028e3815bafb323015bafe5c8180009', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:37', '2017-04-27 22:52:37', '0', '3', '4028e3815bafb323015bafe5c8180009', '0', '0', null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64c1e000d', '微信', 'pub', 'wechat', 'ukewo', null, '4028e3815bafb323015bafe5c8180009', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:37', '2017-04-27 22:52:37', '0', '4', '4028e3815bafb323015bafe5c8180009', '0', '0', null, null, null, null);
-INSERT INTO `uk_sysdic` VALUES ('8a7f82825d3715b2015d3718254c0002', '全部联系人', 'pub', 'A', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"layui-icon\" style=\"position: relative;\">&#xe612;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-12 21:58:35', null, '0', '0', null, '0', '0', '/apps/contacts/index.html', 'webim', '1', null);
-INSERT INTO `uk_sysdic` VALUES ('8a7f82825d3715b2015d3718456e0003', '全部客户', 'pub', 'B', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe650;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-12 21:58:43', null, '0', '0', null, '0', '0', '/apps/customer/index.html', 'webim', '1', null);
-INSERT INTO `uk_sysdic` VALUES ('8a7f82825d3715b2015d37185ff40004', '工单管理', 'pub', 'C', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe607;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-12 21:58:50', null, '0', '0', null, '0', '0', '/apps/workordersthree/index.html', 'webim', '1', null);
-INSERT INTO `uk_sysdic` VALUES ('8a7f82825d3715b2015d3718773a0005', '客服设置', 'pub', 'D', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"layui-icon\" style=\"position: relative;\">&#xe614;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-12 21:58:56', null, '0', '0', null, '0', '0', '/setting/agent/index.html', 'webim', '1', null);
-INSERT INTO `uk_sysdic` VALUES ('8a7f82825d3715b2015d371d0d88000d', '会话历史', 'pub', 'E', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe7eb;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-12 22:03:57', null, '0', '0', null, '0', '0', '/service/history/index.html', 'webim', '1', null);
-INSERT INTO `uk_sysdic` VALUES ('8a7f82825d3715b2015d371d2588000e', '智能机器人', 'pub', 'F', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe63a;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-12 22:04:03', null, '0', '0', null, '0', '0', '/apps/xiaoe/index.html', 'webim', '1', null);
-INSERT INTO `uk_sysdic` VALUES ('8a7f82825d3715b2015d371d4e0c000f', '语音渠道', 'pub', 'G', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe625;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-12 22:04:13', null, '0', '0', null, '0', '0', '/apps/callcenter/service/index.html', 'webim', '1', null);
 
 -- ----------------------------
 -- Table structure for `uk_systemconfig`
@@ -5642,7 +5653,7 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-06-19 21:25:46', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-07-12 21:57:28', null, null, null, '0', '1');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-06-19 21:25:46', '402883965c1dfe92015c1e1291900003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-07-14 15:52:08', null, null, null, '0', '1');
 INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402883965c1dfe92015c1e1291900003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-07-10 15:53:37', null, null, null, '0', '0');
 
 -- ----------------------------
