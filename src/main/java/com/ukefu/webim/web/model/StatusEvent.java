@@ -35,6 +35,8 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private boolean callback ;	//是否是回呼
 	private String ccquene ;	//队列
 	
+	private String calltype ;	//呼叫方向类型 | 计费类型
+	
 	private String voicecalled ;
 	
 	private String servicestatus ;	//通话状态
@@ -422,5 +424,11 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setHostid(String hostid) {
 		this.hostid = hostid;
+	}
+	public String getCalltype() {
+		return calltype;
+	}
+	public void setCalltype(String calltype) {
+		this.calltype = calltype;
 	}
 }

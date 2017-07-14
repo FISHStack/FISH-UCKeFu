@@ -28,7 +28,22 @@ public class PbxHost implements java.io.Serializable{
 	
 	private boolean connected ;
 	
+	private boolean callcenter ;
+	
+	private String recordpath ;	//录音文件存储路径
+	private String ivrpath ;	//IVR文件路径
+	private String fspath ;		//FreeSwitch安装路径
+	private String device ;	//设备厂商
+	
 	private String orgi;
+	
+	private boolean autoanswer ;
+	
+	private boolean sipautoanswer ;
+	
+	private String callbacktype ;	//回呼送号 号码
+	private String callbacknumber ;
+	
 	private String creater ;
 	private Date createtime = new Date();
 	private Date updatetime = new Date();
@@ -102,5 +117,59 @@ public class PbxHost implements java.io.Serializable{
 	}
 	public void setConnected(boolean connected) {
 		this.connected = connected;
+	}
+	public boolean isAutoanswer() {
+		return autoanswer;
+	}
+	public void setAutoanswer(boolean autoanswer) {
+		this.autoanswer = autoanswer;
+	}
+	public String getCallbacknumber() {
+		return callbacknumber;
+	}
+	public void setCallbacknumber(String callbacknumber) {
+		this.callbacknumber = callbacknumber;
+	}
+	public boolean isCallcenter() {
+		return callcenter;
+	}
+	public void setCallcenter(boolean callcenter) {
+		this.callcenter = callcenter;
+	}
+	public String getRecordpath() {
+		return recordpath;
+	}
+	public void setRecordpath(String recordpath) {
+		this.recordpath = recordpath;
+	}
+	public String getIvrpath() {
+		return ivrpath;
+	}
+	public void setIvrpath(String ivrpath) {
+		this.ivrpath = ivrpath;
+	}
+	public String getFspath() {
+		return fspath;
+	}
+	public void setFspath(String fspath) {
+		this.fspath = fspath;
+	}
+	public String getDevice() {
+		return device;
+	}
+	public void setDevice(String device) {
+		this.device = device;
+	}
+	public String getCallbacktype() {
+		return callbacktype;
+	}
+	public void setCallbacktype(String callbacktype) {
+		this.callbacktype = callbacktype;
+	}
+	public boolean isSipautoanswer() {
+		return sipautoanswer;
+	}
+	public void setSipautoanswer(boolean sipautoanswer) {
+		this.sipautoanswer = sipautoanswer;
 	}
 }

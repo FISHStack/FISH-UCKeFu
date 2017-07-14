@@ -1,4 +1,5 @@
-<form method="post" key="set-mine" enctype="multipart/form-data" action="/setting/agent/sessionconfig/save.html" class="layui-form">
+<form method="post" key="set-mine" action="/admin/callcenter/resource/save.html" class="layui-form">
+	<input type="hidden" name="id" value="${pbxHost.id!''}">
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="ukefu-customer-div setting-wrapper">
@@ -10,7 +11,21 @@
 						<div class="row">
 							<div class="col-lg-8">
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">1、语音平台服务器IP地址 <font color="red">（必填项*）</font></div>
+									<div class="ukefu-webim-tl" style="clear:both;">1、语音平台服务器名称<font color="red">（必填项*）</font></div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>语音接入服务器名称</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">FreeSwitch服务器名称</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<input type="text" name="name" id="name" value="${pbxHost.name!''}" required="required" lay-verify="required" alue="" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">2、语音平台服务器IP地址 <font color="red">（必填项*）</font></div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -18,13 +33,13 @@
 												<p style="color:#888888;font-size:13px;margin-top:10px;">FreeSwitch服务器的网络IPv4地址，如果是其他厂商的设备，请填写软电话的接入地址</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
-												<input type="text" name="timeout" id="timeout" value="${pbxHost.ipaddr!''}" required="required" lay-verify="required" alue="" autocomplete="off" class="layui-input">
+												<input type="text" name="ipaddr" id="ipaddr" value="${pbxHost.ipaddr!''}" required="required" lay-verify="required" alue="" autocomplete="off" class="layui-input">
 											</div>
 										</div>
 									</div>
 								</div>
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">2、语音平台服务器地址 <font color="red">（必填项*）</font></div>
+									<div class="ukefu-webim-tl" style="clear:both;">3、语音平台服务器主机名称 <font color="red">（必填项*）</font></div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -32,13 +47,13 @@
 												<p style="color:#888888;font-size:13px;margin-top:10px;">FreeSwitch服务器的网络地址，如果是其他厂商的设备，请填写软电话的接入地址</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
-												<input type="text" name="timeout" id="timeout" value="${pbxHost.hostname!''}" required="required" lay-verify="required" alue="" autocomplete="off" class="layui-input">
+												<input type="text" name="hostname" id="hostname" value="${pbxHost.hostname!''}" required="required" lay-verify="required" alue="" autocomplete="off" class="layui-input">
 											</div>
 										</div>
 									</div>
 								</div>
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">3、语音平台服务端口</div>
+									<div class="ukefu-webim-tl" style="clear:both;">4、语音平台服务端口</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -46,29 +61,29 @@
 												<p style="color:#888888;font-size:13px;margin-top:10px;">FreeSwitch服务器的网络端口，如果是其他厂商的设备，根据需要填写</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
-												<input type="text" name="timeout" id="timeout" lay-verify="number" value="${pbxHost.port}" autocomplete="off" class="layui-input">
+												<input type="text" name="port" id="port" lay-verify="number" value="${pbxHost.port}" autocomplete="off" class="layui-input">
 											</div>
 										</div>
 									</div>
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">4、语音平台服务访问密码</div>
+									<div class="ukefu-webim-tl" style="clear:both;">5、语音平台服务访问密码</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
-												<p>语音接入服务的网络端口</p>
+												<p>连接语音服务器的密码</p>
 												<p style="color:#888888;font-size:13px;margin-top:10px;">FreeSwitch服务器的网络访问密码，如未修改，无需填写</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
-												<input type="text" name="timeout" id="timeout" lay-verify="number" value="" autocomplete="off" class="layui-input">
+												<input type="password" name="password" id="password" value="" autocomplete="off" class="layui-input">
 											</div>
 										</div>
 									</div>
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">4、语音设备类型</div>
+									<div class="ukefu-webim-tl" style="clear:both;">6、语音设备类型</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -76,8 +91,8 @@
 												<p style="color:#888888;font-size:13px;margin-top:10px;">不同厂商设备的配置参数和链接方式可能会不同</p>
 											</div>
 											<div class="col-lg-4">
-												<select name="maxuser">
-													<option value="default" <#if sessionConfig?? && sessionConfig.maxuser?? && sessionConfig.maxuser == 1>selected="selected"</#if>>默认设备</option>
+												<select name="device">
+													<option value="default" <#if pbxHost?? && pbxHost.device?? && pbxHost.device == "default">selected="selected"</#if>>默认设备</option>
 												</select>
 											</div>
 										</div>
@@ -86,7 +101,7 @@
 								
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">5、FreeSwitch服务器录音文件路径</div>
+									<div class="ukefu-webim-tl" style="clear:both;">7、FreeSwitch安装路径</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -94,14 +109,14 @@
 												<p style="color:#888888;font-size:13px;margin-top:10px;">FreeSwitch安装的根目录，Linux下的默认安装路径是/usr/local/freeswitch</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
-												<input type="text" name="installpath" id="installpath" value="${pbxHost.installpath!''}" autocomplete="off" class="layui-input">
+												<input type="text" name="fspath" id="fspath" value="${pbxHost.fspath!''}" autocomplete="off" class="layui-input">
 											</div>
 										</div>
 									</div>
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">6、FreeSwitch服务器录音文件路径</div>
+									<div class="ukefu-webim-tl" style="clear:both;">8、FreeSwitch服务器录音文件路径</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -116,7 +131,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">7、语音服务IVR资源文件路径</div>
+									<div class="ukefu-webim-tl" style="clear:both;">9、语音服务IVR资源文件路径</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -124,42 +139,56 @@
 												<p style="color:#888888;font-size:13px;margin-top:10px;">FreeSwitch使用的IVR语音文件存放目录，IVR文件默认存放位置是%INSTALLPATH%/sounds/en/us/callie/ivr/8000</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
-												<input type="text" name="ivrfile" id="ivrfile" value="${pbxHost.ivrfile!''}" autocomplete="off" class="layui-input">
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">8、启用呼叫中心功能</div>
-									<div class="box-item">
-										<div class="row">
-											<div class="col-lg-8">
-												<p>启用此功能后，坐席能够切换状态，能够接受呼叫中心队列通话请求</p>
-												<p style="color:#888888;font-size:13px;margin-top:10px;">包括状态改变、队列等选项</p>
-											</div>
-											<div class="col-lg-4" style="text-align:right;">
-												<input type="checkbox" id="lastagent" name="lastagent" title="启用"><div class="layui-unselect layui-form-checkbox" lay-skin=""><span>启用</span><i class="layui-icon"></i></div>
+												<input type="text" name="ivrfile" id="ivrpath" value="${pbxHost.ivrpath!''}" autocomplete="off" class="layui-input">
 											</div>
 										</div>
 									</div>
 								</div>
 								
-								<!-- 
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">8、启用满意度调查</div>
+									<div class="ukefu-webim-tl" style="clear:both;">10、启用话机端自动应答（Call Info）</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
-												<p>启用此功能后，客户在结束对话的时候，提示选择满意度</p>
-												<p style="color:#888888;font-size:13px;margin-top:10px;">满意度调查功能，所有实时渠道适用（WebIM，微信）</p>
+												<p>启用此功能后，回拨的时候，坐席话机会启用自动应答功能</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">需要SIP话机支持此功能</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
-												<input type="checkbox" title="启用" name="satisfaction" id="satisfaction" <#if sessionConfig?? && sessionConfig.satisfaction == true>checked="checked"</#if>>
+												<input type="checkbox" title="启用" name="autoanswer" id="autoanswer" <#if pbxHost?? && pbxHost.autoanswer>checked="checked"</#if>>
 											</div>
 										</div>
 									</div>
 								</div>
-								 -->
+								
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">11、启用话机端自动应答（SIP Auto Answer ）</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>启用此功能后，回拨的时候，坐席话机会启用自动应答功能</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">需要SIP话机支持此功能</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<input type="checkbox" title="启用" name="sipautoanswer" id="sipautoanswer" <#if pbxHost?? && pbxHost.sipautoanswer>checked="checked"</#if>>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">12、启用呼叫中心功能模块</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>启用此功能后，呼叫中心相关功能启用</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">需要预先配置Freeswitch呼叫中心功能模块</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<input type="checkbox" title="启用" name="callcenter" id="callcenter" <#if pbxHost?? && pbxHost.callcenter>checked="checked"</#if>>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

@@ -25,7 +25,6 @@ import com.ukefu.webim.service.repository.UserEventRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.SysDic;
-import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
 
 @Controller
@@ -118,16 +117,15 @@ public class AdminController extends Handler{
     @RequestMapping("/admin/auth/save")
     @Menu(type = "admin" , subtype = "authsave")
     public ModelAndView authsave(ModelMap map , HttpServletRequest request , @Valid String title , @Valid SysDic dic) {
-    	int count = sysDicRes.countByName(dic.getName()) ;
     	SysDic sysDic = sysDicRes.findByCode(UKDataContext.UKEFU_SYSTEM_AUTH_DIC) ;
     	boolean newdic = false ;
-    	if(sysDic!=null && !StringUtils.isBlank(dic.getName()) && count == 0){
+    	if(sysDic!=null && !StringUtils.isBlank(dic.getName())){
     		if(!StringUtils.isBlank(dic.getParentid())){
     			if(dic.getParentid().equals("0")){
     				dic.setParentid(sysDic.getId());
     				newdic = true ;
     			}else{
-    				List<SysDic> dicList = UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_AUTH_DIC) ;
+    				List<SysDic> dicList = sysDicRes.findByDicid(sysDic.getId()) ;
     				for(SysDic temp : dicList){
     					if(temp.getCode().equals(dic.getParentid()) || temp.getName().equals(dic.getParentid())){
     						dic.setParentid(temp.getId());

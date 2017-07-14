@@ -30,11 +30,13 @@ public class CallCenterController extends Handler{
     @Menu(type = "callcenter" , subtype = "callcenter" , access = false , admin = true)
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String msg) {
 		List<PbxHost> pbxHostList = pbxHostRes.findByOrgi(super.getOrgi(request)) ;
-		CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
-		
-		for(PbxHost pbxHost : pbxHostList){
-			if(callCenterImpl!=null){
-				pbxHost.setConnected(callCenterImpl.connected(pbxHost.getId()));
+		if(UKDataContext.model.get("callcenter")!=null){
+			CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
+			
+			for(PbxHost pbxHost : pbxHostList){
+				if(callCenterImpl!=null){
+					pbxHost.setConnected(callCenterImpl.connected(pbxHost.getId()));
+				}
 			}
 		}
 		map.addAttribute("pbxHostList" , pbxHostList);
@@ -45,11 +47,13 @@ public class CallCenterController extends Handler{
     @Menu(type = "callcenter" , subtype = "pbxhost" , access = false , admin = true)
     public ModelAndView pbxhost(ModelMap map , HttpServletRequest request) {
 		List<PbxHost> pbxHostList = pbxHostRes.findByOrgi(super.getOrgi(request)) ;
-		CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
-		
-		for(PbxHost pbxHost : pbxHostList){
-			if(callCenterImpl!=null){
-				pbxHost.setConnected(callCenterImpl.connected(pbxHost.getId()));
+		if(UKDataContext.model.get("callcenter")!=null){
+			CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
+			
+			for(PbxHost pbxHost : pbxHostList){
+				if(callCenterImpl!=null){
+					pbxHost.setConnected(callCenterImpl.connected(pbxHost.getId()));
+				}
 			}
 		}
 		map.addAttribute("pbxHostList" , pbxHostList);
@@ -73,14 +77,16 @@ public class CallCenterController extends Handler{
 				pbxHost.setOrgi(super.getOrgi(request));
 				pbxHost.setCreater(super.getUser(request).getId());
 				pbxHostRes.save(pbxHost) ;
-				CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
-				if(callCenterImpl!=null){
+				if(UKDataContext.model.get("callcenter")!=null){
+					CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
 					if(callCenterImpl!=null){
-						try{
-							callCenterImpl.init(pbxHost);
-						}catch(Exception ex){
-							msg = ex.getMessage() ;
-							ex.printStackTrace();
+						if(callCenterImpl!=null){
+							try{
+								callCenterImpl.init(pbxHost);
+							}catch(Exception ex){
+								msg = ex.getMessage() ;
+								ex.printStackTrace();
+							}
 						}
 					}
 				}
@@ -114,14 +120,15 @@ public class CallCenterController extends Handler{
 				destHost.setPassword(pbxHost.getPassword());
 			}
 			pbxHostRes.save(destHost) ;
-
-			CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
-			if(callCenterImpl!=null){
-				try{
-					callCenterImpl.init(destHost);
-				}catch(Exception ex){
-					msg = ex.getMessage() ;
-					ex.printStackTrace();
+			if(UKDataContext.model.get("callcenter")!=null){
+				CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
+				if(callCenterImpl!=null){
+					try{
+						callCenterImpl.init(destHost);
+					}catch(Exception ex){
+						msg = ex.getMessage() ;
+						ex.printStackTrace();
+					}
 				}
 			}
 		}
@@ -136,10 +143,11 @@ public class CallCenterController extends Handler{
     public ModelAndView mediadelete(ModelMap map , HttpServletRequest request , @Valid String id) {
 		if(!StringUtils.isBlank(id)){
 			pbxHostRes.delete(id);
-			
-			CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
-			if(callCenterImpl!=null){
-				callCenterImpl.remove(id);
+			if(UKDataContext.model.get("callcenter")!=null){
+				CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
+				if(callCenterImpl!=null){
+					callCenterImpl.remove(id);
+				}
 			}
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/pbxhost.html"));
