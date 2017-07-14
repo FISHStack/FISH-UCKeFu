@@ -41,6 +41,8 @@ public class PbxHost implements java.io.Serializable{
 	
 	private boolean sipautoanswer ;
 	
+	private String abscodec = "PCMU";	//默认的 呼叫编码 
+	
 	private String callbacktype ;	//回呼送号 号码
 	private String callbacknumber ;
 	
@@ -171,5 +173,11 @@ public class PbxHost implements java.io.Serializable{
 	}
 	public void setSipautoanswer(boolean sipautoanswer) {
 		this.sipautoanswer = sipautoanswer;
+	}
+	public String getAbscodec() {
+		return abscodec;
+	}
+	public void setAbscodec(String abscodec) {
+		this.abscodec = abscodec;
 	}
 }
