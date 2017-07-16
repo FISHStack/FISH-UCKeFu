@@ -62,6 +62,11 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String touser ;
 	private String direction ;
 	
+	private String calldir ;	//呼叫方向
+	private String otherdir;	//对边呼叫方向
+	
+	private String otherlegdest ;	//对边呼叫号码
+	
 	private long time ;
 	private String localdatetime ;
 	
@@ -430,5 +435,23 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setCalltype(String calltype) {
 		this.calltype = calltype;
+	}
+	public String getCalldir() {
+		return calldir;
+	}
+	public void setCalldir(String calldir) {
+		this.calldir = calldir;
+	}
+	public String getOtherdir() {
+		return otherdir;
+	}
+	public void setOtherdir(String otherdir) {
+		this.otherdir = otherdir;
+	}
+	public String getOtherlegdest() {
+		return otherlegdest;
+	}
+	public void setOtherlegdest(String otherlegdest) {
+		this.otherlegdest = otherlegdest;
 	}
 }

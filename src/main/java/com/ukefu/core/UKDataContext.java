@@ -58,6 +58,21 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum CallCenterCallTypeEnum{
+		INSIDELINE,
+		ORGCALLOUT,
+		ORGCALLIN,
+		INSIDEQUENE,
+		INSIDETRANS,			//已分配
+		OUTSIDELINE,
+		OUTSIDEQUENE,
+		OUTSIDETRANS;		//未分配
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	
 	public enum CallServiceStatus{
 		INQUENE,
 		RING,			//振铃
