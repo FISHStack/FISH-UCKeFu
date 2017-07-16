@@ -1,0 +1,41 @@
+<div class="uk-layui-form">
+	<form class="layui-form uk-form" action="/admin/role/update.html">
+	  <input type="hidden" name="id" value="${roleData.id!''}">
+	  <div class="layui-form-item">
+	    <div class="layui-input-inline">
+	   		<ul id="roleTree" class="ztree"></ul>
+	    </div>
+	  </div>
+	  <div class="layui-form-button">
+	    <div class="layui-button-block">
+	      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+	      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+	    </div>
+	  </div>
+	</form>
+</div>
+<SCRIPT type="text/javascript">
+		var setting = {
+			check: {
+				enable: true
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+
+		var zNodes =[
+		    <#if sysDic??>{ id:'${sysDic.id!''}', pId:'0', name:"菜单资源", open:true}</#if>
+		    <#if resourceList??>
+		    <#list resourceList as dic>
+			,{ id:'${dic.id}', pId:'${dic.parentid!''}', name:"${dic.name!''}", open:true , icon : "<#if dic.level?? && (dic.level == '1' || dic.level == '2')>/images/dir.png<#else>/images/menu.png</#if>"}
+			</#list>
+			</#if>
+		];
+		
+		$(document).ready(function(){
+			$.fn.zTree.init($("#roleTree"), setting, zNodes);
+		});
+	</SCRIPT>

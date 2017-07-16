@@ -14,12 +14,15 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.webim.service.repository.RoleRepository;
+import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Role;
+import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
 
@@ -35,6 +38,9 @@ public class RoleController extends Handler{
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private SysDicRepository sysDicRes; 
 
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "role")
@@ -163,5 +169,16 @@ public class RoleController extends Handler{
     		msg = "admin_role_not_exist" ;
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/role/index.html?msg="+msg));
+    }
+    
+    @RequestMapping("/auth")
+    @Menu(type = "admin" , subtype = "role")
+    public ModelAndView auth(ModelMap map , HttpServletRequest request) {
+    	SysDic sysDic = sysDicRes.findByCode(UKDataContext.UKEFU_SYSTEM_AUTH_DIC) ;
+    	if(sysDic!=null){
+    		map.addAttribute("resourceList", sysDicRes.findByDicid(sysDic.getId())) ;
+    	}
+    	map.addAttribute("sysDic", sysDic) ;
+        return request(super.createRequestPageTempletResponse("/admin/role/auth"));
     }
 }
