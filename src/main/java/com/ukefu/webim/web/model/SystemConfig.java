@@ -40,7 +40,8 @@ public class SystemConfig implements java.io.Serializable{
 	private String mapkey ;
 	private boolean workorders ;	//工单启用三栏布局
 	
-	private boolean callout ;		//允许在电话号码上点击呼出	
+	private boolean callout ;		//允许在电话号码上点击呼出
+	private boolean auth ;			//启用权限控制
 	
 	private boolean callcenter ;	//启用呼叫中心模板配置
 	private String cc_extention ;
@@ -214,6 +215,12 @@ public class SystemConfig implements java.io.Serializable{
 	}
 	public void setCallout(boolean callout) {
 		this.callout = callout;
+	}
+	public boolean isAuth() {
+		return auth;
+	}
+	public void setAuth(boolean auth) {
+		this.auth = auth;
 	}
 	@Transient
 	public String getBackgroundColor(){

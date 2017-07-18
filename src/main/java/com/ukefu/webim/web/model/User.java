@@ -51,7 +51,10 @@ public class User implements java.io.Serializable{
 	private String birthday ;
 	private String nickname ;
 	private String secureconf = "5";
-	private String usertype ; // 0 Admin User  : !0  Other User 
+	private String usertype ; // 0 Admin User  : !0  Other User
+	
+	private boolean superuser ;	//是否是超级管理员
+	
 	private String orgi ;
 	private String creater;
 	private Date createtime = new Date();
@@ -78,6 +81,7 @@ public class User implements java.io.Serializable{
 	private int follows ;		//关注
 	private int integral ;		//积分
 	private List<Role> roleList = new ArrayList<Role>() ;
+	private List<RoleAuth> roleAuthList  = new ArrayList<RoleAuth>() ;
 	
 	public User(){}
 	public User(String id){
@@ -449,5 +453,18 @@ public class User implements java.io.Serializable{
 	}
 	public void setCallcenter(boolean callcenter) {
 		this.callcenter = callcenter;
+	}
+	@Transient
+	public List<RoleAuth> getRoleAuthList() {
+		return roleAuthList;
+	}
+	public void setRoleAuthList(List<RoleAuth> roleAuthList) {
+		this.roleAuthList = roleAuthList;
+	}
+	public boolean isSuperuser() {
+		return superuser;
+	}
+	public void setSuperuser(boolean superuser) {
+		this.superuser = superuser;
 	}
 }

@@ -1,14 +1,20 @@
 package com.ukefu.webim.web.handler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +24,15 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.OrganRoleRepository;
+import com.ukefu.webim.service.repository.RoleAuthRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
+import com.ukefu.webim.web.model.Organ;
+import com.ukefu.webim.web.model.OrganRole;
+import com.ukefu.webim.web.model.Role;
+import com.ukefu.webim.web.model.RoleAuth;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
 
@@ -36,7 +49,16 @@ public class LoginController extends Handler{
 	private UserRepository userRepository;
 	
 	@Autowired
+	private OrganRoleRepository organRoleRes ;
+	
+	@Autowired
 	private UserRoleRepository userRoleRes ;
+	
+	@Autowired
+	private RoleAuthRepository roleAuthRes ;
+	
+	@Autowired
+	private OrganRepository organRepository;
 
     @RequestMapping(value = "/login" , method=RequestMethod.GET)
     @Menu(type = "apps" , subtype = "user" , access = true)
@@ -63,7 +85,7 @@ public class LoginController extends Handler{
     	ModelAndView view = request(super.createRequestPageTempletResponse("redirect:/"));
     	if(request.getSession(true).getAttribute(UKDataContext.USER_SESSION_NAME) ==null){
 	        if(user!=null && user.getUsername()!=null){
-		    	User loginUser = userRepository.findByUsernameAndPassword(user.getUsername() , UKTools.md5(user.getPassword())) ;
+		    	final User loginUser = userRepository.findByUsernameAndPassword(user.getUsername() , UKTools.md5(user.getPassword())) ;
 		        if(loginUser!=null && !StringUtils.isBlank(loginUser.getId())){
 		        	loginUser.setLogin(true);
 		        	super.setUser(request, loginUser);
@@ -76,6 +98,35 @@ public class LoginController extends Handler{
 		        			loginUser.getRoleList().add(userRole.getRole()) ;
 		        		}
 		        	}
+		        	if(!StringUtils.isBlank(loginUser.getOrgan())){
+		        		Organ organ = organRepository.findByIdAndOrgi(loginUser.getOrgan(), loginUser.getOrgi()) ;
+		        		if(organ!=null){
+		        			List<OrganRole> organRoleList = organRoleRes.findByOrgiAndOrgan(loginUser.getOrgi(), organ) ;
+		        			if(organRoleList.size() > 0){
+		        				for(OrganRole organRole : organRoleList){
+		        					loginUser.getRoleList().add(organRole.getRole()) ;
+		        				}
+		        			}
+		        		}
+		        	}
+		        	//获取用户的授权资源
+		        	List<RoleAuth> roleAuthList = roleAuthRes.findAll(new Specification<RoleAuth>(){
+						@Override
+						public Predicate toPredicate(Root<RoleAuth> root, CriteriaQuery<?> query,
+								CriteriaBuilder cb) {
+							List<Predicate> list = new ArrayList<Predicate>();  
+							if(loginUser.getRoleList()!=null && loginUser.getRoleList().size() > 0){
+								for(Role role : loginUser.getRoleList()){
+									list.add(cb.equal(root.get("roleid").as(String.class), role.getId())) ;
+								}
+							}
+							Predicate[] p = new Predicate[list.size()];  
+							cb.and(cb.equal(root.get("orgi").as(String.class), loginUser.getOrgi())) ;
+						    return cb.or(list.toArray(p));  
+						}}) ;
+		        	
+		        	loginUser.setRoleAuthList(roleAuthList);//获取用户收取的资源信息
+		        	
 		        	loginUser.setLastlogintime(new Date());
 		        	if(!StringUtils.isBlank(loginUser.getId())){
 		        		userRepository.save(loginUser) ;

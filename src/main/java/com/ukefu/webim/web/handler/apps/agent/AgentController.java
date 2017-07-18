@@ -310,7 +310,7 @@ public class AgentController extends Handler {
     	if(agentStatus==null){
     		agentStatus = new AgentStatus() ;
 	    	agentStatus.setUserid(user.getId());
-	    	agentStatus.setUsername(user.getUsername());
+	    	agentStatus.setUsername(user.getUname());
 	    	agentStatus.setAgentno(user.getId());
 	    	agentStatus.setLogindate(new Date());
 	    	

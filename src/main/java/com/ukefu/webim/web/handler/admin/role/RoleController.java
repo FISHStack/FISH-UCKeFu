@@ -16,13 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
+import com.ukefu.webim.service.repository.RoleAuthRepository;
 import com.ukefu.webim.service.repository.RoleRepository;
 import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Role;
+import com.ukefu.webim.web.model.RoleAuth;
 import com.ukefu.webim.web.model.SysDic;
+import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
 
@@ -35,6 +38,9 @@ public class RoleController extends Handler{
 	
 	@Autowired
 	private UserRoleRepository userRoleRes;
+	
+	@Autowired
+	private RoleAuthRepository roleAuthRes ;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -173,12 +179,38 @@ public class RoleController extends Handler{
     
     @RequestMapping("/auth")
     @Menu(type = "admin" , subtype = "role")
-    public ModelAndView auth(ModelMap map , HttpServletRequest request) {
+    public ModelAndView auth(ModelMap map , HttpServletRequest request , @Valid String id) {
     	SysDic sysDic = sysDicRes.findByCode(UKDataContext.UKEFU_SYSTEM_AUTH_DIC) ;
     	if(sysDic!=null){
     		map.addAttribute("resourceList", sysDicRes.findByDicid(sysDic.getId())) ;
     	}
     	map.addAttribute("sysDic", sysDic) ;
+    	Role role = roleRepository.findByIdAndOrgi(id, super.getOrgi(request)) ;
+    	map.addAttribute("role", role) ;
+    	map.addAttribute("roleAuthList", roleAuthRes.findByRoleidAndOrgi(role.getId(), super.getOrgi(request))) ;
         return request(super.createRequestPageTempletResponse("/admin/role/auth"));
+    }
+    
+    @RequestMapping("/auth/save")
+    @Menu(type = "admin" , subtype = "role")
+    public ModelAndView authsave(HttpServletRequest request ,@Valid String id ,@Valid String menus) {
+    	List<RoleAuth>  roleAuthList = roleAuthRes.findByRoleidAndOrgi(id, super.getOrgi(request)) ;
+    	roleAuthRes.delete(roleAuthList);
+    	if(!StringUtils.isBlank(menus)){
+    		String[] menuarray = menus.split(",") ;
+    		for(String menu : menuarray){
+    			RoleAuth roleAuth = new RoleAuth();
+    			roleAuth.setRoleid(id);
+    			roleAuth.setDicid(menu);
+    			roleAuth.setCreater(super.getUser(request).getId());
+    			roleAuth.setOrgi(super.getOrgi(request));
+    			roleAuth.setCreatetime(new Date());
+    			SysDic sysDic = UKeFuDic.getInstance().getDicItem(menu) ;
+    			roleAuth.setName(sysDic.getName());
+    			roleAuth.setDicvalue(sysDic.getCode());
+    			roleAuthRes.save(roleAuth) ;
+    		}
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/role/index.html"));
     }
 }

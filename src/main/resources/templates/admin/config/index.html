@@ -193,7 +193,22 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">9、启用语音平台模板配置</div>
+									<div class="ukefu-webim-tl" style="clear:both;">9、启用权限控制</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>系统菜单的权限控制</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">默认不启用权限控制，如果选择启用，用户需要授权才能访问需要授权的系统菜单功能，系统管理员账号（admin）不受控制</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<input type="checkbox" title="启用" name="auth" value="1" <#if systemConfig.auth>checked="checked"</#if>>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">10、启用语音平台模板配置</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">

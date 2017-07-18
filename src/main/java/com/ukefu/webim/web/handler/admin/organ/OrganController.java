@@ -16,10 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.util.Menu;
 import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.OrganRoleRepository;
 import com.ukefu.webim.service.repository.RoleRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Organ;
+import com.ukefu.webim.web.model.OrganRole;
+import com.ukefu.webim.web.model.Role;
 import com.ukefu.webim.web.model.User;
 
 /**
@@ -41,6 +44,9 @@ public class OrganController extends Handler{
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private OrganRoleRepository organRoleRes ;
 
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "organ")
@@ -162,5 +168,40 @@ public class OrganController extends Handler{
     		msg = "admin_organ_not_exist" ;
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/organ/index.html?msg="+msg));
+    }
+    
+    @RequestMapping("/auth")
+    @Menu(type = "admin" , subtype = "organ")
+    public ModelAndView auth(ModelMap map ,HttpServletRequest request , @Valid String id) {
+    	Organ organData = organRepository.findByIdAndOrgi(id, super.getOrgi(request)) ;
+    	map.addAttribute("organData", organData) ;
+    	map.addAttribute("roleList", roleRepository.findByOrgi(super.getOrgi(request))) ;
+    	
+    	map.addAttribute("organRoleList", organRoleRes.findByOrgiAndOrgan(super.getOrgi(request), organData)) ;
+    	
+        return request(super.createRequestPageTempletResponse("/admin/organ/auth"));
+    }
+    
+    @RequestMapping("/auth/save")
+    @Menu(type = "admin" , subtype = "role")
+    public ModelAndView authsave(HttpServletRequest request ,@Valid String id ,@Valid String roles) {
+    	Organ organData = organRepository.findByIdAndOrgi(id, super.getOrgi(request)) ;
+    	List<OrganRole>  organRoleList = organRoleRes.findByOrgiAndOrgan(super.getOrgi(request), organData) ;
+    	organRoleRes.delete(organRoleList);
+    	if(!StringUtils.isBlank(roles)){
+    		String[] rolesarray = roles.split(",") ;
+    		for(String role : rolesarray){
+    			OrganRole organRole = new OrganRole();
+    			Role tempRole = new Role();
+    			tempRole.setId(role);
+    			organRole.setRole(tempRole);
+    			organRole.setOrgan(organData);
+    			organRole.setCreater(super.getUser(request).getId());
+    			organRole.setOrgi(super.getOrgi(request));
+    			organRole.setCreatetime(new Date());
+    			organRoleRes.save(organRole) ;
+    		}
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/organ/index.html"));
     }
 }

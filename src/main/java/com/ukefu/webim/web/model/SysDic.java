@@ -39,6 +39,8 @@ public class SysDic  implements java.io.Serializable {
 	private int sortindex ;
 	private String dicid ;
 	
+	private String menutype ;				//菜单类型，顶部导航菜单， 左侧菜单
+	
 	private String rules ;					//角色要求 ， 管理员 / 普通用户 / 多媒体坐席  / 呼叫中心坐席
 	
 	private String module ;
@@ -197,6 +199,12 @@ public class SysDic  implements java.io.Serializable {
 	}
 	public void setRules(String rules) {
 		this.rules = rules;
+	}
+	public String getMenutype() {
+		return menutype;
+	}
+	public void setMenutype(String menutype) {
+		this.menutype = menutype;
 	}
 }
 
