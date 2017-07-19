@@ -159,11 +159,11 @@
 						<#if user??>${user.email!''}</#if></a>
 						<dl class="layui-nav-child">
 					      <dd><a href="/apps/profile.html" data-toggle="ajax" data-width="750" data-title="修改资料">个人资料</a></dd>
-					      <#if user?? && user.usertype == 0>
+					      <#if user?? && user.superuser>
 						      <#if infoace?? && infoace == "true">
-						      <dd><a href="/admin/auth/infoacq.html" title="请确认是否进入权限数据采集模式？" data-toggle="tip" >退出数据采集</a></dd>
+						      <dd><a href="/admin/auth/infoacq.html" title="请确认是否退出权限数据采集模式？" data-toggle="tip" >退出数据采集</a></dd>
 						      <#else>
-						      <dd><a href="/admin/auth/infoacq.html" title="请确认是否退出权限数据采集模式？" data-toggle="tip" >进入数据采集</a></dd>
+						      <dd><a href="/admin/auth/infoacq.html" title="请确认是否进入权限数据采集模式？" data-toggle="tip" >进入数据采集</a></dd>
 						      </#if>
 					      </#if>
 					      <dd><a href="/logout.html">退出系统</a></dd>
@@ -199,10 +199,11 @@
 							</dd>
 							<dd class="ukefu-left-menu" data-tooltip="全部客户">
 								<a href="javascript:void(0)" data-title="全部客户" data-href="/apps/customer/index.html" class="iframe_btn" data-id="maincontent" data-type="tabChange"> 
-								<i class="kfont"	style="position: relative;">&#xe650;</i>
+								<i class="kfont" style="position: relative;">&#xe650;</i>
 								</a>
 							</dd>
 							</#if>
+							
 							<#if models?? && models["workorders"]?? && models["workorders"] == true>
 							<dd class="ukefu-left-menu" data-tooltip="工单管理">
 								<a href="javascript:void(0)" data-title="工单管理" data-href="<#if systemConfig?? && systemConfig.workorders>/apps/workordersthree/index.html<#else>/apps/workorders/index.html</#if>" class="iframe_btn" data-id="maincontent" data-type="tabChange"> 

@@ -45,7 +45,7 @@ public class SysDic  implements java.io.Serializable {
 	
 	private String module ;
 	private String url ;
-	private String level ;
+	private String mlevel ;					//菜单级别， 一级 菜单， 二级菜单
 	
 	private boolean defaultvalue = false;
 	@Id
@@ -188,11 +188,11 @@ public class SysDic  implements java.io.Serializable {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public String getLevel() {
-		return level;
+	public String getMlevel() {
+		return mlevel;
 	}
-	public void setLevel(String level) {
-		this.level = level;
+	public void setMlevel(String mlevel) {
+		this.mlevel = mlevel;
 	}
 	public String getRules() {
 		return rules;
