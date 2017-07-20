@@ -10,6 +10,11 @@
 		</div>
 		</#if>
 	</li>
+	<#if snsAccount??>
+	<li class="ukefu-channel-tip">
+		接入网站：${snsAccount.name!''}（${snsAccount.baseURL!''}）
+	</li>
+	</#if>
 	<li>
 		      首次访问来源：
 	    <span class="tgreen">

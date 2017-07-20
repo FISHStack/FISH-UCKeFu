@@ -21,14 +21,8 @@
 	<li class="layui-nav-item layui-nav-itemed">
 		<a class="layui-nav-title" href="javascript:;">客服接入</a>
 		<dl class="layui-nav-child">
-			<dd <#if subtype?? && subtype == 'webim'>class="layui-this"</#if>>
-				<a href="/admin/webim/index.html">网页客服</a>
-			</dd>
-			<dd <#if subtype?? && subtype == 'invote'>class="layui-this"</#if>>
-				<a href="/admin/webim/invote.html">邀请设置</a>
-			</dd>
-			<dd <#if subtype?? && subtype == 'profile'>class="layui-this"</#if>>
-				<a href="/admin/webim/profile.html">客服信息</a>
+			<dd <#if subtype?? && (maintype == 'webim' || subtype == 'im')>class="layui-this"</#if>>
+				<a href="/admin/im/index.html">网站列表</a>
 			</dd>
 		</dl>
 	</li>
