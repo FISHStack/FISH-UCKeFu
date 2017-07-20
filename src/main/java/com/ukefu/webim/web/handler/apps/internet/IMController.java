@@ -114,7 +114,7 @@ public class IMController extends Handler{
 		
 		view.addObject("mobile", CheckMobile.check(request.getHeader("User-Agent"))) ;
 		
-		CousultInvite invite = inviteRepository.findOne(id) ;
+		CousultInvite invite = inviteRepository.findBySnsaccountidAndOrgi(id, super.getOrgi(request)) ;
     	if(invite!=null){
     		view.addObject("inviteData", invite);
     		view.addObject("orgi",invite.getOrgi());
@@ -230,7 +230,7 @@ public class IMController extends Handler{
     public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	if(!StringUtils.isBlank(appid)){
-    		CousultInvite invite = inviteRepository.findOne(appid) ;
+    		CousultInvite invite = inviteRepository.findBySnsaccountidAndOrgi(appid, super.getOrgi(request)) ;
     		String userID = UKTools.genIDByKey(sessionid);
 			String nickname = "Guest_" + userID;
 			boolean consult = true ;				//是否已收集用户信息
@@ -433,7 +433,7 @@ public class IMController extends Handler{
 		view.addObject("mobile", mobile) ;
 		view.addObject("userid", userid) ;
 		
-		CousultInvite invite = inviteRepository.findOne(appid) ;
+		CousultInvite invite = inviteRepository.findBySnsaccountidAndOrgi(appid, super.getOrgi(request)) ;
     	if(invite!=null){
     		view.addObject("inviteData", invite);
     		view.addObject("orgi",invite.getOrgi());
@@ -448,7 +448,7 @@ public class IMController extends Handler{
     @Menu(type = "admin" , subtype = "user")
     public ModelAndView leavemsgsave(HttpServletRequest request ,@Valid String appid ,@Valid LeaveMsg msg) {
     	if(!StringUtils.isBlank(appid)){
-    		CousultInvite invite = inviteRepository.findOne(appid) ;
+    		CousultInvite invite = inviteRepository.findBySnsaccountidAndOrgi(appid, super.getOrgi(request)) ; ;
 	    	List<LeaveMsg> msgList = leaveMsgRes.findByOrgiAndMobile(invite.getOrgi(), msg.getMobile()) ;
 	    	if(msg!=null && msgList.size() == 0){
 	    		msg.setOrgi(invite.getOrgi());
