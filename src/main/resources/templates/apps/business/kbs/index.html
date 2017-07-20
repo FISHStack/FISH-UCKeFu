@@ -10,13 +10,6 @@
 				<div class="ukefu-user-index">
 					<h1>
 						${user.username!''}（${user.uname!''}）
-						<span style="color:#c00;">
-							<#if user?? && user.roleList??>
-								<#list user.roleList as role>
-									${role.name!''}
-								</#list>
-							</#if>
-						</span>
 					</h1>
 					<#if user.lastlogintime??>
 					<div class="ukefu-join-time ukefu-text-muted">
@@ -119,7 +112,7 @@
 								  <div class="layui-tab-content" style="padding: 0px;">
 								    <div class="layui-input-inline" style="width:100%;padding:0px 20px 0px 0px;position: relative;">
 										<input type="text" placeholder="请输入查询条件" value="" class="layui-input layui-unselect" style="border-top:0px;">
-										<i class="layui-icon ukefu-kbs-btn">&#xe615;</i>
+										<i class="layui-icon ukefu-kbs-btn" style="font-size:24px;">&#xe615;</i>
 									</div>
 								  </div>
 								</div>
