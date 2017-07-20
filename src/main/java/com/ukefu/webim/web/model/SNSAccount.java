@@ -18,8 +18,8 @@ import org.hibernate.annotations.GenericGenerator;
 public class SNSAccount{
 	private String id ;
 	private String snsid ;		//表示 SNSAccount
-	private String name ;		//修改为  是否需要发布审核
-	private String code ;		//修改为 发布审核人数
+	private String name ;		
+	private String code ;		
 	private String username ;
 	private String password ;
 	private String snstype ;//改字段为为大类  微信/微博/易信等
@@ -50,6 +50,8 @@ public class SNSAccount{
 	private String secret ;
 	private String aeskey ;
 	
+	
+	private String baseURL ;	//网站URL
 	
 	private String apptoken ;
 	private String sessionkey ;
@@ -304,5 +306,11 @@ public class SNSAccount{
 	}
 	public void setSnsid(String snsid) {
 		this.snsid = snsid;
+	}
+	public String getBaseURL() {
+		return baseURL;
+	}
+	public void setBaseURL(String baseURL) {
+		this.baseURL = baseURL;
 	}
 }
