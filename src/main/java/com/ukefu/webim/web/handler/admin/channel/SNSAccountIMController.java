@@ -101,6 +101,10 @@ public class SNSAccountIMController extends Handler{
 	    	SNSAccount snsAccount = snsAccountRes.findByIdAndOrgi(id , super.getOrgi(request)) ;
 	    	if(snsAccountRes!=null){
 	    		snsAccountRes.delete(snsAccount);
+	    		CousultInvite coultInvite = invite.findBySnsaccountidAndOrgi(snsAccount.getSnsid(), super.getOrgi(request)) ;
+    			if(coultInvite != null){
+    				invite.delete(coultInvite);
+    			}
 	    	}
     	}
     	
