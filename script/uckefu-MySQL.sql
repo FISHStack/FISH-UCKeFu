@@ -1794,7 +1794,6 @@ CREATE TABLE `uk_snsaccount` (
 -- ----------------------------
 -- Records of uk_snsaccount
 -- ----------------------------
-INSERT INTO `uk_snsaccount` VALUES (null, null, null, null, null, null, '402888815ca1209a015ca122f24f0003', null, null, 'tet', null, null, null, null, 'weixin', '2017-06-13 19:07:20', 'sub', null, null, null, 'UCKeFuToken', 'tet', '8ccaFYMaT8i4HlBfeSEoVA==', 'etet', null, null, null, 'ukewo', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null, '1VYBFF', '0');
 INSERT INTO `uk_snsaccount` VALUES (null, null, 'www.ukewo.cn', null, null, null, '402888815d602eb4015d602f7bd80001', null, null, '优客服', null, null, null, null, 'webim', '2017-07-20 21:28:30', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', '0');
 
 -- ----------------------------
