@@ -91,6 +91,7 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private Date endrecord ;
 	private int recordtime ;
 	private String recordfile ;
+	private String recordfilename ;
 	
 	private String contactsid ;
 	
@@ -468,5 +469,11 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setBridge(boolean bridge) {
 		this.bridge = bridge;
+	}
+	public String getRecordfilename() {
+		return recordfilename;
+	}
+	public void setRecordfilename(String recordfilename) {
+		this.recordfilename = recordfilename;
 	}
 }
