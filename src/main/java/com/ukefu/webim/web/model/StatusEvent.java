@@ -94,6 +94,9 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	
 	private String contactsid ;
 	
+	private String bridgeid ;			//桥接对方ID
+	private boolean bridge ;			//是否桥接
+	
 	private boolean misscall = true;
 	
 	private boolean servicesummary ;	//是否记录服务小结
@@ -453,5 +456,17 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setOtherlegdest(String otherlegdest) {
 		this.otherlegdest = otherlegdest;
+	}
+	public String getBridgeid() {
+		return bridgeid;
+	}
+	public void setBridgeid(String bridgeid) {
+		this.bridgeid = bridgeid;
+	}
+	public boolean isBridge() {
+		return bridge;
+	}
+	public void setBridge(boolean bridge) {
+		this.bridge = bridge;
 	}
 }
