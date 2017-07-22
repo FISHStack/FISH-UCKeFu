@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-07-20 22:44:19
+Date: 2017-07-22 15:29:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -265,6 +265,31 @@ CREATE TABLE `uk_blacklist` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `uk_bpm_process`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_bpm_process`;
+CREATE TABLE `uk_bpm_process` (
+  `ID` varchar(32) NOT NULL COMMENT '主键ID',
+  `NAME` varchar(50) DEFAULT NULL COMMENT '名称',
+  `CODE` varchar(50) DEFAULT NULL COMMENT '代码',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `CREATER` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `UPDATETIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `ORGI` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `CONTENT` text COMMENT '流程文本内容',
+  `STATUS` varchar(20) DEFAULT NULL COMMENT '流程状态',
+  `TITLE` varchar(50) DEFAULT NULL COMMENT '流程标题',
+  `PUBLISHED` tinyint(4) DEFAULT NULL COMMENT '流程发布状态',
+  `PROCESSID` varchar(50) DEFAULT NULL COMMENT '流程ID',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_bpm_process
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `uk_callcenter_acl`
 -- ----------------------------
 DROP TABLE IF EXISTS `uk_callcenter_acl`;
@@ -349,6 +374,8 @@ CREATE TABLE `uk_callcenter_event` (
   `CALLDIR` varchar(30) DEFAULT NULL,
   `OTHERDIR` varchar(30) DEFAULT NULL COMMENT '对边呼叫方向',
   `OTHERLEGDEST` varchar(50) DEFAULT NULL,
+  `BRIDGEID` varchar(100) DEFAULT NULL COMMENT '桥接ID',
+  `BRIDGE` tinyint(4) DEFAULT NULL COMMENT '是否有桥接',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -5782,7 +5809,7 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815d5105b6015d510962b90006', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-07-20 22:33:45', null, null, null, '0', '0', '1');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815d5105b6015d510962b90006', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-07-22 15:21:53', null, null, null, '0', '0', '1');
 INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402883965c1dfe92015c1e1291900003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-07-10 15:53:37', null, null, null, '0', '0', '0');
 
 -- ----------------------------
@@ -5931,6 +5958,26 @@ CREATE TABLE `uk_workorders` (
 
 -- ----------------------------
 -- Records of uk_workorders
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_workorders_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_workorders_type`;
+CREATE TABLE `uk_workorders_type` (
+  `ID` varchar(32) NOT NULL COMMENT '主键ID',
+  `NAME` varchar(50) DEFAULT NULL COMMENT '名称',
+  `CODE` varchar(50) DEFAULT NULL COMMENT '代码',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `CREATER` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `UPDATETIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `ORGI` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_workorders_type
 -- ----------------------------
 
 -- ----------------------------
@@ -6424,4 +6471,37 @@ CREATE TABLE `wf_task_actor` (
 
 -- ----------------------------
 -- Records of wf_task_actor
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `wf_workitem`
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_workitem`;
+CREATE TABLE `wf_workitem` (
+  `task_id` varchar(255) NOT NULL,
+  `process_id` varchar(255) DEFAULT NULL,
+  `order_id` varchar(255) DEFAULT NULL,
+  `order_no` varchar(255) DEFAULT NULL,
+  `process_name` varchar(255) DEFAULT NULL,
+  `instance_url` varchar(255) DEFAULT NULL,
+  `parent_id` varchar(255) DEFAULT NULL,
+  `creator` varchar(255) DEFAULT NULL,
+  `order_create_time` varchar(255) DEFAULT NULL,
+  `order_expire_time` varchar(255) DEFAULT NULL,
+  `order_variable` varchar(255) DEFAULT NULL,
+  `task_name` varchar(255) DEFAULT NULL,
+  `task_key` varchar(255) DEFAULT NULL,
+  `operator` varchar(255) DEFAULT NULL,
+  `task_create_time` varchar(255) DEFAULT NULL,
+  `task_end_time` varchar(255) DEFAULT NULL,
+  `task_expire_time` varchar(255) DEFAULT NULL,
+  `action_url` varchar(255) DEFAULT NULL,
+  `task_type` int(11) DEFAULT NULL,
+  `perform_type` int(11) DEFAULT NULL,
+  `task_variable` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`task_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of wf_workitem
 -- ----------------------------
