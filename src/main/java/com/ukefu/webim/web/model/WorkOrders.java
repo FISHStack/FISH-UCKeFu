@@ -62,6 +62,9 @@ public class WorkOrders extends ESBean implements UKAgg{
 	private String wotype;	//工单类型
 	private boolean datastatus ;	//数据状态，是否删除 , 逻辑删除
 	
+	private String taskid ;
+	private String orderid ;
+	
 	private String cate ;	//工单分类
 	
 	private String priority ;	//优先级
@@ -97,7 +100,7 @@ public class WorkOrders extends ESBean implements UKAgg{
 	
 	private String skill ;
 	private int rowcount ;
-	private String key ;
+	private String key ;		//变更用处，修改为 OrderID
 	
 	
 	private User user ;
@@ -500,5 +503,21 @@ public class WorkOrders extends ESBean implements UKAgg{
 
 	public void setCurrentorgan(Organ currentorgan) {
 		this.currentorgan = currentorgan;
+	}
+	@Transient
+	public String getTaskid() {
+		return taskid;
+	}
+
+	public void setTaskid(String taskid) {
+		this.taskid = taskid;
+	}
+	@Transient
+	public String getOrderid() {
+		return orderid;
+	}
+
+	public void setOrderid(String orderid) {
+		this.orderid = orderid;
 	}
 }

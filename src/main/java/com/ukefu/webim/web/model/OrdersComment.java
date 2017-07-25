@@ -40,21 +40,29 @@ public class OrdersComment implements UKAgg{
 	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date updatetime = new Date() ;
 	
-	private boolean optimal ;	//是否最佳答案
+	private boolean optimal ;	//变更用处，流程回复
 	
-	private boolean prirep ;
+	private boolean prirep ;	//变更用处， 是否私密回复
 	
 	private int up ;			//点赞数量
 	private int comments ;		//回复数量
 	
-	private boolean admin ;
+	private boolean admin ;		//变更用处 ， 是否审批流程
 	private boolean datastatus ;	//数据状态，是否已删除
 	
 	private String orgi ;
 	
-	private String cate ;
+	private String cate ;		
 	
 	private String optype ;
+	
+	private String approval ;	//审批结果
+	private String retback ;	//退回位置 ， 退回到 创建人
+	
+	private String accdept ;	//转办 部门
+	private String accuser ;	//转办人
+	
+	
 	private String ipcode ;
 	private String country ;
 	private String province ;
@@ -223,5 +231,29 @@ public class OrdersComment implements UKAgg{
 	}
 	public void setDatastatus(boolean datastatus) {
 		this.datastatus = datastatus;
+	}
+	public String getApproval() {
+		return approval;
+	}
+	public void setApproval(String approval) {
+		this.approval = approval;
+	}
+	public String getRetback() {
+		return retback;
+	}
+	public void setRetback(String retback) {
+		this.retback = retback;
+	}
+	public String getAccdept() {
+		return accdept;
+	}
+	public void setAccdept(String accdept) {
+		this.accdept = accdept;
+	}
+	public String getAccuser() {
+		return accuser;
+	}
+	public void setAccuser(String accuser) {
+		this.accuser = accuser;
 	}
 }

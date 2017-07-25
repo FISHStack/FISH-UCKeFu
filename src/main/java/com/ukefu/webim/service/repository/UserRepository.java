@@ -20,6 +20,8 @@ public abstract interface UserRepository extends JpaRepository<User, String>
   
   public abstract Page<User> findByOrgi(String orgi , Pageable paramPageable);
   
+  public abstract List<User> findByOrgi(String orgi);
+  
   public abstract Page<User> findByDatastatusAndOrgi(boolean datastatus , String orgi, Pageable paramPageable);
   
   public abstract Page<User> findByDatastatusAndOrgiAndUsernameLike(boolean datastatus , String orgi ,String username ,Pageable paramPageable);

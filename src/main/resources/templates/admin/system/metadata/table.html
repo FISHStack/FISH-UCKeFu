@@ -14,9 +14,10 @@
 				  <colgroup>
 				  		<col width="1%">
 						<col width="20%">
-						<col width="15%">
-						<col width="15%">
-						<col width="15%">
+						<col width="10%">
+						<col width="10%">
+						<col width="10%">
+						<col width="10%">
 					<col>
 				  </colgroup>
 				  <thead>
@@ -30,6 +31,7 @@
 					  <th>长度</th>
 					  <th>启用字典</th>
 					  <th>禁用导入导出</th>
+					  <th>流程变量</th>
 					  <th style="white-space:nowrap;" nowrap="nowrap">操作</th>
 					</tr> 
 				  </thead>
@@ -48,6 +50,7 @@
 					  <td>${prop.length!''}</td>
 					  <td align="center"><#if prop.seldata == true><i class="layui-icon" title="${prop.seldatacode!''}" class="green">&#xe618;</#if></td>
 					  <td align="center"><#if prop.impfield == true><i class="layui-icon">&#xe618;</#if></td>
+					  <td align="center"><#if prop.systemfield == true><i class="layui-icon">&#xe618;</#if></td>
 					  <td style="white-space:nowrap;width:1%;" nowrap="nowrap">
 							<a href="/admin/metadata/properties/edit.html?id=${prop.id!''}&p=${metadataList.number+1}" data-width="650" data-height="380" data-toggle="ajax" title="编辑${table.name!''}">
 								<i class="layui-icon">&#xe642;</i>

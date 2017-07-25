@@ -89,6 +89,9 @@ public class MetadataController extends Handler{
     	tableProperties.setName(tp.getName());
     	tableProperties.setSeldata(tp.isSeldata());
     	tableProperties.setSeldatacode(tp.getSeldatacode());
+    	
+    	tableProperties.setSystemfield(tp.isSystemfield());
+    	
     	tableProperties.setImpfield(tp.isImpfield());
     	
     	tablePropertiesRes.save(tableProperties);

@@ -14,11 +14,26 @@
  */
 package org.snaker.engine.core;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.snaker.engine.*;
-import org.snaker.engine.entity.*;
+import org.apache.commons.lang3.StringUtils;
+import org.snaker.engine.Assignment;
+import org.snaker.engine.AssignmentHandler;
+import org.snaker.engine.Completion;
+import org.snaker.engine.ITaskService;
+import org.snaker.engine.SnakerEngine;
+import org.snaker.engine.SnakerException;
+import org.snaker.engine.TaskAccessStrategy;
+import org.snaker.engine.access.QueryFilter;
+import org.snaker.engine.entity.HistoryTask;
+import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Process;
+import org.snaker.engine.entity.Task;
+import org.snaker.engine.entity.TaskActor;
 import org.snaker.engine.helper.AssertHelper;
 import org.snaker.engine.helper.DateHelper;
 import org.snaker.engine.helper.JsonHelper;
@@ -31,13 +46,15 @@ import org.snaker.engine.model.TaskModel;
 import org.snaker.engine.model.TaskModel.PerformType;
 import org.snaker.engine.model.TaskModel.TaskType;
 
+import com.ukefu.core.UKDataContext;
+
 /**
  * 任务执行业务类
  * @author yuqs
  * @since 1.0
  */
 public class TaskService extends AccessService implements ITaskService {
-	private static final String START = "start";
+	private static final String START = UKDataContext.START;
 
 	//访问策略接口
 	private TaskAccessStrategy strategy = null;
@@ -63,7 +80,9 @@ public class TaskService extends AccessService implements ITaskService {
 	public Task complete(String taskId, String operator, Map<String, Object> args) {
 		Task task = access().getTask(taskId);
 		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
-		task.setVariable(JsonHelper.toJson(args));
+		if(args!=null && args.size()>0){
+			task.setVariable(JsonHelper.toJson(args));
+		}
 		if(!isAllowed(task, operator)) {
 			throw new SnakerException("当前参与者[" + operator + "]不允许执行任务[taskId=" + taskId + "]");
 		}
@@ -71,6 +90,7 @@ public class TaskService extends AccessService implements ITaskService {
 		history.setFinishTime(DateHelper.getTime());
 		history.setTaskState(STATE_FINISH);
 		history.setOperator(operator);
+		
 		if(history.getActorIds() == null) {
 			List<TaskActor> actors = access().getTaskActorsByTaskId(task.getId());
 			String[] actorIds = new String[actors.size()];
@@ -276,19 +296,62 @@ public class TaskService extends AccessService implements ITaskService {
 		if(StringHelper.isEmpty(parentTaskId) || parentTaskId.equals(START)) {
 			throw new SnakerException("上一步任务ID为空，无法驳回至上一步处理");
 		}
+		
 		NodeModel current = model.getNode(currentTask.getTaskName());
 		HistoryTask history = access().getHistTask(parentTaskId);
 		NodeModel parent = model.getNode(history.getTaskName());
 		if(!NodeModel.canRejected(current, parent)) {
-			throw new SnakerException("无法驳回至上一步处理，请确认上一步骤并非fork、join、suprocess以及会签任务");
+			HistoryTask secParentTask = access().getHistTask(history.getParentTaskId());
+			if(secParentTask!=null){
+				NodeModel secParentNode = model.getNode(secParentTask.getTaskName());
+				if(!NodeModel.canRejected(current, secParentNode)) {
+					history = secParentTask ;
+				}
+			}else{
+				throw new SnakerException("无法驳回至上一步处理，请确认上一步骤并非fork、join、suprocess以及会签任务");
+			}
 		}
 
 		Task task = history.undoTask();
+		
 		task.setId(StringHelper.getPrimaryKey());
 		task.setCreateTime(DateHelper.getTime());
 		task.setOperator(history.getOperator());
 		access().saveTask(task);
-		assignTask(task.getId(), task.getOperator());
+		if(!StringUtils.isBlank(task.getOperator())){
+			Order order  = access().getOrder(task.getOrderId()) ;
+			assignTask(task.getId(), order.getCreator());
+		}else{
+			assignTask(task.getId(), task.getOperator());
+		}
+		return task;
+	}
+	
+	/**
+	 * 驳回任务到创建人
+	 */
+	public Task rejectTaskToCreate(ProcessModel model, Task currentTask) {
+		List<HistoryTask> tasks = access().getHistoryTasks(null , new QueryFilter().setOrderId(currentTask.getOrderId()));
+		HistoryTask history = null ;
+		for(HistoryTask task : tasks){
+			if(task.getParentTaskId().equals(START)){
+				history = task ; break ;
+			}
+		}
+		Task task = null ;
+		if(history!=null){
+			task = history.undoTask();
+			task.setId(StringHelper.getPrimaryKey());
+			task.setCreateTime(DateHelper.getTime());
+			if(!StringUtils.isBlank(history.getOperator())){
+				Order order  = access().getOrder(task.getOrderId()) ;
+				task.setOperator(order.getCreator());
+			}else{
+				task.setOperator(history.getOperator());
+			}
+			access().saveTask(task);
+			assignTask(task.getId(), task.getOperator());
+		}
 		return task;
 	}
 
@@ -466,7 +529,7 @@ public class TaskService extends AccessService implements ITaskService {
 			return ((String)actors).split(",");
         } else if(actors instanceof List){
             //jackson会把stirng[]转成arraylist，此处增加arraylist的逻辑判断,by 红豆冰沙2014.11.21
-			List<?> list = (List)actors;
+			List<?> list = (List<?>)actors;
 			results = new String[list.size()];
 			for(int i = 0; i < list.size(); i++) {
 				results[i] = (String)list.get(i);
@@ -524,6 +587,10 @@ public class TaskService extends AccessService implements ITaskService {
 			ServiceContext.put(TaskAccessStrategy.class.getName(), GeneralAccessStrategy.class);
             strategy = ServiceContext.find(TaskAccessStrategy.class);
 		}
+		if(strategy == null) {
+            strategy = new GeneralAccessStrategy();
+		}
+		
 		return strategy;
 	}
 }

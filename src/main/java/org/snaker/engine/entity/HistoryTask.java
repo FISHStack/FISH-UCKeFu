@@ -64,6 +64,11 @@ public class HistoryTask implements Serializable {
      * 任务处理者ID
      */
     private String operator;
+    
+    /**
+     * 操作类型
+     */
+    private String optype ;
     /**
      * 任务创建时间
      */
@@ -255,6 +260,14 @@ public class HistoryTask implements Serializable {
 		this.actorIds = actorIds;
 	}
 	
+	public String getOptype() {
+		return optype;
+	}
+
+	public void setOptype(String optype) {
+		this.optype = optype;
+	}
+
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getVariableMap() {
         Map<String, Object> map = JsonHelper.fromJson(this.variable, Map.class);

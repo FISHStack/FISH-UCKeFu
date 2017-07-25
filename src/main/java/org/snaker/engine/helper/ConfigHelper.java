@@ -73,7 +73,7 @@ public class ConfigHelper
         if(NumberUtils.isNumber(value)) {
         	return Integer.parseInt(value);
         } else {
-        	return 0;
+        	return 20;
         }
     }
 

@@ -45,6 +45,8 @@ import org.snaker.engine.model.StartModel;
 import org.snaker.engine.model.TaskModel;
 import org.snaker.engine.model.TransitionModel;
 
+import com.ukefu.core.UKDataContext;
+
 /**
  * 基本的流程引擎实现类
  * @author yuqs
@@ -320,6 +322,11 @@ public class SnakerEngineImpl implements SnakerEngine {
 		AssertHelper.notNull(model, "当前任务未找到流程定义模型");
 		if(StringHelper.isEmpty(nodeName)) {
 			Task newTask = task().rejectTask(model, execution.getTask());
+			newTask.setVariable(execution.getTask().getVariable());
+			execution.addTask(newTask);
+		}else if(nodeName.equals(UKDataContext.START)) {
+			Task newTask = task().rejectTaskToCreate(model, execution.getTask());
+			newTask.setVariable(execution.getTask().getVariable());
 			execution.addTask(newTask);
 		} else {
 			NodeModel nodeModel = model.getNode(nodeName);

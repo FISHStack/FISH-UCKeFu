@@ -67,7 +67,7 @@ public class Page<T> {
 	/**
 	 * 返回Page对象自身的setPageNo函数,可用于连续设置。
 	 */
-	public Page<T> pageNo(int thePageNo) {
+	public Page<T> retPageNo(int thePageNo) {
 		setPageNo(thePageNo);
 		return this;
 	}

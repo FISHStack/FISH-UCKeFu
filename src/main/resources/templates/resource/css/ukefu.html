@@ -89,11 +89,17 @@
 
 .icon-user-copy:before { content: "\e600"; }
 
+.icon-workflow1:before { content: "\e636"; }
+
+.icon-poseidonworkflow:before { content: "\e664"; }
+
 .icon-thumbsup:before { content: "\e661"; }
 
 .icon-discharge_summary:before { content: "\e757"; }
 
 .icon-logout:before { content: "\e622"; }
+
+.icon-workflowmonitoring:before { content: "\e638"; }
 
 .icon-zhishiguanli:before { content: "\e704"; }
 
@@ -115,6 +121,8 @@
 
 .icon-fav_active:before { content: "\e623"; }
 
+.icon-daiban-copy:before { content: "\e660"; }
+
 .icon-history1:before { content: "\e60a"; }
 
 .icon-iconfontfav-copy:before { content: "\e608"; }
@@ -124,6 +132,8 @@
 .icon-knowledge:before { content: "\e628"; }
 
 .icon-import4:before { content: "\e89a"; }
+
+.icon-workflow:before { content: "\e632"; }
 
 .icon-agentblacklist:before { content: "\e8a7"; }
 
@@ -177,9 +187,13 @@
 
 .icon-yinzhangshenpitongguo:before { content: "\e6a4"; }
 
+.icon-yinzhangshenpijujue:before { content: "\e6a5"; }
+
 .icon-30offlineoval:before { content: "\e689"; }
 
 .icon-show_summary_img:before { content: "\e7c8"; }
+
+.icon-zhishiku:before { content: "\e630"; }
 
 .icon-ai1:before { content: "\e676"; }
 
@@ -223,11 +237,15 @@
 
 .icon-shenpi_tongguo:before { content: "\e697"; }
 
+.icon-shenpi_yijujue:before { content: "\e69a"; }
+
 .icon-Summary_today:before { content: "\e60f"; }
 
 .icon-icon_Dial_down:before { content: "\e679"; }
 
 .icon-icon_knowledge:before { content: "\e655"; }
+
+.icon-shenpituihui:before { content: "\e639"; }
 
 .icon-attachment2:before { content: "\e61e"; }
 
@@ -252,6 +270,11 @@
 .icon-shenpi-:before { content: "\e627"; }
 
 .icon-ERP_xqcaigou:before { content: "\e65d"; }
+
+.icon-shenpijujue:before { content: "\e674"; }
+
+
+
 
 body,html{
 	height:100%;
@@ -2587,7 +2610,7 @@ select{
 .ukefu-workorders-number{
 	position: absolute;
     left: 5px;
-    top: 5px;
+    top:10px;
     color:${systemConfig.styleColor!'#32c24d'};
     font-size:14px;
 }
@@ -2624,7 +2647,7 @@ select{
 	padding:5px;
 }
 .ukefu-workorders-content{
-	padding:10px 20px;
+	padding:10px 20px 20px 0px;
 }
 
 
@@ -2843,6 +2866,7 @@ select{
 }
 .ukefu-workorders-ibfo{
 	padding: 10px 20px;
+	position: relative;
 }
 .ukefu-timeline-item-head {
     width: 13px;
@@ -3560,4 +3584,89 @@ select{
 }
 .ukef-kmmap-current a{
 	color:#ffffff;
+}
+.ukefu-kbs-cat *{
+	font-size:13px;
+}
+#toolbox{
+	top:10px !important;
+	background-color: #ffffff;
+    padding: 5px;
+    border: 1px solid #DEDEDE;
+    border-radius: 4px;
+    width:100px;
+}
+#toolbox #toolbox_handle{
+	border-bottom:1px solid #dedede;
+	padding:5px 0px 5px 5px;
+}
+
+#properties{
+	display: block;
+    position: absolute;
+    top: 10px !important;
+    left: auto !important;
+    width:300px !important; 
+    width: 230px;
+    right: 20px;
+    background-color: #ffffff;
+    padding: 5px 5px 5px 0px;
+    border: 1px solid #DEDEDE;
+    border-radius: 4px;
+}
+#properties #properties_handle{
+	border-bottom:1px solid #dedede;
+	padding:5px 0px 5px 5px;
+	margin-bottom:15px;
+}
+#properties .properties_all input{
+	
+} 
+.properties_value select{
+    border: 1px solid #999999;
+    padding-left:5px;	
+}
+.properties_value input{
+    border: 1px solid #999999;
+    border-radius: 2px;
+    padding-left:5px;	
+}
+#tipDIV{
+	z-index:10000;
+}
+.ukefu-count-tip dd{
+   	position: relative;
+}
+.ukefu-count-tip .tip{
+	position: absolute;
+    right: 5px;
+    top: 2px;
+    color: #333;
+}
+.ukefu-count-tip .layui-this .tip{
+	color:#ffffff;
+}
+.ukefu-checkbox .layui-form-checkbox[lay-skin=primary]{
+	margin-top:0px;
+}
+.ukefu-workflow-status{
+	position: absolute;
+    right: 300px;
+    top:10px;
+}
+.ukefu-workflow-status i
+{
+	font-size: 45px;
+    color: red;
+}
+.ukefu-workflow-status .back{
+	font-size: 50px;
+}
+.ukefu-workflow-status .turn{
+	font-size: 50px;
+	${systemConfig.color!'color:#0096C4;'}
+}
+.ukefu-workflow-status .agree{
+	font-size: 50px;
+	${systemConfig.color!'color:#0096C4;'}
 }

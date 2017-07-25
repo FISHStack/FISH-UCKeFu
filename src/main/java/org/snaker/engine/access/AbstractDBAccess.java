@@ -161,11 +161,19 @@ public abstract class AbstractDBAccess implements DBAccess {
 	protected Dialect getDialect() {
         if(dialect != null) return dialect;
 		dialect = ServiceContext.getContext().find(Dialect.class);
+		Connection connection = null;
 		if(dialect == null) {
 			try {
-				dialect = JdbcHelper.getDialect(getConnection());
+				connection = getConnection() ;
+				dialect = JdbcHelper.getDialect(connection);
 			} catch (Exception e) {
 				log.error("Unable to find the available dialect.Please configure dialect to snaker.xml");
+			}finally{
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return dialect;
@@ -1015,7 +1023,7 @@ public abstract class AbstractDBAccess implements DBAccess {
         if(page == null) {
             return queryList(clazz, querySQL, args);
         }
-        String countSQL = "select count(1) from (" + sql + ") c ";
+        String countSQL = "select count(1) as ukefu_count from (" + sql + ") c ";
         querySQL = getDialect().getPageSql(querySQL, page);
         if(log.isDebugEnabled()) {
             log.debug("查询分页countSQL=\n" + countSQL);

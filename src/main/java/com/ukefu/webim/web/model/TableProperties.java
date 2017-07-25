@@ -73,9 +73,9 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	private String tokentype ;	//分词方式
 	private boolean inx = true;
 	private boolean title = false ;
-	private boolean systemfield  = false ;	//系统字段，禁止删除 ， 禁止修改
+	private boolean systemfield  = false ;	//变更用处，是否流程变量
 	private int length = 255 ;
-	private boolean fieldstatus ;
+	private boolean fieldstatus ;			
 	private boolean seldata ;
 	private String seldatatype ;	//选择数据方式  ： 字典数据  ， 表数据  ， 如果是表数据，则需要选择 表ID
 	private String seldatacode ;

@@ -16,6 +16,8 @@ package org.snaker.engine.helper;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,12 @@ public class ClassHelper {
 	 */
 	public static long castLong(Object count) {
 		if(count == null) return -1L;
+		if(count instanceof ArrayList){
+			count = ((ArrayList)count).get(0) ;
+			if(count instanceof Map){
+				count = ((Map)count).get("ukefu_count") ;
+			}
+		}
 		if(count instanceof Long) {
 			return (Long)count;
 		} else if(count instanceof BigDecimal) {

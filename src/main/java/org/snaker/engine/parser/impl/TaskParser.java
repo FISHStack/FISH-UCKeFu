@@ -39,6 +39,7 @@ public class TaskParser extends AbstractNodeParser {
 		TaskModel task = (TaskModel)node;
 		task.setForm(element.getAttribute(ATTR_FORM));
 		task.setAssignee(element.getAttribute(ATTR_ASSIGNEE));
+		task.setAssigneeDisplay(element.getAttribute(ATTR_ASSIGNEE_DISPLAY));
 		task.setExpireTime(element.getAttribute(ATTR_EXPIRETIME));
 		task.setAutoExecute(element.getAttribute(ATTR_AUTOEXECUTE));
 		task.setCallback(element.getAttribute(ATTR_CALLBACK));

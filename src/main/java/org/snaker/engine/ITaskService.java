@@ -129,6 +129,14 @@ public interface ITaskService {
 	Task rejectTask(ProcessModel model, Task currentTask);
 	
 	/**
+	 * 根据当前任务对象驳回至创建人
+	 * @param model 流程定义模型，用以获取上一步模型对象
+	 * @param currentTask 当前任务对象
+	 * @return Task 任务对象
+	 */
+	Task rejectTaskToCreate(ProcessModel model, Task currentTask);
+	
+	/**
 	 * 根据taskId、operator，判断操作人operator是否允许执行任务
 	 * @param task 任务对象
 	 * @param operator 操作人

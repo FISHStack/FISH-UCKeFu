@@ -298,6 +298,9 @@ var Proxy = {
 	updateData : function(inner , data){
 		$(inner).empty().append(data) ;
 	},
+	updateFormData : function(inner , data){
+		$(inner).val(data).click() ;
+	},
 	addTopMsgTip : function(num){
 		var msgNum = top.$('#ukefu-last-msg').data("num");
 		msgNum = msgNum + num ;

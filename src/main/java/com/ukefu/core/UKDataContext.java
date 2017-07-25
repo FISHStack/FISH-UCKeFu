@@ -21,6 +21,7 @@ public class UKDataContext {
 	public static final String WORKORDERS_CLOSED_STATUS = "uckefu_workorders_closed" ;
 	public static final String SERVICE_QUENE_NULL_STR = "service_quene_null" ;
 	public static final String DEFAULT_TYPE = "default"	;		//默认分类代码
+	public static final String START = "start";					//流程默认的开始节点
 	
 	public static final int MAX_IMAGE_WIDTH = 460 ;		
 	
@@ -49,6 +50,14 @@ public class UKDataContext {
 			return super.toString().toLowerCase() ;
 		}
 	}
+	
+	public enum ProcessType{
+		WORKORDER ;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	
 	public enum SalesNamesStatus{
 		DIST,			//已分配

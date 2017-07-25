@@ -43,6 +43,7 @@ public interface NodeParser {
     public static final String ATTR_ATTR = "attr";
     public static final String ATTR_TYPE= "type";
 	public static final String ATTR_ASSIGNEE = "assignee";
+	public static final String ATTR_ASSIGNEE_DISPLAY = "assigneeDisplay";
 	public static final String ATTR_ASSIGNEE_HANDLER = "assignmentHandler";
 	public static final String ATTR_PERFORMTYPE = "performType";
 	public static final String ATTR_TASKTYPE = "taskType";

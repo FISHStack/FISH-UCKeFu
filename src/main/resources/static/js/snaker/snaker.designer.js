@@ -37,7 +37,7 @@
 		},
 		tools:{
 			attr:{
-				left:10,top:100
+				left:10,top:10
 			},
 			pointer:{},
 			path:{},
@@ -47,7 +47,7 @@
 			}
 		},
 		props:{
-			attr:{top:10,left:0},
+			attr:{top:328,left:10},
 			props:{}
 		},
 		restore:"",
@@ -57,6 +57,7 @@
 		},
 		historyRects:{
 			rects:[],
+            rectAttr:{stroke:"#00ff00","stroke-width":2},
 			pathAttr:{
 				path:{stroke:"#00ff00"},
 				arrow:{stroke:"#00ff00",fill:"#00ff00"}
@@ -154,25 +155,9 @@
 				}
         	}
         	if(!matched) return;
-            var tipDIV = document.getElementById("tipDIV");
-            if (tipDIV) {
-                document.body.removeChild(tipDIV);
-            }
-            tipDIV = document.createElement("tipDIV");
-            tipDIV.id = "tipDIV";
-            tipDIV.style.styleFloat="left";
-            tipDIV.style.overflow="hidden";
-          
-            tipDIV.style.width=180;
-            tipDIV.style.height=60;
-            tipDIV.style.position="absolute";
-            tipDIV.style.backgroundColor="#FFE699";
-			$(tipDIV).css("top" , ($('#snakerflow').offset().top+rect.attr('y')+52)+"px");
-			$(tipDIV).css("left" , ($('#snakerflow').offset().left+rect.attr('x'))+"px");
-
             $.ajax({
                 type:'GET',
-                url:"/rbpm/instance/task/tip.html",
+                url:"/apps/bpm/task/tip",
                 data:"orderid=" + designer.config.orderId + "&taskname=" + name,//_o.props['name'].value,
                 async: false,
                 error: function(){
@@ -180,9 +165,7 @@
                     return false;
                 },
                 success: function(data){
-                    //tipDIV.innerHTML="<div style='width:180px; height:20px;border: 1px solid #d2dde2;'><a href='javascript:void(0)' onclick='addTaskActor(\"" + name + "\");' class='btnAdd'></a><a href='javascript:void(0)' class='btnClock'></a><a href='javascript:void(0)' onclick='document.body.removeChild(document.getElementById(\"tipDIV\"))' class='btnDel'></a></div><div style='width:180px; height:40px;border: 1px solid #d2dde2;'><div id='currentActorDIV' style='width:180px; height:20px;'>参与者:" + data.actors + "</div><div id='arrivalDIV' style='width:180px; height:20px;'>抵达时间:" + data.createTime + "</div></div>";
-                	tipDIV.innerHTML="<div style='width:180px; height:20px;border: 1px solid #d2dde2;'><a href='javascript:void(0)' onclick='document.body.removeChild(document.getElementById(\"tipDIV\"))' class='btnDel'></a></div><div style='width:180px; height:40px;border: 1px solid #d2dde2;'><div id='currentActorDIV' style='width:180px; height:20px;'>参与者:" + data.actors + "</div><div id='arrivalDIV' style='width:180px; height:20px;'>抵达时间:" + data.createTime + "</div></div>";
-                    document.body.appendChild(tipDIV);
+                	top.layerwin = top.layer.open({title:"查看流程节点信息", type: 1, id: 'mainajaxwin', area:["350px" , "400px"] , maxmin: true, anim: 2,content: data});
                 }
             });
         }
@@ -222,14 +205,7 @@
         _text.click(function(){
             if (!designer.config.editable) {
                 designer.util.tip(_rect, _o.props['name'].value);
-            } else {
-/*                var returnValue = window.showModalDialog(designer.config.ctxPath + '/config/form?lookup=1',window,'dialogWidth:1000px;dialogHeight:600px');
-                if(returnValue) {
-                    var formPath = "/config/form/use/" + returnValue;
-                    _o.props.form.value = formPath;
-                    document.getElementById("pform").innerHTML = '<input style="width:98%;" value="' + formPath + '"/>';
-                }*/
-            }
+            } 
         });
         _rect.click(function(){
             if (!designer.config.editable) {
@@ -237,14 +213,7 @@
             }
         });
         _rect.dblclick(function(){
-            if (designer.config.editable) {
-/*                var returnValue = window.showModalDialog(designer.config.ctxPath + '/config/form?lookup=1',window,'dialogWidth:1000px;dialogHeight:600px');
-                if(returnValue) {
-                    var formPath = "/config/form/use/" + returnValue;
-                    _o.props.form.value = formPath;
-                    document.getElementById("pform").innerHTML = '<input style="width:98%;" value="' + formPath + '"/>';
-                }*/
-            }
+           
         });
         _img.drag(function(dx, dy) {
             dragMove(dx, dy);
@@ -1014,6 +983,9 @@
         this.text=function(){
             return _text.attr("text")
         };
+        this.name=function() {
+            return _o.props["name"].value;
+        }
         this.attr=function(o){
             if(o&&o.path){
                 _path.attr(o.path)
@@ -1024,7 +996,7 @@
         }
     };
 	designer.props=function(o, r){
-		var _this = this, _pdiv = snaker("#properties").hide().css(designer.config.props.attr).bind("click",function(){return false}),
+		var _this = this, _pdiv = snaker("#properties").hide().draggable({handle:"#properties_handle"}).resizable().css(designer.config.props.attr).bind("click",function(){return false}),
             _tb = _pdiv.find("table"), _r = r, _src;
 		var showpropsHandler = function(e, props, src){
 			if(_src&&_src.getId()==src.getId()){
@@ -1039,7 +1011,7 @@
 			_pdiv.show();
 			for(var l in props){
 				if(!props[l].name) continue;
-				if(props[l].name=="name"&&props[l].value==""){
+				if((props[l].name=="name"||props[l].name=="displayName")&&props[l].value==""){
 					props[l].value=src.getId()
 				}
 				props[l].value=props[l].value.replace(/#1/g,"'");
@@ -1143,7 +1115,7 @@
 			snaker(c).droppable({
 				accept:".state",
 				drop:function(c,i){
-					snaker(_r).trigger("addrect",[i.helper.attr("type"),{attr:{x:i.helper.offset().left,y:i.helper.offset().top}}])
+					snaker(_r).trigger("addrect",[i.helper.attr("type"),{attr:{x:i.helper.offset().left - 295,y:i.helper.offset().top - 45}}])
 				}
 			});
 			snaker("#save").click(function(){
@@ -1158,6 +1130,7 @@
 					}
 				}
 				i+=">\n";
+                var tarray = new Array();
 				for(var node in _states){
 					if(_states[node]){
 						i+=_states[node].toBeforeXml();
@@ -1170,6 +1143,7 @@
 										alert("连接线名称不能为空");
 										return
 									}else{
+                                        tarray.push(_paths[transition].name());
 										i+="\n";
 										i+=transitionXml;
 									}
@@ -1182,7 +1156,13 @@
 					}
 				}
 				i+="</process>";
-				
+                var nary=tarray.sort();
+                for(var idx=0;idx<tarray.length;idx++){
+                    if (nary[idx]==nary[idx+1]){
+                        alert("连接线名称不能重复[" + nary[idx] + "]");
+                        return;
+                    }
+                }
 				designer.config.tools.save.onclick(i)
 			});
 			new designer.props({},_r)
@@ -1224,10 +1204,12 @@
 				if(!rmap[_paths[h].from().getName()]){
 					rmap[_paths[h].from().getName()]={rect:_paths[h].from(),paths:{}}
 				}
-				rmap[_paths[h].from().getName()].paths[_paths[h].text()]=_paths[h];
+
 				if(!rmap[_paths[h].to().getName()]){
 					rmap[_paths[h].to().getName()]={rect:_paths[h].to(),paths:{}}
 				}
+                rmap[_paths[h].from().getName()].paths[_paths[h].name()]=_paths[h];
+                //alert(_paths[h].from().getName() + "======>" + _paths[h].name());
 			}
 			for(var u=0;u<hr.rects.length;u++){
 				if(rmap[hr.rects[u].name]){

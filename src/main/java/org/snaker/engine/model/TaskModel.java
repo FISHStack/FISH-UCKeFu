@@ -67,6 +67,8 @@ public class TaskModel extends WorkModel {
 	 * 参与者变量名称
 	 */
 	private String assignee;
+	
+	private String assigneeDisplay;
 	/**
 	 * 参与方式
 	 * any：任何一个参与者处理完即执行下一步
@@ -253,4 +255,12 @@ public class TaskModel extends WorkModel {
         }
         return models;
     }
+
+	public String getAssigneeDisplay() {
+		return assigneeDisplay;
+	}
+
+	public void setAssigneeDisplay(String assigneeDisplay) {
+		this.assigneeDisplay = assigneeDisplay;
+	}
 }

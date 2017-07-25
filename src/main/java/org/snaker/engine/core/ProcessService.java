@@ -220,6 +220,7 @@ public class ProcessService extends AccessService implements IProcessService, Ca
 			String oldProcessName = entity.getName();
 			entity.setModel(model);
 			entity.setBytes(bytes);
+			entity.setState(1);
 			access().updateProcess(entity);
 			if(!oldProcessName.equalsIgnoreCase(entity.getName())) {
 				Cache<String, Process> entityCache = ensureAvailableEntityCache();
