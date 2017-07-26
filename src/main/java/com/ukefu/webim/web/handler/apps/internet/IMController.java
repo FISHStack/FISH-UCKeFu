@@ -151,9 +151,11 @@ public class IMController extends Handler{
 			userHistory.setOrgi(invite.getOrgi());
 			userHistory.setAppid(id);
 			userHistory.setSessionid(request.getSession().getId());
-			userHistory.setHostname(request.getRemoteHost());
-			userHistory.setIp(request.getRemoteAddr());
-			IP ipdata = IPTools.getInstance().findGeography(UKTools.getIpAddr(request));
+			
+			String ip = UKTools.getIpAddr(request);
+			userHistory.setHostname(ip);
+			userHistory.setIp(ip);
+			IP ipdata = IPTools.getInstance().findGeography(ip);
 			userHistory.setCountry(ipdata.getCountry());
 			userHistory.setProvince(ipdata.getProvince());
 			userHistory.setCity(ipdata.getCity());
