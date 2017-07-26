@@ -193,6 +193,13 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum MetadataTableType{
+		UK_WORKORDERS;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	public enum OnlineUserInviteStatus{
 		DEFAULT,
 		INVITE,
