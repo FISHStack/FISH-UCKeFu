@@ -183,7 +183,7 @@
 		<dependency>
 	        <groupId>org.lionsoul.ip2region</groupId>
 	        <artifactId>ip2region</artifactId>
-	        <version>1.2.3</version>
+	        <version>1.2.4</version>
 	    </dependency>
 	    
 	    <dependency>
