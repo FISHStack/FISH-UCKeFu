@@ -23,9 +23,27 @@ public class KbsType implements java.io.Serializable{
 	private String id ;
 	private String name ;
 	private String code ;
+	private boolean approval ;	//是否需要专家审批
+	
+	private boolean bpm ;		//是否需要流程审批
+	
+	private String bpmid ;		//知识审批流程ID
+	
+	private String pc ;			//知识分类负责人
+	
+	private int inx;			//知识分类排序位置
+
 	private Date createtime ;
 	private String creater;
 	private String username ;
+	
+	private Date startdate;		//有效期开始
+	private Date enddate ;		//有效期结束
+	
+	private boolean enable ;	//状态是否可用
+	
+	private String description	;//分类备注描述信息
+	
 	private Date updatetime ;
 	private String parentid ;		//父级ID
 	private String orgi ;
@@ -87,5 +105,59 @@ public class KbsType implements java.io.Serializable{
 	}
 	public void setParentid(String parentid) {
 		this.parentid = parentid;
+	}
+	public boolean isApproval() {
+		return approval;
+	}
+	public void setApproval(boolean approval) {
+		this.approval = approval;
+	}
+	public String getBpmid() {
+		return bpmid;
+	}
+	public void setBpmid(String bpmid) {
+		this.bpmid = bpmid;
+	}
+	public String getPc() {
+		return pc;
+	}
+	public void setPc(String pc) {
+		this.pc = pc;
+	}
+	public int getInx() {
+		return inx;
+	}
+	public void setInx(int inx) {
+		this.inx = inx;
+	}
+	public Date getStartdate() {
+		return startdate;
+	}
+	public void setStartdate(Date startdate) {
+		this.startdate = startdate;
+	}
+	public Date getEnddate() {
+		return enddate;
+	}
+	public void setEnddate(Date enddate) {
+		this.enddate = enddate;
+	}
+	public boolean isEnable() {
+		return enable;
+	}
+	public void setEnable(boolean enable) {
+		this.enable = enable;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public boolean isBpm() {
+		return bpm;
+	}
+	public void setBpm(boolean bpm) {
+		this.bpm = bpm;
 	}
 }

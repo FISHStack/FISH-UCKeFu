@@ -9,6 +9,10 @@ public class NettyIMClient implements NettyClient{
 	
 	private ArrayListMultimap<String, SocketIOClient> imClientsMap = ArrayListMultimap.create();
 	
+	public int size(){
+		return imClientsMap.size() ;
+	}
+	
 	public List<SocketIOClient> getClients(String key){
 		return imClientsMap.get(key) ;
 	}

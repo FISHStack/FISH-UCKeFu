@@ -12,10 +12,16 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
+import com.ukefu.util.event.UserEvent;
+
 @Entity
 @Table(name = "uk_onlineuser")
 @Proxy(lazy = false)
-public class OnlineUser {
+public class OnlineUser implements UserEvent{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5919027181023620097L;
 	private String creater;
 	private String datastatus;
 	private String id;

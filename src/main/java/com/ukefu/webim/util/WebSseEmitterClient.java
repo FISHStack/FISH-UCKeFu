@@ -23,6 +23,10 @@ public class WebSseEmitterClient{
 		return clents;
 	}
 	
+	public int size(){
+		return imClientsMap.size() ;
+	}
+	
 	public void putClient(String userid , WebIMClient client){
 		imClientsMap.put(client.getClient(), client) ;
 	}

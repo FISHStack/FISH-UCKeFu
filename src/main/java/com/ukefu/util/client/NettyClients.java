@@ -14,6 +14,10 @@ public class NettyClients {
 	private NettyIMClient entIMClients = new NettyIMClient();
 	private NettyCallCenterClient callCenterClients = new NettyCallCenterClient();
 	
+	public int size(){
+		return imClients.size();
+	}
+	
 	public static NettyClients getInstance(){
 		return clients ;
 	}

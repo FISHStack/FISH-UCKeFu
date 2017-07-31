@@ -212,10 +212,17 @@ function loadURL(url , panel , callback  , append){
 }
 
 function loadURLWithTip(url , panel , callback , append  , tip){
+	var inx ;
+	if(tip){
+		index = top.layer.load(0, {shade: false});
+	}
 	$.ajax({
 		url:url,
 		cache:false,
 		success: function(data){
+			if(tip){
+				top.layer.close(index);
+			}
 			if(panel){
 				if(append){
 					$(panel).append(data);

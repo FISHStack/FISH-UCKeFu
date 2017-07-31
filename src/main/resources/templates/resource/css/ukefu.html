@@ -310,8 +310,8 @@ a{
 	font-size:15px;
 }
 .layui-colla-title{
-	height:30px;
-	line-height:30px;
+	height:37px;
+	line-height:37px;
 	color:${systemConfig.styleColor!'#32c24d'};
 	font-size:15px;
 }
@@ -870,7 +870,7 @@ body .site-ukefu-nav .layui-nav-item{line-height: 40px}
 }
 .uk-layui-form{
 	height: calc(100% - 60px);
-	padding-top:10px;
+	padding-top:0px;
 	overflow-y: auto;
 }
 .layui-layer-page .layui-layer-content{
@@ -2570,8 +2570,7 @@ select{
 	padding-left:10px;
 }
 .select2-container--default .select2-selection--single , .select2-container--default.select2-container--focus .select2-selection--multiple , .select2-container--default .select2-selection--multiple{
-	height: 38px;
-    line-height: 36px;
+	min-height: 38px;
     border: 1px solid #cccccc;
     background-color: #fff;
     border-radius: 2px;
@@ -3669,4 +3668,30 @@ select{
 .ukefu-workflow-status .agree{
 	font-size: 50px;
 	${systemConfig.color!'color:#0096C4;'}
+}
+.ukefu-ztree{
+	position: absolute;
+    z-index: 10000;
+    left: 0px;
+    top: 38px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    width: 188px;
+    border-top: 0px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    height: 120px;
+    display: block;
+}
+.ukefu-ztree .ztree{
+    width: 178px;
+    overflow: auto;
+    height: 105px;
+}
+.ukefu-limit-height .layui-anim{
+	max-height:120px;
+}
+.layui-this .tip{
+	color:#ffffff;
 }

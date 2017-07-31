@@ -25,7 +25,7 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Component;
 
 import com.ukefu.util.UKTools;
-import com.ukefu.webim.web.model.Topic;
+import com.ukefu.webim.web.model.KbsTopic;
 
 @Component
 public class KbsTopicRepositoryImpl implements KbsTopicEsCommonRepository{
@@ -34,17 +34,17 @@ public class KbsTopicRepositoryImpl implements KbsTopicEsCommonRepository{
 	@Autowired
 	public void setElasticsearchTemplate(ElasticsearchTemplate elasticsearchTemplate) {
         this.elasticsearchTemplate = elasticsearchTemplate;
-        if(!elasticsearchTemplate.indexExists(Topic.class)){
-        	elasticsearchTemplate.createIndex(Topic.class) ;
+        if(!elasticsearchTemplate.indexExists(KbsTopic.class)){
+        	elasticsearchTemplate.createIndex(KbsTopic.class) ;
         }
-        if(!elasticsearchTemplate.typeExists("uckefu" , "uk_xiaoe_topic")){
-        	elasticsearchTemplate.putMapping(Topic.class) ;
+        if(!elasticsearchTemplate.typeExists("uckefu" , "uk_kbs_topic")){
+        	elasticsearchTemplate.putMapping(KbsTopic.class) ;
         }
     }
 	@Override
-	public Page<Topic> getTopicByCate(String cate , String q, final int p , final int ps) {
+	public Page<KbsTopic> getTopicByCate(String cate , String q, final int p , final int ps) {
 
-		Page<Topic> pages  = null ;
+		Page<KbsTopic> pages  = null ;
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.must(termQuery("cate" , cate)) ;
@@ -55,16 +55,16 @@ public class KbsTopicRepositoryImpl implements KbsTopicEsCommonRepository{
 	    NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder).withSort(new FieldSortBuilder("createtime").unmappedType("date").order(SortOrder.DESC));
 	    searchQueryBuilder.withHighlightFields(new HighlightBuilder.Field("title").fragmentSize(200)) ;
 	    SearchQuery searchQuery = searchQueryBuilder.build().setPageable(new PageRequest(p, ps)) ;
-	    if(elasticsearchTemplate.indexExists(Topic.class)){
-	    	pages = elasticsearchTemplate.queryForPage(searchQuery, Topic.class , new UKResultMapper());
+	    if(elasticsearchTemplate.indexExists(KbsTopic.class)){
+	    	pages = elasticsearchTemplate.queryForPage(searchQuery, KbsTopic.class , new UKResultMapper());
 	    }
 	    return pages ; 
 	}
 	
 	@Override
-	public Page<Topic> getTopicByTop(boolean top , final int p , final int ps) {
+	public Page<KbsTopic> getTopicByTop(boolean top , final int p , final int ps) {
 
-		Page<Topic> pages  = null ;
+		Page<KbsTopic> pages  = null ;
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.must(termQuery("top" , top)) ;
@@ -82,16 +82,16 @@ public class KbsTopicRepositoryImpl implements KbsTopicEsCommonRepository{
 	    
 	    searchQueryBuilder.withHighlightFields(new HighlightBuilder.Field("title").fragmentSize(200)) ;
 	    SearchQuery searchQuery = searchQueryBuilder.build().setPageable(new PageRequest(p, ps)) ;
-	    if(elasticsearchTemplate.indexExists(Topic.class)){
-	    	pages = elasticsearchTemplate.queryForPage(searchQuery, Topic.class , new UKResultMapper());
+	    if(elasticsearchTemplate.indexExists(KbsTopic.class)){
+	    	pages = elasticsearchTemplate.queryForPage(searchQuery, KbsTopic.class , new UKResultMapper());
 	    }
 	    return pages ; 
 	}
 	
 	@Override
-	public Page<Topic> getTopicByCateAndUser(String cate  , String q , String user ,final int p , final int ps) {
+	public Page<KbsTopic> getTopicByCateAndUser(String cate  , String q , String user ,final int p , final int ps) {
 
-		Page<Topic> pages  = null ;
+		Page<KbsTopic> pages  = null ;
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.must(termQuery("cate" , cate)) ;
@@ -102,16 +102,16 @@ public class KbsTopicRepositoryImpl implements KbsTopicEsCommonRepository{
 		
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder).withQuery(termQuery("creater" , user)).withSort(new FieldSortBuilder("top").unmappedType("boolean").order(SortOrder.DESC)).withSort(new FieldSortBuilder("updatetime").unmappedType("date").order(SortOrder.DESC));
 		SearchQuery searchQuery = searchQueryBuilder.build().setPageable(new PageRequest(p, ps));
-		if(elasticsearchTemplate.indexExists(Topic.class)){
-			pages = elasticsearchTemplate.queryForPage(searchQuery, Topic.class, new UKResultMapper());
+		if(elasticsearchTemplate.indexExists(KbsTopic.class)){
+			pages = elasticsearchTemplate.queryForPage(searchQuery, KbsTopic.class, new UKResultMapper());
 	    }
 	    return pages ; 
 	}
 	
 	@Override
-	public Page<Topic> getTopicByCon(BoolQueryBuilder boolQueryBuilder, final int p , final int ps) {
+	public Page<KbsTopic> getTopicByCon(BoolQueryBuilder boolQueryBuilder, final int p , final int ps) {
 
-		Page<Topic> pages  = null ;
+		Page<KbsTopic> pages  = null ;
 		
 		BoolFilterBuilder beginFilter = FilterBuilders.boolFilter().should(FilterBuilders.missingFilter("begintime") , FilterBuilders.rangeFilter("begintime").lte(UKTools.dateFormate.format(new Date()))) ;
 		BoolFilterBuilder endFilter = FilterBuilders.boolFilter().should(FilterBuilders.missingFilter("endtime") , FilterBuilders.rangeFilter("endtime").gte(UKTools.dateFormate.format(new Date()))) ;
@@ -125,15 +125,15 @@ public class KbsTopicRepositoryImpl implements KbsTopicEsCommonRepository{
 	    NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(query).withSort(new FieldSortBuilder("createtime").unmappedType("date").order(SortOrder.DESC));
 	    
 	    SearchQuery searchQuery = searchQueryBuilder.build().setPageable(new PageRequest(p, ps)) ;
-	    if(elasticsearchTemplate.indexExists(Topic.class)){
-	    	pages = elasticsearchTemplate.queryForPage(searchQuery, Topic.class);
+	    if(elasticsearchTemplate.indexExists(KbsTopic.class)){
+	    	pages = elasticsearchTemplate.queryForPage(searchQuery, KbsTopic.class);
 	    }
 	    return pages ; 
 	}
 	@Override
-	public List<Topic> getTopicByOrgi(String orgi , String type, String q) {
+	public List<KbsTopic> getTopicByOrgi(String orgi , String type, String q) {
 		
-		List<Topic> list  = null ;
+		List<KbsTopic> list  = null ;
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.must(termQuery("orgi" , orgi)) ;
@@ -148,8 +148,8 @@ public class KbsTopicRepositoryImpl implements KbsTopicEsCommonRepository{
 		
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder).withSort(new FieldSortBuilder("top").unmappedType("boolean").order(SortOrder.DESC)).withSort(new FieldSortBuilder("updatetime").unmappedType("date").order(SortOrder.DESC));
 		SearchQuery searchQuery = searchQueryBuilder.build();
-		if(elasticsearchTemplate.indexExists(Topic.class)){
-			list = elasticsearchTemplate.queryForList(searchQuery, Topic.class);
+		if(elasticsearchTemplate.indexExists(KbsTopic.class)){
+			list = elasticsearchTemplate.queryForList(searchQuery, KbsTopic.class);
 	    }
 	    return list ; 
 	}

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.util.client.NettyClients;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
@@ -23,6 +24,7 @@ import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.UserEventRepository;
 import com.ukefu.webim.service.repository.UserRepository;
+import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.User;
@@ -60,6 +62,11 @@ public class AdminController extends Handler{
     
     
     private void aggValues(ModelMap map , HttpServletRequest request){
+    	map.put("onlineUserCache", CacheHelper.getOnlineUserCacheBean().getSize()) ;
+    	map.put("onlineUserClients", OnlineUserUtils.webIMClients.size()) ;
+    	map.put("chatClients", NettyClients.getInstance().size()) ;
+    	map.put("systemCaches", CacheHelper.getSystemCacheBean().getSize()) ;
+    	
 		map.put("agentReport", ServiceQuene.getAgentReport(super.getOrgi(request))) ;
 		map.put("webIMReport", UKTools.getWebIMReport(userEventRes.findByOrgiAndCreatetimeRange(super.getOrgi(request), UKTools.getStartTime() , UKTools.getEndTime()))) ;
 		map.put("agents", userRes.countByOrgiAndAgent(super.getOrgi(request), true)) ;

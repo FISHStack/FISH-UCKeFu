@@ -19,6 +19,7 @@ import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.OrganRoleRepository;
 import com.ukefu.webim.service.repository.RoleRepository;
 import com.ukefu.webim.service.repository.UserRepository;
+import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.OrganRole;
@@ -89,6 +90,8 @@ public class OrganController extends Handler{
     	}else{
     		organ.setOrgi(super.getOrgi(request));
     		organRepository.save(organ) ;
+    		
+    		OnlineUserUtils.clean(super.getOrgi(request));
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/organ/index.html?msg="+msg));
     }
@@ -117,6 +120,7 @@ public class OrganController extends Handler{
 	    		user.setOrgan(organ);
 	    	}
 	    	userRepository.save(organUserList) ;
+	    	OnlineUserUtils.clean(super.getOrgi(request));
     	}
     	
     	return request(super.createRequestPageTempletResponse("redirect:/admin/organ/index.html?organ="+organ));
@@ -129,6 +133,7 @@ public class OrganController extends Handler{
 	    	User user= userRepository.getOne(id) ;
 	    	user.setOrgan(null);
 	    	userRepository.save(user) ;
+	    	OnlineUserUtils.clean(super.getOrgi(request));
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/organ/index.html?organ="+organ));
     }
@@ -152,6 +157,7 @@ public class OrganController extends Handler{
     		tempOrgan.setOrgi(super.getOrgi(request));
     		tempOrgan.setSkill(organ.isSkill());
     		organRepository.save(tempOrgan) ;
+    		OnlineUserUtils.clean(super.getOrgi(request));
     	}else{
     		msg =  "admin_organ_update_not_exist";
     	}
@@ -164,6 +170,7 @@ public class OrganController extends Handler{
     	String msg = "admin_organ_delete" ;
     	if(organ!=null){
 	    	organRepository.delete(organ);
+	    	OnlineUserUtils.clean(super.getOrgi(request));
     	}else{
     		msg = "admin_organ_not_exist" ;
     	}

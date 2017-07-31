@@ -22,6 +22,7 @@ import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
+import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
@@ -78,6 +79,7 @@ public class UsersController extends Handler{
     		}
     		user.setOrgi(super.getOrgi(request));
     		userRepository.save(user) ;
+    		OnlineUserUtils.clean(super.getOrgi(request));
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/user/index.html?msg="+msg));
     }
@@ -119,6 +121,7 @@ public class UsersController extends Handler{
 	    		}
 	    		tempUser.setUpdatetime(new Date());
 	    		userRepository.save(tempUser) ;
+	    		OnlineUserUtils.clean(super.getOrgi(request));
 	    	}
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/user/index.html"));
@@ -134,6 +137,7 @@ public class UsersController extends Handler{
 	    	user = userRepository.getOne(user.getId()) ;
 	    	user.setDatastatus(true);
 	    	userRepository.save(user) ;
+	    	OnlineUserUtils.clean(super.getOrgi(request));
     	}else{
     		msg = "admin_user_not_exist" ;
     	}

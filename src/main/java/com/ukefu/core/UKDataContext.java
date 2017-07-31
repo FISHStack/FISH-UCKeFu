@@ -22,6 +22,8 @@ public class UKDataContext {
 	public static final String SERVICE_QUENE_NULL_STR = "service_quene_null" ;
 	public static final String DEFAULT_TYPE = "default"	;		//默认分类代码
 	public static final String START = "start";					//流程默认的开始节点
+	public static final String CACHE_SKILL = "cache_skill";					//技能组的缓存
+	public static final String CACHE_AGENT = "cache_agent";					//坐席列表的缓存
 	
 	public static final int MAX_IMAGE_WIDTH = 460 ;		
 	
@@ -173,7 +175,8 @@ public class UKDataContext {
 	
 	public enum ModelType{
 		USER ,
-		WORKORDERS , 
+		WORKORDERS ,
+		KBS, 
 		SUMMARY,
 		CCSUMMARY;
 		public String toString(){

@@ -114,7 +114,7 @@ public class IMController extends Handler{
 		
 		view.addObject("mobile", CheckMobile.check(request.getHeader("User-Agent"))) ;
 		
-		CousultInvite invite = inviteRepository.findBySnsaccountidAndOrgi(id, super.getOrgi(request)) ;
+		CousultInvite invite = OnlineUserUtils.cousult(id, super.getOrgi(request), inviteRepository);
     	if(invite!=null){
     		view.addObject("inviteData", invite);
     		view.addObject("orgi",invite.getOrgi());
@@ -166,15 +166,16 @@ public class IMController extends Handler{
 		    userHistory.setBrowser(client.getBrowser());
 		    userHistory.setMobile(CheckMobile.check(request.getHeader("User-Agent")) ? "1" : "0");
 		    
-		    
-		    /***
-		     * 查询 技能组 ， 缓存？ 
-		     */
-		    view.addObject("skillList", organRes.findByOrgiAndSkill(invite.getOrgi(), true))  ;
-		    /**
-		     * 查询坐席 ， 缓存？
-		     */
-		    view.addObject("agentList", agentRes.findByOrgiAndAgent(invite.getOrgi(), true))  ;
+		    if(invite.isSkill()){
+			    /***
+			     * 查询 技能组 ， 缓存？ 
+			     */
+			    view.addObject("skillList", OnlineUserUtils.organ(invite.getOrgi()))  ;
+			    /**
+			     * 查询坐席 ， 缓存？
+			     */
+			    view.addObject("agentList", OnlineUserUtils.agents(invite.getOrgi()))  ;
+		    }
 		    
 			UKTools.published(userHistory);
 		}
@@ -194,7 +195,7 @@ public class IMController extends Handler{
     @RequestMapping("/online")
     @Menu(type = "im" , subtype = "online" , access = true)
     public SseEmitter callable(HttpServletRequest request , HttpServletResponse response , @Valid Contacts contacts, final @Valid String orgi , @Valid String appid, final @Valid String userid , @Valid String sign , final @Valid String client) {
-		final SseEmitter emitter = new SseEmitter();
+		final SseEmitter emitter = new SseEmitter(30000L);
 		if(!StringUtils.isBlank(userid)){
 			emitter.onCompletion(new Runnable() {
 				@Override
@@ -232,7 +233,7 @@ public class IMController extends Handler{
     public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	if(!StringUtils.isBlank(appid)){
-    		CousultInvite invite = inviteRepository.findBySnsaccountidAndOrgi(appid, super.getOrgi(request)) ;
+    		CousultInvite invite = OnlineUserUtils.cousult(appid, orgi, inviteRepository);
     		String userID = UKTools.genIDByKey(sessionid);
 			String nickname = "Guest_" + userID;
 			boolean consult = true ;				//是否已收集用户信息
@@ -435,7 +436,7 @@ public class IMController extends Handler{
 		view.addObject("mobile", mobile) ;
 		view.addObject("userid", userid) ;
 		
-		CousultInvite invite = inviteRepository.findBySnsaccountidAndOrgi(appid, super.getOrgi(request)) ;
+		CousultInvite invite = OnlineUserUtils.cousult(appid, super.getOrgi(request), inviteRepository);
     	if(invite!=null){
     		view.addObject("inviteData", invite);
     		view.addObject("orgi",invite.getOrgi());

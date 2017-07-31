@@ -25,7 +25,7 @@ import com.ukefu.util.UKTools;
 @Entity
 @Table(name = "uk_kbs_topic")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class KbsTopic implements java.io.Serializable , UKAgg{
+public class KbsTopic extends ESBean implements java.io.Serializable , UKAgg{
 	/**
 	 * 
 	 */
@@ -49,7 +49,11 @@ public class KbsTopic implements java.io.Serializable , UKAgg{
 	private float price ;		//问题价格
 	private String keyword ;	//关键词
 	private String summary ;	//摘要
+	private String tags ;		//标签
 	private boolean anonymous ;		//是否匿名提问
+	private boolean datastatus ;	//逻辑删除
+	
+	private boolean approval ;		//是否已经审批通过
 	
 	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date begintime ;		//有效期开始
@@ -70,6 +74,7 @@ public class KbsTopic implements java.io.Serializable , UKAgg{
 	private String status ;	//	状态	
 	private String tptype;	//知识分类
 	private String cate ;	//知识 栏目 
+	private String attachment ;	//附件
 		
 	private String username ;
 	private String orgi ;
@@ -392,5 +397,37 @@ public class KbsTopic implements java.io.Serializable , UKAgg{
 
 	public void setKey(String key) {
 		this.key = key;
+	}
+
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+
+	public String getAttachment() {
+		return attachment;
+	}
+
+	public void setAttachment(String attachment) {
+		this.attachment = attachment;
+	}
+
+	public boolean isDatastatus() {
+		return datastatus;
+	}
+
+	public void setDatastatus(boolean datastatus) {
+		this.datastatus = datastatus;
+	}
+
+	public boolean isApproval() {
+		return approval;
+	}
+
+	public void setApproval(boolean approval) {
+		this.approval = approval;
 	}
 }

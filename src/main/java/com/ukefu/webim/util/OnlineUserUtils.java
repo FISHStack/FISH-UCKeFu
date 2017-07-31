@@ -23,17 +23,23 @@ import com.ukefu.util.IPTools;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.webim.WebIMClient;
 import com.ukefu.webim.service.acd.ServiceQuene;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.impl.AgentUserService;
+import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.OnlineUserHisRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
+import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.router.RouterHelper;
 import com.ukefu.webim.util.server.message.NewRequestMessage;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.Contacts;
+import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.MessageDataBean;
 import com.ukefu.webim.web.model.MessageInContent;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.OnlineUserHis;
+import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.SessionConfig;
 import com.ukefu.webim.web.model.User;
 
@@ -54,6 +60,113 @@ public class OnlineUserUtils {
 		List<OnlineUser> onlineUserList = service.findByUseridAndOrgi(id , orgi);
 		return onlineUserList.size() > 0 ? onlineUserList.get(0) : null;
 	}
+	
+	/**
+	 * 
+	 * @param user
+	 * @param orgi
+	 * @param id
+	 * @param service
+	 * @return
+	 * @throws Exception
+	 */
+	public static CousultInvite cousult(String id ,String orgi, ConsultInviteRepository consultRes){
+		CousultInvite consultInvite = (CousultInvite) CacheHelper.getSystemCacheBean().getCacheObject(id, orgi) ;
+		if(consultInvite == null){
+			consultInvite = consultRes.findBySnsaccountidAndOrgi(id,orgi) ;
+			if(consultInvite!=null){
+				CacheHelper.getSystemCacheBean().put(id ,consultInvite , orgi) ;
+			}
+		}
+		return consultInvite;
+	}
+	
+	/**
+	 * 
+	 * @param user
+	 * @param orgi
+	 * @param id
+	 * @param service
+	 * @return
+	 * @throws Exception
+	 */
+	public static OnlineUser onlineuser(String userid ,String orgi){
+		OnlineUser onlineUser = (OnlineUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(userid, orgi) ;
+		if(onlineUser == null){
+			OnlineUserRepository service = (OnlineUserRepository) UKDataContext.getContext().getBean(OnlineUserRepository.class);
+
+			List<OnlineUser> tempOnlineUserList = service.findByUseridAndOrgi(userid , orgi);
+			if(tempOnlineUserList.size() > 0){
+				onlineUser = tempOnlineUserList.get(0) ;
+			}
+		}
+		return onlineUser;
+	}
+	
+	
+	/**
+	 * 
+	 * @param user
+	 * @param orgi
+	 * @param id
+	 * @param service
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Organ> organ(String orgi){
+		List<Organ> skillList = (List<Organ>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.CACHE_SKILL, orgi) ;
+		if(skillList == null){
+			OrganRepository service = (OrganRepository) UKDataContext.getContext().getBean(OrganRepository.class);
+			skillList = service.findByOrgiAndSkill(orgi, true) ;
+			if(skillList.size() > 0){
+				CacheHelper.getOnlineUserCacheBean().put(UKDataContext.CACHE_SKILL, skillList, orgi);
+			}
+		}
+		return skillList;
+	}
+	
+	/**
+	 * 
+	 * @param user
+	 * @param orgi
+	 * @param id
+	 * @param service
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<User> agents(String orgi){
+		List<User> agentList = (List<User>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.CACHE_AGENT, orgi) ;
+		if(agentList == null){
+			UserRepository service = (UserRepository) UKDataContext.getContext().getBean(UserRepository.class);
+			agentList = service.findByOrgiAndAgent(orgi, true) ;
+			if(agentList.size() > 0){
+				CacheHelper.getOnlineUserCacheBean().put(UKDataContext.CACHE_AGENT, agentList, orgi);
+			}
+		}
+		return agentList;
+	}
+	
+	
+	public static void clean(String orgi){
+		CacheHelper.getSystemCacheBean().delete(UKDataContext.CACHE_SKILL, orgi) ;
+		CacheHelper.getSystemCacheBean().delete(UKDataContext.CACHE_AGENT, orgi) ;
+	}
+	/**
+	 * 
+	 * @param user
+	 * @param orgi
+	 * @param id
+	 * @param service
+	 * @return
+	 * @throws Exception
+	 */
+	public static void cacheOnlineUser(OnlineUser onlineUser ,String orgi){
+		if(onlineUser!=null && !StringUtils.isBlank(onlineUser.getUserid())){
+			CacheHelper.getOnlineUserCacheBean().put(onlineUser.getUserid() , onlineUser , orgi) ;
+		}
+	}
 
 	/**
 	 * 
@@ -67,11 +180,8 @@ public class OnlineUserUtils {
 	public static OnlineUser online(User user, String orgi, String sessionid,String optype, HttpServletRequest request , String channel , String appid , Contacts contacts) {
 		OnlineUser onlineUser = null;
 		if (UKDataContext.getContext() != null) {
-			OnlineUserRepository service = (OnlineUserRepository) UKDataContext
-					.getContext().getBean(OnlineUserRepository.class);
-
-			List<OnlineUser> tempOnlineUserList = service.findByUseridAndOrgi(user.getId() , orgi);
-			if (tempOnlineUserList.size() == 0) {
+			onlineUser = onlineuser(user.getId(), orgi) ;
+			if (onlineUser == null) {
 				onlineUser = new OnlineUser();
 				onlineUser.setId(user.getId());
 				onlineUser.setCreater(user.getId());
@@ -140,10 +250,9 @@ public class OnlineUserUtils {
 				onlineUser.setOpersystem(client.getOs());
 				onlineUser.setBrowser(client.getBrowser());
 				onlineUser.setUseragent(client.getUseragent());
-
-				service.save(onlineUser);
+				UKTools.published(onlineUser);
+				cacheOnlineUser(onlineUser, orgi);
 			}else{
-				onlineUser = tempOnlineUserList.get(0) ;
 				if((!StringUtils.isBlank(onlineUser.getSessionid()) && !onlineUser.getSessionid().equals(sessionid)) || !UKDataContext.OnlineUserOperatorStatus.ONLINE.toString().equals(onlineUser.getStatus())){
 					onlineUser.setStatus(UKDataContext.OnlineUserOperatorStatus.ONLINE.toString());
 					onlineUser.setChannel(channel);
@@ -155,7 +264,8 @@ public class OnlineUserUtils {
 						onlineUser.setLogintime(new Date());
 						onlineUser.setInvitetimes(0);
 					}
-					service.save(onlineUser);
+					UKTools.published(onlineUser);
+					cacheOnlineUser(onlineUser, orgi);
 				}else if(contacts!=null){
 					if(contacts!=null && !StringUtils.isBlank(contacts.getId()) && !StringUtils.isBlank(contacts.getName()) &&(StringUtils.isBlank(onlineUser.getContactsid()) || !contacts.getName().equals(onlineUser.getUsername()))){
 						if(StringUtils.isBlank(onlineUser.getContactsid())){
@@ -164,12 +274,14 @@ public class OnlineUserUtils {
 						if(!contacts.getName().equals(onlineUser.getUsername())){
 							onlineUser.setUsername(contacts.getName());
 						}
-						service.save(onlineUser);
+						UKTools.published(onlineUser);
+						cacheOnlineUser(onlineUser, orgi);
 					}
 				}
 				if(StringUtils.isBlank(onlineUser.getUsername()) && !StringUtils.isBlank(user.getUsername())){
 					onlineUser.setUseragent(user.getUsername());
-					service.save(onlineUser);
+					UKTools.published(onlineUser);
+					cacheOnlineUser(onlineUser, orgi);
 				}
 			}
 		}
@@ -226,6 +338,7 @@ public class OnlineUserUtils {
 				UKTools.copyProperties(onlineUser, his);
 				his.setDataid(onlineUser.getId());
 				onlineHisUserRes.save(his);
+				CacheHelper.getOnlineUserCacheBean().delete(user, orgi) ;
 			}
 		}
 	}

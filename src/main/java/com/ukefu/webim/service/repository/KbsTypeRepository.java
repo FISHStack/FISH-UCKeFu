@@ -13,5 +13,7 @@ public abstract interface KbsTypeRepository extends JpaRepository<KbsType, Strin
 	public abstract int countByNameAndOrgi(String name, String orgi);
 	
 	public abstract List<KbsType> findByOrgi(String orgi) ;
+	
+	public abstract int countByOrgiAndNameAndParentid(String orgi , String name , String parentid) ;
 
 }

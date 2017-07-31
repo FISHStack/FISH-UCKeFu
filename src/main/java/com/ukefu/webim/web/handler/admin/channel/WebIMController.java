@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.util.Menu;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.SNSAccountRepository;
@@ -102,6 +103,8 @@ public class WebIMController extends Handler{
     		inviteData.setConsult_dialog_headimg(fileName);
     	}
     	invite.save(inviteData) ;
+    	CacheHelper.getSystemCacheBean().put(inviteData.getId(), inviteData, inviteData.getOrgi());
+    	
         return request(super.createRequestPageTempletResponse("redirect:/admin/webim/index.html?snsid="+inviteData.getSnsaccountid()));
     }
     
@@ -175,6 +178,7 @@ public class WebIMController extends Handler{
     	}else{
     		invite.save(inviteData) ;
     	}
+    	CacheHelper.getSystemCacheBean().put(inviteData.getId(), inviteData, inviteData.getOrgi());
         return request(super.createRequestPageTempletResponse("redirect:/admin/webim/profile.html?snsid="+inviteData.getSnsaccountid()));
     }
     
@@ -220,6 +224,7 @@ public class WebIMController extends Handler{
     	}else{
     		invite.save(inviteData) ;
     	}
+    	CacheHelper.getSystemCacheBean().put(inviteData.getId(), inviteData, inviteData.getOrgi());
         return request(super.createRequestPageTempletResponse("redirect:/admin/webim/invote.html?snsid="+inviteData.getSnsaccountid()));
     }
 }

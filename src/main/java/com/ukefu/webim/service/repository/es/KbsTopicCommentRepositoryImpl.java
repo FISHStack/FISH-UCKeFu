@@ -31,7 +31,7 @@ public class KbsTopicCommentRepositoryImpl implements KbsTopicCommentEsCommonRep
         if(!elasticsearchTemplate.indexExists("uckefu")){
         	elasticsearchTemplate.createIndex("uckefu") ;
         }
-        if(!elasticsearchTemplate.typeExists("uckefu" , "uc_ask_topiccomment")){
+        if(!elasticsearchTemplate.typeExists("uckefu" , "uc_kbs_topiccomment")){
         	elasticsearchTemplate.putMapping(KbsTopicComment.class) ;
         }
     }
