@@ -13,7 +13,7 @@ import com.ukefu.webim.web.model.OnlineUser;
 public abstract interface OnlineUserRepository extends JpaRepository<OnlineUser, String> {
 	public abstract OnlineUser findBySessionidAndOrgi(String paramString, String orgi);
 	
-	public abstract OnlineUser findByUseridAndOrgi(String userid, String orgi);
+	public abstract List<OnlineUser> findByUseridAndOrgi(String userid, String orgi);
 	
 	public abstract Page<OnlineUser> findByUseridAndOrgi(String userid, String orgi , Pageable page);
 	

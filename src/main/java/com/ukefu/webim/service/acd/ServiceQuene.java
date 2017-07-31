@@ -175,8 +175,9 @@ public class ServiceQuene {
 				 */
 				if(UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(agentUser.getChannel())){
 					OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
-					OnlineUser onlineUser = onlineUserRes.findByUseridAndOrgi(agentUser.getUserid() , agentUser.getOrgi()) ;
-					if(onlineUser!=null){
+					List<OnlineUser> onlineUserList = onlineUserRes.findByUseridAndOrgi(agentUser.getUserid() , agentUser.getOrgi());
+					if (onlineUserList.size() > 0) {
+						OnlineUser onlineUser = onlineUserList.get(0) ;
 						onlineUser.setInvitestatus(UKDataContext.OnlineUserInviteStatus.DEFAULT.toString());
 						onlineUserRes.save(onlineUser) ;
 					}
@@ -304,8 +305,12 @@ public class ServiceQuene {
 		agentService.setOrgi(orgi);
 
 		OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
-		OnlineUser onlineUser = onlineUserRes.findByUseridAndOrgi(agentUser.getUserid() , agentUser.getOrgi()) ;
 		agentUser.setLogindate(new Date());
+		List<OnlineUser> onlineUserList = onlineUserRes.findByUseridAndOrgi(agentUser.getUserid() , agentUser.getOrgi());
+		OnlineUser onlineUser = null ;
+		if (onlineUserList.size() > 0) {
+			onlineUser = onlineUserList.get(0) ;
+		}
 		
 		if(agentStatus!=null){	
 			SessionConfig sessionConfig = initSessionConfig(orgi) ;
@@ -369,7 +374,7 @@ public class ServiceQuene {
 				agentService.setWaittingtime((int) (System.currentTimeMillis() - agentUser.getCreatetime().getTime()));
 				agentUser.setWaittingtime(agentService.getWaittingtime());
 			}
-			if(onlineUser!=null){
+			if (onlineUser != null ) {
 				agentService.setOsname(onlineUser.getOpersystem());
 				agentService.setBrowser(onlineUser.getBrowser());
 				agentService.setDataid(onlineUser.getId());		//记录  onlineuser 的id

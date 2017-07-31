@@ -120,8 +120,10 @@ public class OnlineUserController extends Handler{
 						map.put("weiXinUser",weiXinUser);
 					}
 				}else if(UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(agentService.getChannel())){
-					OnlineUser onlineUser = onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ; 
-					map.put("onlineUser", onlineUser) ;
+					List<OnlineUser> onlineUserList = onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
+					if(onlineUserList.size() >0){
+						map.put("onlineUser", onlineUserList.get(0)) ;
+					}
 				}
 				List<AgentUserContacts> agentUserContactsList = agentUserContactsRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
 				if(agentUserContactsList.size() > 0){

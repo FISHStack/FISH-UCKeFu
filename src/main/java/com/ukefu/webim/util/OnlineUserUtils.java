@@ -51,7 +51,8 @@ public class OnlineUserUtils {
 	public static OnlineUser user(com.ukefu.webim.web.model.User user,
 			String orgi, String id, OnlineUserRepository service)
 			throws Exception {
-		return service.findByUseridAndOrgi(id , orgi);
+		List<OnlineUser> onlineUserList = service.findByUseridAndOrgi(id , orgi);
+		return onlineUserList.size() > 0 ? onlineUserList.get(0) : null;
 	}
 
 	/**
@@ -69,8 +70,8 @@ public class OnlineUserUtils {
 			OnlineUserRepository service = (OnlineUserRepository) UKDataContext
 					.getContext().getBean(OnlineUserRepository.class);
 
-			OnlineUser tempOnlineUser = service.findByUseridAndOrgi(user.getId() , orgi);
-			if (tempOnlineUser == null) {
+			List<OnlineUser> tempOnlineUserList = service.findByUseridAndOrgi(user.getId() , orgi);
+			if (tempOnlineUserList.size() == 0) {
 				onlineUser = new OnlineUser();
 				onlineUser.setId(user.getId());
 				onlineUser.setCreater(user.getId());
@@ -142,7 +143,7 @@ public class OnlineUserUtils {
 
 				service.save(onlineUser);
 			}else{
-				onlineUser = tempOnlineUser ;
+				onlineUser = tempOnlineUserList.get(0) ;
 				if((!StringUtils.isBlank(onlineUser.getSessionid()) && !onlineUser.getSessionid().equals(sessionid)) || !UKDataContext.OnlineUserOperatorStatus.ONLINE.toString().equals(onlineUser.getStatus())){
 					onlineUser.setStatus(UKDataContext.OnlineUserOperatorStatus.ONLINE.toString());
 					onlineUser.setChannel(channel);
@@ -205,8 +206,9 @@ public class OnlineUserUtils {
 			OnlineUserRepository service = UKDataContext.getContext().getBean(
 					OnlineUserRepository.class);
 			OnlineUserHisRepository onlineHisUserRes = UKDataContext.getContext().getBean(OnlineUserHisRepository.class) ;
-			OnlineUser onlineUser = service.findByUseridAndOrgi(user , orgi);
-			if (onlineUser != null) {
+			List<OnlineUser> onlineUserList = service.findByUseridAndOrgi(user , orgi);
+			if (onlineUserList.size() > 0) {
+				OnlineUser onlineUser = onlineUserList.get(0) ;
 				List<OnlineUserHis> hisList = onlineHisUserRes.findBySessionidAndOrgi(onlineUser.getSessionid() , orgi) ;
 				OnlineUserHis his = null ;
 				if(hisList.size() > 0){
@@ -238,8 +240,9 @@ public class OnlineUserUtils {
 		OnlineUserRepository service = UKDataContext.getContext().getBean(
 				OnlineUserRepository.class);
 
-		OnlineUser onlineUser = service.findByUseridAndOrgi(user , orgi);
-		if (onlineUser != null) {
+		List<OnlineUser> onlineUserList = service.findByUseridAndOrgi(user , orgi);
+		if (onlineUserList.size() > 0) {
+			OnlineUser onlineUser = onlineUserList.get(0);
 			onlineUser.setInvitestatus(UKDataContext.OnlineUserInviteStatus.REFUSE.toString());
 			onlineUser.setRefusetimes(onlineUser.getRefusetimes()+1);
 			service.save(onlineUser) ;
