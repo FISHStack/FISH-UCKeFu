@@ -151,8 +151,9 @@ public class AgentController extends Handler {
 					view.addObject("weiXinUser",weiXinUser);
 				}
 			}else if(UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(agentUser.getChannel())){
-				OnlineUser onlineUser = this.onlineUserRes.findByUseridAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
-				if(onlineUser!=null){
+				List<OnlineUser> onlineUserList = this.onlineUserRes.findByUseridAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
+				if(onlineUserList.size()  > 0){
+					OnlineUser onlineUser = onlineUserList.get(0) ;
 					if(UKDataContext.OnlineUserOperatorStatus.OFFLINE.toString().equals(onlineUser.getStatus())){
 						onlineUser.setBetweentime((int) (onlineUser.getUpdatetime().getTime() - onlineUser.getLogintime().getTime()));
 					}else{
@@ -251,8 +252,9 @@ public class AgentController extends Handler {
 					view.addObject("weiXinUser",weiXinUser);
 				}
 			}else if(UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(agentUser.getChannel())){
-				OnlineUser onlineUser = this.onlineUserRes.findByUseridAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
-				if(onlineUser!=null){
+				List<OnlineUser> onlineUserList = this.onlineUserRes.findByUseridAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
+				if(onlineUserList.size()  > 0){
+					OnlineUser onlineUser = onlineUserList.get(0) ;
 					if(UKDataContext.OnlineUserOperatorStatus.OFFLINE.toString().equals(onlineUser.getStatus())){
 						onlineUser.setBetweentime((int) (onlineUser.getUpdatetime().getTime() - onlineUser.getLogintime().getTime()));
 					}else{
@@ -408,8 +410,9 @@ public class AgentController extends Handler {
 	public ModelAndView blacklist(HttpServletRequest request, @Valid String agentuserid , @Valid String agentserviceid ,  @Valid String userid , @Valid BlackEntity blackEntity)
 			throws Exception {
 		User user = super.getUser(request);
-		OnlineUser onlineUser = onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
-		if(onlineUser!=null){
+		List<OnlineUser> onlineUserList = this.onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
+		if(onlineUserList.size()  > 0){
+			OnlineUser onlineUser = onlineUserList.get(0) ;
 			BlackEntity tempBlackEntiry = blackListRes.findByUseridAndOrgi(onlineUser.getUserid(), super.getOrgi(request)) ;
 			if(tempBlackEntiry == null){
 				blackEntity.setUserid(userid);
@@ -524,8 +527,9 @@ public class AgentController extends Handler {
 	@Menu(type = "apps", subtype = "contacts")
     public ModelAndView contacts(ModelMap map , HttpServletRequest request , @Valid String contactsid , @Valid String userid , @Valid String agentserviceid, @Valid String agentuserid){ 
 		if(!StringUtils.isBlank(userid) && !StringUtils.isBlank(contactsid)){
-			OnlineUser onlineUser = this.onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
-			if(onlineUser!=null){
+			List<OnlineUser> onlineUserList = this.onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
+			if(onlineUserList.size()  > 0){
+				OnlineUser onlineUser = onlineUserList.get(0) ;
 				onlineUser.setContactsid(contactsid);
 				this.onlineUserRes.save(onlineUser) ;
 			}
