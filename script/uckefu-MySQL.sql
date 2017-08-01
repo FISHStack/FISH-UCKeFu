@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-07-26 00:25:20
+Date: 2017-08-01 18:33:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -181,7 +181,9 @@ CREATE TABLE `uk_agentuser` (
   `phone` varchar(100) DEFAULT NULL COMMENT '访客录入的电话',
   `email` varchar(100) DEFAULT NULL COMMENT '访客录入的邮件',
   `resion` varchar(255) DEFAULT NULL COMMENT '访客录入的来访原因',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `agentuser_userid` (`userid`) USING BTREE,
+  KEY `agentuser_orgi` (`orgi`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -753,13 +755,15 @@ CREATE TABLE `uk_consult_invite` (
   `consult_info_resion` tinyint(4) DEFAULT NULL COMMENT '填写咨询问题',
   `consult_info_message` text COMMENT '咨询窗口显示的欢迎语',
   `consult_info_cookies` tinyint(4) DEFAULT NULL COMMENT '在Cookies中存储用户信息',
+  `recordhis` tinyint(4) DEFAULT NULL COMMENT '是否记录访问轨迹',
+  `traceuser` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uk_consult_invite
 -- ----------------------------
-INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', 'right,middle', '在线客服', null, null, null, '6', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '1', '1', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E', '0', '1', '1', '1', '1', '您好，请填写以下信息，方便我们更好的为您服务！', '0');
+INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', 'right,middle', '在线客服', null, null, null, '6', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '0', '0', '0', null, null, null, '0', '1', '1', '1', '1', '您好，请填写以下信息，方便我们更好的为您服务！', '0', '1', '0');
 
 -- ----------------------------
 -- Table structure for `uk_contacts`
@@ -1182,8 +1186,8 @@ CREATE TABLE `uk_kbs_topic` (
   `sessionid` varchar(32) DEFAULT NULL COMMENT '会话ID',
   `title` varchar(255) DEFAULT NULL COMMENT '主题',
   `content` text COMMENT '知识库内容',
-  `keyword` varchar(100) DEFAULT NULL COMMENT '关键词',
-  `summary` varchar(255) DEFAULT NULL COMMENT '摘要',
+  `keyword` text COMMENT '关键词',
+  `summary` text COMMENT '摘要',
   `anonymous` tinyint(4) DEFAULT NULL COMMENT '允许匿名访问',
   `begintime` datetime DEFAULT NULL COMMENT '有效期开始时间',
   `endtime` datetime DEFAULT NULL COMMENT '有效期结束时间',
@@ -1211,7 +1215,10 @@ CREATE TABLE `uk_kbs_topic` (
   `sms` varchar(255) DEFAULT NULL COMMENT '短信模板',
   `tts` varchar(255) DEFAULT NULL COMMENT 'TTS模板',
   `email` text COMMENT '邮件模板',
-  `weixin` text COMMENT '微信回复模板'
+  `weixin` text COMMENT '微信回复模板',
+  `tags` text COMMENT '标签',
+  `attachment` text COMMENT '附件',
+  `approval` tinyint(4) DEFAULT NULL COMMENT '是否审批通过'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -1231,7 +1238,16 @@ CREATE TABLE `uk_kbs_type` (
   `UPDATETIME` datetime DEFAULT NULL,
   `ORGI` varchar(32) DEFAULT NULL,
   `USERNAME` varchar(50) DEFAULT NULL,
-  `PARENTID` varchar(32) DEFAULT NULL COMMENT '知识库分类',
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '知识库分类上级ID',
+  `APPROVAL` tinyint(4) DEFAULT NULL COMMENT '是否启用审批',
+  `BPMID` varchar(32) DEFAULT NULL COMMENT '审批流程ID',
+  `PC` varchar(32) DEFAULT NULL COMMENT '负责人',
+  `INX` int(11) DEFAULT NULL COMMENT '分类排序序号',
+  `STARTDATE` datetime DEFAULT NULL COMMENT '有效期开始时间',
+  `ENDDATE` datetime DEFAULT NULL COMMENT '有效期结束时间',
+  `ENABLE` tinyint(4) DEFAULT NULL COMMENT '分类状态',
+  `DESCRIPTION` varchar(255) DEFAULT NULL COMMENT '分类描述',
+  `BPM` tinyint(4) DEFAULT NULL COMMENT '是否需要流程审批',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1336,7 +1352,9 @@ CREATE TABLE `uk_onlineuser` (
   `channel` varchar(32) DEFAULT NULL COMMENT '渠道',
   `appid` varchar(32) DEFAULT NULL COMMENT 'SNSID',
   `contactsid` varchar(32) DEFAULT NULL COMMENT '联系人ID',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `onlineuser_userid` (`userid`) USING BTREE,
+  KEY `onlineuser_orgi` (`orgi`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -5528,6 +5546,7 @@ INSERT INTO `uk_sysdic` VALUES ('402888815d55aa7d015d55b869740002', '全部联�
 INSERT INTO `uk_sysdic` VALUES ('402888815d55aa7d015d55b88b9b0003', '全部客户', 'pub', 'B', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe650;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-18 20:42:24', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/apps/customer/index.html', 'webim', '1', null, 'left');
 INSERT INTO `uk_sysdic` VALUES ('402888815d55aa7d015d55b8bb110004', '客服设置', 'pub', 'C', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"layui-icon\" style=\"position: relative;\">&#xe614;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-18 20:42:36', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/setting/agent/index.html', 'webim', '1', 'on', 'left');
 INSERT INTO `uk_sysdic` VALUES ('402888815d55aa7d015d55b8e82e0005', '会话历史', 'pub', 'D', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe7eb;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2017-07-18 20:42:47', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/service/history/index.html', 'webim', '1', null, 'left');
+INSERT INTO `uk_sysdic` VALUES ('402888815d89b1aa015d89b318ab0002', '知识库知识', 'pub', 'kbs', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-07-28 22:56:42', '2017-07-28 22:56:42', '0', '1', '4028838b5b565caf015b566d11d80010', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafaa94015bafb14edf0002', '服务类型', 'pub', 'summary', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-04-27 21:54:44', null, '1', '0', '4028838b5b565caf015b566d11d80010', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe5c8180009', '服务小结预约方式', 'pub', 'com.dic.summary.reservtype', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:03', null, '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64be2000a', '电话', 'pub', 'phone', 'ukewo', null, '4028e3815bafb323015bafe5c8180009', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:37', '2017-04-27 22:52:37', '0', '1', '4028e3815bafb323015bafe5c8180009', '0', '0', null, null, null, null, null);
@@ -5815,8 +5834,8 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815d5105b6015d510962b90006', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-07-26 00:07:47', null, null, null, '0', '0', '1');
-INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402883965c1dfe92015c1e1291900003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-07-26 00:08:21', null, null, null, '0', '0', '0');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815d5105b6015d510962b90006', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-01 18:27:26', null, null, null, '0', '0', '1');
+INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402883965c1dfe92015c1e1291900003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-07-26 17:02:18', null, null, null, '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
