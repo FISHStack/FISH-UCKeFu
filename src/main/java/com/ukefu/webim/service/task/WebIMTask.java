@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
-import com.ukefu.util.webim.WebIMClient;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
