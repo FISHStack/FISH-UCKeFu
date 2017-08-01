@@ -343,6 +343,35 @@ public class OnlineUserUtils {
 		}
 	}
 	
+	public static void offline(OnlineUser onlineUser) throws Exception {
+		if(UKDataContext.getContext()!=null){
+			OnlineUserRepository service = UKDataContext.getContext().getBean(
+					OnlineUserRepository.class);
+			OnlineUserHisRepository onlineHisUserRes = UKDataContext.getContext().getBean(OnlineUserHisRepository.class) ;
+			if (onlineUser != null) {
+				onlineUser.setStatus(UKDataContext.OnlineUserOperatorStatus.OFFLINE.toString());
+				onlineUser.setInvitestatus(UKDataContext.OnlineUserInviteStatus.DEFAULT.toString());
+				onlineUser.setBetweentime((int) (new Date().getTime() - onlineUser.getLogintime().getTime()));
+				onlineUser.setUpdatetime(new Date());
+				service.save(onlineUser) ;
+				CacheHelper.getOnlineUserCacheBean().delete(onlineUser.getUserid(), onlineUser.getOrgi()) ;
+				if(onlineUser!=null){
+					List<OnlineUserHis> hisList = onlineHisUserRes.findBySessionidAndOrgi(onlineUser.getSessionid() , onlineUser.getOrgi()) ;
+					OnlineUserHis his = null ;
+					if(hisList.size() > 0){
+						his = hisList.get(0) ;
+					}else{
+						his = new OnlineUserHis();
+					}
+					
+					UKTools.copyProperties(onlineUser, his);
+					his.setDataid(onlineUser.getId());
+					onlineHisUserRes.save(his);
+				}
+			}
+		}
+	}
+	
 	/**
 	 * 
 	 * @param user

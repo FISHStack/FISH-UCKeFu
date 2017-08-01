@@ -121,7 +121,7 @@ public class WebIMTask {
 		if(pages.getContent().size()>0){
 			for(OnlineUser onlineUser : pages.getContent()){
 				try {
-					OnlineUserUtils.offline(onlineUser.getUserid(), onlineUser.getOrgi());
+					OnlineUserUtils.offline(onlineUser);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
