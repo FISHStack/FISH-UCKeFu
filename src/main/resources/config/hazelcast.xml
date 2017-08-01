@@ -185,7 +185,7 @@
         <in-memory-format>BINARY</in-memory-format>
         <backup-count>1</backup-count>
         <async-backup-count>0</async-backup-count>
-        <!-- 最大过期时间，60分钟 -->
+        <!-- 最大过期时间，30分钟 -->
         <time-to-live-seconds>1800</time-to-live-seconds>
         <!-- 最长空闲时间，3分钟 -->
         <max-idle-seconds>180</max-idle-seconds>
