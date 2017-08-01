@@ -274,9 +274,11 @@ public class OnlineUserUtils {
 							onlineUser.setUsername(contacts.getName());
 						}
 					}
+					onlineUser.setUpdatetime(new Date());
 				}
 				if(StringUtils.isBlank(onlineUser.getUsername()) && !StringUtils.isBlank(user.getUsername())){
 					onlineUser.setUseragent(user.getUsername());
+					onlineUser.setUpdatetime(new Date());
 				}
 			}
 			cacheOnlineUser(onlineUser, orgi , invite);

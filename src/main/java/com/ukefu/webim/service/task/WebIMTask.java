@@ -1,5 +1,6 @@
 package com.ukefu.webim.service.task;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -124,6 +125,23 @@ public class WebIMTask {
 					OnlineUserUtils.offline(onlineUser);
 				} catch (Exception e) {
 					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	@Scheduled(fixedDelay= 5000) // 每5秒执行一次
+    public void traceOnlineUser() {
+		long onlineusers = CacheHelper.getOnlineUserCacheBean().getSize() ;
+		if(onlineusers > 0){
+			OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
+			Collection<?> datas = CacheHelper.getOnlineUserCacheBean().getAllCacheObject(UKDataContext.SYSTEM_ORGI) ;
+			for(Object data : datas){
+				if(data instanceof OnlineUser){
+					OnlineUser onlineUser = (OnlineUser)data ;
+					if(onlineUser.getUpdatetime()!=null && (System.currentTimeMillis() - onlineUser.getUpdatetime().getTime()) < 5000){
+						onlineUserRes.save(onlineUser) ;
+					}
 				}
 			}
 		}
