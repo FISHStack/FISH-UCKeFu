@@ -219,7 +219,10 @@ public class IMController extends Handler{
 					}
 				}
 			});
-			contacts = processContacts(orgi, contacts, appid, userid);
+			CousultInvite invite = OnlineUserUtils.cousult(appid, super.getOrgi(request), inviteRepository);
+			if(invite.isTraceuser()){
+				contacts = processContacts(orgi, contacts, appid, userid);
+			}
 	    	if(!StringUtils.isBlank(sign)){
 	    		OnlineUserUtils.online(super.getIMUser(request , sign , contacts!=null ? contacts.getName() : null) , orgi , request.getSession().getId() , UKDataContext.OnlineUserTypeStatus.WEBIM.toString(), request , UKDataContext.ChannelTypeEnum.WEBIM.toString() , appid , contacts , OnlineUserUtils.cousult(appid, super.getOrgi(request), inviteRepository));
 	    	}
