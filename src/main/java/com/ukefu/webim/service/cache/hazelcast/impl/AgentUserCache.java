@@ -6,6 +6,7 @@ import java.util.concurrent.locks.Lock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hazelcast.com.eclipsesource.json.JsonObject;
 import com.hazelcast.core.HazelcastInstance;
 import com.ukefu.webim.service.cache.CacheBean;
 
@@ -89,5 +90,10 @@ public class AgentUserCache implements CacheBean{
 	@Override
 	public void setAtomicLong(String cacheName, long start) {
 		getInstance().getAtomicLong(getName()).set(start);
+	}
+	@Override
+	public JsonObject getStatics() {
+		// TODO Auto-generated method stub
+		return getInstance().getMap(getName()).getLocalMapStats().toJson();
 	}
 }

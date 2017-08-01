@@ -3,6 +3,8 @@ package com.ukefu.webim.service.cache;
 import java.util.Collection;
 import java.util.concurrent.locks.Lock;
 
+import com.hazelcast.com.eclipsesource.json.JsonObject;
+
 public interface CacheBean {
 	/**
 	 * 
@@ -47,6 +49,8 @@ public interface CacheBean {
 	public CacheBean getCacheInstance(String cacheName);
 	
 	public Object getCache();
+	
+	public JsonObject getStatics();
 
 	public Lock getLock(String lock, String orgi);
 	
