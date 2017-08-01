@@ -129,28 +129,6 @@ public class WebIMTask {
 			}
 		}
 	}
-	
-//	@Scheduled(fixedDelay= 5000) // 每5秒执行一次
-//    public void traceOnlineUser() {
-//		long onlineusers = CacheHelper.getOnlineUserCacheBean().getSize() ;
-//		if(onlineusers > 0){
-//			OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
-//			Collection<?> datas = CacheHelper.getOnlineUserCacheBean().getAllCacheObject(UKDataContext.SYSTEM_ORGI) ;
-//			for(Object key : datas){
-//				Object data = CacheHelper.getOnlineUserCacheBean().getCacheObject(key.toString(), UKDataContext.SYSTEM_ORGI) ;
-//				if(data instanceof OnlineUser){
-//					OnlineUser onlineUser = (OnlineUser)data ;
-//					if(onlineUser.getUpdatetime()!=null && (System.currentTimeMillis() - onlineUser.getUpdatetime().getTime()) < 10000){
-//						OnlineUserRepository service = (OnlineUserRepository) UKDataContext.getContext().getBean(OnlineUserRepository.class);
-//						int users = service.countByUseridAndOrgi(onlineUser.getUserid() , onlineUser.getOrgi());
-//						if(users == 0){
-//							onlineUserRes.save(onlineUser) ;
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
 	/**
 	 * 		appid : appid ,
 			userid:userid,
