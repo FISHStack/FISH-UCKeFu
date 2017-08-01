@@ -121,13 +121,10 @@ public class WebIMTask {
 		Page<OnlineUser> pages = onlineUserRes.findByOrgiAndStatusAndCreatetimeLessThan(UKDataContext.SYSTEM_ORGI, UKDataContext.OnlineUserOperatorStatus.ONLINE.toString(), UKTools.getLastTime(300), new PageRequest(0,  100)) ;
 		if(pages.getContent().size()>0){
 			for(OnlineUser onlineUser : pages.getContent()){
-				List<WebIMClient> clients = OnlineUserUtils.webIMClients.getClients(onlineUser.getUserid())  ;
-				if(clients.size() == 0){
-					try {
-						OnlineUserUtils.offline(onlineUser.getUserid(), onlineUser.getOrgi());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+				try {
+					OnlineUserUtils.offline(onlineUser.getUserid(), onlineUser.getOrgi());
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}
