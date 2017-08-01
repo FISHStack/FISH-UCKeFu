@@ -190,7 +190,7 @@
         <!-- 最长空闲时间，3分钟 -->
         <max-idle-seconds>180</max-idle-seconds>
         <eviction-policy>LRU</eviction-policy>
-        <max-size policy="PER_NODE">10000</max-size>
+        <max-size policy="PER_NODE">100000</max-size>
         <eviction-percentage>25</eviction-percentage>
         <min-eviction-check-millis>100</min-eviction-check-millis>
         <merge-policy>com.hazelcast.map.merge.PutIfAbsentMapMergePolicy</merge-policy>

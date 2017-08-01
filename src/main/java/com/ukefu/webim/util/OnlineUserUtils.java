@@ -162,9 +162,12 @@ public class OnlineUserUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static void cacheOnlineUser(OnlineUser onlineUser ,String orgi){
+	public static void cacheOnlineUser(OnlineUser onlineUser ,String orgi  , CousultInvite invite){
 		if(onlineUser!=null && !StringUtils.isBlank(onlineUser.getUserid())){
 			CacheHelper.getOnlineUserCacheBean().put(onlineUser.getUserid() , onlineUser , orgi) ;
+		}
+		if(invite.isTraceuser()){
+			UKTools.published(onlineUser);
 		}
 	}
 
@@ -177,7 +180,7 @@ public class OnlineUserUtils {
 	 * @param service
 	 * @throws Exception
 	 */
-	public static OnlineUser online(User user, String orgi, String sessionid,String optype, HttpServletRequest request , String channel , String appid , Contacts contacts) {
+	public static OnlineUser online(User user, String orgi, String sessionid,String optype, HttpServletRequest request , String channel , String appid , Contacts contacts , CousultInvite invite) {
 		OnlineUser onlineUser = null;
 		if (UKDataContext.getContext() != null) {
 			onlineUser = onlineuser(user.getId(), orgi) ;
@@ -250,8 +253,6 @@ public class OnlineUserUtils {
 				onlineUser.setOpersystem(client.getOs());
 				onlineUser.setBrowser(client.getBrowser());
 				onlineUser.setUseragent(client.getUseragent());
-				UKTools.published(onlineUser);
-				cacheOnlineUser(onlineUser, orgi);
 			}else{
 				if((!StringUtils.isBlank(onlineUser.getSessionid()) && !onlineUser.getSessionid().equals(sessionid)) || !UKDataContext.OnlineUserOperatorStatus.ONLINE.toString().equals(onlineUser.getStatus())){
 					onlineUser.setStatus(UKDataContext.OnlineUserOperatorStatus.ONLINE.toString());
@@ -264,8 +265,6 @@ public class OnlineUserUtils {
 						onlineUser.setLogintime(new Date());
 						onlineUser.setInvitetimes(0);
 					}
-					UKTools.published(onlineUser);
-					cacheOnlineUser(onlineUser, orgi);
 				}else if(contacts!=null){
 					if(contacts!=null && !StringUtils.isBlank(contacts.getId()) && !StringUtils.isBlank(contacts.getName()) &&(StringUtils.isBlank(onlineUser.getContactsid()) || !contacts.getName().equals(onlineUser.getUsername()))){
 						if(StringUtils.isBlank(onlineUser.getContactsid())){
@@ -274,16 +273,13 @@ public class OnlineUserUtils {
 						if(!contacts.getName().equals(onlineUser.getUsername())){
 							onlineUser.setUsername(contacts.getName());
 						}
-						UKTools.published(onlineUser);
-						cacheOnlineUser(onlineUser, orgi);
 					}
 				}
 				if(StringUtils.isBlank(onlineUser.getUsername()) && !StringUtils.isBlank(user.getUsername())){
 					onlineUser.setUseragent(user.getUsername());
-					UKTools.published(onlineUser);
-					cacheOnlineUser(onlineUser, orgi);
 				}
 			}
+			cacheOnlineUser(onlineUser, orgi , invite);
 		}
 		return onlineUser;
 	}

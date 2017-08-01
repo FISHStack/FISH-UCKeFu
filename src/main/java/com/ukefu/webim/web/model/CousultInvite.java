@@ -75,6 +75,7 @@ public class CousultInvite implements java.io.Serializable{
 	private int consult_vsitorbtn_display	;
 	
 	private boolean recordhis ;			//记录访客的网页访问记录
+	private boolean traceuser;			//实时追踪访客
 	
 	
 	private String consult_dialog_color;
@@ -639,5 +640,11 @@ public class CousultInvite implements java.io.Serializable{
 	}
 	public void setRecordhis(boolean recordhis) {
 		this.recordhis = recordhis;
+	}
+	public boolean isTraceuser() {
+		return traceuser;
+	}
+	public void setTraceuser(boolean traceuser) {
+		this.traceuser = traceuser;
 	}
 }
