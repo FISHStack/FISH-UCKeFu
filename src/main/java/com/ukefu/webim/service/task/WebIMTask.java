@@ -136,7 +136,8 @@ public class WebIMTask {
 		if(onlineusers > 0){
 			OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
 			Collection<?> datas = CacheHelper.getOnlineUserCacheBean().getAllCacheObject(UKDataContext.SYSTEM_ORGI) ;
-			for(Object data : datas){
+			for(Object key : datas){
+				Object data = CacheHelper.getOnlineUserCacheBean().getCacheObject(key.toString(), UKDataContext.SYSTEM_ORGI) ;
 				if(data instanceof OnlineUser){
 					OnlineUser onlineUser = (OnlineUser)data ;
 					if(onlineUser.getUpdatetime()!=null && (System.currentTimeMillis() - onlineUser.getUpdatetime().getTime()) < 5000){

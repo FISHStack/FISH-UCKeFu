@@ -273,8 +273,8 @@ public class OnlineUserUtils {
 						if(!contacts.getName().equals(onlineUser.getUsername())){
 							onlineUser.setUsername(contacts.getName());
 						}
+						onlineUser.setUpdatetime(new Date());
 					}
-					onlineUser.setUpdatetime(new Date());
 				}
 				if(StringUtils.isBlank(onlineUser.getUsername()) && !StringUtils.isBlank(user.getUsername())){
 					onlineUser.setUseragent(user.getUsername());
