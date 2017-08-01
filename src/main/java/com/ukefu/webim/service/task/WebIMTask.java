@@ -141,7 +141,11 @@ public class WebIMTask {
 				if(data instanceof OnlineUser){
 					OnlineUser onlineUser = (OnlineUser)data ;
 					if(onlineUser.getUpdatetime()!=null && (System.currentTimeMillis() - onlineUser.getUpdatetime().getTime()) < 10000){
-						onlineUserRes.save(onlineUser) ;
+						OnlineUserRepository service = (OnlineUserRepository) UKDataContext.getContext().getBean(OnlineUserRepository.class);
+						int users = service.countByUseridAndOrgi(onlineUser.getUserid() , onlineUser.getOrgi());
+						if(users == 0){
+							onlineUserRes.save(onlineUser) ;
+						}
 					}
 				}
 			}
