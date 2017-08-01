@@ -176,8 +176,9 @@ public class IMController extends Handler{
 			     */
 			    view.addObject("agentList", OnlineUserUtils.agents(invite.getOrgi()))  ;
 		    }
-		    
-			UKTools.published(userHistory);
+		    if(invite.isRecordhis()){
+		    	UKTools.published(userHistory);
+		    }
 		}
 		
         return view;
@@ -234,7 +235,12 @@ public class IMController extends Handler{
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	if(!StringUtils.isBlank(appid)){
     		CousultInvite invite = OnlineUserUtils.cousult(appid, orgi, inviteRepository);
-    		String userID = UKTools.genIDByKey(sessionid);
+    		String userID = null;
+    		if(!StringUtils.isBlank(userid)){
+    			userID = UKTools.genIDByKey(userid) ;
+    		}else{
+    			userID = UKTools.genIDByKey(sessionid);	
+    		}
 			String nickname = "Guest_" + userID;
 			boolean consult = true ;				//是否已收集用户信息
 			SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;

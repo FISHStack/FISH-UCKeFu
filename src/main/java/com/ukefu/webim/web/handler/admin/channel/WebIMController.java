@@ -156,6 +156,8 @@ public class WebIMController extends Handler{
     			tempInviteData.setConsult_info_message(inviteData.getConsult_info_message());
     			tempInviteData.setConsult_info_cookies(inviteData.isConsult_info_cookies());
     			
+    			tempInviteData.setRecordhis(inviteData.isRecordhis());
+    			
     			
     			tempInviteData.setAi(inviteData.isAi());
     			tempInviteData.setAifirst(inviteData.isAifirst());

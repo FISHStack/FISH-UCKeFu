@@ -50,12 +50,12 @@ public class Handler {
 		return user ;
 	}
 	
-	public User getIMUser(HttpServletRequest request , String sign , String nickname){
+	public User getIMUser(HttpServletRequest request , String userid , String nickname){
 		User user = (User) request.getSession(true).getAttribute(UKDataContext.IM_USER_SESSION_NAME)  ;
 		if(user==null){
 			user = new User();
-			if(!StringUtils.isBlank(sign)){
-				user.setId(sign) ;
+			if(!StringUtils.isBlank(userid)){
+				user.setId(userid) ;
 			}else{
 				user.setId(UKTools.getContextID(request.getSession().getId())) ;
 			}
