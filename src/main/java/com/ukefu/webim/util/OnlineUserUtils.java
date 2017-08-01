@@ -320,25 +320,29 @@ public class OnlineUserUtils {
 			OnlineUserHisRepository onlineHisUserRes = UKDataContext.getContext().getBean(OnlineUserHisRepository.class) ;
 			List<OnlineUser> onlineUserList = service.findByUseridAndOrgi(user , orgi);
 			if (onlineUserList.size() > 0) {
-				OnlineUser onlineUser = onlineUserList.get(0) ;
-				List<OnlineUserHis> hisList = onlineHisUserRes.findBySessionidAndOrgi(onlineUser.getSessionid() , orgi) ;
-				OnlineUserHis his = null ;
-				if(hisList.size() > 0){
-					his = hisList.get(0) ;
-				}else{
-					his = new OnlineUserHis();
+				OnlineUser hisOnlineUser = null ;
+				for(OnlineUser onlineUser : onlineUserList){
+					onlineUser.setStatus(UKDataContext.OnlineUserOperatorStatus.OFFLINE.toString());
+					onlineUser.setInvitestatus(UKDataContext.OnlineUserInviteStatus.DEFAULT.toString());
+					onlineUser.setBetweentime((int) (new Date().getTime() - onlineUser.getLogintime().getTime()));
+					onlineUser.setUpdatetime(new Date());
+					service.save(onlineUser) ;
+					hisOnlineUser = onlineUser ;
 				}
-				
-				onlineUser.setStatus(UKDataContext.OnlineUserOperatorStatus.OFFLINE.toString());
-				onlineUser.setInvitestatus(UKDataContext.OnlineUserInviteStatus.DEFAULT.toString());
-				onlineUser.setBetweentime((int) (new Date().getTime() - onlineUser.getLogintime().getTime()));
-				onlineUser.setUpdatetime(new Date());
-				service.save(onlineUser) ;
-				
-				UKTools.copyProperties(onlineUser, his);
-				his.setDataid(onlineUser.getId());
-				onlineHisUserRes.save(his);
 				CacheHelper.getOnlineUserCacheBean().delete(user, orgi) ;
+				if(hisOnlineUser!=null){
+					List<OnlineUserHis> hisList = onlineHisUserRes.findBySessionidAndOrgi(hisOnlineUser.getSessionid() , orgi) ;
+					OnlineUserHis his = null ;
+					if(hisList.size() > 0){
+						his = hisList.get(0) ;
+					}else{
+						his = new OnlineUserHis();
+					}
+					
+					UKTools.copyProperties(hisOnlineUser, his);
+					his.setDataid(hisOnlineUser.getId());
+					onlineHisUserRes.save(his);
+				}
 			}
 		}
 	}
