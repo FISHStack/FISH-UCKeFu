@@ -140,7 +140,7 @@ public class WebIMTask {
 				Object data = CacheHelper.getOnlineUserCacheBean().getCacheObject(key.toString(), UKDataContext.SYSTEM_ORGI) ;
 				if(data instanceof OnlineUser){
 					OnlineUser onlineUser = (OnlineUser)data ;
-					if(onlineUser.getUpdatetime()!=null && (System.currentTimeMillis() - onlineUser.getUpdatetime().getTime()) < 5000){
+					if(onlineUser.getUpdatetime()!=null && (System.currentTimeMillis() - onlineUser.getUpdatetime().getTime()) < 10000){
 						onlineUserRes.save(onlineUser) ;
 					}
 				}
