@@ -90,9 +90,9 @@ public class OnlineUserUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static OnlineUser onlineuser(String userid ,String orgi){
+	public static OnlineUser onlineuser(String userid ,String orgi , CousultInvite invite){
 		OnlineUser onlineUser = (OnlineUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(userid, orgi) ;
-		if(onlineUser == null){
+		if(onlineUser == null && invite.isTraceuser()){
 			OnlineUserRepository service = (OnlineUserRepository) UKDataContext.getContext().getBean(OnlineUserRepository.class);
 
 			List<OnlineUser> tempOnlineUserList = service.findByUseridAndOrgi(userid , orgi);
@@ -183,7 +183,7 @@ public class OnlineUserUtils {
 	public static OnlineUser online(User user, String orgi, String sessionid,String optype, HttpServletRequest request , String channel , String appid , Contacts contacts , CousultInvite invite) {
 		OnlineUser onlineUser = null;
 		if (UKDataContext.getContext() != null) {
-			onlineUser = onlineuser(user.getId(), orgi) ;
+			onlineUser = onlineuser(user.getId(), orgi , invite) ;
 			if (onlineUser == null) {
 				onlineUser = new OnlineUser();
 				onlineUser.setId(user.getId());
