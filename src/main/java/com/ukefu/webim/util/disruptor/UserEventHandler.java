@@ -1,5 +1,7 @@
 package com.ukefu.webim.util.disruptor;
 
+import java.util.List;
+
 import com.lmax.disruptor.EventHandler;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.event.UserDataEvent;
@@ -18,7 +20,11 @@ public class UserEventHandler implements EventHandler<UserDataEvent>{
 			userEventRes.save((UserHistory)arg0.getEvent()) ;
 		}else if(arg0.getEvent() instanceof OnlineUser){
 			OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
-			onlineUserRes.save((OnlineUser)arg0.getEvent()) ;
+			OnlineUser onlineUser = (OnlineUser)arg0.getEvent() ;
+			List<OnlineUser> onlineUserList = onlineUserRes.findByUseridAndOrgi(onlineUser.getUserid(), onlineUser.getOrgi()) ;
+			if(onlineUserList.size() == 0){
+				onlineUserRes.save(onlineUser) ;
+			}
 		}
 	}
 
