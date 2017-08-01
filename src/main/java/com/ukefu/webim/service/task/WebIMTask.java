@@ -118,7 +118,7 @@ public class WebIMTask {
 	
 	@Scheduled(fixedDelay= 60000) // 每分钟执行一次
     public void onlineuser() {
-		Page<OnlineUser> pages = onlineUserRes.findByOrgiAndStatusAndCreatetimeLessThan(UKDataContext.SYSTEM_ORGI, UKDataContext.OnlineUserOperatorStatus.ONLINE.toString(), UKTools.getLastTime(3600), new PageRequest(0,  100)) ;
+		Page<OnlineUser> pages = onlineUserRes.findByOrgiAndStatusAndCreatetimeLessThan(UKDataContext.SYSTEM_ORGI, UKDataContext.OnlineUserOperatorStatus.ONLINE.toString(), UKTools.getLastTime(300), new PageRequest(0,  100)) ;
 		if(pages.getContent().size()>0){
 			for(OnlineUser onlineUser : pages.getContent()){
 				List<WebIMClient> clients = OnlineUserUtils.webIMClients.getClients(onlineUser.getUserid())  ;
