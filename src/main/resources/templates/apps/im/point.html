@@ -70,11 +70,7 @@ function append(parent, text) {
     if (typeof text === 'string') {
       var temp = document.createElement('div');
       temp.innerHTML = text;
-      var frag = document.createDocumentFragment();
-      while (temp.firstChild) {
-        frag.appendChild(temp.firstChild);
-      }
-      parent.appendChild(frag);
+      parent.appendChild(temp);
     }
     else {
       parent.appendChild(text);
