@@ -120,7 +120,7 @@
 															<p style="color:#888888;font-size:13px;margin-top:10px;">开启后，用户在指定时间内没有响应时，系统会自动结束对话</p>
 														</div>
 														<div class="col-lg-4" style="text-align:right;">
-															<input type="checkbox" title="启用" name="sessiontimeout" id="sessiontimeout" lay-filter="timeout" <#if sessionConfig?? && sessionConfig.sessiontimeout == true>checked="checked"</#if>>
+															<input type="checkbox" title="启用" name="sessiontimeout" value="1" id="sessiontimeout" lay-filter="timeout" <#if sessionConfig?? && sessionConfig.sessiontimeout == true>checked="checked"</#if>>
 														</div>
 													</div>
 												</div>
@@ -156,7 +156,7 @@
 															<p style="color:#888888;font-size:13px;margin-top:10px;">开启后，用户在指定时间内没有响应时，系统会在2分钟后自动结束对话，</p>
 														</div>
 														<div class="col-lg-4" style="text-align:right;">
-															<input type="checkbox" title="启用" id="resessiontimeout" name="resessiontimeout" lay-filter="retimeout" <#if sessionConfig?? && sessionConfig.resessiontimeout == true>checked="checked"</#if>>
+															<input type="checkbox" title="启用" id="resessiontimeout" value="1" name="resessiontimeout" lay-filter="retimeout" <#if sessionConfig?? && sessionConfig.resessiontimeout == true>checked="checked"</#if>>
 														</div>
 													</div>
 												</div>

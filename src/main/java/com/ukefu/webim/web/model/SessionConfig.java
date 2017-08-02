@@ -32,10 +32,10 @@ public class SessionConfig implements java.io.Serializable{
 	private String sessionmsg ;	//欢迎消息
 	private String distribution ;	//坐席分配策略
 	private boolean lastagent;			//启用历史服务坐席优先分配
-	private boolean sessiontimeout = true;	//启用超时提醒功能
+	private boolean sessiontimeout;	//启用超时提醒功能
 	private int timeout = 120;				//超时时长 , 默认2分钟
 	private String timeoutmsg ;			//超时提醒消息
-	private boolean resessiontimeout = true;	//启用再次超时断开
+	private boolean resessiontimeout;	//启用再次超时断开
 	private int retimeout = 120;				//再次超时时长 ， 默认2分钟
 	private String retimeoutmsg ;		//再次超时断开
 	private boolean satisfaction ;	//启用满意度调查
