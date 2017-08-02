@@ -19,6 +19,7 @@ import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
+import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.util.router.OutMessageRouter;
@@ -26,6 +27,7 @@ import com.ukefu.webim.util.server.message.ChatMessage;
 import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.AgentUserTask;
+import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.MessageOutContent;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.SessionConfig;
@@ -136,15 +138,19 @@ public class WebIMTask {
 		if(onlineusers > 0){
 			OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
 			Collection<?> datas = CacheHelper.getOnlineUserCacheBean().getAllCacheObject(UKDataContext.SYSTEM_ORGI) ;
+			ConsultInviteRepository consultInviteRes = UKDataContext.getContext().getBean(ConsultInviteRepository.class) ;
 			for(Object key : datas){
 				Object data = CacheHelper.getOnlineUserCacheBean().getCacheObject(key.toString(), UKDataContext.SYSTEM_ORGI) ;
 				if(data instanceof OnlineUser){
 					OnlineUser onlineUser = (OnlineUser)data ;
 					if(onlineUser.getUpdatetime()!=null && (System.currentTimeMillis() - onlineUser.getUpdatetime().getTime()) < 10000){
-						OnlineUserRepository service = (OnlineUserRepository) UKDataContext.getContext().getBean(OnlineUserRepository.class);
-						int users = service.countByUseridAndOrgi(onlineUser.getUserid() , onlineUser.getOrgi());
-						if(users == 0){
-							onlineUserRes.save(onlineUser) ;
+						CousultInvite invite = OnlineUserUtils.cousult(onlineUser.getAppid(), onlineUser.getOrgi(), consultInviteRes) ;
+						if(!invite.isTraceuser()){
+							OnlineUserRepository service = (OnlineUserRepository) UKDataContext.getContext().getBean(OnlineUserRepository.class);
+							int users = service.countByUseridAndOrgi(onlineUser.getUserid() , onlineUser.getOrgi());
+							if(users == 0){
+								onlineUserRes.save(onlineUser) ;
+							}
 						}
 					}
 				}
