@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.elasticsearch.common.lang3.StringUtils;
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbMakerConfigException;
@@ -39,11 +40,26 @@ public class IPTools {
 				String[] region = block.getRegion().split("[\\|]") ;
 				if(region.length == 5){
 					ip.setCountry(region[0]);
-					ip.setRegion(region[1]);
-					ip.setProvince(region[2]);
-					ip.setCity(region[3]);
-					ip.setIsp(region[4]);
-					
+					if(!StringUtils.isBlank(region[1]) && !region[1].equalsIgnoreCase("null")){
+						ip.setRegion(region[1]);
+					}else{
+						ip.setRegion("");
+					}
+					if(!StringUtils.isBlank(region[2]) && !region[2].equalsIgnoreCase("null")){
+						ip.setProvince(region[2]);
+					}else{
+						ip.setProvince("");
+					}
+					if(!StringUtils.isBlank(region[3]) && !region[3].equalsIgnoreCase("null")){
+						ip.setCity(region[3]);
+					}else{
+						ip.setCity("");
+					}
+					if(!StringUtils.isBlank(region[4]) && !region[4].equalsIgnoreCase("null")){
+						ip.setIsp(region[4]);
+					}else{
+						ip.setIsp("");
+					}
 				}
 			}
 		}catch(Exception ex){}
