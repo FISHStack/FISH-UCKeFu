@@ -9,11 +9,11 @@
 					<span class="user-webim-icon"><i class="layui-icon ukewo-btn" style="font-size:40px;">&#xe612;</i></span>
 					<div class="ukefu-user-index">
 						<h1>
-							${curAgentService.username!''}
+							${agentUser.username!''}
 							<#if contacts??>（${contacts.name!''}）</#if>
 						</h1>
 						<div class="ukefu-join-time ukefu-text-muted" title="访问时间">
-							${curAgentService.createtime}
+							${agentUser.createtime?string("yyyy-MM-dd HH:mm:ss")}
 						</div>
 					</div>
 				</div>
@@ -57,9 +57,9 @@
 						</h1>
 					</div>
 					<div class="box-body" style="padding:0px 10px;position: relative;">
-						<#if curAgentService.channel?? && curAgentService.channel == "webim">
+						<#if agentUser.channel?? && agentUser.channel == "webim">
 								<#include "/apps/agent/channel/webim.html">
-						<#elseif curAgentService.channel?? && curAgentService.channel == "weixin">
+						<#elseif agentUser.channel?? && agentUser.channel == "weixin">
 								<#include "/apps/agent/channel/weixin.html">
 						</#if>
 					</div>
@@ -77,7 +77,7 @@
 						<i class="layui-icon ukewo-btn" style="font-size:28px;"></i>
 						<div class="ukefu-bt-text">
 							<div class="ukefu-bt-text-title" style="">
-								${curAgentService.username!''}<#if onlineUser??>（${onlineUser.region!''}）<#elseif weiXinUser??>（${weiXinUser.country} ${weiXinUser.province!''} ${weiXinUser.city!''}）</#if>
+								${agentUser.username!''}<#if onlineUser??>（${onlineUser.region!''}）<#elseif weiXinUser??>（${weiXinUser.country} ${weiXinUser.province!''} ${weiXinUser.city!''}）</#if>
 							</div>
 							<div class="ukefu-bt-text-content" style="margin-top: 0px;line-height: 20px;">
 								访客视图-访客访问记录，访客咨询记录

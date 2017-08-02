@@ -3,6 +3,7 @@ package com.ukefu.webim.web.handler.apps.service;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +82,7 @@ public class OnlineUserController extends Handler{
 	
 	@RequestMapping("/online/index")
     @Menu(type = "service" , subtype = "online" , admin= true)
-    public ModelAndView index(ModelMap map , HttpServletRequest request , String userid , String agentservice) {
+    public ModelAndView index(ModelMap map , HttpServletRequest request , String userid , String agentservice , @Valid String channel) {
 		if(!StringUtils.isBlank(userid)){
 			map.put("inviteResult", UKTools.getWebIMInviteResult(onlineUserRes.findByOrgiAndUserid(super.getOrgi(request), userid))) ;
 			map.put("tagRelationList", tagRelationRes.findByUserid(userid)) ;
@@ -92,7 +93,6 @@ public class OnlineUserController extends Handler{
 			
 			map.put("agentServiceList", agentServiceList) ;
 			if(agentServiceList.size()>0){
-				
 				map.put("serviceCount", Integer
 						.valueOf(this.agentServiceRes
 								.countByUseridAndOrgiAndStatus(userid, super.getOrgi(request),
@@ -112,19 +112,6 @@ public class OnlineUserController extends Handler{
 					map.put("summary" , summary) ;
 				}
 				
-				
-				if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentService.getChannel())){
-					List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentService.getUserid(), super.getOrgi(request)) ;
-					if(weiXinUserList.size() > 0){
-						WeiXinUser weiXinUser = weiXinUserList.get(0) ;
-						map.put("weiXinUser",weiXinUser);
-					}
-				}else if(UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(agentService.getChannel())){
-					List<OnlineUser> onlineUserList = onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
-					if(onlineUserList.size() >0){
-						map.put("onlineUser", onlineUserList.get(0)) ;
-					}
-				}
 				List<AgentUserContacts> agentUserContactsList = agentUserContactsRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
 				if(agentUserContactsList.size() > 0){
 					AgentUserContacts agentUserContacts = agentUserContactsList.get(0) ;
@@ -133,13 +120,26 @@ public class OnlineUserController extends Handler{
 				
 				map.put("tags", tagRes.findByOrgiAndTagtype(super.getOrgi(request) , UKDataContext.ModelType.USER.toString())) ;
 				map.put("summaryTags", tagRes.findByOrgiAndTagtype(super.getOrgi(request) , UKDataContext.ModelType.SUMMARY.toString())) ;
-				AgentUser curragentuser = agentUserRes.findByUseridAndOrgi(agentService.getUserid(), super.getOrgi(request)) ;
 				map.put("curAgentService", agentService) ;
 				
 				
-				map.put("curragentuser", curragentuser) ;
 				map.put("agentUserMessageList", chatMessageRepository.findByAgentserviceidAndOrgi(agentService.getId() , super.getOrgi(request), new PageRequest(0, 50, Direction.DESC , "updatetime")));
 			}
+			
+			if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(channel)){
+				List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(userid, super.getOrgi(request)) ;
+				if(weiXinUserList.size() > 0){
+					WeiXinUser weiXinUser = weiXinUserList.get(0) ;
+					map.put("weiXinUser",weiXinUser);
+				}
+			}else if(UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(channel)){
+				List<OnlineUser> onlineUserList = onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
+				if(onlineUserList.size() >0){
+					map.put("onlineUser", onlineUserList.get(0)) ;
+				}
+			}
+			map.put("agentUser", agentUserRes.findByUseridAndOrgi(userid, super.getOrgi(request))) ;
+			map.put("curragentuser", agentUserRes.findByUseridAndOrgi(userid, super.getOrgi(request))) ;
 		}
         return request(super.createAppsTempletResponse("/apps/service/online/index"));
     }

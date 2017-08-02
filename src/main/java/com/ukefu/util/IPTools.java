@@ -31,14 +31,6 @@ public class IPTools {
 			e.printStackTrace();
 		} 
 	}
-
-//	public static void main(String[] args) {
-//		IP ip = IPTools.getInstance().findGeography("219.128.235.211") ;
-//		System.out.println(ip.getCountry());
-//		System.out.println(ip.getProvince());
-//		System.out.println(ip.getCity());
-//	}
-
 	public IP findGeography(String remote) {
 		IP ip = new IP();
 		try{
@@ -54,9 +46,7 @@ public class IPTools {
 					
 				}
 			}
-		}catch(Exception ex){
-			ex.printStackTrace();
-		}
+		}catch(Exception ex){}
 		return ip;
 	}
 }

@@ -477,6 +477,17 @@ public class OnlineUserUtils {
 			agentUser.setNickname(nickname);
 		}
 		agentUser.setStatus(null); // 修改状态
+		
+		CousultInvite invite = OnlineUserUtils.cousult(appid, orgi, UKDataContext.getContext().getBean(ConsultInviteRepository.class)) ;
+		if(!invite.isTraceuser()){
+			OnlineUser onlineUser = (OnlineUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(user, orgi) ;
+			if(onlineUser!=null){
+				OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
+				if(onlineUserRes.countByUseridAndOrgi(user, orgi) == 0){
+					onlineUserRes.save(onlineUser) ;
+				}
+			}
+		}
 
 		MessageInContent inMessage = new MessageInContent();
 		inMessage.setChannelMessage(data);
@@ -532,9 +543,8 @@ public class OnlineUserUtils {
 		if(!StringUtils.isBlank(ip)){
 			ipdata = IPTools.getInstance().findGeography(ip);
 		}
-		String userID = UKTools.genIDByKey(session);
 		if(StringUtils.isBlank(nickname)){
-			nickname = "Guest_" + userID;
+			nickname = "Guest_" + userid;
 		}
 		
 		return newRequestMessage(userid , nickname, orgi, session, appid, ip, osname, browser , "" , ipdata , channel , skill , agent) ;

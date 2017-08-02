@@ -22,10 +22,7 @@
 	    </span>
 	</li>
 	<li>
-	    IP：${onlineUser.ip!''}
-	</li>
-	<li>
-		位置：<#if onlineUser.province?? && onlineUser.province == "0">未知<#else>${onlineUser.province!''} ${onlineUser.city!''}</#if>
+		位置：${curagentuser.region!''}
 	</li>
 	<li>
 	    访问次数：${serviceCount!0}次

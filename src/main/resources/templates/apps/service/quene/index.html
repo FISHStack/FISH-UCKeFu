@@ -27,7 +27,7 @@
 						<#list agentUserList.content as agentUser>
 						<tr class="tdHasContorllor design-dropable-td">
 							<td class=" first_td_head">
-								<a href="/service/online/index.html?userid=${agentUser.userid!''}">
+								<a href="/service/online/index.html?userid=${agentUser.userid!''}&channel=${agentUser.channel!''}">
 								${agentUser.username!''}
 								</a>
 							</td>
