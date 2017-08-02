@@ -13,7 +13,7 @@
 							<#if contacts??>（${contacts.name!''}）</#if>
 						</h1>
 						<div class="ukefu-join-time ukefu-text-muted" title="访问时间">
-							${agentUser.createtime?string("yyyy-MM-dd HH:mm:ss")}
+							<#if agentUser?? && agentUser.createtime??>${agentUser.createtime?string("yyyy-MM-dd HH:mm:ss")}</#if>
 						</div>
 					</div>
 				</div>
