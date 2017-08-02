@@ -205,7 +205,7 @@ public class ServiceQuene {
     		if(router!=null){
     			MessageOutContent outMessage = new MessageOutContent() ;
 				outMessage.setMessage(ServiceQuene.getServiceFinishMessage(agentUser.getChannel()));
-				outMessage.setMessageType(UKDataContext.MediaTypeEnum.TEXT.toString());
+				outMessage.setMessageType(UKDataContext.AgentUserStatusEnum.END.toString());
 				outMessage.setCalltype(UKDataContext.CallTypeEnum.IN.toString());
 				if(agentStatus!=null){
 					outMessage.setNickName(agentStatus.getUsername());
