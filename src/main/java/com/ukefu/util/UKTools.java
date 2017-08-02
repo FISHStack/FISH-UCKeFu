@@ -1,5 +1,7 @@
 package com.ukefu.util;
 
+import io.netty.handler.codec.http.HttpHeaders;
+
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -772,6 +774,20 @@ public class UKTools {
 	    }  
 	    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
 	        ip = request.getRemoteAddr();  
+	    }  
+	    return ip;  
+	}
+	
+	public static String getIpAddr(HttpHeaders headers , String remoteAddr) {  
+	    String ip = headers.get("x-forwarded-for");  
+	    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = headers.get("Proxy-Client-IP");  
+	    }  
+	    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = headers.get("WL-Proxy-Client-IP");  
+	    }  
+	    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = remoteAddr;  
 	    }  
 	    return ip;  
 	}
