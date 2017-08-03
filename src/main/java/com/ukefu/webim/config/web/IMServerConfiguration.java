@@ -49,7 +49,7 @@ public class IMServerConfiguration
 //		config.setHostname("localhost");
 		config.setPort(port);
 		
-		config.getSocketConfig().setReuseAddress(true);
+//		config.getSocketConfig().setReuseAddress(true);
 //		config.setSocketConfig(new SocketConfig());
 //		config.setOrigin("http://im.uckefu.com");
 		config.setExceptionListener(new UCKeFuExceptionListener());
