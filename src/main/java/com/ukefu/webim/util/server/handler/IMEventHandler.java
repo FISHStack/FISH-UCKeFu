@@ -75,7 +75,7 @@ public class IMEventHandler
 					
 					client.sendEvent(UKDataContext.MessageTypeEnum.STATUS.toString(), outMessage);
 				}
-			}else{
+			}else{//非法链接
 				client.disconnect();
 			}
 		} catch (Exception e) {
