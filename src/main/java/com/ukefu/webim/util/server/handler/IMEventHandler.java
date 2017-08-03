@@ -75,9 +75,12 @@ public class IMEventHandler
 					
 					client.sendEvent(UKDataContext.MessageTypeEnum.STATUS.toString(), outMessage);
 				}
+			}else{
+				client.disconnect();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			client.disconnect();
 		}
     }  
       
