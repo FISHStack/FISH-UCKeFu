@@ -34,6 +34,9 @@ public class IMServerConfiguration
     @Value("${web.upload-path}")
     private String path;
     
+    @Value("${uk.im.server.threads}")
+    private String threads;
+    
     private SocketIOServer server ;
     
     @Bean(name="webimport") 
@@ -69,8 +72,8 @@ public class IMServerConfiguration
 		
 		
 //	    config.setSSLProtocol("https");
-		
-		config.setWorkerThreads(100);
+		int workThreads = !StringUtils.isBlank(threads) && threads.matches("[\\d]{1,6}") ? Integer.parseInt(threads) : 100 ;
+		config.setWorkerThreads(workThreads);
 //		config.setStoreFactory(new HazelcastStoreFactory());
 		config.setAuthorizationListener(new AuthorizationListener() {
 			public boolean isAuthorized(HandshakeData data) {
