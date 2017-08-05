@@ -80,6 +80,11 @@ public class IMServerConfiguration
 				return true;
 			}
 		});
+		config.getSocketConfig().setReuseAddress(true);
+		config.getSocketConfig().setSoLinger(0);
+		config.getSocketConfig().setTcpNoDelay(true);
+		config.getSocketConfig().setTcpKeepAlive(true);
+		
         return server = new SocketIOServer(config);  
     }
     
