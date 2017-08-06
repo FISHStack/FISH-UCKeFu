@@ -134,22 +134,24 @@ public class WebIMTask {
 	
 	@Scheduled(fixedDelay= 10000) // 每10秒执行一次 ， 负责将当期在线的访客序列化到 数据库
     public void traceOnlineUser() {
-		long onlineusers = CacheHelper.getOnlineUserCacheBean().getSize() ;
-		if(onlineusers > 0){
-			OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
-			Collection<?> datas = CacheHelper.getOnlineUserCacheBean().getAllCacheObject(UKDataContext.SYSTEM_ORGI) ;
-			ConsultInviteRepository consultInviteRes = UKDataContext.getContext().getBean(ConsultInviteRepository.class) ;
-			for(Object key : datas){
-				Object data = CacheHelper.getOnlineUserCacheBean().getCacheObject(key.toString(), UKDataContext.SYSTEM_ORGI) ;
-				if(data instanceof OnlineUser){
-					OnlineUser onlineUser = (OnlineUser)data ;
-					if(onlineUser.getUpdatetime()!=null && (System.currentTimeMillis() - onlineUser.getUpdatetime().getTime()) < 10000){
-						CousultInvite invite = OnlineUserUtils.cousult(onlineUser.getAppid(), onlineUser.getOrgi(), consultInviteRes) ;
-						if(!invite.isTraceuser()){
-							OnlineUserRepository service = (OnlineUserRepository) UKDataContext.getContext().getBean(OnlineUserRepository.class);
-							int users = service.countByUseridAndOrgi(onlineUser.getUserid() , onlineUser.getOrgi());
-							if(users == 0){
-								onlineUserRes.save(onlineUser) ;
+		if(UKDataContext.getContext()!=null){	//判断系统是否启动完成，避免 未初始化完成即开始执行 任务
+			long onlineusers = CacheHelper.getOnlineUserCacheBean().getSize() ;
+			if(onlineusers > 0){
+				OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
+				Collection<?> datas = CacheHelper.getOnlineUserCacheBean().getAllCacheObject(UKDataContext.SYSTEM_ORGI) ;
+				ConsultInviteRepository consultInviteRes = UKDataContext.getContext().getBean(ConsultInviteRepository.class) ;
+				for(Object key : datas){
+					Object data = CacheHelper.getOnlineUserCacheBean().getCacheObject(key.toString(), UKDataContext.SYSTEM_ORGI) ;
+					if(data instanceof OnlineUser){
+						OnlineUser onlineUser = (OnlineUser)data ;
+						if(onlineUser.getUpdatetime()!=null && (System.currentTimeMillis() - onlineUser.getUpdatetime().getTime()) < 10000){
+							CousultInvite invite = OnlineUserUtils.cousult(onlineUser.getAppid(), onlineUser.getOrgi(), consultInviteRes) ;
+							if(!invite.isTraceuser()){
+								OnlineUserRepository service = (OnlineUserRepository) UKDataContext.getContext().getBean(OnlineUserRepository.class);
+								int users = service.countByUseridAndOrgi(onlineUser.getUserid() , onlineUser.getOrgi());
+								if(users == 0){
+									onlineUserRes.save(onlineUser) ;
+								}
 							}
 						}
 					}

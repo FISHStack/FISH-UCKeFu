@@ -18,6 +18,10 @@ import com.ukefu.util.event.UserEvent;
 @Table(name="uk_userevent")
 @Proxy(lazy=false)
 public class UserHistory implements UserEvent {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9167939944520945485L;
 	private String id;
 	private String username;
 	private String creater;
