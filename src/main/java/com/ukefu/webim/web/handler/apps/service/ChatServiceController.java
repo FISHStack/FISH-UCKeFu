@@ -75,7 +75,9 @@ public class ChatServiceController extends Handler{
 		List<String> skillList = new ArrayList<String>();
 		for(AgentUser agentUser : agentUserList.getContent()){
 			agentUser.setWaittingtime((int) (System.currentTimeMillis() - agentUser.getCreatetime().getTime()));
-			skillList.add(agentUser.getSkill()) ;
+			if(!StringUtils.isBlank(agentUser.getSkill())){
+				skillList.add(agentUser.getSkill()) ;
+			}
 		}
 		if(skillList.size() > 0){
 			List<Organ> organList = organRes.findAll(skillList) ;
