@@ -143,7 +143,7 @@ public class WebIMTask {
 					Object data = CacheHelper.getOnlineUserCacheBean().getCacheObject(key.toString(), UKDataContext.SYSTEM_ORGI) ;
 					if(data instanceof OnlineUser){
 						OnlineUser onlineUser = (OnlineUser)data ;
-						if(onlineUser.getCreatetime()!=null && (System.currentTimeMillis() - onlineUser.getCreatetime().getTime()) < 10000){
+						if(onlineUser.getUpdatetime()!=null && (System.currentTimeMillis() - onlineUser.getUpdatetime().getTime()) < 15000){
 							CousultInvite invite = OnlineUserUtils.cousult(onlineUser.getAppid(), onlineUser.getOrgi(), consultInviteRes) ;
 							if(!invite.isTraceuser()){
 								OnlineUserRepository service = (OnlineUserRepository) UKDataContext.getContext().getBean(OnlineUserRepository.class);
