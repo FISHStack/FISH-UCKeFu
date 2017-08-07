@@ -118,9 +118,9 @@ public class WebIMTask {
 		}
 	}
 	
-	@Scheduled(fixedDelay= 60000) // 每分钟执行一次
+	@Scheduled(fixedDelay= 10000) // 每分钟执行一次
     public void onlineuser() {
-		Page<OnlineUser> pages = onlineUserRes.findByOrgiAndStatusAndCreatetimeLessThan(UKDataContext.SYSTEM_ORGI, UKDataContext.OnlineUserOperatorStatus.ONLINE.toString(), UKTools.getLastTime(300), new PageRequest(0,  100)) ;
+		Page<OnlineUser> pages = onlineUserRes.findByOrgiAndStatusAndCreatetimeLessThan(UKDataContext.SYSTEM_ORGI, UKDataContext.OnlineUserOperatorStatus.ONLINE.toString(), UKTools.getLastTime(60), new PageRequest(0,  100)) ;
 		if(pages.getContent().size()>0){
 			for(OnlineUser onlineUser : pages.getContent()){
 				try {
@@ -137,21 +137,24 @@ public class WebIMTask {
 		if(UKDataContext.getContext()!=null){	//判断系统是否启动完成，避免 未初始化完成即开始执行 任务
 			long onlineusers = CacheHelper.getOnlineUserCacheBean().getSize() ;
 			if(onlineusers > 0){
-				OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
 				Collection<?> datas = CacheHelper.getOnlineUserCacheBean().getAllCacheObject(UKDataContext.SYSTEM_ORGI) ;
 				ConsultInviteRepository consultInviteRes = UKDataContext.getContext().getBean(ConsultInviteRepository.class) ;
 				for(Object key : datas){
 					Object data = CacheHelper.getOnlineUserCacheBean().getCacheObject(key.toString(), UKDataContext.SYSTEM_ORGI) ;
 					if(data instanceof OnlineUser){
 						OnlineUser onlineUser = (OnlineUser)data ;
-						if(onlineUser.getUpdatetime()!=null && (System.currentTimeMillis() - onlineUser.getUpdatetime().getTime()) < 10000){
+						if(onlineUser.getCreatetime()!=null && (System.currentTimeMillis() - onlineUser.getCreatetime().getTime()) < 10000){
 							CousultInvite invite = OnlineUserUtils.cousult(onlineUser.getAppid(), onlineUser.getOrgi(), consultInviteRes) ;
 							if(!invite.isTraceuser()){
 								OnlineUserRepository service = (OnlineUserRepository) UKDataContext.getContext().getBean(OnlineUserRepository.class);
-								int users = service.countByUseridAndOrgi(onlineUser.getUserid() , onlineUser.getOrgi());
-								if(users == 0){
-									onlineUserRes.save(onlineUser) ;
+								List<OnlineUser> onlineUserList = service.findByUseridAndOrgi(onlineUser.getUserid() , onlineUser.getOrgi());
+								if(onlineUserList .size() > 1){
+									service.delete(onlineUserList);
+								}else if(onlineUserList .size() == 1){
+									OnlineUser tempOnlineUser = onlineUserList.get(0) ;
+									onlineUser.setId(tempOnlineUser.getId());
 								}
+								service.save(onlineUser) ;
 							}
 						}
 					}
