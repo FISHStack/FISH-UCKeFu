@@ -21,6 +21,7 @@ import com.ukefu.util.CheckMobile;
 import com.ukefu.util.IP;
 import com.ukefu.util.IPTools;
 import com.ukefu.util.UKTools;
+import com.ukefu.util.extra.DataExchangeInterface;
 import com.ukefu.util.webim.WebIMClient;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
@@ -41,6 +42,7 @@ import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.OnlineUserHis;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.SessionConfig;
+import com.ukefu.webim.web.model.Topic;
 import com.ukefu.webim.web.model.User;
 
 public class OnlineUserUtils {
@@ -670,5 +672,20 @@ public class OnlineUserUtils {
 				}
 			}
 		}
+	}
+	public static void resetHotTopic(DataExchangeInterface dataExchange,User user , String orgi) {
+		if(CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopic", orgi)!=null){
+			CacheHelper.getSystemCacheBean().delete("xiaoeTopic", orgi) ;
+		}
+		cacheHotTopic(dataExchange,user , orgi) ;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Topic> cacheHotTopic(DataExchangeInterface dataExchange,User user , String orgi) {
+		List<Topic> topicList = null ;
+		if((topicList = (List<Topic>) CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopic", orgi))!=null){ 
+			topicList = (List<Topic>) dataExchange.getListDataByIdAndOrgi(user.getId(), user.getId(),  orgi) ;
+		}
+		return topicList;
 	}
 }

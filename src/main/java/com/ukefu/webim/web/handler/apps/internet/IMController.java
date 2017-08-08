@@ -348,10 +348,7 @@ public class IMController extends Handler{
     					view = request(super.createRequestPageTempletResponse("/apps/im/ai/mobile")) ;		//智能机器人 移动端
     				}
     				if(UKDataContext.model.get("xiaoe")!=null){
-    					DataExchangeInterface dataExchange = (DataExchangeInterface) UKDataContext.getContext().getBean("topic") ;
-    					if(dataExchange!=null){
-    						map.addAttribute("topicList", dataExchange.getListDataByIdAndOrgi(super.getUser(request).getId(), super.getUser(request).getId(),  super.getOrgi(request))) ;
-    					}
+    					map.addAttribute("topicList", OnlineUserUtils.cacheHotTopic((DataExchangeInterface) UKDataContext.getContext().getBean("topic") , super.getUser(request) , super.getOrgi(request)) ) ;
     				}
     			}else{
     				if(CheckMobile.check(request.getHeader("User-Agent")) || !StringUtils.isBlank(mobile)){
@@ -363,15 +360,17 @@ public class IMController extends Handler{
     		
 	    	
 	//    	OnlineUserUtils.sendWebIMClients(userid , "accept");
-	    	Page<InviteRecord> inviteRecordList = inviteRecordRes.findByUseridAndOrgi(userid, orgi , new PageRequest(0, 1, Direction.DESC, "createtime")) ;
-	    	if(inviteRecordList.getContent()!=null && inviteRecordList.getContent().size()>0){
-	    		InviteRecord record = inviteRecordList.getContent().get(0) ;
-	    		record.setUpdatetime(new Date());
-	    		record.setResponsetime((int) (System.currentTimeMillis() - record.getCreatetime().getTime()));
-	    		record.setResult(UKDataContext.OnlineUserInviteStatus.ACCEPT.toString());
-	    		inviteRecordRes.save(record) ;
-	    	}
-	    	
+    		 
+    		if(invite.isTraceuser()){
+		    	Page<InviteRecord> inviteRecordList = inviteRecordRes.findByUseridAndOrgi(userid, orgi , new PageRequest(0, 1, Direction.DESC, "createtime")) ;
+		    	if(inviteRecordList.getContent()!=null && inviteRecordList.getContent().size()>0){
+		    		InviteRecord record = inviteRecordList.getContent().get(0) ;
+		    		record.setUpdatetime(new Date());
+		    		record.setResponsetime((int) (System.currentTimeMillis() - record.getCreatetime().getTime()));
+		    		record.setResult(UKDataContext.OnlineUserInviteStatus.ACCEPT.toString());
+		    		inviteRecordRes.save(record) ;
+		    	}
+    		}
     	}
         return view;
     }
