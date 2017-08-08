@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ukefu.core.UKDataContext;
@@ -46,7 +46,7 @@ public class ApiLoginController extends Handler{
 	@RequestMapping(method = RequestMethod.POST)
     @Menu(type = "apps" , subtype = "token" , access = true)
     @ApiOperation("登录服务，传入登录账号和密码")
-    public ResponseEntity login(HttpServletRequest request , HttpServletResponse response , @RequestParam String username, @RequestParam String password) {
+    public ResponseEntity login(HttpServletRequest request , HttpServletResponse response , @Valid String username, @Valid String password) {
     	User loginUser = userRepository.findByUsernameAndPassword(username , UKTools.md5(password)) ;
     	ResponseEntity entity = null ;
         if(loginUser!=null && !StringUtils.isBlank(loginUser.getId())){

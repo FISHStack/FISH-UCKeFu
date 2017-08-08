@@ -13,7 +13,7 @@
 			var authorization ;
 			var demo =  {
 				login:function(username , password){
-					$.post("http://uk.ukewo.cn/tokens" , "username=admin&password=123456" , function(data){
+					$.post("http://127.0.0.1/tokens" , "username=admin&password=123456" , function(data){
 						authorization = data ;
 					})
 				},
@@ -29,8 +29,20 @@
 					});
 
 				},
+				createWorkOrder:function(){
+					var param = 'title=测试API创建工单&authorization='+authorization;
+					$.ajax({
+						type: "PUT",
+						url:"http://127.0.0.1/api/workorders" , 
+						data: param,
+						success: function (data) {
+							console.log(data);
+							alert("token:"+data);
+						}
+					});
+				},
 				getUser:function(current){
-					demo.ajax("http://uk.ukewo.cn/api/user?username="+current,function(data){
+					demo.ajax("http://127.0.0.1/api/user?username="+current,function(data){
 						console.log(data);
 						alert(data);
 					});
@@ -44,6 +56,8 @@
     
     <body>
 		<a href="javascript:void(0)" onclick="demo.getUser('admin')">获取当前登录用户信息</a>
+
+		<a href="javascript:void(0)" onclick="demo.createWorkOrder()">创建工单</a>
 	</body>
 
 </html>

@@ -47,6 +47,9 @@ public class ApiRequestMatchingFilter implements Filter {
 	         }
 	         if(matchAnyRoles){
 	        	 String authorization = request.getHeader("authorization") ;
+	        	 if(StringUtils.isBlank(authorization)){
+	        		 authorization = request.getParameter("authorization") ;
+	        	 }
 	        	 if(!StringUtils.isBlank(authorization) && CacheHelper.getApiUserCacheBean().getCacheObject(authorization, UKDataContext.SYSTEM_ORGI) != null){
 	        		 chain.doFilter(req,resp);
 	        	 }else{

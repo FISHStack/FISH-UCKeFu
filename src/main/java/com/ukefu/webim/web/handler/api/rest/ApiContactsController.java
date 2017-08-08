@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ukefu.util.Menu;
@@ -62,7 +61,7 @@ public class ApiContactsController extends Handler{
 	@RequestMapping(method = RequestMethod.PUT)
 	@Menu(type = "apps" , subtype = "contacts" , access = true)
 	@ApiOperation("新增或修改联系人，联系人部分字段是字典选项，请从字典接口获取数据")
-    public ResponseEntity<RestResult> put(HttpServletRequest request , @RequestParam Contacts contacts) {
+    public ResponseEntity<RestResult> put(HttpServletRequest request , @Valid Contacts contacts) {
     	if(contacts != null && !StringUtils.isBlank(contacts.getName())){
     		contactsRepository.save(contacts) ;
     	}
@@ -78,7 +77,7 @@ public class ApiContactsController extends Handler{
 	@RequestMapping(method = RequestMethod.DELETE)
 	@Menu(type = "apps" , subtype = "contacts" , access = true)
 	@ApiOperation("删除联系人，联系人删除是逻辑删除，将 datastatus字段标记为 true，即已删除")
-    public ResponseEntity<RestResult> delete(HttpServletRequest request , @RequestParam String id) {
+    public ResponseEntity<RestResult> delete(HttpServletRequest request , @Valid String id) {
 		RestResult result = new RestResult(RestResultType.OK) ; 
     	if(!StringUtils.isBlank(id)){
     		Contacts contacts = contactsRepository.findOne(id) ;

@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ukefu.util.Menu;
@@ -69,7 +68,7 @@ public class ApiUserController extends Handler{
 	@RequestMapping(method = RequestMethod.PUT)
 	@Menu(type = "apps" , subtype = "user" , access = true)
 	@ApiOperation("新增或修改用户用户 ，在修改用户信息的时候，如果用户 密码未改变，请设置为 NULL")
-    public ResponseEntity<RestResult> put(HttpServletRequest request , @RequestParam User user) {
+    public ResponseEntity<RestResult> put(HttpServletRequest request , @Valid User user) {
     	if(user != null && !StringUtils.isBlank(user.getUsername())){
     		if(!StringUtils.isBlank(user.getPassword())){
 	    		user.setPassword(UKTools.md5(user.getPassword()));
@@ -92,7 +91,7 @@ public class ApiUserController extends Handler{
 	@RequestMapping(method = RequestMethod.DELETE)
 	@Menu(type = "apps" , subtype = "user" , access = true)
 	@ApiOperation("删除用户，只提供 按照用户ID删除 ， 并且，不能删除系统管理员")
-    public ResponseEntity<RestResult> delete(HttpServletRequest request , @RequestParam String id) {
+    public ResponseEntity<RestResult> delete(HttpServletRequest request , @Valid String id) {
 		RestResult result = new RestResult(RestResultType.OK) ; 
     	User user = null ;
     	if(!StringUtils.isBlank(id)){

@@ -354,7 +354,7 @@ public class IMController extends Handler{
     					}
     				}
     			}else{
-    				if(CheckMobile.check(request.getHeader("User-Agent"))){
+    				if(CheckMobile.check(request.getHeader("User-Agent")) || !StringUtils.isBlank(mobile)){
     					view = request(super.createRequestPageTempletResponse("/apps/im/mobile")) ;	//WebIM移动端。再次点选技能组？
     				}
     			}
