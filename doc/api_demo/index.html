@@ -41,6 +41,18 @@
 						}
 					});
 				},
+				createContacts:function(){
+					var param = 'name=张天翼&authorization='+authorization;
+					$.ajax({
+						type: "PUT",
+						url:"http://127.0.0.1/api/contacts" , 
+						data: param,
+						success: function (data) {
+							console.log(data);
+							alert("token:"+data);
+						}
+					});
+				},
 				getUser:function(current){
 					demo.ajax("http://127.0.0.1/api/user?username="+current,function(data){
 						console.log(data);
@@ -58,6 +70,8 @@
 		<a href="javascript:void(0)" onclick="demo.getUser('admin')">获取当前登录用户信息</a>
 
 		<a href="javascript:void(0)" onclick="demo.createWorkOrder()">创建工单</a>
+
+		<a href="javascript:void(0)" onclick="demo.createContacts()">创建联系人</a>
 	</body>
 
 </html>
