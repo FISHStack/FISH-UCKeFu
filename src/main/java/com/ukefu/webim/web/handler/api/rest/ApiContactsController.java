@@ -72,6 +72,7 @@ public class ApiContactsController extends Handler{
         	
     		contacts.setOrgan(super.getUser(request).getOrgan());
     		contacts.setCreatetime(new Date());
+    		contacts.setUpdatetime(new Date());
     		
     		contactsRepository.save(contacts) ;
     	}
