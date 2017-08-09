@@ -1,5 +1,7 @@
 package com.ukefu.webim.web.handler.api.rest;
 
+import java.util.Date;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -63,6 +65,14 @@ public class ApiContactsController extends Handler{
 	@ApiOperation("新增或修改联系人，联系人部分字段是字典选项，请从字典接口获取数据")
     public ResponseEntity<RestResult> put(HttpServletRequest request , @Valid Contacts contacts) {
     	if(contacts != null && !StringUtils.isBlank(contacts.getName())){
+    		
+    		contacts.setOrgi(super.getOrgi(request));
+    		contacts.setCreater(super.getUser(request).getId());
+    		contacts.setUsername(super.getUser(request).getUsername());
+        	
+    		contacts.setOrgan(super.getUser(request).getOrgan());
+    		contacts.setCreatetime(new Date());
+    		
     		contactsRepository.save(contacts) ;
     	}
         return new ResponseEntity<>(new RestResult(RestResultType.OK), HttpStatus.OK);
