@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +42,7 @@ import com.ukefu.util.extra.DataExchangeInterface;
 import com.ukefu.util.webim.WebIMClient;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.repository.AgentUserContactsRepository;
+import com.ukefu.webim.service.repository.AttachmentRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.ContactsRepository;
@@ -52,6 +54,8 @@ import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentUserContacts;
+import com.ukefu.webim.web.model.AiConfig;
+import com.ukefu.webim.web.model.AttachmentFile;
 import com.ukefu.webim.web.model.Contacts;
 import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.InviteRecord;
@@ -93,6 +97,10 @@ public class IMController extends Handler{
 	
 	@Autowired
 	private LeaveMsgRepository leaveMsgRes ;
+	
+
+	@Autowired
+	private AttachmentRepository attachementRes;
 	
 	@Autowired
 	private ContactsRepository contactsRes ;
@@ -343,6 +351,11 @@ public class IMController extends Handler{
 				map.addAttribute("username", nickname) ;
 				
     			if(UKDataContext.model.get("xiaoe")!=null  && invite.isAi() && ((!StringUtils.isBlank(ai) && ai.equals("true")) || (invite.isAifirst() && ai == null))){	//启用 AI ， 并且 AI优先 接待
+    				DataExchangeInterface dataInterface = (DataExchangeInterface) UKDataContext.getContext().getBean("aiconfig") ;
+					AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(appid, UKDataContext.SYSTEM_ORGI) ;
+					if(aiConfig!=null){
+						map.addAttribute("aiConfig", aiConfig) ;
+					}
     				view = request(super.createRequestPageTempletResponse("/apps/im/ai/index")) ;
     				if(CheckMobile.check(request.getHeader("User-Agent")) || !StringUtils.isBlank(mobile)){
     					view = request(super.createRequestPageTempletResponse("/apps/im/ai/mobile")) ;		//智能机器人 移动端
@@ -497,30 +510,81 @@ public class IMController extends Handler{
     			uploadDir.mkdirs() ;
     		}
     		String fileid = UKTools.md5(imgFile.getBytes()) ;
-    		fileName = "upload/"+fileid+"_original" ;
-    		File imageFile = new File(path , fileName) ;
-    		FileCopyUtils.copy(imgFile.getBytes(), imageFile);
-    		String thumbnailsFileName = "upload/"+fileid ;
-    		UKTools.processImage(new File(path , thumbnailsFileName), imageFile) ;
-    		
-    		
-    		upload = new UploadStatus("0" , "/res/image.html?id="+thumbnailsFileName);
-    		
-    		String image =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+thumbnailsFileName ;
-    		if(request.getServerPort() == 80){
-    			image = request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+thumbnailsFileName;
-			}else{
-				image = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/image.html?id="+thumbnailsFileName;
-			}
-    		if(!StringUtils.isBlank(channel)){
-    			MessageUtils.uploadImage(image , channel, userid , username , appid , orgi);
+    		if(imgFile.getContentType()!=null && imgFile.getContentType().indexOf("image") >= 0){
+	    		fileName = "upload/"+fileid+"_original" ;
+	    		File imageFile = new File(path , fileName) ;
+	    		FileCopyUtils.copy(imgFile.getBytes(), imageFile);
+	    		String thumbnailsFileName = "upload/"+fileid ;
+	    		UKTools.processImage(new File(path , thumbnailsFileName), imageFile) ;
+	    		
+	    		
+	    		upload = new UploadStatus("0" , "/res/image.html?id="+thumbnailsFileName);
+	    		
+	    		String image =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+thumbnailsFileName ;
+	    		if(request.getServerPort() == 80){
+	    			image = request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+thumbnailsFileName;
+				}else{
+					image = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/image.html?id="+thumbnailsFileName;
+				}
+	    		if(!StringUtils.isBlank(channel)){
+	    			MessageUtils.uploadImage(image ,(int)imgFile.getSize() , imgFile.getName() , channel, userid , username , appid , orgi);
+	    		}else{
+	    			MessageUtils.uploadImage(image ,(int)imgFile.getSize() , imgFile.getName() , userid);
+	    		}
     		}else{
-    			MessageUtils.uploadImage(image, userid);
+    			
+    			String id = processAttachmentFile(imgFile, request);
+    			
+    			upload = new UploadStatus("0" , "/res/file.html?id="+id);
+    			String file =  request.getScheme()+"://"+request.getServerName()+"/res/file.html?id="+id ;
+	    		if(request.getServerPort() == 80){
+	    			file = request.getScheme()+"://"+request.getServerName()+"/res/file.html?id="+id;
+				}else{
+					file = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/file.html?id="+id;
+				}
+	    		if(!StringUtils.isBlank(channel)){
+	    			MessageUtils.uploadFile(file ,(int)imgFile.getSize() , imgFile.getOriginalFilename() , channel, userid , username , appid , orgi , id);
+	    		}else{
+	    			MessageUtils.uploadFile(file ,(int)imgFile.getSize() , imgFile.getOriginalFilename(), userid , id);
+	    		}
     		}
     	}else{
-    		upload = new UploadStatus("请选择图片文件");
+    		upload = new UploadStatus("请选择文件");
     	}
     	map.addAttribute("upload", upload) ;
         return view ; 
+    }
+    
+    private String processAttachmentFile(MultipartFile file , HttpServletRequest request) throws IOException{
+    	String id = null ;
+    	if(file.getSize() > 0){			//文件尺寸 限制 ？在 启动 配置中 设置 的最大值，其他地方不做限制
+			String fileid = UKTools.md5(file.getBytes()) ;	//使用 文件的 MD5作为 ID，避免重复上传大文件
+			if(!StringUtils.isBlank(fileid)){
+    			AttachmentFile attachmentFile = new AttachmentFile() ;
+    			attachmentFile.setCreater(super.getUser(request).getId());
+    			attachmentFile.setOrgi(super.getOrgi(request));
+    			attachmentFile.setOrgan(super.getUser(request).getOrgan());
+    			attachmentFile.setModel(UKDataContext.ModelType.WEBIM.toString());
+    			attachmentFile.setFilelength((int) file.getSize());
+    			if(file.getContentType()!=null && file.getContentType().length() > 255){
+    				attachmentFile.setFiletype(file.getContentType().substring(0 , 255));
+    			}else{
+    				attachmentFile.setFiletype(file.getContentType());
+    			}
+    			if(file.getOriginalFilename()!=null && file.getOriginalFilename().length() > 255){
+    				attachmentFile.setTitle(file.getOriginalFilename().substring(0 , 255));
+    			}else{
+    				attachmentFile.setTitle(file.getOriginalFilename());
+    			}
+    			if(!StringUtils.isBlank(attachmentFile.getFiletype()) && attachmentFile.getFiletype().indexOf("image") >= 0){
+    				attachmentFile.setImage(true);
+    			}
+    			attachmentFile.setFileid(fileid);
+    			attachementRes.save(attachmentFile) ;
+    			FileUtils.writeByteArrayToFile(new File(path , "app/webim/"+fileid), file.getBytes());
+    			id = attachmentFile.getId();
+			}
+		}
+    	return id  ;
     }
 }

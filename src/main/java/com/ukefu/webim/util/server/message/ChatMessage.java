@@ -45,6 +45,10 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	
 	private String headimgurl ;		//用户头像 ，临时用
 	
+	private String filename ;		//文件名
+	private int filesize ;			//文件尺寸
+	private String attachmentid ;	//附件ID
+	
 	private String mediaid ;
 	private String locx ;	//location x
 	private String locy ;	//location y
@@ -254,5 +258,23 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	}
 	public void setUpdatetime(long updatetime) {
 		this.updatetime = updatetime;
+	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	public int getFilesize() {
+		return filesize;
+	}
+	public void setFilesize(int filesize) {
+		this.filesize = filesize;
+	}
+	public String getAttachmentid() {
+		return attachmentid;
+	}
+	public void setAttachmentid(String attachmentid) {
+		this.attachmentid = attachmentid;
 	}
 }

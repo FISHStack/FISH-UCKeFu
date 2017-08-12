@@ -222,13 +222,27 @@
 															  <option value="3" <#if inviteData?? && inviteData.consult_skill_numbers == 3>selected="selected"</#if>>3</option>
 															  <option value="4" <#if inviteData?? && inviteData.consult_skill_numbers == 4>selected="selected"</#if>>4</option>
 															  <option value="5" <#if !(inviteData??) || (inviteData?? && (inviteData.consult_skill_numbers == 0 || inviteData.consult_skill_numbers == 5))>selected="selected"</#if>>5</option>
+															  <option value="6" <#if inviteData?? && inviteData.consult_skill_numbers == 6>selected="selected"</#if>>4</option>
+															  <option value="7" <#if inviteData?? && inviteData.consult_skill_numbers == 7>selected="selected"</#if>>4</option>
+															  <option value="8" <#if inviteData?? && inviteData.consult_skill_numbers == 8>selected="selected"</#if>>4</option>
+															  <option value="9" <#if inviteData?? && inviteData.consult_skill_numbers == 9>selected="selected"</#if>>4</option>
+															  <option value="10" <#if inviteData?? && inviteData.consult_skill_numbers == 10>selected="selected"</#if>>4</option>
 															</select>
 													    </div>	
 													</div>
 												</div>
 												<div class="row" style="margin-bottom:20px;">
 													<div class="col-lg-8">
-														<p>c、每个坐席分组下显示的最大坐席数</p>
+														<p>c、是否显示技能组下的人工坐席</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">开启后，将会允许访客直接选择坐席</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="checkbox" title="启用" name="consult_skill_agent" lay-filter="consult_skill_agent" <#if inviteData?? && inviteData.consult_skill_agent == true>checked="checked"</#if>>
+													</div>
+												</div>
+												<div class="row" style="margin-bottom:20px;">
+													<div class="col-lg-8">
+														<p>d、每个坐席分组下显示的最大坐席数</p>
 														<p style="color:#888888;font-size:13px;margin-top:10px;">在访客邀请按钮的坐席分组下显示的最大坐席数量</p>
 													</div>
 													<div class="col-lg-4">
@@ -239,13 +253,18 @@
 															  <option value="3" <#if inviteData?? && inviteData.consult_skill_maxagent == 3>selected="selected"</#if>>3</option>
 															  <option value="4" <#if inviteData?? && inviteData.consult_skill_maxagent == 4>selected="selected"</#if>>4</option>
 															  <option value="5" <#if !(inviteData??) || (inviteData?? && (inviteData.consult_skill_maxagent == 0 || inviteData.consult_skill_maxagent == 5))>selected="selected"</#if>>5</option>
+															  <option value="6" <#if inviteData?? && inviteData.consult_skill_maxagent == 6>selected="selected"</#if>>4</option>
+															  <option value="7" <#if inviteData?? && inviteData.consult_skill_maxagent == 7>selected="selected"</#if>>4</option>
+															  <option value="8" <#if inviteData?? && inviteData.consult_skill_maxagent == 8>selected="selected"</#if>>4</option>
+															  <option value="9" <#if inviteData?? && inviteData.consult_skill_maxagent == 9>selected="selected"</#if>>4</option>
+															  <option value="10" <#if inviteData?? && inviteData.consult_skill_maxagent == 10>selected="selected"</#if>>4</option>
 															</select>
 													    </div>	
 													</div>
 												</div>
 												<div class="row" style="margin-bottom:20px;">
 													<div class="col-lg-8">
-														<p>d、坐席组窗口底部显示内容</p>
+														<p>e、坐席组窗口底部显示内容</p>
 														<p style="color:#888888;font-size:13px;margin-top:10px;">在访客邀请按钮的坐席分组窗口底部显示的文本内容</p>
 													</div>
 													<div class="col-lg-4">
@@ -256,7 +275,7 @@
 												</div>
 												<div class="row" style="margin-bottom:20px;">
 													<div class="col-lg-12">
-														<p>e、坐席组窗口提示信息</p>
+														<p>f、坐席组窗口提示信息</p>
 													</div>
 												</div>
 												<div class="row" style="margin-bottom:20px;">

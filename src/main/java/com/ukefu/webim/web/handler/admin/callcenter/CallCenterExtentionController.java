@@ -101,7 +101,7 @@ public class CallCenterExtentionController extends Handler{
 		extno.setRecord(src.isRecord());
 		extno.setExtype(src.getExtype());
 		
-		int count = extentionRes.countByExtentionAndOrgi(extno.getExtention(), orgi) ;
+		int count = extentionRes.countByExtentionAndHostidAndOrgi(extno.getExtention() , hostid, orgi) ;
 		if(count == 0){	
 			extentionRes.save(extno) ;
 		}

@@ -66,12 +66,13 @@
 								height:"160px",
 								themeType : 'simple',
 								width:"100%",
-								items:['undo', 'redo' , 'emoticons', 'image'],
+								items:['undo', 'redo' , 'emoticons', 'image','insertfile'],
 								resizeType:0,
 								uploadJson : "/agent/image/upload.html?id=${curagentuser.id!''}",
 				                allowFileManager : false,
 								newlineTag : "br" , 
 								fontsize:16,
+								allowFileUpload:true,
 								allowInsertUpload:false,		//增加的参数，上传图片后是否插入到当前区域
 								allowImageRemote:false,
 								afterUpload: function (url) {  

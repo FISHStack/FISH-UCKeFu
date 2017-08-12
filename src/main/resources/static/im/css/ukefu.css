@@ -373,6 +373,7 @@ input,textarea{
 	border: 1px solid #b2e5f9;
     float: right;
     min-width: 45px;
+    line-height:25px;
 }
 .chatting-right div.chat-content a{
     color:#4665d4;
@@ -1022,4 +1023,95 @@ p.submitBtnWrap{
 }
 .ukefu-form-item {
     margin-bottom:0px !important;
+}
+.ukefu-askqs a{
+	text-decoration: none;
+	margin-left:10px;
+	margin-right:10px;
+}
+.ukefu-askqs .ukefu-askqs-resolved{
+	padding:5px 10px 5px 10px;
+}
+.ukefu-func-tab li.cur{
+	border: 1px solid #FFFFFF;
+    border-bottom: 0px;
+    background-color: #FFFFFF;
+}
+.ukefu-func-tab li.cur a{
+	border: 1px solid #FFFFFF;
+    border-bottom: 0px;
+    background-color: #FFFFFF;
+    color: #333333 !important;
+}
+.ukefu-ask-item{
+	border-bottom: 1px solid #F0F0F0; 
+    position: relative;
+    width: 100%;
+    line-height: 1.5em;
+    padding: 10px 0 10px 10px;
+}
+.ukefu-ask-item a{
+	text-decoration: none;
+    color: #555555;
+}
+.ukefu-form-label {
+    text-align: left;
+    padding-left: 0px;
+    padding-bottom: 6px;
+    padding-top: 6px;
+    width: 100%;
+}
+.layui-input-block {
+    padding: 9px 15px 5px 0px;
+    margin-left: 0px;
+    min-height: 20px;
+}
+.ukefu-form-item {
+    margin-bottom:0px !important;
+}
+.ukefu-askqs a{
+	text-decoration: none;
+	margin-left:10px;
+	margin-right:10px;
+	color:#4665d4;
+}
+.ukefu-askqs-resolved{
+	padding:5px 5px 5px 0px;
+}
+.ukefu-askqs-unresolved{
+	padding:5px 5px 5px 5px;
+}
+.ukefu-message-file{
+	min-height:50px;
+	padding-right:10px;
+	padding-left:10px;
+	font-size:14px;
+}
+.ukefu-message-file .ukefu-file-icon{
+	width:48px;
+	height:48px;
+	float:left;
+}
+.ukefu-message-file .ukefu-file-icon{
+	line-height:60px;
+}
+.ukefu-message-file .ukefu-file-icon img{
+	width:32px;
+	height:32px;
+	margin:5px 3px 3px 0px;
+}
+.ukefu-message-file .ukefu-file-desc{
+	margin-left:0px;
+	float:left;
+	padding-top:0px;
+}
+.ukefu-message-file .ukefu-file-desc div{
+	padding-bottom:0px;
+	max-width:350px;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ukefu-message-file .ukefu-file-desc a{
+	text-decoration: none !important;
 }

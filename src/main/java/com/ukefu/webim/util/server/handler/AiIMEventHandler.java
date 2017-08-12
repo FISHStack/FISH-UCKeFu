@@ -14,11 +14,13 @@ import com.corundumstudio.socketio.annotation.OnEvent;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.router.OutMessageRouter;
 import com.ukefu.webim.util.server.message.AgentStatusMessage;
 import com.ukefu.webim.util.server.message.ChatMessage;
 import com.ukefu.webim.util.server.message.NewRequestMessage;
+import com.ukefu.webim.web.model.AiUser;
 import com.ukefu.webim.web.model.MessageOutContent;
 
 public class AiIMEventHandler     
@@ -56,6 +58,8 @@ public class AiIMEventHandler
 				outMessage.setCreatetime(UKTools.dateFormate.format(new Date()));
 				
 				client.sendEvent(UKDataContext.MessageTypeEnum.STATUS.toString(), outMessage);
+				CacheHelper.getOnlineUserCacheBean().put(client.getSessionId().toString(), new AiUser(client.getSessionId().toString(), user, System.currentTimeMillis()), UKDataContext.SYSTEM_ORGI);
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,8 +71,9 @@ public class AiIMEventHandler
     @OnDisconnect  
     public void onDisconnect(SocketIOClient client)  
     {  
-//    	String user = client.getHandshakeData().getSingleUrlParam("userid") ;
-//		String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
+    	String user = client.getHandshakeData().getSingleUrlParam("userid") ;
+    	NettyClients.getInstance().removeIMEventClient(user , client.getSessionId().toString());
+    	CacheHelper.getOnlineUserCacheBean().delete(client.getSessionId().toString(),UKDataContext.SYSTEM_ORGI) ;
     }  
       
     //消息接收入口，网站有新用户接入对话  
@@ -108,6 +113,12 @@ public class AiIMEventHandler
 	    			router.handler(data.getTouser(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), data.getAppid(), outMessage);
 	    		}
 	    	}
+    		Object cacheData = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(client.getSessionId().toString(),UKDataContext.SYSTEM_ORGI) ;
+    		if(cacheData!=null && cacheData instanceof AiUser){
+    			AiUser aiUser = (AiUser)cacheData ;
+    			aiUser.setTime(System.currentTimeMillis());
+    			CacheHelper.getOnlineUserCacheBean().put(client.getSessionId().toString(), aiUser, UKDataContext.SYSTEM_ORGI);
+    		}
     	}
     	UKTools.ai(data);
     } 

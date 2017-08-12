@@ -32,6 +32,15 @@ public class NettyClients {
 	public void putIMEventClient(String id , SocketIOClient userClient){
 		imClients.putClient(id, userClient);
 	}
+	
+	public void closeIMEventClient(String id , String sessionid, String orgi){
+		List<SocketIOClient> userClients = imClients.getClients(id) ;
+		for(SocketIOClient userClient : userClients){
+			if(userClient.getSessionId().toString().equals(sessionid)){
+				userClient.disconnect();
+			}
+		}
+	}
 	public void removeIMEventClient(String id , String sessionid){
 		imClients.removeClient(id, sessionid);
 	}

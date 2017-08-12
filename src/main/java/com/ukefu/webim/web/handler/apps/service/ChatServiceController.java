@@ -110,6 +110,16 @@ public class ChatServiceController extends Handler{
         return request(super.createRequestPageTempletResponse("redirect:/service/quene/index.html"));
     }
 	
+	@RequestMapping("/quene/invite")
+    @Menu(type = "service" , subtype = "invite" , admin= true)
+    public ModelAndView invite(ModelMap map , HttpServletRequest request ,@Valid String id) throws Exception {
+		AgentUser agentUser = agentUserRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
+		if(agentUser!=null && agentUser.getStatus().equals(UKDataContext.AgentUserStatusEnum.INQUENE.toString())){
+			ServiceQuene.allotAgentForInvite(super.getUser(request).getId() , agentUser, super.getOrgi(request)) ;
+		}
+        return request(super.createRequestPageTempletResponse("redirect:/service/quene/index.html"));
+    }
+	
 	@RequestMapping("/agent/index")
     @Menu(type = "service" , subtype = "onlineagent" , admin= true)
     public ModelAndView agent(ModelMap map , HttpServletRequest request) {

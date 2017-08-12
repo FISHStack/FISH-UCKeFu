@@ -167,7 +167,10 @@ var ukefu = {
 								<#assign skillNum = skillNum+1 >
 								</#if>
 							</#list>
-							"<div style='padding:5px;color:#555;border:1px solid #dddddd;background-color:#efefef;'>${skill.name!''}（${skillNum}）</div>"+
+							"<div style='padding:5px;color:#555;border:1px solid #dddddd;background-color:#efefef;'>"+
+							"<a href='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/text/${appid!''}.html?skill=${skill.id!''}' onclick='return openAgentChatDialog(this.href)' style='color: #777;    text-decoration: none;'>${skill.name!''}（${skillNum}）</a>"+
+							"</div>"+
+							<#if inviteData.consult_skill_agent?? && inviteData.consult_skill_agent == true>
 							"<ul class='ichat-list-ul' style='border: 0 none;list-style: none outside none;margin: 0;padding: 0;width: 150px;'>"+
 							<#if agentList??>
 							<#assign agentNum = 0>
@@ -181,6 +184,7 @@ var ukefu = {
 							</#list>
 							</#if>
 							"</ul>"+
+							</#if>
 						</#if>
 						</#list>
 						</#if>

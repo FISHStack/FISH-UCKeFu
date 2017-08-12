@@ -21,29 +21,49 @@ public class MessageUtils {
 	 * @param image
 	 * @param userid
 	 */
-	public static ChatMessage uploadImage(String image , String userid){
-		return createMessage(image, UKDataContext.MediaTypeEnum.IMAGE.toString(), userid);
+	public static ChatMessage uploadImage(String image , int size , String name  , String userid){
+		return createMessage(image , size , name , UKDataContext.MediaTypeEnum.IMAGE.toString(), userid , null);
 	}
-	public static ChatMessage uploadImage(String image , String channel , String userid , String username , String appid , String orgi){
-		return createMessage(image , channel , UKDataContext.MediaTypeEnum.IMAGE.toString(), userid , username, appid , orgi);
+	public static ChatMessage uploadImage(String image , int size , String name , String channel , String userid , String username , String appid , String orgi){
+		return createMessage(image , size , name , channel , UKDataContext.MediaTypeEnum.IMAGE.toString(), userid , username, appid , orgi , null);
 	}
-	public static ChatMessage createMessage(String message , String msgtype , String userid){
+	
+	/**
+	 * 
+	 * @param image
+	 * @param userid
+	 */
+	public static ChatMessage uploadFile(String url , int size , String name , String userid , String attachid){
+		return createMessage(url , size , name , UKDataContext.MediaTypeEnum.FILE.toString(), userid , attachid);
+	}
+	public static ChatMessage uploadFile(String url , int size , String name, String channel , String userid , String username , String appid , String orgi , String attachid){
+		return createMessage(url , size , name , channel , UKDataContext.MediaTypeEnum.FILE.toString(), userid , username, appid , orgi , attachid);
+	}
+	public static ChatMessage createMessage(String message , int length , String name , String msgtype , String userid , String attachid){
 		AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI);
 		ChatMessage data = new ChatMessage() ;
 		if(agentUser != null){
 			data.setUserid(agentUser.getUserid());
 			data.setUsername(agentUser.getUsername());
+			
+			data.setFilesize(length);
+			data.setFilename(name);
+			data.setAttachmentid(attachid);
+			
 			data.setTouser(agentUser.getAgentno());
 			data.setAppid(agentUser.getAppid());
 			data.setOrgi(agentUser.getOrgi());
 			data.setMessage(message);
+			
+			data.setMsgtype(msgtype);
+			
 			data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
 			createMessage(data, msgtype, userid);
 		}
 		return data ;
 	}
 	
-	public static ChatMessage createMessage(String message ,String channel ,String msgtype , String userid , String username , String appid , String orgi){
+	public static ChatMessage createMessage(String message , int length , String name ,String channel ,String msgtype , String userid , String username , String appid , String orgi , String attachid){
 		ChatMessage data = new ChatMessage() ;
 		if(!StringUtils.isBlank(userid)){
 			data.setUserid(userid);
@@ -53,8 +73,15 @@ public class MessageUtils {
 			data.setOrgi(orgi);
 			data.setChannel(channel);
 			data.setMessage(message);
+			
+			data.setFilesize(length);
+			data.setFilename(name);
+			data.setAttachmentid(attachid);
+			
+			data.setMsgtype(msgtype);
+			
 			data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
-			createAiMessage(data , appid , channel, UKDataContext.CallTypeEnum.IN.toString() , UKDataContext.AiItemType.USERINPUT.toString() , UKDataContext.MediaTypeEnum.IMAGE.toString(), data.getUserid());
+			createAiMessage(data , appid , channel, UKDataContext.CallTypeEnum.IN.toString() , UKDataContext.AiItemType.USERINPUT.toString() , msgtype, data.getUserid());
 		}
 		return data ;
 	}
@@ -64,6 +91,10 @@ public class MessageUtils {
     	MessageOutContent outMessage = new MessageOutContent() ;
     	
     	outMessage.setMessage(data.getMessage());
+    	outMessage.setFilename(data.getFilename());
+    	outMessage.setFilesize(data.getFilesize());
+    	
+    	
     	outMessage.setMessageType(msgtype);
     	outMessage.setCalltype(UKDataContext.CallTypeEnum.IN.toString());
     	outMessage.setAgentUser(agentUser);

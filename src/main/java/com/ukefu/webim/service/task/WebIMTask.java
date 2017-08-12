@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
+import com.ukefu.util.extra.DataExchangeInterface;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
@@ -27,6 +28,8 @@ import com.ukefu.webim.util.server.message.ChatMessage;
 import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.AgentUserTask;
+import com.ukefu.webim.web.model.AiConfig;
+import com.ukefu.webim.web.model.AiUser;
 import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.MessageOutContent;
 import com.ukefu.webim.web.model.OnlineUser;
@@ -155,6 +158,16 @@ public class WebIMTask {
 									onlineUser.setId(tempOnlineUser.getId());
 								}
 								service.save(onlineUser) ;
+							}
+						}
+					}else if(data instanceof AiUser){
+						AiUser aiUser = (AiUser)data ;
+						DataExchangeInterface dataInterface = (DataExchangeInterface) UKDataContext.getContext().getBean("aiconfig") ;
+						AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(aiUser.getId(), UKDataContext.SYSTEM_ORGI) ;
+						if(aiConfig!=null){
+							long leavetime = (System.currentTimeMillis() - aiUser.getTime())/1000 ;
+							if(leavetime > 600 || leavetime > aiConfig.getAsktimes()){//最大空闲时间不能超过540秒 
+								NettyClients.getInstance().closeIMEventClient(aiUser.getUserid(), aiUser.getId(), UKDataContext.SYSTEM_ORGI) ;
 							}
 						}
 					}

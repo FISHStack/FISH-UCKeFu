@@ -9,6 +9,8 @@ public class MessageInContent implements MessageDataBean{
 	private String nickName;
 	private String orgi ;
 	private String message ;
+	private String filename ;
+	private int filesize ;
 	private String messageType; 
 	private String fromUser;
 	private String calltype = UKDataContext.CallTypeEnum.IN.toString() ;
@@ -103,5 +105,17 @@ public class MessageInContent implements MessageDataBean{
 	}
 	public void setCreatetime(String createtime) {
 		this.createtime = createtime;
+	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	public int getFilesize() {
+		return filesize;
+	}
+	public void setFilesize(int filesize) {
+		this.filesize = filesize;
 	}
 }

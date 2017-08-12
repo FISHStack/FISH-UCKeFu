@@ -12,15 +12,13 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
-import com.ukefu.util.UKTools;
-
 @Entity
 @Table(name = "uk_attachment_file")
 @Proxy(lazy = false)
 public class AttachmentFile implements Serializable {
 	private static final long serialVersionUID = -8657469468192323550L;
 	
-	private String id  = UKTools.getUUID();
+	private String id ;
 	private String orgi ;
 	private String creater ;
 	private String organ ;

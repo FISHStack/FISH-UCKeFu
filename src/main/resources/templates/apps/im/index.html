@@ -33,7 +33,7 @@
                 allowInsertUpload:false,		//增加的参数，上传图片后是否插入到当前区域
                 allowImageRemote:false,
 				filterMode:true,
-                items: ['emoticons', 'cut' , 'image'],
+                items: ['emoticons', 'cut' , 'image','insertfile'],
 				htmlTags: {img : ['src', 'width', 'height', 'border', 'alt', 'title', 'align', '.width', '.height', '.border'] , br:[]}  ,
 				afterChange : function() {
 					var count = this.count() ;
@@ -202,7 +202,8 @@
 	    </div>
         <div class="content-left">
             <div class="chat-above" id="above">
-            	<div class="clearfix message  welcome"> <span id="welcome-message">${(inviteData.dialog_message!'欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.')?no_esc}</span></div>
+            	<div class="clearfix message  welcome"> 
+            		<span id="welcome-message">${(inviteData.dialog_message!'欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.')?no_esc}</span></div>
 				<#if chatMessageList?? && chatMessageList.content??>
 					<#list chatMessageList.content?reverse as chatMessage>
 						<#if chatMessage.userid?? && userid?? && chatMessage.calltype?? && chatMessage.calltype = "in">
@@ -364,6 +365,8 @@
         chat = data.message;
         if(data.messageType == "image"){
         	chat = "<a href='"+data.message+"_original' target='_blank'><img src='"+data.message+"' class='ukefu-media-image'/></a>" ;
+        }else if(data.messageType == "file"){
+        	chat = "<div class='ukefu-message-file'><div class='ukefu-file-icon'><img src='/im/img/file.png'></div><div class='ukefu-file-desc'><a href='"+data.message+"' target='_blank'><div>"+data.filename+"</div><div>"+(data.filesize/1024).toFixed(3)+"Kb</div></a></div></div>" ;
         }
 		if(data.calltype == "in"){
 			output('<div class="chat-right"> <img class="user-img" src="/im/img/user.png" alt=""><div class="chat-message"><label class="time">'+data.createtime+'</label><label  class="user">'+data.nickName+'</label> </div><div class="chatting-right"><i class="arrow arrow${inviteData.consult_dialog_color!''}"></i><div class="chat-content theme${inviteData.consult_dialog_color!''}">'+chat+'</div></div>' , "chat-block");

@@ -9,14 +9,19 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
@@ -37,6 +42,7 @@ import com.ukefu.webim.service.repository.AgentStatusRepository;
 import com.ukefu.webim.service.repository.AgentUserContactsRepository;
 import com.ukefu.webim.service.repository.AgentUserRepository;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
+import com.ukefu.webim.service.repository.AttachmentRepository;
 import com.ukefu.webim.service.repository.BlackListRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
@@ -57,6 +63,7 @@ import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.AgentUserContacts;
 import com.ukefu.webim.web.model.AgentUserTask;
+import com.ukefu.webim.web.model.AttachmentFile;
 import com.ukefu.webim.web.model.BlackEntity;
 import com.ukefu.webim.web.model.MessageOutContent;
 import com.ukefu.webim.web.model.OnlineUser;
@@ -92,6 +99,9 @@ public class AgentController extends Handler {
 	@Autowired
 	private ChatMessageRepository chatMessageRepository ;
 	
+	@Autowired
+	private AttachmentRepository attachementRes;
+	
 	@Autowired 
 	private BlackListRepository blackListRes ;
 	
@@ -124,10 +134,45 @@ public class AgentController extends Handler {
 	
 	@RequestMapping("/index")
 	@Menu(type = "apps", subtype = "agent")
-	public ModelAndView index(ModelMap map , HttpServletRequest request) {
+	public ModelAndView index(ModelMap map , HttpServletRequest request ,HttpServletResponse response , @Valid String sort) {
 		ModelAndView view = request(super.createAppsTempletResponse("/apps/agent/index")) ; 
 		User user = super.getUser(request) ;
-		List<AgentUser> agentUserList = agentUserRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
+		Sort defaultSort = null ;
+		if(StringUtils.isBlank(sort)){
+			Cookie[] cookies = request.getCookies();//这样便可以获取一个cookie数组
+			if(cookies!=null){
+				for(Cookie cookie : cookies){
+					if(cookie.getName().equals("sort")){
+						sort = cookie.getValue() ;break ; 
+					}
+				}
+			}
+		}
+		if(!StringUtils.isBlank(sort)){
+			List<Order> list = new ArrayList<Order>();
+			if(sort.equals("lastmessage")){
+				list.add(new Order(Direction.DESC,"status")) ;
+				list.add(new Order(Direction.DESC,"lastmessage")) ;
+			}else if(sort.equals("logintime")){
+				list.add(new Order(Direction.DESC,"status")) ;
+				list.add(new Order(Direction.DESC,"createtime")) ;
+			}else if(sort.equals("default")){
+				defaultSort = new Sort(Direction.DESC,"status") ;
+				Cookie name = new Cookie("sort",null);
+				name.setMaxAge(0);
+				response.addCookie(name);
+			}
+			if(list.size() > 0){
+				defaultSort = new Sort(list) ;
+				Cookie name = new Cookie("sort",sort);
+				name.setMaxAge(60*60*24*365);
+				response.addCookie(name);
+				map.addAttribute("sort", sort) ;
+			}
+		}else{
+			defaultSort = new Sort(Direction.DESC,"status") ;
+		}
+		List<AgentUser> agentUserList = agentUserRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request) , defaultSort);
 		view.addObject("agentUserList", agentUserList) ;
 		
 		if(agentUserList.size() > 0){
@@ -191,7 +236,7 @@ public class AgentController extends Handler {
 	public ModelAndView agentusers(HttpServletRequest request , String userid) {
 		ModelAndView view = request(super.createRequestPageTempletResponse("/apps/agent/agentusers")) ;
 		User user = super.getUser(request) ;
-		view.addObject("agentUserList", agentUserRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request))) ;
+		view.addObject("agentUserList", agentUserRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request) , new Sort(Direction.ASC,"status"))) ;
 		List<AgentUser> agentUserList = agentUserRepository.findByUseridAndOrgi(userid, super.getOrgi(request)) ; 
 		view.addObject("curagentuser", agentUserList!=null && agentUserList.size() > 0 ? agentUserList.get(0) : null) ;
 		return view ;
@@ -456,21 +501,39 @@ public class AgentController extends Handler {
     		if(!uploadDir.exists()){
     			uploadDir.mkdirs() ;
     		}
-    		String fileid = UKTools.md5(imgFile.getBytes()) ;
-    		fileName = "upload/"+fileid+"_original"  ;
-    		File imageFile = new File(path , fileName) ;
-    		FileCopyUtils.copy(imgFile.getBytes(), imageFile);
-    		String thumbnailsFileName  = "upload/"+fileid ; 
-    		UKTools.processImage(new File(path , thumbnailsFileName), imageFile) ;
+    		String fileid = UKTools.md5(imgFile.getBytes()) , fileURL = null , targetFile = null;
+    		ChatMessage data = new ChatMessage() ;
+    		if(imgFile.getContentType()!=null && imgFile.getContentType().indexOf("image") >= 0){
+	    		fileName = "upload/"+fileid+"_original"  ;
+	    		File imageFile = new File(path , fileName) ;
+	    		FileCopyUtils.copy(imgFile.getBytes(), imageFile);
+	    		targetFile  = "upload/"+fileid ; 
+	    		UKTools.processImage(new File(path , targetFile), imageFile) ;
+	    		
+	    		
+	    		fileURL =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+targetFile ;
+	    		if(request.getServerPort() == 80){
+	    			fileURL = request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+targetFile;
+				}else{
+					fileURL = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/image.html?id="+targetFile;
+				}
+	    		upload = new UploadStatus("0" , fileURL); //图片直接发送给 客户，不用返回
+	    		
+    		}else{
+    			String attachid = processAttachmentFile(imgFile, request) ;
+    			
+    			upload = new UploadStatus("0" , "/res/file.html?id="+attachid);
+    			fileURL =  request.getScheme()+"://"+request.getServerName()+"/res/file.html?id="+attachid ;
+	    		if(request.getServerPort() == 80){
+	    			fileURL = request.getScheme()+"://"+request.getServerName()+"/res/file.html?id="+attachid;
+				}else{
+					fileURL = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/file.html?id="+attachid;
+				}
+    		}
     		
+    		data.setFilename(imgFile.getOriginalFilename());
+    		data.setFilesize((int) imgFile.getSize());
     		
-    		String fileURL =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+thumbnailsFileName ;
-    		if(request.getServerPort() == 80){
-    			fileURL = request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+thumbnailsFileName;
-			}else{
-				fileURL = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/image.html?id="+thumbnailsFileName;
-			}
-    		upload = new UploadStatus("0" , fileURL); //图片直接发送给 客户，不用返回
     		OutMessageRouter router = null ; 
     		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(id, super.getOrgi(request)) ;
 			
@@ -479,7 +542,15 @@ public class AgentController extends Handler {
 	    		MessageOutContent outMessage = new MessageOutContent() ;
 	    		if(router!=null){
 	    			outMessage.setMessage(fileURL);
-					outMessage.setMessageType(UKDataContext.MediaTypeEnum.IMAGE.toString());
+	    			outMessage.setFilename(imgFile.getOriginalFilename());
+	    			outMessage.setFilesize((int) imgFile.getSize());
+	    			if(imgFile.getContentType()!=null && imgFile.getContentType().indexOf("image") >= 0){
+	    				outMessage.setMessageType(UKDataContext.MediaTypeEnum.IMAGE.toString());
+	    				data.setMsgtype(UKDataContext.MediaTypeEnum.IMAGE.toString());
+	    			}else{
+	    				outMessage.setMessageType(UKDataContext.MediaTypeEnum.FILE.toString());
+	    				data.setMsgtype(UKDataContext.MediaTypeEnum.FILE.toString());
+	    			}
 					outMessage.setCalltype(UKDataContext.CallTypeEnum.OUT.toString());
 					outMessage.setCreatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 					outMessage.setNickName(super.getUser(request).getUsername());
@@ -487,7 +558,7 @@ public class AgentController extends Handler {
 	    			router.handler(agentUser.getUserid(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), agentUser.getAppid(), outMessage);
 	    		}
 	    		//同时发送消息给 坐席
-	    		ChatMessage data = new ChatMessage() ;
+	    		data.setMessage(fileURL);
 	    		data.setId(UKTools.getUUID());
 	    		data.setContextid(agentUser.getContextid());
 	    		
@@ -502,14 +573,12 @@ public class AgentController extends Handler {
 	    		data.setUsession(agentUser.getUserid());
 	    		data.setAppid(agentUser.getAppid());
 	    		data.setUserid(super.getUser(request).getId());
-	    		data.setMessage("/res/image.html?id="+thumbnailsFileName);
 	    		
 	    		data.setOrgi(super.getUser(request).getOrgi());
 	    		
 	    		data.setCreater(super.getUser(request).getId());
 	    		data.setUsername(super.getUser(request).getUsername());
 	    		
-	    		data.setMsgtype(UKDataContext.MediaTypeEnum.IMAGE.toString());
 	    		chatMessageRepository.save(data) ;
 	    		
 	    		NettyClients.getInstance().sendAgentEventMessage(agentUser.getAgentno(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), data);
@@ -520,6 +589,39 @@ public class AgentController extends Handler {
     	}
     	map.addAttribute("upload", upload) ;
         return view ; 
+    }
+	
+	private String processAttachmentFile(MultipartFile file , HttpServletRequest request) throws IOException{
+    	String id = null ;
+    	if(file.getSize() > 0){			//文件尺寸 限制 ？在 启动 配置中 设置 的最大值，其他地方不做限制
+			String fileid = UKTools.md5(file.getBytes()) ;	//使用 文件的 MD5作为 ID，避免重复上传大文件
+			if(!StringUtils.isBlank(fileid)){
+    			AttachmentFile attachmentFile = new AttachmentFile() ;
+    			attachmentFile.setCreater(super.getUser(request).getId());
+    			attachmentFile.setOrgi(super.getOrgi(request));
+    			attachmentFile.setOrgan(super.getUser(request).getOrgan());
+    			attachmentFile.setModel(UKDataContext.ModelType.WEBIM.toString());
+    			attachmentFile.setFilelength((int) file.getSize());
+    			if(file.getContentType()!=null && file.getContentType().length() > 255){
+    				attachmentFile.setFiletype(file.getContentType().substring(0 , 255));
+    			}else{
+    				attachmentFile.setFiletype(file.getContentType());
+    			}
+    			if(file.getOriginalFilename()!=null && file.getOriginalFilename().length() > 255){
+    				attachmentFile.setTitle(file.getOriginalFilename().substring(0 , 255));
+    			}else{
+    				attachmentFile.setTitle(file.getOriginalFilename());
+    			}
+    			if(!StringUtils.isBlank(attachmentFile.getFiletype()) && attachmentFile.getFiletype().indexOf("image") >= 0){
+    				attachmentFile.setImage(true);
+    			}
+    			attachmentFile.setFileid(fileid);
+    			attachementRes.save(attachmentFile) ;
+    			FileUtils.writeByteArrayToFile(new File(path , "app/webim/"+fileid), file.getBytes());
+    			id = attachmentFile.getId();
+			}
+		}
+    	return id  ;
     }
 	
 	

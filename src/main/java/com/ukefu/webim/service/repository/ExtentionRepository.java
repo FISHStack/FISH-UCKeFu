@@ -15,6 +15,6 @@ public interface ExtentionRepository extends JpaRepository<Extention, String> {
 	
 	public List<Extention> findByExtypeAndOrgi(String type, String orgi);
 	
-	public int countByExtentionAndOrgi(String extention, String orgi) ;
+	public int countByExtentionAndHostidAndOrgi(String extention ,String hosti, String orgi) ;
 	
 }

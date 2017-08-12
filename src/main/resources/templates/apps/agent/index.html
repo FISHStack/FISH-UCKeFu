@@ -16,7 +16,19 @@
 				<i class="userarrow"></i>
 				<div class="chat-content">
 					<% if(data.msgtype == 'image'){ %>
-						<img src="<%:=data.message%>" class="ukefu-media-image">	
+						<img src="<%:=data.message%>" class="ukefu-media-image">
+					<% }else if(data.msgtype == 'file'){ %>
+						<div class="ukefu-message-file">
+							<div class="ukefu-file-icon">
+								<i class="kfont">&#xe61e;</i>
+							</div>
+							<div class="ukefu-file-desc">
+								<a href="<%:=data.message%>" target="_blank">
+								<div><%:=data.filename%></div>
+								<div><%:=(data.filesize/1024).toFixed(3)%>Kb</div>
+								</a>
+							</div>
+						</div>
 					<% }else if(data.msgtype == 'location'){ %>
 						<div><%:=data.message%></div>
 						<div class="ukefu-map" id="map_<%:=data.id%>"></div>

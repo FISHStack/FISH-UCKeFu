@@ -178,7 +178,7 @@ public class UKDataContext {
 		WORKORDERS ,
 		KBS, 
 		SUMMARY,
-		CCSUMMARY;
+		CCSUMMARY,WEBIM;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}
@@ -342,7 +342,7 @@ public class UKDataContext {
 		EVENT,
 		IMAGE, 
 		VIDIO,
-		VOICE,LOCATION;
+		VOICE,LOCATION, FILE;
 		
 		public String toString(){
 			return super.toString().toLowerCase() ;

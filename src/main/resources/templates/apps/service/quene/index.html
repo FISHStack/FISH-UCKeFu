@@ -19,7 +19,7 @@
 							<th>地域</th>
 							<th>接入时间</th>
 							<th>等待时长</th>
-							<th>操作</th>
+							<th style="width:1%" nowrap="nowrap">操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -40,8 +40,15 @@
 							<td>
 								${(agentUser.waittingtime/(1000*60*60))?string('00')}:${((agentUser.waittingtime%(1000*60*60))/(1000*60))?string('00')}:${((agentUser.waittingtime%(1000*60))/(1000))?string('00')}
 							</td>
-							<td>
-								<a href="/service/quene/clean.html?id=${agentUser.id!''}" data-toggle="tip" data-title="转队列后会随机分配坐席，请确认是否转队列或技能组？">转队列</a>
+							<td style="width:1%" nowrap="nowrap">
+								<a href="/service/quene/clean.html?id=${agentUser.id!''}" data-toggle="tip" data-title="转队列后会随机分配坐席，请确认是否转队列或技能组？">
+									<i class="kfont">&#xe62c;</i>
+									转队列
+								</a>
+								<a href="/service/quene/invite.html?id=${agentUser.id!''}" data-toggle="tip" data-title="邀请对话会加入到您的对话列表中，请确认是否开始对话？" style="margin-left:10px;">
+									<i class="kfont">&#xe609;</i>
+									邀请对话
+								</a>
 							</td>
 							
 						</tr>

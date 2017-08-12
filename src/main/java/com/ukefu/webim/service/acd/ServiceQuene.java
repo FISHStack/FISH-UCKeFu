@@ -291,6 +291,26 @@ public class ServiceQuene {
 		publishMessage(orgi);
 		return agentService;
 	}
+	/**
+	 * 邀请访客进入当前对话，如果当前操作的 坐席是已就绪状态，则直接加入到当前坐席的 对话列表中，如果未登录，则分配给其他坐席
+	 * @param agentno
+	 * @param agentUser
+	 * @param orgi
+	 * @return
+	 * @throws Exception
+	 */
+	public static AgentService allotAgentForInvite(String agentno , AgentUser agentUser , String orgi) throws Exception{
+		AgentStatus agentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentno, orgi) ;
+		AgentService agentService = null ;
+		if(agentStatus!=null){
+			agentService = processAgentService(agentStatus, agentUser, orgi) ;
+			publishMessage(orgi);
+			NettyClients.getInstance().sendAgentEventMessage(agentService.getAgentno(), UKDataContext.MessageTypeEnum.NEW.toString(), agentUser);
+		}else{
+			agentService = allotAgent(agentUser, orgi) ;
+		}
+		return agentService;
+	}
 	
 	/**
 	 * 为访客 分配坐席， ACD策略，此处 AgentStatus 是建议 的 坐席，  如果启用了  历史服务坐席 优先策略， 则会默认检查历史坐席是否空闲，如果空闲，则分配，如果不空闲，则 分配当前建议的坐席

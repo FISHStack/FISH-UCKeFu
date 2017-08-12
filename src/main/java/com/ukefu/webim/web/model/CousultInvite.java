@@ -71,6 +71,7 @@ public class CousultInvite implements java.io.Serializable{
 	private int consult_skill_numbers ;		//显示最大 分组数
 	private int consult_skill_maxagent ;	//每个技能组最多显示多少坐席
 	private String consult_skill_bottomtitle ;	//显示技能组底部标题
+	private boolean consult_skill_agent  ;	//是否显示技能组下的坐席
 	
 	private int consult_vsitorbtn_display	;
 	
@@ -646,5 +647,11 @@ public class CousultInvite implements java.io.Serializable{
 	}
 	public void setTraceuser(boolean traceuser) {
 		this.traceuser = traceuser;
+	}
+	public boolean isConsult_skill_agent() {
+		return consult_skill_agent;
+	}
+	public void setConsult_skill_agent(boolean consult_skill_agent) {
+		this.consult_skill_agent = consult_skill_agent;
 	}
 }

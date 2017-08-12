@@ -1,5 +1,17 @@
 <#if chatmessage.msgtype?? && chatmessage.msgtype == "image">
 	<img src="${(chatmessage.message!'')?no_esc}" class="ukefu-media-image">
+<#elseif chatmessage.msgtype?? && chatmessage.msgtype == "file">
+<div class="ukefu-message-file">
+	<div class="ukefu-file-icon">
+		<i class="kfont">&#xe61e;</i>
+	</div>
+	<div class="ukefu-file-desc">
+		<a href="${chatmessage.message!''}" target="_blank">
+		<div>${chatmessage.filename!''}</div>
+		<div>${(chatmessage.filesize/1024!0)?string("###,###.###")}Kb</div>
+		</a>
+	</div>
+</div>
 <#elseif chatmessage.msgtype?? && chatmessage.msgtype == "location">
 	<div>${chatmessage.message!''}</div>
 	<#if systemConfig?? && systemConfig.mapkey?? && systemConfig.mapkey != ''>
