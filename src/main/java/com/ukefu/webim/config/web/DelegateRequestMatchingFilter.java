@@ -11,6 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.ukefu.core.UKDataContext;
@@ -41,7 +42,11 @@ public class DelegateRequestMatchingFilter implements Filter {
 	        	 response.sendRedirect("/?msg=security");
         	 }
          }else{
-        	 chain.doFilter(req,resp);
+        	 try{
+        		 chain.doFilter(req,resp);
+        	 }catch(ClientAbortException ex){
+        		 //Tomcat异常，不做处理
+        	 }
          }
     }
 
