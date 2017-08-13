@@ -53,6 +53,15 @@ public class AgentService implements Serializable {
 	
 	private String contactsid ;
 	
+	private boolean satisfaction ;
+	private Date satistime ;
+	private String satislevel ;
+	private String satiscomment ;
+	
+	private boolean trans ;	//是否转接
+	private String transmemo ;	//转接附言
+	private Date transtime ;	//转件时间
+	
 	
 	private String name ;
 	private String email ;
@@ -514,5 +523,61 @@ public class AgentService implements Serializable {
 
 	public void setResion(String resion) {
 		this.resion = resion;
+	}
+
+	public boolean isSatisfaction() {
+		return satisfaction;
+	}
+
+	public void setSatisfaction(boolean satisfaction) {
+		this.satisfaction = satisfaction;
+	}
+
+	public String getSatislevel() {
+		return satislevel;
+	}
+
+	public void setSatislevel(String satislevel) {
+		this.satislevel = satislevel;
+	}
+
+	public String getSatiscomment() {
+		return satiscomment;
+	}
+
+	public void setSatiscomment(String satiscomment) {
+		this.satiscomment = satiscomment;
+	}
+
+	public Date getSatistime() {
+		return satistime;
+	}
+
+	public void setSatistime(Date satistime) {
+		this.satistime = satistime;
+	}
+
+	public boolean isTrans() {
+		return trans;
+	}
+
+	public void setTrans(boolean trans) {
+		this.trans = trans;
+	}
+
+	public String getTransmemo() {
+		return transmemo;
+	}
+
+	public void setTransmemo(String transmemo) {
+		this.transmemo = transmemo;
+	}
+
+	public Date getTranstime() {
+		return transtime;
+	}
+
+	public void setTranstime(Date transtime) {
+		this.transtime = transtime;
 	}
 }

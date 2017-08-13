@@ -38,12 +38,6 @@ private SimpleDateFormat dateFromate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss
 	@Autowired
 	public void setElasticsearchTemplate(ElasticsearchTemplate elasticsearchTemplate) {
 		this.elasticsearchTemplate = elasticsearchTemplate;
-        if(!elasticsearchTemplate.indexExists("uckefu")){
-        	elasticsearchTemplate.createIndex("uckefu") ;
-        }
-        if(!elasticsearchTemplate.typeExists("uckefu" , "uc_entcustomer")){
-        	elasticsearchTemplate.putMapping(Contacts.class) ;
-        }
     }
 
 	@Override

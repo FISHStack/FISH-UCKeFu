@@ -41,6 +41,7 @@ import com.ukefu.util.UKTools;
 import com.ukefu.util.extra.DataExchangeInterface;
 import com.ukefu.util.webim.WebIMClient;
 import com.ukefu.webim.service.acd.ServiceQuene;
+import com.ukefu.webim.service.repository.AgentServiceSatisRepository;
 import com.ukefu.webim.service.repository.AgentUserContactsRepository;
 import com.ukefu.webim.service.repository.AttachmentRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
@@ -53,6 +54,7 @@ import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.AgentServiceSatis;
 import com.ukefu.webim.web.model.AgentUserContacts;
 import com.ukefu.webim.web.model.AiConfig;
 import com.ukefu.webim.web.model.AttachmentFile;
@@ -84,6 +86,9 @@ public class IMController extends Handler{
 	
 	@Autowired
 	private ChatMessageRepository chatMessageRes ;
+	
+	@Autowired
+	private AgentServiceSatisRepository agentServiceSatisRes ;
 	
 	@Autowired
 	private InviteRecordRepository inviteRecordRes ;
@@ -219,8 +224,10 @@ public class IMController extends Handler{
 			emitter.onTimeout(new Runnable() {	
 				@Override
 				public void run() {
-					emitter.complete();
 					try {
+						if(emitter!=null){
+							emitter.complete();
+						}
 						OnlineUserUtils.webIMClients.removeClient(userid , client , true) ;	//正常的超时断开
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -494,6 +501,23 @@ public class IMController extends Handler{
     		record.setResponsetime((int) (System.currentTimeMillis() - record.getCreatetime().getTime()));
     		record.setResult(UKDataContext.OnlineUserInviteStatus.REFUSE.toString());
     		inviteRecordRes.save(record) ;
+    	}
+        return;
+    }
+    
+    @RequestMapping("/satis")
+    @Menu(type = "im" , subtype = "satis" , access = true)
+    public void satis(HttpServletRequest request , HttpServletResponse response, @Valid AgentServiceSatis satis) throws Exception {
+    	if(satis!=null && !StringUtils.isBlank(satis.getId())){
+    		int count = agentServiceSatisRes.countById(satis.getId()) ;
+    		if(count == 1){
+    			if(!StringUtils.isBlank(satis.getSatiscomment()) && satis.getSatiscomment().length() > 255){
+    				satis.setSatiscomment(satis.getSatiscomment().substring(0 , 255));
+    			}
+    			satis.setSatisfaction(true);
+    			satis.setSatistime(new Date());
+    			agentServiceSatisRes.save(satis) ;
+    		}
     	}
         return;
     }

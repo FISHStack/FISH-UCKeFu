@@ -39,12 +39,6 @@ public class EntCustomerRepositoryImpl implements EntCustomerEsCommonRepository{
 	@Autowired
 	public void setElasticsearchTemplate(ElasticsearchTemplate elasticsearchTemplate) {
 		this.elasticsearchTemplate = elasticsearchTemplate;
-        if(!elasticsearchTemplate.indexExists("uckefu")){
-        	elasticsearchTemplate.createIndex("uckefu") ;
-        }
-        if(!elasticsearchTemplate.typeExists("uckefu" , "uc_entcustomer")){
-        	elasticsearchTemplate.putMapping(EntCustomer.class) ;
-        }
     }
 
 	@Override

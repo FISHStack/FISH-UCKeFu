@@ -178,6 +178,14 @@
 				document.getElementById('above').style.height = (height - 194 - 50)+"px" ;
 			}
 		}
+		function submitForm(form){
+			R3Ajax.post("/im/satis.html?orgi=${orgi!''}" , function(){
+				document.getElementById("diaShade").style.display = "none" ;
+				document.getElementById("dialogWrap").style.display = "none" ;
+				alert("服务评价已提及，请关闭浏览器！");
+			} , "id="+form.id.value+"&satislevel="+form.satislevel.value+"&satiscomment="+encodeURIComponent(form.comment.value));
+			return false ;
+		}
 		window.onbeforeunload = function(){
 			return "您确定断开对话？" ;
 		}
@@ -288,11 +296,13 @@
     </div>
     <div id="footer"></div>
 </div>
+<#if sessionConfig?? && sessionConfig.satisfaction?? && sessionConfig.satisfaction>
 <!--调查问卷弹框-->
 <div class="diaShade" id="diaShade" style="display: none"></div>
 <div class="dialogWrap" id="dialogWrap" style="display: none">
     <div class="dialogCon">
-        <form action="#" id="commentContent">
+        <form id="commentContent" onSubmit="return submitForm(this)">
+        	<input type="hidden" name="id" id="agentserviceid" name="agentserviceid">
             <h2 class="diaHeader clearfix">
                 <span>评价</span>
                 <hr>
@@ -301,29 +311,30 @@
             <!--评价-->
             <p>
                 <span>评价：</span>
-                <input type="radio" name="comment" checked="" id="04">
+                <input type="radio" name="satislevel" value="1" checked="checked" id="04">
                 <label for="04" class="radio">非常满意</label>
-                <input type="radio" name="comment" id="03">
+                <input type="radio" name="satislevel" value="2"  id="03">
                 <label for="03" class="radio">满意</label>
-                <input type="radio" name="comment" id="02">
+                <input type="radio" name="satislevel" value="3" id="02">
                 <label for="02" class="radio">一般</label>
-                <input type="radio" name="comment" id="01">
+                <input type="radio" name="satislevel" value="4"  id="01">
                 <label for="01" class="radio">不满意</label>
-                <input type="radio" name="comment" id="00">
+                <input type="radio" name="satislevel" value="5"  id="00">
                 <label for="00" class="radio">不满意</label>
             </p>
             <!--描述-->
             <p>
-                <span>描述：</span>
-                <textarea name="" id="descript"></textarea>
+                <span>意见：</span>
+                <textarea name="comment" id="descript" maxlength="255"></textarea>
             </p>
             <!--按钮-->
             <p class="submitBtnWrap">
-				<input type="button" class="btn submitBtn" id="submitBtn" value="确 定" onclick="popup('none')">
+				<input type="submit" class="btn submitBtn" id="submitBtn" value="提 交">
             </p>
         </form>
     </div>
 </div>
+</#if>
 <script>
 	var service_end = false ;
 	R3Helper.resize();
@@ -358,6 +369,12 @@
 		if(data.messageType == "end"){
 			service_end = true ;
 			editor.readonly();
+			<#if sessionConfig?? && sessionConfig.satisfaction?? && sessionConfig.satisfaction>
+			
+			document.getElementById("agentserviceid").value = data.agentserviceid ;
+			document.getElementById("diaShade").style.display = "block" ;
+			document.getElementById("dialogWrap").style.display = "block" ;
+			</#if>
 		}
     })
     socket.on('message', function(data) {

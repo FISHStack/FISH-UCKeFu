@@ -9,19 +9,27 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import com.ukefu.util.UKTools;
+
+@Document(indexName = "uckefu", type = "uk_quickreply")
 @Entity
 @Table(name = "uk_quickreply")
 @org.hibernate.annotations.Proxy(lazy = false)
 public class QuickReply {
 	
-	private String id ;
+	private String id  = UKTools.getUUID();
 	
 	private String title ;		//标题
 	private String content ;	//内容
 	
 	private String type ;		//公用 /私有
 	private String creater; 	//创建人
+	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createtime = new Date();	//创建时间
 	
 	private String orgi ;		//
@@ -32,7 +40,7 @@ public class QuickReply {
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")	
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")		
 	public String getId() {
 		return id;
 	}

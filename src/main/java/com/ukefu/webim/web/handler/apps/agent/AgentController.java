@@ -48,6 +48,7 @@ import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.QuickReplyRepository;
+import com.ukefu.webim.service.repository.QuickTypeRepository;
 import com.ukefu.webim.service.repository.SNSAccountRepository;
 import com.ukefu.webim.service.repository.ServiceSummaryRepository;
 import com.ukefu.webim.service.repository.TagRelationRepository;
@@ -116,6 +117,9 @@ public class AgentController extends Handler {
 	
 	@Autowired
 	private QuickReplyRepository quickReplyRes ;
+	
+	@Autowired
+	private QuickTypeRepository quickTypeRes ;
 	
 	@Autowired
 	private AgentUserTaskRepository agentUserTaskRes ;
@@ -226,7 +230,9 @@ public class AgentController extends Handler {
 			
 			view.addObject("tags", tagRes.findByOrgiAndTagtype(super.getOrgi(request) , UKDataContext.ModelType.USER.toString())) ;
 			view.addObject("tagRelationList", tagRelationRes.findByUserid(agentUser.getUserid())) ;
-			view.addObject("quickReplyList", quickReplyRes.findByOrgi(super.getOrgi(request))) ;
+			view.addObject("quickReplyList", quickReplyRes.findByOrgiAndCreater(super.getOrgi(request) , super.getUser(request).getId() , null)) ;
+			
+			view.addObject("pubQuickTypeList", quickTypeRes.findByOrgiAndQuicktype(super.getOrgi(request), UKDataContext.QuickTypeEnum.PUB.toString())) ;
 		}
 		return view ;
 	}
@@ -330,7 +336,7 @@ public class AgentController extends Handler {
 		}
 		
 		view.addObject("tags", tagRes.findByOrgiAndTagtype(super.getOrgi(request) , UKDataContext.ModelType.USER.toString())) ;
-		view.addObject("quickReplyList", quickReplyRes.findByOrgi(super.getOrgi(request))) ;
+		view.addObject("quickReplyList", quickReplyRes.findByOrgiAndCreater(super.getOrgi(request) , super.getUser(request).getId() , null)) ;
 
 		return view ;
 	}
@@ -736,6 +742,7 @@ public class AgentController extends Handler {
 			map.addAttribute("userid", userid) ;
 			map.addAttribute("agentserviceid", agentserviceid) ;
 			map.addAttribute("agentuserid", agentuserid) ;
+			map.addAttribute("agentservice", this.agentServiceRepository.findByIdAndOrgi(agentserviceid, super.getOrgi(request))) ;
 			
 		}
 		
@@ -744,7 +751,7 @@ public class AgentController extends Handler {
 	
 	@RequestMapping(value="/transfer/save")  
 	@Menu(type = "apps", subtype = "transfersave")
-    public ModelAndView transfersave(ModelMap map , HttpServletRequest request , @Valid String userid , @Valid String agentserviceid, @Valid String agentuserid, @Valid String agentno){ 
+    public ModelAndView transfersave(ModelMap map , HttpServletRequest request , @Valid String userid , @Valid String agentserviceid, @Valid String agentuserid, @Valid String agentno , @Valid String memo){ 
 		if(!StringUtils.isBlank(userid) && !StringUtils.isBlank(agentuserid) && !StringUtils.isBlank(agentno)){
 			AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(userid, super.getOrgi(request)) ;
 			if(agentUser != null){
@@ -775,6 +782,11 @@ public class AgentController extends Handler {
 			AgentService agentService = this.agentServiceRepository.findByIdAndOrgi(agentserviceid, super.getOrgi(request)) ;
 			if(agentService!=null){
 				agentService.setAgentno(agentno);
+				if(!StringUtils.isBlank(memo)){
+					agentService.setTransmemo(memo);
+				}
+				agentService.setTrans(true);
+				agentService.setTranstime(new Date());
 				agentServiceRepository.save(agentService) ;
 			}
 		}

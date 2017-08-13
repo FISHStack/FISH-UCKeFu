@@ -100,7 +100,6 @@ public class CousultInvite implements java.io.Serializable{
 	private boolean lvmcontent = true;
 	private boolean skill ;		//启用技能组功能
 	
-	
 	private boolean consult_info;	//启用咨询信息收集功能
 	private boolean consult_info_cookies;	//启用Cookies存储用户录入的信息， 最长有效时间是 3600秒，超时需要重新填写
 	private boolean consult_info_name;//填写姓名

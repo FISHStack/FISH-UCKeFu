@@ -18,6 +18,7 @@ public class MessageInContent implements MessageDataBean{
 	private SNSAccount snsAccount ;
 	private AgentUser agentUser ;
 	private Object channelMessage ;
+	private String agentserviceid ;
 	private Object user ;
 	private String contextid ;
 	private String createtime ;
@@ -117,5 +118,11 @@ public class MessageInContent implements MessageDataBean{
 	}
 	public void setFilesize(int filesize) {
 		this.filesize = filesize;
+	}
+	public String getAgentserviceid() {
+		return agentserviceid;
+	}
+	public void setAgentserviceid(String agentserviceid) {
+		this.agentserviceid = agentserviceid;
 	}
 }

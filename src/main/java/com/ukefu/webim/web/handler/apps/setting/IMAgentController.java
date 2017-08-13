@@ -24,7 +24,6 @@ import com.ukefu.webim.service.repository.QuickReplyRepository;
 import com.ukefu.webim.service.repository.SessionConfigRepository;
 import com.ukefu.webim.service.repository.TagRepository;
 import com.ukefu.webim.web.handler.Handler;
-import com.ukefu.webim.web.model.QuickReply;
 import com.ukefu.webim.web.model.SessionConfig;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.Tag;
@@ -178,53 +177,4 @@ public class IMAgentController extends Handler{
     	map.put("tagTypeList", UKeFuDic.getInstance().getDic("com.dic.tag.type")) ;
     	return request(super.createAppsTempletResponse("/apps/setting/agent/acd"));
     }
-    
-    @RequestMapping("/quickreply")
-    @Menu(type = "setting" , subtype = "quickreply" , admin= true)
-    public ModelAndView kuaijie(ModelMap map , HttpServletRequest request) {
-    	map.put("quickReplyList", quickReplyRes.findByOrgi(super.getOrgi(request))) ;
-    	map.put("tagTypeList", UKeFuDic.getInstance().getDic("com.dic.tag.type")) ;
-    	return request(super.createAppsTempletResponse("/apps/setting/agent/quickreply"));
-    }
-    @RequestMapping("/quickreply/add")
-    @Menu(type = "setting" , subtype = "quickreplyadd" , admin= true)
-    public ModelAndView quickreplyadd(ModelMap map , HttpServletRequest request) {
-        return request(super.createRequestPageTempletResponse("/apps/setting/agent/quickreplyadd"));
-    }
-    
-    @RequestMapping("/quickreply/save")
-    @Menu(type = "setting" , subtype = "quickreply" , admin= true)
-    public ModelAndView quickreplysave(ModelMap map , HttpServletRequest request , @Valid QuickReply quickReply) {
-    	if(!StringUtils.isBlank(quickReply.getTitle()) && !StringUtils.isBlank(quickReply.getContent())){
-	    	quickReply.setOrgi(super.getOrgi(request));
-			quickReply.setCreater(super.getUser(request).getId());
-			quickReplyRes.save(quickReply) ;
-    	}
-        return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply.html"));
-    }
-    
-    @RequestMapping("/quickreply/delete")
-    @Menu(type = "setting" , subtype = "quickreply" , admin= true)
-    public ModelAndView quickreplydelete(ModelMap map , HttpServletRequest request , @Valid String id) {
-    	quickReplyRes.delete(id);
-    	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply.html"));
-    }
-    @RequestMapping("/quickreply/edit")
-    @Menu(type = "setting" , subtype = "quickreply" , admin= true)
-    public ModelAndView quickreplyedit(ModelMap map , HttpServletRequest request , @Valid String id) {
-    	map.put("quickReply", quickReplyRes.findOne(id)) ;
-        return request(super.createRequestPageTempletResponse("/apps/setting/agent/quickreplyedit"));
-    }
-    
-    @RequestMapping("/quickreply/update")
-    @Menu(type = "setting" , subtype = "quickreply" , admin= true)
-    public ModelAndView quickreplyupdate(ModelMap map , HttpServletRequest request , @Valid QuickReply quickReply) {
-    	if(!StringUtils.isBlank(quickReply.getId())){
-    		quickReply.setOrgi(super.getOrgi(request));
-    		quickReply.setCreater(super.getUser(request).getId());
-    		quickReplyRes.save(quickReply) ;
-    	}
-    	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply.html"));
-    }
-    
 }

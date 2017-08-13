@@ -213,6 +213,7 @@ public class ServiceQuene {
 					outMessage.setNickName(agentUser.getUsername());
 				}
 				outMessage.setCreatetime(UKTools.dateFormate.format(new Date()));
+				outMessage.setAgentserviceid(agentUser.getAgentserviceid());
 				
     			router.handler(agentUser.getUserid(), UKDataContext.MessageTypeEnum.STATUS.toString(), agentUser.getAppid(), outMessage);
     		}

@@ -9,7 +9,7 @@
 			<#if curagentuser??>${curagentuser.username!''}（${curagentuser.region!''}）
 			<div style="float:right;" class="ukefu-service-btn">
 				<a href="/agent/summary.html?userid=${curagentuser.userid!''}&agentserviceid=${curagentuser.agentserviceid!''}&agentuserid=${curagentuser.id}" data-toggle="ajax" data-width="950" data-height="450" title="记录服务小结"><button class="layui-btn layui-btn-small"><i class="kfont">&#xe65c;</i> 服务小结</button></a>
-				<a href="/agent/transfer.html?userid=${curagentuser.userid!''}&agentserviceid=${curagentuser.agentserviceid!''}&agentuserid=${curagentuser.id}" data-toggle="ajax" data-width="950" data-height="450" title="选择转接对象"><button class="layui-btn layui-btn-small"><i class="kfont">&#xe7be;</i> 转接坐席</button></a>
+				<a href="/agent/transfer.html?userid=${curagentuser.userid!''}&agentserviceid=${curagentuser.agentserviceid!''}&agentuserid=${curagentuser.id}" data-toggle="ajax" data-width="750" data-height="550" title="选择转接对象"><button class="layui-btn layui-btn-small"><i class="kfont">&#xe7be;</i> 转接坐席</button></a>
 				<a href="/agent/end.html?userid=${curagentuser.id!''}" data-toggle="tip" data-title="请确认是否关闭和用户“${curagentuser.username!''}”的对话？"><button class="layui-btn layui-btn-small layui-btn-danger"><i class="kfont">&#xe621;</i> 结束对话</button></a>
 			</div>
 			<#else>
@@ -102,7 +102,7 @@
 <div class="ukefu-chat-prop">
 	<div class="ukefu-prop-list">
 		<div class="layui-side-scroll">
-			<div class="layui-tab layui-tab-card" style="margin-top:0px;">
+			<div class="layui-tab" style="margin-top:0px;">
 			  <ul class="layui-tab-title">
 			    <li class="layui-this">访客</li>
 			    
@@ -168,6 +168,33 @@
 								</#if>
 							</ul>
 							</#if>
+							<#if curAgentService?? && curAgentService.trans?? && curAgentService.trans>
+							<ul class="info-list">
+								<li>
+									转接：
+									<span class="tgreen">
+									<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
+								    </span>
+								</li>
+								<#if curAgentService.transtime??>
+								<li>
+									转接时间：
+								    <span class="tgreen">
+									${curAgentService.transtime?string("yyyy-MM-dd HH:mm:ss")}
+								    </span>
+								</li>
+								</#if>
+								<#if curAgentService.transmemo??>
+								<li>
+									转接附言：
+								    <span class="tgreen">
+									${curAgentService.transmemo!''}
+								    </span>
+								</li>
+								</#if>
+								
+							</ul>
+							</#if>
 						</div>
 					</div>
 					<#if models?? && models["contacts"]?? && models["contacts"] == true>
@@ -192,28 +219,25 @@
 						<div class="box-title">
 							<h1 class="site-h1" style="background-color:#EEEEEE;">
 								快捷回复
+								<span style="float:right;">
+									<div class="layui-input-inline">
+										<input type="text" name="q" value="" oninput="search(this.value)" style="height: 30px;width:150px;line-height: 30px;padding-right:30px;border: 1px solid #32c24d;" placeholder="请输入查询条件" autocomplete="off" class="layui-input">
+										<i class="layui-icon" style="position: absolute;cursor: pointer;right: 3px;top: 0px;font-size: 20px;color:#32c24d;"></i>
+									</div>
+								</span>
 							</h1>
 						</div>
-						<div class="box-body" style="padding:0px 10px;">
-							<ul class="info-list ukefu-quick-reply">
-								<#if quickReplyList?? && quickReplyList?size gt 0>
-								<#list quickReplyList as quickReply>
-								<li>
-									<span class="quick-reply" data-id="content_${quickReply.id!''}">${quickReply.title!''}</span>
-									<div id="content_${quickReply.id!''}" class="quick-reply-content" style="padding-left:23px;color:#333;display:none;">
-										${quickReply.content!''}
-									</div>
-								</li>
-								</#list>
-								<#else>
-								<li style="list-style: none;background-image: url();padding: 50px 0 50px;">
+						<div class="box-body" style="padding:0px 10px 0px 0px;">
+							<#if quickReplyList?? && quickReplyList?size gt 0>
+							<ul class="ztree" id="quickTypeTree"></ul>
+							<#else>
+								<div style="padding: 50px 0 50px;">
 									<div class="ukefu-empty">
 										<i class="layui-icon"></i>
 										<div style="">还没有快捷回复</div>
 									</div>
-								</li>
-								</#if>
-							</ul>
+								</div>
+							</#if>
 						</div>
 					</div>
 			    </div>
@@ -322,3 +346,87 @@
 		editor.html('');
 	}
 </script>
+
+<SCRIPT type="text/javascript">
+	var setting = {
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},
+		view: {
+			showLine: false,
+			fontCss: getFontCss
+		},
+		callback: {
+			onDblClick: onDblClick
+		}
+	};
+	function getFontCss(treeId, treeNode) {
+		return (!!treeNode.highlight) ? {color:"red", "font-weight":"400"} : {color:"#333", "font-weight":"normal"};
+	}
+	
+	
+	function onDblClick(e, treeId, treeNode) {
+		if(editor != null && treeNode.type == false){
+			var quickReply = treeNode.name ;
+			if(editor.count("text") == 0 ){
+				editor.html(quickReply);
+			}else{
+				top.layer.confirm("您已经输入了内容，覆盖当前输入框中内容？", {icon: 3, title:'覆盖提示'}, function(index){
+					top.layer.close(index);
+					editor.html(quickReply);
+				});
+			}
+		}		
+	}
+
+	var zNodes =[
+	    { id:'0', pId:'0', name:"公共分类", open:true }
+	    <#if pubQuickTypeList??>
+	    <#list pubQuickTypeList as pubQuckType>
+	    ,{ id:'${pubQuckType.id!''}', pId:'${pubQuckType.parentid!''}', name:"${pubQuckType.name!''}", open:true , type : true}
+	    <#if quickReplyList??>
+		    <#list quickReplyList as quickReply>
+		    <#if quickReply.cate?? && quickReply.cate == pubQuckType.id>
+		    ,{ id:'${quickReply.id!''}', pId:'${quickReply.cate!''}', name:"${quickReply.content!''}", open:true ,  icon:"/images/quickreply.png" , type : false}
+		    </#if>
+		    </#list>
+	    </#if>
+	    </#list>
+	    </#if>
+	];
+	var ztree ;
+	$(document).ready(function(){
+		ztree = $.fn.zTree.init($("#quickTypeTree"), setting, zNodes);
+	});
+	function search(value){
+		if(ztree!=null){
+			var lastNodeList = ztree.getNodesByParamFuzzy("highlight", "true");
+			for( var i=0, l=lastNodeList.length; i<l; i++) {
+				updateNodes(lastNodeList[i] , false);
+			}
+			var nodeList = ztree.getNodesByParamFuzzy("name", value);
+			for( var i=0, l=nodeList.length; i<l; i++) {
+				if(value != ""){
+					updateNodes(nodeList[i] , true);
+				}else{
+					updateNodes(nodeList[i] , false);
+				}
+			}
+			
+		}
+	}
+	function updateNodes(node , highlight) {
+		if(ztree!=null){
+			if(node.type == true){
+				node.highlight = false;
+				ztree.updateNode(node);
+			}else{
+				node.highlight = highlight;
+				ztree.updateNode(node);
+			}
+		}
+	}
+	
+</SCRIPT>

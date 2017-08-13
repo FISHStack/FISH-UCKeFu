@@ -28,9 +28,7 @@ input,textarea{
 	vertical-align: middle;
 	/*width: 206px;*/
 }
-input,textarea{
-    -webkit-appearance: none;
-}
+
 /*万能清浮动*/
 .clearfix:before,.clearfix:after{
 	display:block;
@@ -747,7 +745,7 @@ p.submitBtnWrap {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index:100;
+	z-index:100000;
 	background-color: #000;
 	background-color: rgba(0,0,0,0.5);
 	_background-color: #000;
@@ -759,9 +757,9 @@ p.submitBtnWrap {
 	border-radius: 1px;
 	position: absolute;
 	left:50%;
-	top:50px;
-	z-index:101;
-	margin-top:172px;
+	top:20%;
+	z-index:100001;
+	margin-top:10px;
 	margin-left:-270px;
 	background-color: #f7f7f7;
 	color: #323232;

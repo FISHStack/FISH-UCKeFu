@@ -28,12 +28,6 @@ public class KbsTopicCommentRepositoryImpl implements KbsTopicCommentEsCommonRep
 	@Autowired
 	public void setElasticsearchTemplate(ElasticsearchTemplate elasticsearchTemplate) {
 		this.elasticsearchTemplate = elasticsearchTemplate;
-        if(!elasticsearchTemplate.indexExists("uckefu")){
-        	elasticsearchTemplate.createIndex("uckefu") ;
-        }
-        if(!elasticsearchTemplate.typeExists("uckefu" , "uc_kbs_topiccomment")){
-        	elasticsearchTemplate.putMapping(KbsTopicComment.class) ;
-        }
     }
 	@Override
 	public Page<KbsTopicComment> findByDataid(String id , int p , int ps) {

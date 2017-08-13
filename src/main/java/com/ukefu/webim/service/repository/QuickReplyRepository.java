@@ -1,15 +1,10 @@
 package com.ukefu.webim.service.repository;
 
-import java.util.List;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import com.ukefu.webim.service.repository.es.QuickReplyEsCommonRepository;
 import com.ukefu.webim.web.model.QuickReply;
 
-public abstract interface QuickReplyRepository  extends JpaRepository<QuickReply, String>
-{
-	public abstract QuickReply findByOrgiAndCreater(String orgi , String creater);
+public interface QuickReplyRepository extends  ElasticsearchRepository<QuickReply, String> , QuickReplyEsCommonRepository {
 	
-	public abstract List<QuickReply> findByOrgi(String orgi);
 }
-

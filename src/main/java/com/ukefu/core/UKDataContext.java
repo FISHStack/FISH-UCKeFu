@@ -60,6 +60,16 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum QuickTypeEnum{
+		PUB,
+		PRI;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	
+	
 	
 	public enum SalesNamesStatus{
 		DIST,			//已分配
