@@ -39,6 +39,8 @@ public class AiConfig implements java.io.Serializable{
 	private String unresolved ;	//未解决的提示文本
 	private boolean redirectagent ;	//跳转到人工坐席
 	private String redirecturl ;	//跳转到其他URL
+	private boolean selectskill ;	//跳转到人工坐席之前开启选择技能组
+	private String selectskillmsg ;	//选择技能组的提示信息
 	
 	private String noresultmsg ;
 	
@@ -168,5 +170,17 @@ public class AiConfig implements java.io.Serializable{
 	}
 	public void setAsktimes(int asktimes) {
 		this.asktimes = asktimes;
+	}
+	public boolean isSelectskill() {
+		return selectskill;
+	}
+	public void setSelectskill(boolean selectskill) {
+		this.selectskill = selectskill;
+	}
+	public String getSelectskillmsg() {
+		return selectskillmsg;
+	}
+	public void setSelectskillmsg(String selectskillmsg) {
+		this.selectskillmsg = selectskillmsg;
 	}
 }

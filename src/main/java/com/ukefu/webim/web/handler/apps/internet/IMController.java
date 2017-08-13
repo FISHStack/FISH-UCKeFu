@@ -351,6 +351,8 @@ public class IMController extends Handler{
 				map.addAttribute("type", type) ;
 			}
 			
+			map.addAttribute("skillList", OnlineUserUtils.organ(invite.getOrgi()))  ;
+			
     		if(invite!=null && consult){
 				if(contacts!=null && !StringUtils.isBlank(contacts.getName())){
 					nickname = contacts.getName() ;

@@ -122,7 +122,7 @@ public class OnlineUserUtils {
 			OrganRepository service = (OrganRepository) UKDataContext.getContext().getBean(OrganRepository.class);
 			skillList = service.findByOrgiAndSkill(orgi, true) ;
 			if(skillList.size() > 0){
-				CacheHelper.getOnlineUserCacheBean().put(UKDataContext.CACHE_SKILL, skillList, orgi);
+				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_SKILL, skillList, orgi);
 			}
 		}
 		return skillList;
@@ -144,7 +144,7 @@ public class OnlineUserUtils {
 			UserRepository service = (UserRepository) UKDataContext.getContext().getBean(UserRepository.class);
 			agentList = service.findByOrgiAndAgent(orgi, true) ;
 			if(agentList.size() > 0){
-				CacheHelper.getOnlineUserCacheBean().put(UKDataContext.CACHE_AGENT, agentList, orgi);
+				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_AGENT, agentList, orgi);
 			}
 		}
 		return agentList;
