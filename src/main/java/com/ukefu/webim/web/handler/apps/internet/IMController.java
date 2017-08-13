@@ -443,7 +443,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/text/{appid}")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid , @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String mobile) throws Exception {
+    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid , @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String mobile,@Valid String ai) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/text")) ; 
     	
     	view.addObject("hostname", request.getServerName()) ;
@@ -461,6 +461,9 @@ public class IMController extends Handler{
 		view.addObject("sessionid", request.getSession().getId()) ;
 		
 		view.addObject("id", id) ;
+		if(!StringUtils.isBlank(ai)){
+			view.addObject("ai", ai) ;
+		}
 		view.addObject("name", name) ;
 		view.addObject("emal", email) ;
 		view.addObject("mobile", mobile) ;

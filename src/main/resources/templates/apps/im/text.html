@@ -35,7 +35,7 @@ var ukefu = {
 			window.location.replace(url+"&t="+new Date().getTime());	
 		}
 }
-ukefu.chat = ukefu.chat + "<#if userid??>&userid=${userid}<#else>&userid="+result+"</#if>&sessionid=${sessionid!''}";
+ukefu.chat = ukefu.chat + "<#if userid??>&userid=${userid}<#else>&userid="+result+"</#if>&sessionid=${sessionid!''}<#if ai??>&ai=${ai}</#if>";
 ukefu.openChatDialog();
 </#if>
 </script>
