@@ -1,6 +1,7 @@
 package com.ukefu.webim.config.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.context.ApplicationListener;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Component;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.BlackListRepository;
 import com.ukefu.webim.service.repository.GenerationRepository;
 import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.SystemConfigRepository;
+import com.ukefu.webim.web.model.BlackEntity;
 import com.ukefu.webim.web.model.Generation;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.SystemConfig;
@@ -21,7 +24,9 @@ import com.ukefu.webim.web.model.SystemConfig;
 @ImportResource("classpath:config/applicationContext-snaker.xml")
 public class StartedEventListener implements ApplicationListener<ContextRefreshedEvent> {
 	
-	SysDicRepository sysDicRes;
+	
+	private SysDicRepository sysDicRes;
+	private BlackListRepository blackListRes ;
 	
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -29,6 +34,7 @@ public class StartedEventListener implements ApplicationListener<ContextRefreshe
     		UKDataContext.setApplicationContext(event.getApplicationContext());
     	}
     	sysDicRes = event.getApplicationContext().getBean(SysDicRepository.class) ;
+    	blackListRes = event.getApplicationContext().getBean(BlackListRepository.class) ;
     	List<SysDic> sysDicList = sysDicRes.findAll() ;
     	
     	for(SysDic dic : sysDicList){
@@ -43,6 +49,12 @@ public class StartedEventListener implements ApplicationListener<ContextRefreshe
 				CacheHelper.getSystemCacheBean().put(dic.getCode(), sysDicItemList, dic.getOrgi());
 			}
 		}
+    	List<BlackEntity> blackList = blackListRes.findByOrgi(UKDataContext.SYSTEM_ORGI) ;
+    	for(BlackEntity black : blackList){
+    		if(black.getEndtime()==null || black.getEndtime().after(new Date())){
+    			CacheHelper.getSystemCacheBean().put(black.getUserid(), black, black.getOrgi());
+    		}
+    	}
     	/**
     	 * 加载系统全局配置
     	 */

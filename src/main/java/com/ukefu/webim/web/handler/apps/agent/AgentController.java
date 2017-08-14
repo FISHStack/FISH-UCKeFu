@@ -456,7 +456,18 @@ public class AgentController extends Handler {
 		return request(super.createRequestPageTempletResponse("/public/success"));
 	}
 	
-	@RequestMapping({ "/blacklist" })
+	@RequestMapping({ "/blacklist/add" })
+	@Menu(type = "apps", subtype = "blacklist")
+	public ModelAndView blacklistadd(ModelMap map , HttpServletRequest request, @Valid String agentuserid , @Valid String agentserviceid ,  @Valid String userid)
+			throws Exception {
+		map.addAttribute("agentuserid", agentuserid);
+		map.addAttribute("agentserviceid", agentserviceid);
+		map.addAttribute("userid", userid);
+		map.addAttribute("agentUser", agentUserRepository.findByIdAndOrgi(userid, super.getOrgi(request)));
+		return request(super.createRequestPageTempletResponse("/apps/agent/blacklistadd")) ;
+	}
+	
+	@RequestMapping({ "/blacklist/save" })
 	@Menu(type = "apps", subtype = "blacklist")
 	public ModelAndView blacklist(HttpServletRequest request, @Valid String agentuserid , @Valid String agentserviceid ,  @Valid String userid , @Valid BlackEntity blackEntity)
 			throws Exception {
@@ -469,11 +480,27 @@ public class AgentController extends Handler {
 				blackEntity.setUserid(userid);
 				blackEntity.setCreater(user.getId());
 				blackEntity.setOrgi(super.getOrgi(request));
+				if(blackEntity.getControltime() > 0){
+					blackEntity.setEndtime(new Date(System.currentTimeMillis() + blackEntity.getControltime()*3600*1000L));
+				}
 				blackEntity.setAgentid(user.getId());
+				blackEntity.setAgentuser(onlineUser.getUsername());
 				blackEntity.setSessionid(onlineUser.getSessionid());
 				blackEntity.setAgentserviceid(agentserviceid);
 				blackEntity.setChannel(onlineUser.getChannel());
 				blackListRes.save(blackEntity) ;
+			}else{
+				if(blackEntity.getControltime() > 0){
+					tempBlackEntiry.setEndtime(new Date(System.currentTimeMillis() + blackEntity.getControltime()*3600*1000L));
+				}
+				tempBlackEntiry.setDescription(tempBlackEntiry.getDescription());
+				tempBlackEntiry.setControltime(blackEntity.getControltime());
+				tempBlackEntiry.setAgentuser(onlineUser.getUsername());
+				blackListRes.save(tempBlackEntiry) ;
+				blackEntity = tempBlackEntiry ;
+			}
+			if(!StringUtils.isBlank(userid)){
+				CacheHelper.getSystemCacheBean().put(userid, blackEntity, super.getOrgi(request));
 			}
 		}
 		return end(request , agentuserid);
@@ -754,7 +781,9 @@ public class AgentController extends Handler {
     public ModelAndView transfersave(ModelMap map , HttpServletRequest request , @Valid String userid , @Valid String agentserviceid, @Valid String agentuserid, @Valid String agentno , @Valid String memo){ 
 		if(!StringUtils.isBlank(userid) && !StringUtils.isBlank(agentuserid) && !StringUtils.isBlank(agentno)){
 			AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(userid, super.getOrgi(request)) ;
+			AgentService agentService = this.agentServiceRepository.findByIdAndOrgi(agentserviceid, super.getOrgi(request)) ;
 			if(agentUser != null){
+				
 				agentUser.setAgentno(agentno);
 				CacheHelper.getAgentUserCacheBean().put(userid , agentUser , super.getOrgi(request)) ;
 				agentUserRepository.save(agentUser) ;
@@ -768,6 +797,8 @@ public class AgentController extends Handler {
 					AgentStatus transAgentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentno, super.getOrgi(request)) ;
 					if(transAgentStatus!=null){
 						ServiceQuene.updateAgentStatus(transAgentStatus, agentUser, super.getOrgi(request), true);
+						agentService.setAgentno(agentno);
+						agentService.setAgentusername(transAgentStatus.getUsername());
 					}
 					NettyClients.getInstance().sendAgentEventMessage(agentno, UKDataContext.MessageTypeEnum.NEW.toString(), agentUser);
 				}
@@ -779,7 +810,6 @@ public class AgentController extends Handler {
 				}
 			}
 			
-			AgentService agentService = this.agentServiceRepository.findByIdAndOrgi(agentserviceid, super.getOrgi(request)) ;
 			if(agentService!=null){
 				agentService.setAgentno(agentno);
 				if(!StringUtils.isBlank(memo)){

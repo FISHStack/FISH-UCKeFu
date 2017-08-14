@@ -78,6 +78,7 @@ function append(parent, text) {
 }
 var ukefu = {
 	time : new Date().getTime(),
+	in :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/${appid!''}/userlist?appid=${appid!''}&orgi=${orgi!''}&client=${client}" ,
 	url :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/online?appid=${appid!''}&orgi=${orgi!''}&client=${client}" ,
 	chat : "${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/index.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}" , 
 	refuse :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/refuse.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}", 
@@ -115,7 +116,7 @@ var ukefu = {
 						ukefu.acceptInvite() ;
 					}
 					if(success){
-						success();
+						success(event);
 					}
 				} else {
 					//
@@ -298,13 +299,21 @@ var ukefu = {
 		},5000) ;	
 	}
 }
-ukefu.display();
+
 function openAgentChatDialog(url){
 	return ukefu.openChatDialogWithURL(url);	
 }
 
-ukefu.ping();
-ukefu.check();
+ukefu.ajax(ukefu.in+"&userid="+result+"&t="+new Date().getTime() , function(data){
+	if(data == "in"){}else{
+		ukefu.display();
+		ukefu.ping();
+		ukefu.check();
+	}
+});
+
+
+
 </#if>
 
 

@@ -13,13 +13,23 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "uk_blacklist")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class BlackEntity {
+public class BlackEntity implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7852633351774613958L;
 	private String id ;
 	private String orgi ;			//orgi
 	private String userid ;			//加黑用户ID
 	private String contactid ;		//联系人ID
 	private String sessionid ;		//当前会话
 	private Date createtime = new Date() ;		//加黑时间
+	
+	private int controltime ;	//加黑时间，1小时~N小时
+	private Date endtime ;			//结束时间
+	
+	private String agentuser ;		//用户名
+	
 	private String channel ;		//渠道
 	private String creater ;		//创建人，和 加黑坐席同一个人
 	private String agentid ;		//加黑坐席
@@ -123,5 +133,23 @@ public class BlackEntity {
 	}
 	public void setChattime(int chattime) {
 		this.chattime = chattime;
+	}
+	public int getControltime() {
+		return controltime;
+	}
+	public void setControltime(int controltime) {
+		this.controltime = controltime;
+	}
+	public Date getEndtime() {
+		return endtime;
+	}
+	public void setEndtime(Date endtime) {
+		this.endtime = endtime;
+	}
+	public String getAgentuser() {
+		return agentuser;
+	}
+	public void setAgentuser(String agentuser) {
+		this.agentuser = agentuser;
 	}
 }

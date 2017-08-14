@@ -40,6 +40,12 @@ public class SessionConfig implements java.io.Serializable{
 	private String retimeoutmsg ;		//再次超时断开
 	private boolean satisfaction ;	//启用满意度调查
 	
+	private String noagentmsg ;		//无客服在线提示信息
+	private String agentbusymsg ;	//坐席忙提示信息
+	
+	private String successmsg ;		//坐席分配成功提示消息
+	private String finessmsg ;		//服务结束提示消息
+	
 	private boolean agentreplaytimeout ;	//启用坐席回复超时
 	private int agenttimeout;
 	private String agenttimeoutmsg ;
@@ -195,5 +201,29 @@ public class SessionConfig implements java.io.Serializable{
 	}
 	public void setHourcheck(boolean hourcheck) {
 		this.hourcheck = hourcheck;
+	}
+	public String getNoagentmsg() {
+		return noagentmsg;
+	}
+	public void setNoagentmsg(String noagentmsg) {
+		this.noagentmsg = noagentmsg;
+	}
+	public String getAgentbusymsg() {
+		return agentbusymsg;
+	}
+	public void setAgentbusymsg(String agentbusymsg) {
+		this.agentbusymsg = agentbusymsg;
+	}
+	public String getSuccessmsg() {
+		return successmsg;
+	}
+	public void setSuccessmsg(String successmsg) {
+		this.successmsg = successmsg;
+	}
+	public String getFinessmsg() {
+		return finessmsg;
+	}
+	public void setFinessmsg(String finessmsg) {
+		this.finessmsg = finessmsg;
 	}
 }

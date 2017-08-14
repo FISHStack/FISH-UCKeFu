@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import com.ukefu.webim.service.repository.QuickReplyRepository;
 import com.ukefu.webim.service.repository.SessionConfigRepository;
 import com.ukefu.webim.service.repository.TagRepository;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.BlackEntity;
 import com.ukefu.webim.web.model.SessionConfig;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.Tag;
@@ -87,7 +89,7 @@ public class IMAgentController extends Handler{
     @RequestMapping("/blacklist")
     @Menu(type = "setting" , subtype = "blacklist" , admin= true)
     public ModelAndView blacklist(ModelMap map , HttpServletRequest request) {
-    	map.put("blackList", blackListRes.findByOrgi(super.getOrgi(request), new PageRequest(super.getP(request), super.getPs(request)))) ;
+    	map.put("blackList", blackListRes.findByOrgi(super.getOrgi(request), new PageRequest(super.getP(request), super.getPs(request), Sort.Direction.DESC, "endtime"))) ;
     	map.put("tagTypeList", UKeFuDic.getInstance().getDic("com.dic.tag.type")) ;
     	return request(super.createAppsTempletResponse("/apps/setting/agent/blacklist"));
     }
@@ -95,7 +97,13 @@ public class IMAgentController extends Handler{
     @RequestMapping("/blacklist/delete")
     @Menu(type = "setting" , subtype = "tag" , admin= true)
     public ModelAndView blacklistdelete(ModelMap map , HttpServletRequest request , @Valid String id) {
-    	blackListRes.delete(id);
+    	if(!StringUtils.isBlank(id)){
+    		BlackEntity tempBlackEntity = blackListRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
+    		if(tempBlackEntity!=null){
+		    	blackListRes.delete(tempBlackEntity);
+		    	CacheHelper.getSystemCacheBean().delete(tempBlackEntity.getUserid(), UKDataContext.SYSTEM_ORGI) ;
+    		}
+    	}
     	return request(super.createRequestPageTempletResponse("redirect:/setting/blacklist.html"));
     }
     

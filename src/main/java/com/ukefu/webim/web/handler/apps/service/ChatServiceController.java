@@ -1,6 +1,9 @@
 package com.ukefu.webim.web.handler.apps.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
+import com.ukefu.util.client.NettyClients;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
@@ -27,6 +31,7 @@ import com.ukefu.webim.service.repository.LeaveMsgRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.AgentService;
 import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.LeaveMsg;
@@ -45,6 +50,9 @@ public class ChatServiceController extends Handler{
 	
 	@Autowired
 	private AgentStatusRepository agentStatusRepository ;
+	
+	@Autowired
+	private AgentUserRepository agentUserRepository ;
 	
 	@Autowired
 	private LeaveMsgRepository leaveMsgRes ;
@@ -68,6 +76,103 @@ public class ChatServiceController extends Handler{
 		map.put("agentServiceList", agentServiceRes.findByOrgiAndStatus(super.getOrgi(request), UKDataContext.AgentUserStatusEnum.INSERVICE.toString() ,new PageRequest(super.getP(request), super.getPs(request), Direction.DESC , "createtime"))) ;
         return request(super.createAppsTempletResponse("/apps/service/current/index"));
     }
+	
+	@RequestMapping("/current/trans")
+    @Menu(type = "service" , subtype = "current" , admin= true)
+    public ModelAndView trans(ModelMap map , HttpServletRequest request , @Valid String id) {
+		if(!StringUtils.isBlank(id)){
+			AgentService agentService = agentServiceRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
+			map.addAttribute("organList", organRes.findByOrgi(super.getOrgi(request))) ;
+			
+			List<String> usersids = new ArrayList<String>();
+			
+			Collection<?> users =  CacheHelper.getAgentStatusCacheBean().getAllCacheObject(super.getOrgi(request)) ;
+			Iterator<?> iterator = users.iterator() ;
+			while(iterator.hasNext()){
+				String agentno = (String) iterator.next() ;
+				if(agentno!=null && !agentno.equals(super.getUser(request).getId())){
+					usersids.add(agentno) ;
+				}
+			}
+			List<User> userList = userRes.findAll(usersids) ;
+			for(User user : userList){
+				user.setAgentStatus((AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(user.getId(), super.getOrgi(request)));
+			}
+			map.addAttribute("userList", userList) ;
+			map.addAttribute("userid", agentService.getUserid()) ;
+			map.addAttribute("agentserviceid", agentService.getId()) ;
+			map.addAttribute("agentuserid", agentService.getAgentuserid()) ;
+			map.addAttribute("agentservice", agentService) ;
+		}
+		
+		return request(super.createRequestPageTempletResponse("/apps/service/current/transfer"));
+    }
+	
+	@RequestMapping(value="/transfer/save")  
+	@Menu(type = "apps", subtype = "transfersave")
+    public ModelAndView transfersave(ModelMap map , HttpServletRequest request , @Valid String id , @Valid String agentno , @Valid String memo){ 
+		if(!StringUtils.isBlank(id)){
+			AgentService agentService = agentServiceRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
+			AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(agentService.getUserid(), super.getOrgi(request)) ;
+			if(agentUser != null){
+				agentUser.setAgentno(agentno);
+				CacheHelper.getAgentUserCacheBean().put(agentService.getUserid() , agentUser , super.getOrgi(request)) ;
+				agentUserRepository.save(agentUser) ;
+				if(UKDataContext.AgentUserStatusEnum.INSERVICE.toString().equals(agentUser.getStatus())){		//转接 ， 发送消息给 目标坐席
+					AgentStatus agentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(super.getUser(request).getId(), super.getOrgi(request)) ;
+					
+					if(agentStatus!=null){
+						ServiceQuene.updateAgentStatus(agentStatus, agentUser, super.getOrgi(request), false);
+					}
+					
+					AgentStatus transAgentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentno, super.getOrgi(request)) ;
+					if(transAgentStatus!=null){
+						ServiceQuene.updateAgentStatus(transAgentStatus, agentUser, super.getOrgi(request), true);
+						agentService.setAgentno(agentno);
+						agentService.setAgentusername(transAgentStatus.getUsername());
+					}
+					NettyClients.getInstance().sendAgentEventMessage(agentno, UKDataContext.MessageTypeEnum.NEW.toString(), agentUser);
+				}
+			}else{
+				agentUser = agentUserRepository.findByIdAndOrgi(agentService.getAgentuserid(), super.getOrgi(request));
+				if(agentUser!=null){
+					agentUser.setAgentno(agentno);	
+					agentUserRepository.save(agentUser) ;
+				}
+			}
+			
+			if(agentService!=null){
+				agentService.setAgentno(agentno);
+				if(!StringUtils.isBlank(memo)){
+					agentService.setTransmemo(memo);
+				}
+				agentService.setTrans(true);
+				agentService.setTranstime(new Date());
+				agentServiceRes.save(agentService) ;
+			}
+		}
+		
+    	return request(super.createRequestPageTempletResponse("redirect:/service/current/index.html")) ; 
+    }
+	
+	@RequestMapping("/current/end")
+    @Menu(type = "service" , subtype = "current" , admin= true)
+    public ModelAndView end(ModelMap map , HttpServletRequest request , @Valid String id) throws Exception {
+		if(!StringUtils.isBlank(id)){
+			AgentService agentService = agentServiceRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
+			if(agentService!=null){
+				User user = super.getUser(request);
+				AgentUser agentUser = agentUserRepository.findByIdAndOrgi(agentService.getAgentuserid(), super.getOrgi(request));
+				if(agentUser!=null){
+					ServiceQuene.deleteAgentUser(agentUser, user.getOrgi());
+				}
+				agentService.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
+				agentServiceRes.save(agentService) ;
+			}
+		}
+        return request(super.createRequestPageTempletResponse("redirect:/service/current/index.html"));
+    }
+	
 	@RequestMapping("/quene/index")
     @Menu(type = "service" , subtype = "quene" , admin= true)
     public ModelAndView quene(ModelMap map , HttpServletRequest request) {

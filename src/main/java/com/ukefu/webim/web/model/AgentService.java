@@ -46,6 +46,8 @@ public class AgentService implements Serializable {
 	private int tokenum;
 	private Date createtime = new Date();
 	
+	private String agentuserid ;
+	
 	private String createdate = new SimpleDateFormat("yyyy-MM-dd").format(new Date()) ;
 	private Date updatetime;
 	private String appid;
@@ -634,5 +636,13 @@ public class AgentService implements Serializable {
 
 	public void setUserasks(int userasks) {
 		this.userasks = userasks;
+	}
+
+	public String getAgentuserid() {
+		return agentuserid;
+	}
+
+	public void setAgentuserid(String agentuserid) {
+		this.agentuserid = agentuserid;
 	}
 }

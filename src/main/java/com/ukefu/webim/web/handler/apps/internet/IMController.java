@@ -41,6 +41,7 @@ import com.ukefu.util.UKTools;
 import com.ukefu.util.extra.DataExchangeInterface;
 import com.ukefu.util.webim.WebIMClient;
 import com.ukefu.webim.service.acd.ServiceQuene;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AgentServiceSatisRepository;
 import com.ukefu.webim.service.repository.AgentUserContactsRepository;
 import com.ukefu.webim.service.repository.AttachmentRepository;
@@ -58,6 +59,7 @@ import com.ukefu.webim.web.model.AgentServiceSatis;
 import com.ukefu.webim.web.model.AgentUserContacts;
 import com.ukefu.webim.web.model.AiConfig;
 import com.ukefu.webim.web.model.AttachmentFile;
+import com.ukefu.webim.web.model.BlackEntity;
 import com.ukefu.webim.web.model.Contacts;
 import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.InviteRecord;
@@ -117,84 +119,96 @@ public class IMController extends Handler{
     @Menu(type = "im" , subtype = "point" , access = true)
     public ModelAndView point(HttpServletRequest request , HttpServletResponse response, @PathVariable String id , @Valid String orgi , @Valid String userid , @Valid String title) {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/point")) ; 
-    	
-    	view.addObject("hostname", request.getServerName()) ;
-		view.addObject("port", request.getServerPort()) ;
-		view.addObject("schema", request.getScheme()) ;
-		view.addObject("appid", id) ;
-		view.addObject("client", UKTools.getUUID()) ;
-		view.addObject("sessionid", request.getSession().getId()) ;
-		
-		view.addObject("mobile", CheckMobile.check(request.getHeader("User-Agent"))) ;
-		
-		CousultInvite invite = OnlineUserUtils.cousult(id, super.getOrgi(request), inviteRepository);
-    	if(invite!=null){
-    		view.addObject("inviteData", invite);
-    		view.addObject("orgi",invite.getOrgi());
-    		view.addObject("appid",id);
-    	//记录用户行为日志
-			UserHistory userHistory = new UserHistory() ;
-			String url = request.getRequestURL().toString() ;
-			if(url.length() >255){
-				userHistory.setUrl(url.substring( 0 , 255));
-			}else{
-				userHistory.setUrl(url);
-			}
-			userHistory.setParam(UKTools.getParameter(request));
-			if(userHistory!=null){
-				userHistory.setMaintype("im");
-				userHistory.setSubtype("point");
-				userHistory.setName("online");
-				userHistory.setAdmin(false);
-				userHistory.setAccessnum(true);
-			}
-			User imUser = super.getIMUser(request , userid, null) ;
-			if(imUser!=null){
-				userHistory.setCreater(imUser.getId());
-				userHistory.setUsername(imUser.getUsername());
-				userHistory.setOrgi(orgi);
-			}
-			if(!StringUtils.isBlank(title)){
-				if(title.length() > 255){
-					userHistory.setTitle(title.substring(0 , 255));
-				}else{
-					userHistory.setTitle(title);
-				}
-			}
-			userHistory.setOrgi(invite.getOrgi());
-			userHistory.setAppid(id);
-			userHistory.setSessionid(request.getSession().getId());
+    	if(!StringUtils.isBlank(id)){
+	    	view.addObject("hostname", request.getServerName()) ;
+			view.addObject("port", request.getServerPort()) ;
+			view.addObject("schema", request.getScheme()) ;
+			view.addObject("appid", id) ;
+			view.addObject("client", UKTools.getUUID()) ;
+			view.addObject("sessionid", request.getSession().getId()) ;
 			
-			String ip = UKTools.getIpAddr(request);
-			userHistory.setHostname(ip);
-			userHistory.setIp(ip);
-			IP ipdata = IPTools.getInstance().findGeography(ip);
-			userHistory.setCountry(ipdata.getCountry());
-			userHistory.setProvince(ipdata.getProvince());
-			userHistory.setCity(ipdata.getCity());
-		    userHistory.setIsp(ipdata.getIsp());
-		    
-		    BrowserClient client = UKTools.parseClient(request) ;
-		    userHistory.setOstype(client.getOs());
-		    userHistory.setBrowser(client.getBrowser());
-		    userHistory.setMobile(CheckMobile.check(request.getHeader("User-Agent")) ? "1" : "0");
-		    
-		    if(invite.isSkill()){
-			    /***
-			     * 查询 技能组 ， 缓存？ 
-			     */
-			    view.addObject("skillList", OnlineUserUtils.organ(invite.getOrgi()))  ;
-			    /**
-			     * 查询坐席 ， 缓存？
-			     */
-			    view.addObject("agentList", OnlineUserUtils.agents(invite.getOrgi()))  ;
-		    }
-		    if(invite.isRecordhis()){
-		    	UKTools.published(userHistory);
-		    }
-		}
+			view.addObject("mobile", CheckMobile.check(request.getHeader("User-Agent"))) ;
+			
+			CousultInvite invite = OnlineUserUtils.cousult(id, super.getOrgi(request), inviteRepository);
+	    	if(invite!=null){
+	    		view.addObject("inviteData", invite);
+	    		view.addObject("orgi",invite.getOrgi());
+	    		view.addObject("appid",id);
+	    	//记录用户行为日志
+				UserHistory userHistory = new UserHistory() ;
+				String url = request.getRequestURL().toString() ;
+				if(url.length() >255){
+					userHistory.setUrl(url.substring( 0 , 255));
+				}else{
+					userHistory.setUrl(url);
+				}
+				userHistory.setParam(UKTools.getParameter(request));
+				if(userHistory!=null){
+					userHistory.setMaintype("im");
+					userHistory.setSubtype("point");
+					userHistory.setName("online");
+					userHistory.setAdmin(false);
+					userHistory.setAccessnum(true);
+				}
+				User imUser = super.getIMUser(request , userid, null) ;
+				if(imUser!=null){
+					userHistory.setCreater(imUser.getId());
+					userHistory.setUsername(imUser.getUsername());
+					userHistory.setOrgi(orgi);
+				}
+				if(!StringUtils.isBlank(title)){
+					if(title.length() > 255){
+						userHistory.setTitle(title.substring(0 , 255));
+					}else{
+						userHistory.setTitle(title);
+					}
+				}
+				userHistory.setOrgi(invite.getOrgi());
+				userHistory.setAppid(id);
+				userHistory.setSessionid(request.getSession().getId());
+				
+				String ip = UKTools.getIpAddr(request);
+				userHistory.setHostname(ip);
+				userHistory.setIp(ip);
+				IP ipdata = IPTools.getInstance().findGeography(ip);
+				userHistory.setCountry(ipdata.getCountry());
+				userHistory.setProvince(ipdata.getProvince());
+				userHistory.setCity(ipdata.getCity());
+			    userHistory.setIsp(ipdata.getIsp());
+			    
+			    BrowserClient client = UKTools.parseClient(request) ;
+			    userHistory.setOstype(client.getOs());
+			    userHistory.setBrowser(client.getBrowser());
+			    userHistory.setMobile(CheckMobile.check(request.getHeader("User-Agent")) ? "1" : "0");
+			    
+			    if(invite.isSkill()){
+				    /***
+				     * 查询 技能组 ， 缓存？ 
+				     */
+				    view.addObject("skillList", OnlineUserUtils.organ(invite.getOrgi()))  ;
+				    /**
+				     * 查询坐席 ， 缓存？
+				     */
+				    view.addObject("agentList", OnlineUserUtils.agents(invite.getOrgi()))  ;
+			    }
+			    if(invite.isRecordhis()){
+			    	UKTools.published(userHistory);
+			    }
+			}
+    	}
 		
         return view;
+    }
+    
+    @RequestMapping("/{id}/userlist")
+    @Menu(type = "im" , subtype = "inlist" , access = true)
+    public void inlist(HttpServletRequest request , HttpServletResponse response, @PathVariable String id , @Valid String userid) throws IOException {
+    	if(!StringUtils.isBlank(userid)){
+	    	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) ;
+	    	if((black != null && (black.getEndtime()==null || black.getEndtime().after(new Date()))) ){
+	    		response.getWriter().write("in");;
+	    	}
+    	}
     }
     /**
      * 延时获取用户端浏览器的跟踪ID
@@ -209,49 +223,57 @@ public class IMController extends Handler{
     @RequestMapping("/online")
     @Menu(type = "im" , subtype = "online" , access = true)
     public SseEmitter callable(HttpServletRequest request , HttpServletResponse response , @Valid Contacts contacts, final @Valid String orgi , @Valid String appid, final @Valid String userid , @Valid String sign , final @Valid String client) {
-		final SseEmitter emitter = new SseEmitter(30000L);
-		if(!StringUtils.isBlank(userid)){
-			emitter.onCompletion(new Runnable() {
-				@Override
-				public void run() {	
-					try {
-						OnlineUserUtils.webIMClients.removeClient(userid , client , false) ; //执行了 邀请/再次邀请后终端的
-					} catch (Exception e) {
-						e.printStackTrace();
-					}	
-				}
-			});
-			emitter.onTimeout(new Runnable() {	
-				@Override
-				public void run() {
-					try {
-						if(emitter!=null){
-							emitter.complete();
+    	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) ;
+    	SseEmitter retSseEmitter = null ;
+    	if((black == null || (black.getEndtime()!=null && black.getEndtime().before(new Date()))) ){
+	    	final SseEmitter emitter = new SseEmitter(30000L);
+			if(CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) == null){
+				if(!StringUtils.isBlank(userid)){
+					emitter.onCompletion(new Runnable() {
+						@Override
+						public void run() {	
+							try {
+								OnlineUserUtils.webIMClients.removeClient(userid , client , false) ; //执行了 邀请/再次邀请后终端的
+							} catch (Exception e) {
+								e.printStackTrace();
+							}	
 						}
-						OnlineUserUtils.webIMClients.removeClient(userid , client , true) ;	//正常的超时断开
-					} catch (Exception e) {
-						e.printStackTrace();
+					});
+					emitter.onTimeout(new Runnable() {	
+						@Override
+						public void run() {
+							try {
+								if(emitter!=null){
+									emitter.complete();
+								}
+								OnlineUserUtils.webIMClients.removeClient(userid , client , true) ;	//正常的超时断开
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+					CousultInvite invite = OnlineUserUtils.cousult(appid, super.getOrgi(request), inviteRepository);
+					if(invite.isTraceuser()){
+						contacts = processContacts(orgi, contacts, appid, userid);
 					}
+			    	if(!StringUtils.isBlank(sign)){
+			    		OnlineUserUtils.online(super.getIMUser(request , sign , contacts!=null ? contacts.getName() : null) , orgi , request.getSession().getId() , UKDataContext.OnlineUserTypeStatus.WEBIM.toString(), request , UKDataContext.ChannelTypeEnum.WEBIM.toString() , appid , contacts , invite);
+			    	}
+			    	
+			    	OnlineUserUtils.webIMClients.putClient(userid, new WebIMClient(userid  , client , emitter)) ;
 				}
-			});
-			CousultInvite invite = OnlineUserUtils.cousult(appid, super.getOrgi(request), inviteRepository);
-			if(invite.isTraceuser()){
-				contacts = processContacts(orgi, contacts, appid, userid);
 			}
-	    	if(!StringUtils.isBlank(sign)){
-	    		OnlineUserUtils.online(super.getIMUser(request , sign , contacts!=null ? contacts.getName() : null) , orgi , request.getSession().getId() , UKDataContext.OnlineUserTypeStatus.WEBIM.toString(), request , UKDataContext.ChannelTypeEnum.WEBIM.toString() , appid , contacts , invite);
-	    	}
-	    	
-	    	OnlineUserUtils.webIMClients.putClient(userid, new WebIMClient(userid  , client , emitter)) ;
-		}
-		return emitter;
+			retSseEmitter = emitter ;
+    	}
+		return retSseEmitter;
 	}
     
     @RequestMapping("/index")
     @Menu(type = "im" , subtype = "index" , access = true)
     public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
-    	if(!StringUtils.isBlank(appid)){
+    	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) ;
+    	if(!StringUtils.isBlank(appid) &&  (black == null || (black.getEndtime()!=null && black.getEndtime().before(new Date()))) ){
     		CousultInvite invite = OnlineUserUtils.cousult(appid, orgi, inviteRepository);
     		String userID = null;
     		if(!StringUtils.isBlank(userid)){

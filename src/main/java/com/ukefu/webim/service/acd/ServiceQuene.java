@@ -374,6 +374,8 @@ public class ServiceQuene {
 			agentService.setAgentno(agentStatus.getUserid());
 			agentService.setAgentusername(agentStatus.getUsername());	//agent
 			
+			agentService.setAgentuserid(agentUser.getId());
+			
 			updateAgentStatus(agentStatus  , agentUser , orgi , true) ;
 			
 			long waittingtime = 0  ;
@@ -483,7 +485,12 @@ public class ServiceQuene {
 		if(!UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(channel)){
 			queneTip = agentService.getAgentusername() ;
 		}
-		return "坐席分配成功，"+queneTip+"为您服务。" ;
+		SessionConfig sessionConfig = initSessionConfig(UKDataContext.SYSTEM_ORGI) ;
+		String successMsg = "坐席分配成功，"+queneTip+"为您服务。"  ;
+		if(!StringUtils.isBlank(sessionConfig.getNoagentmsg())){
+			successMsg = sessionConfig.getSuccessmsg().replaceAll("\\{agent\\}", queneTip) ;
+		}
+		return successMsg ;
 	}
 	
 	/**
@@ -492,7 +499,11 @@ public class ServiceQuene {
 	 * @return
 	 */
 	public static String getServiceFinishMessage(String channel){
+		SessionConfig sessionConfig = initSessionConfig(UKDataContext.SYSTEM_ORGI) ;
 		String queneTip = "坐席已断开和您的对话" ;
+		if(!StringUtils.isBlank(sessionConfig.getNoagentmsg())){
+			queneTip = sessionConfig.getFinessmsg();
+		}
 		return queneTip ;
 	}
 	
@@ -501,7 +512,12 @@ public class ServiceQuene {
 		if(!UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(channel)){
 			queneTip = String.valueOf(queneIndex) ;
 		}
-		return "坐席全忙，已进入等待队列，在您之前，还有 "+queneTip+" 位等待用户。" ;
+		SessionConfig sessionConfig = initSessionConfig(UKDataContext.SYSTEM_ORGI) ;
+		String noAgentTipMsg = "坐席全忙，已进入等待队列，在您之前，还有 "+queneTip+" 位等待用户。"  ;
+		if(!StringUtils.isBlank(sessionConfig.getNoagentmsg())){
+			noAgentTipMsg = sessionConfig.getNoagentmsg().replaceAll("\\{num\\}", queneTip) ;
+		}
+		return noAgentTipMsg;
 	}
 	public static String getQueneMessage(int queneIndex , String channel){
 		
@@ -509,6 +525,11 @@ public class ServiceQuene {
 		if(!UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(channel)){
 			queneTip = String.valueOf(queneIndex) ;
 		}
-		return "正在排队，请稍候,在您之前，还有  "+queneTip+" 位等待用户。" ;
+		SessionConfig sessionConfig = initSessionConfig(UKDataContext.SYSTEM_ORGI) ;
+		String agentBusyTipMsg = "正在排队，请稍候,在您之前，还有  "+queneTip+" 位等待用户。"  ;
+		if(!StringUtils.isBlank(sessionConfig.getAgentbusymsg())){
+			agentBusyTipMsg = sessionConfig.getAgentbusymsg().replaceAll("\\{num\\}", queneTip) ;
+		}
+		return agentBusyTipMsg;
 	}
 }
