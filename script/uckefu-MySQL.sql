@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-08-14 11:28:49
+Date: 2017-08-14 23:55:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -88,6 +88,7 @@ CREATE TABLE `uk_agentservice` (
   `avgreplytime` int(11) DEFAULT NULL,
   `agentreplys` int(11) DEFAULT NULL,
   `userasks` int(11) DEFAULT NULL,
+  `agentuserid` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -278,6 +279,9 @@ CREATE TABLE `uk_blacklist` (
   `agentserviceid` varchar(32) DEFAULT NULL COMMENT '坐席服务ID',
   `times` int(11) DEFAULT NULL COMMENT '次数',
   `chattime` int(11) DEFAULT NULL COMMENT '对话次数',
+  `controltime` int(11) DEFAULT '1',
+  `endtime` datetime DEFAULT NULL,
+  `agentuser` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1804,6 +1808,10 @@ CREATE TABLE `uk_sessionconfig` (
   `workinghours` text COMMENT '工作时间段',
   `notinwhmsg` text COMMENT '非工作时间提醒消息',
   `hourcheck` tinyint(4) DEFAULT NULL COMMENT '启用工作时间',
+  `noagentmsg` varchar(255) DEFAULT NULL,
+  `agentbusymsg` varchar(255) DEFAULT NULL,
+  `successmsg` varchar(255) DEFAULT NULL,
+  `finessmsg` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -5890,8 +5898,8 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815d5105b6015d510962b90006', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-14 11:08:28', null, null, null, '0', '0', '1');
-INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402888815dd4e007015dd4e0a3fc0001', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-08-12 21:28:34', null, null, null, '0', '0', '0');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815d5105b6015d510962b90006', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-14 23:49:56', null, null, null, '0', '0', '1');
+INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402888815dd4e007015dd4e0a3fc0001', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-08-14 12:32:38', null, null, null, '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
