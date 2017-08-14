@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-08-12 16:18:38
+Date: 2017-08-14 11:28:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -75,6 +75,19 @@ CREATE TABLE `uk_agentservice` (
   `email` varchar(100) DEFAULT NULL COMMENT '访客填写的邮件地址',
   `phone` varchar(100) DEFAULT NULL COMMENT '访客填写的电话号码',
   `resion` varchar(255) DEFAULT NULL COMMENT '访客填写的来访原因',
+  `satisfaction` tinyint(4) DEFAULT NULL,
+  `satistime` datetime DEFAULT NULL,
+  `satislevel` varchar(50) DEFAULT NULL,
+  `satiscomment` varchar(255) DEFAULT NULL,
+  `trans` tinyint(4) DEFAULT NULL,
+  `transtime` datetime DEFAULT NULL,
+  `transmemo` text,
+  `agentreplyinterval` int(11) DEFAULT NULL,
+  `agentreplytime` int(11) DEFAULT NULL,
+  `avgreplyinterval` int(11) DEFAULT NULL,
+  `avgreplytime` int(11) DEFAULT NULL,
+  `agentreplys` int(11) DEFAULT NULL,
+  `userasks` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -181,6 +194,12 @@ CREATE TABLE `uk_agentuser` (
   `phone` varchar(100) DEFAULT NULL COMMENT '访客录入的电话',
   `email` varchar(100) DEFAULT NULL COMMENT '访客录入的邮件',
   `resion` varchar(255) DEFAULT NULL COMMENT '访客录入的来访原因',
+  `agentreplyinterval` int(11) DEFAULT '0',
+  `agentreplytime` int(11) DEFAULT '0',
+  `agentreplys` int(11) DEFAULT '0',
+  `userasks` int(11) DEFAULT '0',
+  `avgreplyinterval` int(11) DEFAULT '0',
+  `avgreplytime` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `agentuser_userid` (`userid`) USING BTREE,
   KEY `agentuser_orgi` (`orgi`) USING BTREE
@@ -659,6 +678,10 @@ CREATE TABLE `uk_chat_message` (
   `filename` varchar(255) DEFAULT NULL COMMENT '文件名',
   `filesize` int(11) DEFAULT NULL COMMENT '文件尺寸',
   `attachmentid` varchar(32) DEFAULT NULL,
+  `lastagentmsgtime` datetime DEFAULT NULL,
+  `agentreplytime` int(11) DEFAULT NULL,
+  `lastmsgtime` datetime DEFAULT NULL,
+  `agentreplyinterval` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sessionid` (`usession`) USING BTREE,
   KEY `orgi` (`orgi`) USING BTREE
@@ -1549,6 +1572,33 @@ CREATE TABLE `uk_quickreply` (
 
 -- ----------------------------
 -- Records of uk_quickreply
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_quick_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_quick_type`;
+CREATE TABLE `uk_quick_type` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '知识库分类上级ID',
+  `INX` int(11) DEFAULT NULL COMMENT '分类排序序号',
+  `STARTDATE` datetime DEFAULT NULL COMMENT '有效期开始时间',
+  `ENDDATE` datetime DEFAULT NULL COMMENT '有效期结束时间',
+  `ENABLE` tinyint(4) DEFAULT NULL COMMENT '分类状态',
+  `DESCRIPTION` varchar(255) DEFAULT NULL COMMENT '分类描述',
+  `QUICKTYPE` varchar(32) DEFAULT NULL COMMENT '类型（公共/个人）',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_quick_type
 -- ----------------------------
 
 -- ----------------------------
@@ -5840,8 +5890,8 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815d5105b6015d510962b90006', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-12 14:47:15', null, null, null, '0', '0', '1');
-INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402888815dd4e007015dd4e0a3fc0001', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-07-26 17:02:18', null, null, null, '0', '0', '0');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815d5105b6015d510962b90006', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-14 11:08:28', null, null, null, '0', '0', '1');
+INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402888815dd4e007015dd4e0a3fc0001', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-08-12 21:28:34', null, null, null, '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -6093,12 +6143,14 @@ CREATE TABLE `uk_xiaoe_config` (
   `keywordnum` int(11) DEFAULT NULL COMMENT '关键词数量',
   `noresultmsg` text COMMENT '未命中回复消息',
   `askqs` tinyint(4) DEFAULT NULL COMMENT '询问访客是否解决问题',
-  `asktipmsg` varchar(100) DEFAULT NULL COMMENT '询问访客的文本',
+  `asktipmsg` varchar(255) DEFAULT NULL COMMENT '询问访客的文本',
   `resolved` varchar(100) DEFAULT NULL COMMENT '已解决的提示文本',
   `unresolved` varchar(100) DEFAULT NULL COMMENT '未解决的提示文本',
   `redirectagent` tinyint(4) DEFAULT NULL COMMENT '跳转到人工坐席',
   `redirecturl` varchar(255) DEFAULT NULL COMMENT '跳转到其他URL',
   `asktimes` int(11) DEFAULT NULL COMMENT '最长多久开始询问',
+  `selectskill` int(11) DEFAULT NULL,
+  `selectskillmsg` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
