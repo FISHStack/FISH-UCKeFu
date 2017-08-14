@@ -139,17 +139,22 @@ public class MessageUtils {
     		outMessage.setNickName(agentUser.getUsername());
     		outMessage.setCreatetime(data.getCreatetime());
     		
-    		
-    		/**
-    		 * 保存消息
-    		 */
-    		if(UKDataContext.MessageTypeEnum.MESSAGE.toString().equals(data.getType())){
-    			UKDataContext.getContext().getBean(ChatMessageRepository.class).save(data) ;
-    		}
     		if(data.getType()!=null && data.getType().equals(UKDataContext.MessageTypeEnum.MESSAGE.toString())){
 	    		AgentUserTaskRepository agentUserTaskRes = UKDataContext.getContext().getBean(AgentUserTaskRepository.class) ;
 	    		AgentUserTask agentUserTask = agentUserTaskRes.getOne(agentUser.getId()) ;
 	    		if(agentUserTask!=null){
+	    			if(agentUserTask.getLastgetmessage() != null && agentUserTask.getLastmessage()!=null){
+		    			data.setLastagentmsgtime(agentUserTask.getLastgetmessage());
+		    			data.setLastmsgtime(agentUserTask.getLastmessage());
+		    			data.setAgentreplyinterval((int)((System.currentTimeMillis() - agentUserTask.getLastgetmessage().getTime())/1000));	//坐席上次回复消息的间隔
+		    			data.setAgentreplytime((int)((System.currentTimeMillis() - agentUserTask.getLastmessage().getTime())/1000));		//坐席回复消息花费时间
+	    			}
+	    			agentUserTask.setUserasks(agentUserTask.getUserasks()+1);	//总咨询记录数量
+	    			agentUserTask.setAgentreplytime(agentUserTask.getAgentreplytime() + data.getAgentreplyinterval());	//总时长
+	    			if(agentUserTask.getUserasks()>0){
+	    				agentUserTask.setAvgreplytime(agentUserTask.getAgentreplytime() / agentUserTask.getUserasks());
+	    			}
+	    			
 		    		agentUserTask.setLastmessage(new Date());
 		    		agentUserTask.setWarnings("0");
 		    		agentUserTask.setWarningtime(null);
@@ -158,6 +163,13 @@ public class MessageUtils {
 		    		data.setTokenum(agentUserTask.getTokenum());
 		    		agentUserTaskRes.save(agentUserTask) ;
 	    		}
+    		}
+    		
+    		/**
+    		 * 保存消息
+    		 */
+    		if(UKDataContext.MessageTypeEnum.MESSAGE.toString().equals(data.getType())){
+    			UKDataContext.getContext().getBean(ChatMessageRepository.class).save(data) ;
     		}
     	}
     	if(!StringUtils.isBlank(data.getUserid()) && UKDataContext.MessageTypeEnum.MESSAGE.toString().equals(data.getType())){

@@ -42,6 +42,10 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	private String channel ;
 	private String model ;			//消息所属模块， WebIM/EntIM
 	private String chatype ;		//对话类型，是私聊还是群聊 或者是智能机器人对话
+	private Date lastagentmsgtime ;	//前一条的坐席发送消息时间
+	private Date lastmsgtime ;		//前一条的访客发送消息时间
+	private int agentreplytime ;	//坐席回复消息时长		单位：秒
+	private int agentreplyinterval ;//坐席回复消息时间间隔 ， 单位：秒
 	
 	private String headimgurl ;		//用户头像 ，临时用
 	
@@ -276,5 +280,29 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	}
 	public void setAttachmentid(String attachmentid) {
 		this.attachmentid = attachmentid;
+	}
+	public Date getLastagentmsgtime() {
+		return lastagentmsgtime;
+	}
+	public void setLastagentmsgtime(Date lastagentmsgtime) {
+		this.lastagentmsgtime = lastagentmsgtime;
+	}
+	public int getAgentreplytime() {
+		return agentreplytime;
+	}
+	public void setAgentreplytime(int agentreplytime) {
+		this.agentreplytime = agentreplytime;
+	}
+	public Date getLastmsgtime() {
+		return lastmsgtime;
+	}
+	public void setLastmsgtime(Date lastmsgtime) {
+		this.lastmsgtime = lastmsgtime;
+	}
+	public int getAgentreplyinterval() {
+		return agentreplyinterval;
+	}
+	public void setAgentreplyinterval(int agentreplyinterval) {
+		this.agentreplyinterval = agentreplyinterval;
 	}
 }

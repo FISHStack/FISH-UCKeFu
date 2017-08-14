@@ -133,12 +133,28 @@ public class AgentEventHandler
     		
     		AgentUserTaskRepository agentUserTaskRes = UKDataContext.getContext().getBean(AgentUserTaskRepository.class) ;
     		AgentUserTask agentUserTask = agentUserTaskRes.getOne(agentUser.getId()) ;
-    		agentUserTask.setLastgetmessage(new Date());
     		
-    		agentUserTask.setReptime(null);
-    		agentUserTask.setReptimes("0");
-    		
-    		agentUserTaskRes.save(agentUserTask) ;
+    		if(agentUserTask!=null){
+	    		if(agentUserTask.getLastgetmessage() != null && agentUserTask.getLastmessage()!=null){
+	    			data.setLastagentmsgtime(agentUserTask.getLastgetmessage());
+	    			data.setLastmsgtime(agentUserTask.getLastmessage());
+	    			data.setAgentreplyinterval((int)((System.currentTimeMillis() - agentUserTask.getLastgetmessage().getTime())/1000));	//坐席上次回复消息的间隔
+	    			data.setAgentreplytime((int)((System.currentTimeMillis() - agentUserTask.getLastmessage().getTime())/1000));		//坐席回复消息花费时间
+	    		}
+	    		
+	    		agentUserTask.setAgentreplys(agentUserTask.getAgentreplys()+1);	//总咨询记录数量
+    			agentUserTask.setAgentreplyinterval(agentUserTask.getAgentreplyinterval() + data.getAgentreplyinterval());	//总时长
+    			if(agentUserTask.getAgentreplys()>0){
+    				agentUserTask.setAvgreplyinterval(agentUserTask.getAgentreplyinterval() / agentUserTask.getAgentreplys());
+    			}
+    			
+	    		agentUserTask.setLastgetmessage(new Date());
+	    		
+	    		agentUserTask.setReptime(null);
+	    		agentUserTask.setReptimes("0");
+	    		
+	    		agentUserTaskRes.save(agentUserTask) ;
+    		}
     		
     		/**
     		 * 保存消息

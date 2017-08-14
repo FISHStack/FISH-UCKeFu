@@ -26,6 +26,14 @@ public class AgentUserTask {
 	private String warnings ;
 	private Date warningtime ;
 	
+	private int agentreplyinterval;
+	private int agentreplytime;
+	private int avgreplyinterval;
+	private int avgreplytime;
+	
+	private int agentreplys;
+	private int userasks;
+	
 	private Date lastmessage = new Date();
 	private Date lastgetmessage = new Date();
 	private String lastmsg;
@@ -144,6 +152,54 @@ public class AgentUserTask {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public int getAgentreplyinterval() {
+		return agentreplyinterval;
+	}
+
+	public void setAgentreplyinterval(int agentreplyinterval) {
+		this.agentreplyinterval = agentreplyinterval;
+	}
+
+	public int getAgentreplytime() {
+		return agentreplytime;
+	}
+
+	public void setAgentreplytime(int agentreplytime) {
+		this.agentreplytime = agentreplytime;
+	}
+
+	public int getAvgreplyinterval() {
+		return avgreplyinterval;
+	}
+
+	public void setAvgreplyinterval(int avgreplyinterval) {
+		this.avgreplyinterval = avgreplyinterval;
+	}
+
+	public int getAvgreplytime() {
+		return avgreplytime;
+	}
+
+	public void setAvgreplytime(int avgreplytime) {
+		this.avgreplytime = avgreplytime;
+	}
+
+	public int getAgentreplys() {
+		return agentreplys;
+	}
+
+	public void setAgentreplys(int agentreplys) {
+		this.agentreplys = agentreplys;
+	}
+
+	public int getUserasks() {
+		return userasks;
+	}
+
+	public void setUserasks(int userasks) {
+		this.userasks = userasks;
 	}
 	
 }

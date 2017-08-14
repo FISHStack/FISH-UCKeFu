@@ -22,6 +22,7 @@ import com.ukefu.webim.service.quene.AgentStatusOrgiFilter;
 import com.ukefu.webim.service.quene.AgentUserOrgiFilter;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
 import com.ukefu.webim.service.repository.AgentUserRepository;
+import com.ukefu.webim.service.repository.AgentUserTaskRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.SessionConfigRepository;
 import com.ukefu.webim.util.router.OutMessageRouter;
@@ -29,6 +30,7 @@ import com.ukefu.webim.web.model.AgentReport;
 import com.ukefu.webim.web.model.AgentService;
 import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
+import com.ukefu.webim.web.model.AgentUserTask;
 import com.ukefu.webim.web.model.MessageOutContent;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.SessionConfig;
@@ -183,6 +185,7 @@ public class ServiceQuene {
 					}
 				}
 			}
+			
 			AgentServiceRepository agentServiceRes = UKDataContext.getContext().getBean(AgentServiceRepository.class) ;
 			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
 				AgentService service = 	agentServiceRes.findByIdAndOrgi(agentUser.getAgentserviceid() , agentUser.getOrgi()) ;
@@ -192,6 +195,19 @@ public class ServiceQuene {
 					if(service.getServicetime()!=null){
 						service.setSessiontimes(System.currentTimeMillis() - service.getServicetime().getTime());
 					}
+					
+					AgentUserTaskRepository agentUserTaskRes = UKDataContext.getContext().getBean(AgentUserTaskRepository.class) ;
+		    		AgentUserTask agentUserTask = agentUserTaskRes.getOne(agentUser.getId()) ;
+		    		if(agentUserTask!=null){
+		    			service.setAgentreplyinterval(agentUserTask.getAgentreplyinterval());
+		    			service.setAgentreplytime(agentUserTask.getAgentreplytime());
+		    			service.setAvgreplyinterval(agentUserTask.getAvgreplyinterval());
+		    			service.setAvgreplytime(agentUserTask.getAvgreplytime());
+		    			
+		    			service.setUserasks(agentUserTask.getUserasks());
+		    			service.setAgentreplys(agentUserTask.getAgentreplys());
+		    		}
+					
 					agentServiceRes.save(service) ;
 				}
 			}
