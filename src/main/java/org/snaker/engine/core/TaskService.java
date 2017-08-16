@@ -68,8 +68,8 @@ public class TaskService extends AccessService implements ITaskService {
 	/**
 	 * 完成指定任务
 	 */
-	public Task complete(String taskId, String operator) {
-		return complete(taskId, operator, null);
+	public Task complete(String taskId, String operator , String organ) {
+		return complete(taskId, operator , organ , null);
 	}
 	
 	/**
@@ -77,13 +77,13 @@ public class TaskService extends AccessService implements ITaskService {
 	 * 该方法仅仅结束活动任务，并不能驱动流程继续执行
 	 * @see SnakerEngineImpl#executeTask(String, String, java.util.Map)
 	 */
-	public Task complete(String taskId, String operator, Map<String, Object> args) {
+	public Task complete(String taskId, String operator , String organ, Map<String, Object> args) {
 		Task task = access().getTask(taskId);
 		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
 		if(args!=null && args.size()>0){
 			task.setVariable(JsonHelper.toJson(args));
 		}
-		if(!isAllowed(task, operator)) {
+		if(!isAllowed(task, operator , organ)) {
 			throw new SnakerException("当前参与者[" + operator + "]不允许执行任务[taskId=" + taskId + "]");
 		}
 		HistoryTask history = new HistoryTask(task);
@@ -143,10 +143,10 @@ public class TaskService extends AccessService implements ITaskService {
 	/**
 	 * 提取指定任务，设置完成时间及操作人，状态不改变
 	 */
-	public Task take(String taskId, String operator) {
+	public Task take(String taskId, String operator , String organ) {
 		Task task = access().getTask(taskId);
 		AssertHelper.notNull(task, "指定的任务[id=" + taskId + "]不存在");
-		if(!isAllowed(task, operator)) {
+		if(!isAllowed(task, operator , organ)) {
 			throw new SnakerException("当前参与者[" + operator + "]不允许提取任务[taskId=" + taskId + "]");
 		}
 		task.setOperator(operator);
@@ -558,20 +558,21 @@ public class TaskService extends AccessService implements ITaskService {
 	/**
 	 * 判断当前操作人operator是否允许执行taskId指定的任务
 	 */
-	public boolean isAllowed(Task task, String operator) {
+	public boolean isAllowed(Task task, String operator , String organ) {
 		if(StringHelper.isNotEmpty(operator)) {
 			if(SnakerEngine.ADMIN.equalsIgnoreCase(operator)
 					|| SnakerEngine.AUTO.equalsIgnoreCase(operator)) {
 				return true;
 			}
 			if(StringHelper.isNotEmpty(task.getOperator())) {
-				return operator.equals(task.getOperator());
+				return operator.equals(task.getOperator()) || organ.equals(task.getOperator());
 			}
+			
 		}
 		List<TaskActor> actors = access().getTaskActorsByTaskId(task.getId());
 		if(actors == null || actors.isEmpty()) return true;
 		return !StringHelper.isEmpty(operator)
-				&& getStrategy().isAllowed(operator, actors);
+				&& getStrategy().isAllowed(operator , organ , actors);
 	}
 
 	public void setStrategy(TaskAccessStrategy strategy) {

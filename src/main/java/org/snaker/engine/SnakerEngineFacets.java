@@ -64,13 +64,13 @@ public class SnakerEngineFacets {
 		return engine.startInstanceByName(name, version, operator, args);
 	}
 	
-	public Order startAndExecuteByName(String name, String operator, Map<String, Object> args , String... actor) {
+	public Order startAndExecuteByName(String name, String operator, String organ, Map<String, Object> args , String... actor) {
 		Order order = engine.startInstanceByName(name, engine.process().getProcessByName(name).getVersion(), operator, args);
 		List<Task> tasks = engine.query().getActiveTasks(new QueryFilter().setOrderId(order.getId()));
 		List<Task> newTasks = new ArrayList<Task>();
 		if(tasks != null && tasks.size() > 0) {
 			Task task = tasks.get(0);
-			newTasks.addAll(engine.executeTask(task.getId(), operator, args));
+			newTasks.addAll(engine.executeTask(task.getId(), operator , organ , args));
 			if(actor!=null){
 				for(Task newTask : newTasks){
 					engine.task().addTaskActor(newTask.getId(), actor);
@@ -80,34 +80,34 @@ public class SnakerEngineFacets {
 		return order;
 	}
 	
-	public Order startAndExecute(String processId, String operator, Map<String, Object> args) {
+	public Order startAndExecute(String processId, String operator , String organ, Map<String, Object> args) {
 		Order order = engine.startInstanceById(processId, operator, args);
 		List<Task> tasks = engine.query().getActiveTasks(new QueryFilter().setOrderId(order.getId()));
 		List<Task> newTasks = new ArrayList<Task>();
 		if(tasks != null && tasks.size() > 0) {
 			Task task = tasks.get(0);
-			newTasks.addAll(engine.executeTask(task.getId(), operator, args));
+			newTasks.addAll(engine.executeTask(task.getId(), operator , organ , args));
 		}
 		return order;
 	}
 	
-	public List<Task> execute(String taskId, String operator, Map<String, Object> args) {
-		return engine.executeTask(taskId, operator, args);
+	public List<Task> execute(String taskId, String operator , String organ, Map<String, Object> args) {
+		return engine.executeTask(taskId, operator , organ , args);
 	}
 	
-	public List<Task> executeAndJump(String taskId, String operator, Map<String, Object> args, String nodeName) {
-		return engine.executeAndJumpTask(taskId, operator, args, nodeName);
+	public List<Task> executeAndJump(String taskId, String operator , String organ, Map<String, Object> args, String nodeName) {
+		return engine.executeAndJumpTask(taskId, operator , organ, args, nodeName);
 	}
 
-    public List<Task> transferMajor(String taskId, String operator, String... actors) {
+    public List<Task> transferMajor(String taskId, String operator , String organ, String... actors) {
         List<Task> tasks = engine.task().createNewTask(taskId, TaskType.Major.ordinal(), actors);
-        engine.task().complete(taskId, operator);
+        engine.task().complete(taskId, operator , organ);
         return tasks;
     }
 
-    public List<Task> transferAidant(String taskId, String operator, String... actors) {
+    public List<Task> transferAidant(String taskId, String operator , String organ, String... actors) {
         List<Task> tasks = engine.task().createNewTask(taskId, TaskType.Aidant.ordinal(), actors);
-        engine.task().complete(taskId, operator);
+        engine.task().complete(taskId, operator , organ);
         return tasks;
     }
     

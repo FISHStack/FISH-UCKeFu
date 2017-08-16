@@ -48,7 +48,7 @@ public interface ITaskService {
 	 * @param operator 操作人
 	 * @return Task 任务对象
 	 */
-	Task complete(String taskId, String operator);
+	Task complete(String taskId, String operator , String organ);
 	
 	/**
 	 * 根据任务主键ID，操作人ID完成任务
@@ -57,7 +57,7 @@ public interface ITaskService {
 	 * @param args 参数集合
 	 * @return Task 任务对象
 	 */
-	Task complete(String taskId, String operator, Map<String, Object> args);
+	Task complete(String taskId, String operator , String organ, Map<String, Object> args);
 
 	/**
 	 * 更新任务对象
@@ -79,7 +79,7 @@ public interface ITaskService {
 	 * @param operator 操作人id
 	 * @return Task 任务对象
 	 */
-	Task take(String taskId, String operator);
+	Task take(String taskId, String operator , String organ);
 
     /**
      * 根据历史任务主键id，操作人唤醒历史任务
@@ -142,7 +142,7 @@ public interface ITaskService {
 	 * @param operator 操作人
 	 * @return boolean 是否允许操作
 	 */
-	boolean isAllowed(Task task, String operator);
+	boolean isAllowed(Task task, String operator , String organ);
 	
 	/**
 	 * 根据任务模型、执行对象创建新的任务

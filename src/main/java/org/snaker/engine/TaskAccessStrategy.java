@@ -31,5 +31,5 @@ public interface TaskAccessStrategy {
 	 * @param actors 参与者列表 传递至该接口的实现类中的参与者都是为非空
 	 * @return boolean 是否允许访问
 	 */
-	boolean isAllowed(String operator, List<TaskActor> actors); 
+	boolean isAllowed(String operator , String organ, List<TaskActor> actors); 
 }

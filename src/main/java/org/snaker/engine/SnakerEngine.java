@@ -151,7 +151,7 @@ public interface SnakerEngine {
 	 * @return List<Task> 任务集合
 	 * @see #executeTask(String, String, Map)
 	 */
-	public List<Task> executeTask(String taskId, String operator);
+	public List<Task> executeTask(String taskId, String operator , String organ);
 	
 	/**
 	 * 根据任务主键ID，操作人ID，参数列表执行任务
@@ -160,7 +160,7 @@ public interface SnakerEngine {
 	 * @param args 参数列表
 	 * @return List<Task> 任务集合
 	 */
-	public List<Task> executeTask(String taskId, String operator, Map<String, Object> args);
+	public List<Task> executeTask(String taskId, String operator , String organ, Map<String, Object> args);
 	
 	/**
 	 * 根据任务主键ID，操作人ID，参数列表执行任务，并且根据nodeName跳转到任意节点
@@ -172,7 +172,7 @@ public interface SnakerEngine {
 	 * @param nodeName 跳转的节点名称
 	 * @return List<Task> 任务集合
 	 */
-	public List<Task> executeAndJumpTask(String taskId, String operator, Map<String, Object> args, String nodeName);
+	public List<Task> executeAndJumpTask(String taskId, String operator , String organ, Map<String, Object> args, String nodeName);
 	
 	/**
 	 * 根据流程实例ID，操作人ID，参数列表按照节点模型model创建新的自由任务

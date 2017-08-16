@@ -39,10 +39,11 @@ public class GeneralAccessStrategy implements TaskAccessStrategy {
 	/**
 	 * 如果操作人id所属的组只要有一项存在于参与者集合中，则表示可访问
 	 */
-	public boolean isAllowed(String operator, List<TaskActor> actors) {
+	public boolean isAllowed(String operator , String organ, List<TaskActor> actors) {
 		List<String> assignees = ensureGroup(operator);
 		if(assignees == null) assignees = new ArrayList<String>();
 		assignees.add(operator);
+		assignees.add(organ) ;
 		boolean isAllowed = false;
 		for (TaskActor actor : actors) {
 			for (String assignee : assignees) {

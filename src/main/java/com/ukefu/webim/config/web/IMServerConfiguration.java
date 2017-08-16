@@ -54,7 +54,7 @@ public class IMServerConfiguration
 		
 //		config.getSocketConfig().setReuseAddress(true);
 //		config.setSocketConfig(new SocketConfig());
-//		config.setOrigin("http://im.uckefu.com");
+//		config.setOrigin("*");
 		config.setExceptionListener(new UCKeFuExceptionListener());
 		
 		File sslFile = new File(path , "ssl/https.properties") ;

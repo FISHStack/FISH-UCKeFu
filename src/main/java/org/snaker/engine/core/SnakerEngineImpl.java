@@ -284,22 +284,22 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * 根据任务主键ID执行任务
 	 */
 	public List<Task> executeTask(String taskId) {
-		return executeTask(taskId, null);
+		return executeTask(taskId , null , null);
 	}
 
 	/**
 	 * 根据任务主键ID，操作人ID执行任务
 	 */
-	public List<Task> executeTask(String taskId, String operator) {
-		return executeTask(taskId, operator, null);
+	public List<Task> executeTask(String taskId, String operator , String organ) {
+		return executeTask(taskId, operator , organ , null);
 	}
 
 	/**
 	 * 根据任务主键ID，操作人ID，参数列表执行任务
 	 */
-	public List<Task> executeTask(String taskId, String operator, Map<String, Object> args) {
+	public List<Task> executeTask(String taskId, String operator , String organ, Map<String, Object> args) {
 		//完成任务，并且构造执行对象
-		Execution execution = execute(taskId, operator, args);
+		Execution execution = execute(taskId, operator , organ , args);
 		if(execution == null) return Collections.emptyList();
 		ProcessModel model = execution.getProcess().getModel();
 		if(model != null) {
@@ -315,8 +315,8 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * 1、nodeName为null时，则驳回至上一步处理
 	 * 2、nodeName不为null时，则任意跳转，即动态创建转移
 	 */
-	public List<Task> executeAndJumpTask(String taskId, String operator, Map<String, Object> args, String nodeName) {
-		Execution execution = execute(taskId, operator, args);
+	public List<Task> executeAndJumpTask(String taskId, String operator , String organ, Map<String, Object> args, String nodeName) {
+		Execution execution = execute(taskId, operator , organ , args);
 		if(execution == null) return Collections.emptyList();
 		ProcessModel model = execution.getProcess().getModel();
 		AssertHelper.notNull(model, "当前任务未找到流程定义模型");
@@ -362,9 +362,9 @@ public class SnakerEngineImpl implements SnakerEngine {
 	 * @param args 参数列表
 	 * @return Execution
 	 */
-	private Execution execute(String taskId, String operator, Map<String, Object> args) {
+	private Execution execute(String taskId, String operator , String organ, Map<String, Object> args) {
 		if(args == null) args = new HashMap<String, Object>();
-		Task task = task().complete(taskId, operator, args);
+		Task task = task().complete(taskId, operator,  organ , args);
 		if(log.isDebugEnabled()) {
 			log.debug("任务[taskId=" + taskId + "]已完成");
 		}

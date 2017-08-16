@@ -167,19 +167,19 @@ public class OrderService extends AccessService implements IOrderService {
 	 * @see org.snaker.engine.core.OrderService#terminate(String, String)
 	 */
 	public void terminate(String orderId) {
-		terminate(orderId, null);
+		terminate(orderId , null , null);
 	}
 
 	/**
 	 * 强制中止活动实例,并强制完成活动任务
 	 */
-	public void terminate(String orderId, String operator) {
+	public void terminate(String orderId, String operator , String organ) {
 		SnakerEngine engine = ServiceContext.getEngine();
 		List<Task> tasks = engine
 				.query()
 				.getActiveTasks(new QueryFilter().setOrderId(orderId));
 		for(Task task : tasks) {
-			engine.task().complete(task.getId(), operator);
+			engine.task().complete(task.getId(), operator , organ);
 		}
 		Order order = access().getOrder(orderId);
 		HistoryOrder history = new HistoryOrder(order);

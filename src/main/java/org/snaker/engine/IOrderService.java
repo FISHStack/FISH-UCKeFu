@@ -84,7 +84,7 @@ public interface IOrderService {
 	 * @param orderId 流程实例id
 	 * @param operator 处理人员
 	 */
-	void terminate(String orderId, String operator);
+	void terminate(String orderId, String operator , String organ);
 
     /**
      * 唤醒历史流程实例

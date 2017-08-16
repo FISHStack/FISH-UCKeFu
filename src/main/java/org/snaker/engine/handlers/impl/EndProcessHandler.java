@@ -43,7 +43,7 @@ public class EndProcessHandler implements IHandler {
 		List<Task> tasks = engine.query().getActiveTasks(new QueryFilter().setOrderId(order.getId()));
 		for(Task task : tasks) {
 			if(task.isMajor()) throw new SnakerException("存在未完成的主办任务,请确认.");
-			engine.task().complete(task.getId(), SnakerEngine.AUTO);
+			engine.task().complete(task.getId(), SnakerEngine.AUTO, null);
 		}
 		/**
 		 * 结束当前流程实例
