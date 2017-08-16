@@ -62,11 +62,11 @@ public class SyncDatabaseExt {
     		if(data instanceof List){
     			List<Object> dataList = (List<Object>)data ;
     			for(Object dbData : dataList){
-    				UKTools.multiupdate(new MultiUpdateEvent<Object>(dbData , dbDataRes, UKDataContext.MultiUpdateType.SAVE.toString()));
+    				UKTools.multiupdate(new MultiUpdateEvent<Object>(dbData , dbDataRes, UKDataContext.MultiUpdateType.DELETE.toString()));
     			}
     		}else{
     			if(data instanceof ESBean){
-    				UKTools.multiupdate(new MultiUpdateEvent<Object>(data, dbDataRes, UKDataContext.MultiUpdateType.SAVE.toString()));
+    				UKTools.multiupdate(new MultiUpdateEvent<Object>(data, dbDataRes, UKDataContext.MultiUpdateType.DELETE.toString()));
     			}else{
     				UKTools.multiupdate(new MultiUpdateEvent<Object>(data, dbDataRes, UKDataContext.MultiUpdateType.DELETE.toString()));
     			}

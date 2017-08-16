@@ -1,5 +1,5 @@
 <div class="uk-layui-form">
-    <form class="layui-form uk-form" method="post" action="/setting/quickreply/save.html">
+    <form class="layui-form uk-form" method="post" action="/agent/quickreply/save.html" data-toggle="ajax-form" method="post" data-inner="#quick_reply">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">标题：</label>
@@ -12,8 +12,8 @@
             <div class="layui-inline">
                 <label class="layui-form-label" id="cusname">分类：</label>
                 <div class="layui-input-inline" style="width:520px;">
-                    <input type="hidden" id="cate" name="cate" value="<#if quickType??>${quickType.id!''}<#else>0</#if>">
-                    <input type="text" name="catename" id="catename" required value="<#if quickType??><#if quickTypeList??><#list quickTypeList as qt><#if quickType.id == qt.id>${qt.name!''}</#if></#list></#if><#else>问答分类</#if>" lay-verify="required" autocomplete="off" readOnly="readonly" onClick="showMenu();" class="layui-input">
+                    <input type="hidden" id="cate" name="cate" value="<#if quickType??>${quickType.id!''}<#else>1</#if>">
+                    <input type="text" name="catename" id="catename" required value="<#if quickType??><#if quickTypeList??><#list quickTypeList as qt><#if quickType.id == qt.id>${qt.name!''}</#if></#list></#if><#else>个人分类</#if>" lay-verify="required" autocomplete="off" readOnly="readonly" onClick="showMenu();" class="layui-input">
                     <i class="layui-icon" style="position: absolute;right: 3px;top: 6px;font-size: 25px;${systemConfig.color!'color:#0096C4;'}" onClick="showMenu()">&#xe631;</i>
                     <div id="menuContent" style="display:none; position: absolute;z-index:10000;" class="ukefu-ztree">
                         <ul id="quickTypeTree" class="ztree"></ul>
@@ -73,7 +73,7 @@ layui.use('form', function(){
 
 
 	var zNodes =[
-	             { id:'0', pId:'0', name:"问答分类", open:true }
+	             { id:'0', pId:'0', name:"个人分类", open:true }
 	             <#if quickTypeList??>
 	             <#list quickTypeList as quickType>
 	             ,{ id:'${quickType.id!''}', pId:'${quickType.parentid!''}', name:"${quickType.name!''}", open:false }

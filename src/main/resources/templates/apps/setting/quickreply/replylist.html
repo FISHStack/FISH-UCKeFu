@@ -8,7 +8,15 @@
 			</#if>
 			<#if quickReplyList??>（${quickReplyList?size}）</#if>
 			<span style="float:right;">
-				<button class="layui-btn layui-btn-small green" href="/setting/quickreply/add.html" data-toggle="ajax" data-width="750" data-title="创建新用户">
+				<#if quickType??>
+				<button class="layui-btn layui-btn-small" href="/setting/quickreply/edittype.html?id=${quickType.id!''}" data-toggle="ajax" data-width="950" data-height="450" data-title="编辑分类">
+					编辑分类
+				</button>
+				<button class="layui-btn layui-btn-small layui-btn-danger" href="/setting/quickreply/deletetype.html?id=${quickType.id!''}" data-toggle="tip" data-title="删除分类将会同时删除分类下的所有问答，请确认是否删除？">
+					删除分类
+				</button>
+				</#if>
+				<button class="layui-btn layui-btn-small green" href="/setting/quickreply/add.html<#if quickType??>?parentid=${quickType.id!''}</#if>" data-toggle="ajax" data-width="750" data-title="创建新问答">
 					添加问答
 				</button>
 			</span>

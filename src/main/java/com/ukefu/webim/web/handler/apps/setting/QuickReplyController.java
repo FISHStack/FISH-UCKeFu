@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -56,7 +57,12 @@ public class QuickReplyController extends Handler{
     @Menu(type = "setting" , subtype = "quickreply" , admin= true)
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String typeid) {
     	List<QuickType> quickTypeList = quickTypeRes.findByOrgiAndQuicktype(super.getOrgi(request) , UKDataContext.QuickTypeEnum.PUB.toString()) ; 
-    	map.put("quickReplyList", quickReplyRes.getByOrgi(super.getOrgi(request) , null, new PageRequest(super.getP(request), super.getPs(request)))) ;
+    	if(!StringUtils.isBlank(typeid)){
+        	map.put("quickType", quickTypeRes.findByIdAndOrgi(typeid, super.getOrgi(request))) ;
+    		map.put("quickReplyList", quickReplyRes.getByOrgiAndCate(super.getOrgi(request) , typeid , null , new PageRequest(super.getP(request), super.getPs(request)))) ;
+    	}else{
+    		map.put("quickReplyList", quickReplyRes.getByOrgi(super.getOrgi(request) , null, new PageRequest(super.getP(request), super.getPs(request)))) ;
+    	}
     	map.put("pubQuickTypeList", quickTypeList) ;
     	
     	return request(super.createAppsTempletResponse("/apps/setting/quickreply/index"));
@@ -75,7 +81,10 @@ public class QuickReplyController extends Handler{
     
     @RequestMapping("/add")
     @Menu(type = "setting" , subtype = "quickreplyadd" , admin= true)
-    public ModelAndView quickreplyadd(ModelMap map , HttpServletRequest request) {
+    public ModelAndView quickreplyadd(ModelMap map , HttpServletRequest request , @Valid String parentid) {
+    	if(!StringUtils.isBlank(parentid)){
+    		map.addAttribute("quickType", quickTypeRes.findByIdAndOrgi(parentid, super.getOrgi(request))) ;
+    	}
     	map.addAttribute("quickTypeList", quickTypeRes.findByOrgiAndQuicktype(super.getOrgi(request) , UKDataContext.QuickTypeEnum.PUB.toString())) ;
         return request(super.createRequestPageTempletResponse("/apps/setting/quickreply/add"));
     }
@@ -97,9 +106,9 @@ public class QuickReplyController extends Handler{
     public ModelAndView quickreplydelete(ModelMap map , HttpServletRequest request , @Valid String id) {
     	QuickReply quickReply = quickReplyRes.findOne(id) ;
     	if(quickReply!=null){
-    		quickReplyRes.delete(id);
+    		quickReplyRes.delete(quickReply);
     	}
-    	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html?typeid="+quickReply!=null ? quickReply.getCate() : "0"));
+    	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html?typeid="+quickReply.getCate()));
     }
     @RequestMapping("/edit")
     @Menu(type = "setting" , subtype = "quickreply" , admin= true)
@@ -131,11 +140,14 @@ public class QuickReplyController extends Handler{
     
     @RequestMapping({"/addtype"})
 	@Menu(type="apps", subtype="kbs")
-	public ModelAndView addtype(ModelMap map , HttpServletRequest request ){
+	public ModelAndView addtype(ModelMap map , HttpServletRequest request , @Valid String typeid){
 		map.addAttribute("quickTypeList", quickTypeRes.findByOrgiAndQuicktype(super.getOrgi(request) , UKDataContext.QuickTypeEnum.PUB.toString())) ;
+		if(!StringUtils.isBlank(typeid)){
+			map.addAttribute("quickType", quickTypeRes.findByIdAndOrgi(typeid, super.getOrgi(request))) ;
+		}
 		return request(super.createRequestPageTempletResponse("/apps/setting/quickreply/addtype"));
 	}
-	 
+
     @RequestMapping("/type/save")
     @Menu(type = "apps" , subtype = "kbs")
     public ModelAndView typesave(HttpServletRequest request ,@Valid QuickType quickType) {
@@ -149,5 +161,38 @@ public class QuickReplyController extends Handler{
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html"));
     }
+    
+    @RequestMapping({"/edittype"})
+	@Menu(type="apps", subtype="kbs")
+	public ModelAndView edittype(ModelMap map , HttpServletRequest request , String id){
+    	map.addAttribute("quickType", quickTypeRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
+		map.addAttribute("quickTypeList", quickTypeRes.findByOrgiAndQuicktype(super.getOrgi(request) , UKDataContext.QuickTypeEnum.PUB.toString())) ;
+		return request(super.createRequestPageTempletResponse("/apps/setting/quickreply/edittype"));
+	}
+	 
+    @RequestMapping("/type/update")
+    @Menu(type = "apps" , subtype = "kbs")
+    public ModelAndView typeupdate(HttpServletRequest request ,@Valid QuickType quickType) {
+    	QuickType tempQuickType = quickTypeRes.findByIdAndOrgi(quickType.getId(), super.getOrgi(request)) ;
+    	if(tempQuickType !=null){
+    		tempQuickType.setName(quickType.getName());
+    		quickTypeRes.save(tempQuickType) ;
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html?typeid="+quickType.getId()));
+    }
+    
+    @RequestMapping({"/deletetype"})
+	@Menu(type="apps", subtype="kbs")
+	public ModelAndView deletetype(ModelMap map , HttpServletRequest request , @Valid String id){
+    	if(!StringUtils.isBlank(id)){
+    		QuickType tempQuickType = quickTypeRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
+    		quickTypeRes.delete(tempQuickType);
+    		
+    		Page<QuickReply> quickReplyList = quickReplyRes.getByOrgiAndCate(super.getOrgi(request), id, null, new PageRequest(0, 10000)) ;
+    		
+    		quickReplyRes.delete(quickReplyList.getContent());
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html"));
+	}
     
 }

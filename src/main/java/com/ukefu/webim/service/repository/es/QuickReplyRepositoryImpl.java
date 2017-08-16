@@ -21,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.DeleteQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Component;
@@ -170,5 +171,14 @@ public class QuickReplyRepositoryImpl implements QuickReplyEsCommonRepository{
 			list = elasticsearchTemplate.queryForPage(searchQuery, QuickReply.class);
 	    }
 	    return list ; 
+	}
+	@Override
+	public void deleteByCate(String cate ,String orgi) {
+		DeleteQuery deleteQuery = new DeleteQuery();
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		boolQueryBuilder.must(termQuery("orgi" , orgi)) ;
+		boolQueryBuilder.must(termQuery("cate" , cate)) ;
+		deleteQuery.setQuery(boolQueryBuilder);
+		elasticsearchTemplate.delete(deleteQuery);
 	}
 }

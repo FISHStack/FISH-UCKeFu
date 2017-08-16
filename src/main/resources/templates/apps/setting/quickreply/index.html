@@ -50,5 +50,9 @@
 	
 	$(document).ready(function(){
 		var ztree = $.fn.zTree.init($("#quickTypeTree"), setting, zNodes);
+		<#if quickType??>
+		var node = ztree.getNodeByParam('id', '${quickType.id!''}');//获取id为1的点  
+		ztree.selectNode(node);//选择点  
+		</#if>
 	});
 </SCRIPT>

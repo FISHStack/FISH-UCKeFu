@@ -217,25 +217,30 @@
 						<div class="box-title">
 							<h1 class="site-h1" style="background-color:#EEEEEE;">
 								快捷回复
-								<span style="float:right;">
+								<span style="float:right;margin-top:-3px;">
+									<div class="layui-btn-group" id="pri_btn_group" style="display:none;">
+									  <button class="layui-btn layui-btn-primary layui-btn-small" title="新建分类" style="background-color:#ffffff !important;color:#32c24d  !important;padding-left:5px;padding-right:5px;">
+									    	<a href="/agent/quickreply/addtype.html" id="quick_type_add" style="" data-toggle="ajax" data-width="950" data-height="450"><i class="layui-icon">&#xe61f;</i></a>
+									  </button>
+									  <button class="layui-btn layui-btn-primary layui-btn-small" title="新建回复" style="background-color:#ffffff !important;color:#32c24d  !important;padding-left:5px;padding-right:5px;">
+									  		<a href="/agent/quickreply/add.html" id="quick_add" style="" data-toggle="ajax" data-width="950" data-height="450"><i class="layui-icon">&#xe609;</i></a>
+									  </button>
+									  <button class="layui-btn layui-btn-primary layui-btn-small" title="编辑分类" style="background-color:#ffffff !important;color:#32c24d  !important;padding-left:5px;padding-right:5px;">
+									  		<a href="/agent/quickreply/edittype.html" id="quick_type_edit" style="" data-toggle="ajax" data-width="950" data-height="450"><i class="layui-icon">&#xe642;</i></a>
+									  </button>
+									  <button class="layui-btn layui-btn-primary layui-btn-small" title="编辑回复" style="background-color:#ffffff !important;color:#32c24d  !important;padding-left:5px;padding-right:5px;">
+									  		<a href="/agent/index.html?sort=default" id="quick_edit" style="" data-toggle="ajax" data-width="950" data-height="450"><i class="layui-icon">&#xe60a;</i></a>
+									  </button>
+									</div>
 									<div class="layui-input-inline">
-										<input type="text" name="q" value="" oninput="search(this.value)" style="height: 30px;width:150px;line-height: 30px;padding-right:30px;border: 1px solid #32c24d;" placeholder="请输入查询条件" autocomplete="off" class="layui-input">
+										<input type="text" name="q" value="" oninput="search(this.value)" style="height: 30px;width:120px;line-height: 30px;padding-right:30px;border: 1px solid #32c24d;" placeholder="请输入查询条件" autocomplete="off" class="layui-input">
 										<i class="layui-icon" style="position: absolute;cursor: pointer;right: 3px;top: 0px;font-size: 20px;color:#32c24d;"></i>
 									</div>
 								</span>
 							</h1>
 						</div>
-						<div class="box-body" style="padding:0px 10px 0px 0px;">
-							<#if quickReplyList?? && quickReplyList?size gt 0>
-							<ul class="ztree" id="quickTypeTree"></ul>
-							<#else>
-								<div style="padding: 50px 0 50px;">
-									<div class="ukefu-empty">
-										<i class="layui-icon"></i>
-										<div style="">还没有快捷回复</div>
-									</div>
-								</div>
-							</#if>
+						<div class="box-body" style="padding:0px 10px 0px 0px;" id="quick_reply">
+							<#include "/apps/agent/quicklist.html"/>
 						</div>
 					</div>
 			    </div>
@@ -344,87 +349,3 @@
 		editor.html('');
 	}
 </script>
-
-<SCRIPT type="text/javascript">
-	var setting = {
-		data: {
-			simpleData: {
-				enable: true
-			}
-		},
-		view: {
-			showLine: false,
-			fontCss: getFontCss
-		},
-		callback: {
-			onDblClick: onDblClick
-		}
-	};
-	function getFontCss(treeId, treeNode) {
-		return (!!treeNode.highlight) ? {color:"red", "font-weight":"400"} : {color:"#333", "font-weight":"normal"};
-	}
-	
-	
-	function onDblClick(e, treeId, treeNode) {
-		if(editor != null && treeNode.type == false){
-			var quickReply = treeNode.name ;
-			if(editor.count("text") == 0 ){
-				editor.html(quickReply);
-			}else{
-				top.layer.confirm("您已经输入了内容，覆盖当前输入框中内容？", {icon: 3, title:'覆盖提示'}, function(index){
-					top.layer.close(index);
-					editor.html(quickReply);
-				});
-			}
-		}		
-	}
-
-	var zNodes =[
-	    { id:'0', pId:'0', name:"公共分类", open:true }
-	    <#if pubQuickTypeList??>
-	    <#list pubQuickTypeList as pubQuckType>
-	    ,{ id:'${pubQuckType.id!''}', pId:'${pubQuckType.parentid!''}', name:"${pubQuckType.name!''}", open:true , type : true}
-	    <#if quickReplyList??>
-		    <#list quickReplyList as quickReply>
-		    <#if quickReply.cate?? && quickReply.cate == pubQuckType.id>
-		    ,{ id:'${quickReply.id!''}', pId:'${quickReply.cate!''}', name:"${quickReply.content!''}", open:true ,  icon:"/images/quickreply.png" , type : false}
-		    </#if>
-		    </#list>
-	    </#if>
-	    </#list>
-	    </#if>
-	];
-	var ztree ;
-	$(document).ready(function(){
-		ztree = $.fn.zTree.init($("#quickTypeTree"), setting, zNodes);
-	});
-	function search(value){
-		if(ztree!=null){
-			var lastNodeList = ztree.getNodesByParamFuzzy("highlight", "true");
-			for( var i=0, l=lastNodeList.length; i<l; i++) {
-				updateNodes(lastNodeList[i] , false);
-			}
-			var nodeList = ztree.getNodesByParamFuzzy("name", value);
-			for( var i=0, l=nodeList.length; i<l; i++) {
-				if(value != ""){
-					updateNodes(nodeList[i] , true);
-				}else{
-					updateNodes(nodeList[i] , false);
-				}
-			}
-			
-		}
-	}
-	function updateNodes(node , highlight) {
-		if(ztree!=null){
-			if(node.type == true){
-				node.highlight = false;
-				ztree.updateNode(node);
-			}else{
-				node.highlight = highlight;
-				ztree.updateNode(node);
-			}
-		}
-	}
-	
-</SCRIPT>
