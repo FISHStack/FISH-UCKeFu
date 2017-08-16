@@ -126,28 +126,21 @@ public class SNSAccountIMController extends Handler{
     		oldSnsAccount.setName(snsAccount.getName());
     		oldSnsAccount.setBaseURL(snsAccount.getBaseURL());
     		oldSnsAccount.setUpdatetime(new Date());
-    		String snsid = Base62.encode(snsAccount.getBaseURL()) ;
     		/**
     		 * SNSID如果有变更，需要同时变更 CoultInvite 表的 记录
     		 */
-    		if(!snsid.equals(oldSnsAccount.getSnsid())){
+    		if(!StringUtils.isBlank(oldSnsAccount.getSnsid())){
     			CousultInvite coultInvite = invite.findBySnsaccountidAndOrgi(oldSnsAccount.getSnsid(), super.getOrgi(request)) ;
-    			if(coultInvite !=null){
-    				coultInvite.setSnsaccountid(snsid);
-    				invite.save(coultInvite) ;
-    			}else{
+    			if(coultInvite ==null){
     				/**
     	    		 * 同时创建CousultInvite 记录
     	    		 */
-    	    		coultInvite = invite.findBySnsaccountidAndOrgi(snsAccount.getSnsid(), super.getOrgi(request)) ;
-        			if(coultInvite ==null){
-        				coultInvite = new CousultInvite() ;
-        				coultInvite.setSnsaccountid(snsAccount.getSnsid());
-        				coultInvite.setCreate_time(new Date());
-        				coultInvite.setOrgi(super.getOrgi(request));
-        				coultInvite.setName(snsAccount.getName());
-        				invite.save(coultInvite) ;
-        			}
+    				coultInvite = new CousultInvite() ;
+    				coultInvite.setSnsaccountid(oldSnsAccount.getSnsid());
+    				coultInvite.setCreate_time(new Date());
+    				coultInvite.setOrgi(super.getOrgi(request));
+    				coultInvite.setName(snsAccount.getName());
+    				invite.save(coultInvite) ;
     			}
     		}
     		
