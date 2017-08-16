@@ -683,7 +683,7 @@ public class OnlineUserUtils {
 	@SuppressWarnings("unchecked")
 	public static List<Topic> cacheHotTopic(DataExchangeInterface dataExchange,User user , String orgi) {
 		List<Topic> topicList = null ;
-		if((topicList = (List<Topic>) CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopic", orgi))!=null){ 
+		if((topicList = (List<Topic>) CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopic", orgi))==null){ 
 			topicList = (List<Topic>) dataExchange.getListDataByIdAndOrgi(user.getId(), user.getId(),  orgi) ;
 		}
 		return topicList;
