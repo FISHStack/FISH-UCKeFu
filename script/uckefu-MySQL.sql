@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-08-14 23:55:30
+Date: 2017-08-18 22:41:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -89,6 +89,7 @@ CREATE TABLE `uk_agentservice` (
   `agentreplys` int(11) DEFAULT NULL,
   `userasks` int(11) DEFAULT NULL,
   `agentuserid` varchar(32) DEFAULT NULL,
+  `sessionid` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -201,6 +202,10 @@ CREATE TABLE `uk_agentuser` (
   `userasks` int(11) DEFAULT '0',
   `avgreplyinterval` int(11) DEFAULT '0',
   `avgreplytime` int(11) DEFAULT '0',
+  `sessionid` varchar(32) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `traceid` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `agentuser_userid` (`userid`) USING BTREE,
   KEY `agentuser_orgi` (`orgi`) USING BTREE
@@ -229,6 +234,30 @@ CREATE TABLE `uk_agentuser_contacts` (
 
 -- ----------------------------
 -- Records of uk_agentuser_contacts
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_area_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_area_type`;
+CREATE TABLE `uk_area_type` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '知识库分类上级ID',
+  `INX` int(11) DEFAULT NULL COMMENT '分类排序序号',
+  `ENABLE` tinyint(4) DEFAULT NULL COMMENT '分类状态',
+  `AREA` text COMMENT '分类描述',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_area_type
 -- ----------------------------
 
 -- ----------------------------
@@ -790,13 +819,16 @@ CREATE TABLE `uk_consult_invite` (
   `consult_info_cookies` tinyint(4) DEFAULT NULL COMMENT '在Cookies中存储用户信息',
   `recordhis` tinyint(4) DEFAULT NULL COMMENT '是否记录访问轨迹',
   `traceuser` tinyint(4) DEFAULT NULL,
+  `onlyareaskill` tinyint(4) DEFAULT '0',
+  `uk_consult_invite` text,
+  `areaskilltipmsg` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uk_consult_invite
 -- ----------------------------
-INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', 'right,middle', '在线客服', null, null, null, '2', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '1', '1', '1', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E', '0', '1', '1', '1', '1', '您好，请填写以下信息，方便我们更好的为您服务！', '0', '1', '0');
+INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '3', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', 'right,middle', '在线客服', null, null, null, '2', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '1', '0', '0', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E', '0', '1', '1', '1', '1', '您好，请填写以下信息，方便我们更好的为您服务！', '0', '1', '0', '0', null, null);
 
 -- ----------------------------
 -- Table structure for `uk_contacts`
@@ -1185,6 +1217,9 @@ CREATE TABLE `uk_inviterecord` (
   `result` varchar(10) DEFAULT NULL COMMENT '记录',
   `responsetime` int(11) DEFAULT NULL COMMENT '响应时间',
   `appid` varchar(32) DEFAULT NULL COMMENT 'SNSID',
+  `title` varchar(255) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `traceid` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1508,6 +1543,7 @@ CREATE TABLE `uk_organ` (
   `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
   `PARENT` varchar(32) DEFAULT NULL COMMENT '父级ID',
   `SKILL` tinyint(4) DEFAULT '0' COMMENT '启用技能组',
+  `area` text,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1909,7 +1945,7 @@ CREATE TABLE `uk_snsaccount` (
 -- ----------------------------
 -- Records of uk_snsaccount
 -- ----------------------------
-INSERT INTO `uk_snsaccount` VALUES (null, null, 'www.ukewo.cn', null, null, null, '402888815d602eb4015d602f7bd80001', null, null, '优客服', null, null, null, null, 'webim', '2017-07-20 21:28:30', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', '0');
+INSERT INTO `uk_snsaccount` VALUES (null, null, null, null, null, null, '402888815ca1209a015ca122f24f0003', null, null, 'tet', null, null, null, null, 'weixin', '2017-06-13 19:07:20', 'sub', null, null, null, 'UCKeFuToken', 'tet', '8ccaFYMaT8i4HlBfeSEoVA==', 'etet', null, null, null, 'ukewo', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null, '1VYBFF', '0');
 
 -- ----------------------------
 -- Table structure for `uk_sysdic`
@@ -5898,8 +5934,8 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815d5105b6015d510962b90006', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-14 23:49:56', null, null, null, '0', '0', '1');
-INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402888815dd4e007015dd4e0a3fc0001', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-08-14 12:32:38', null, null, null, '0', '0', '0');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815d5105b6015d510962b90006', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-18 22:33:06', null, null, null, '0', '0', '1');
+INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402888815dd4e007015dd4e0a3fc0001', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-08-16 21:36:30', null, null, null, '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -6179,6 +6215,7 @@ CREATE TABLE `uk_xiaoe_kbs_type` (
   `UPDATETIME` datetime DEFAULT NULL COMMENT '更新时间',
   `ORGI` varchar(32) DEFAULT NULL COMMENT '租户ID',
   `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `area` text,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -6270,6 +6307,7 @@ CREATE TABLE `uk_xiaoe_scene_type` (
   `UPDATETIME` datetime DEFAULT NULL COMMENT '更新时间',
   `ORGI` varchar(32) DEFAULT NULL COMMENT '租户ID',
   `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `area` text,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
