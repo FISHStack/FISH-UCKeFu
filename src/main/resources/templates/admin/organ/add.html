@@ -10,10 +10,23 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">启用技能组：</label>
 			<div class="layui-input-block">
-				<input type="checkbox" name="skill" lay-skin="switch" value="1"
+				<input type="checkbox" name="skill" lay-skin="switch" lay-filter="area" value="1"
 					lay-text="开启|关闭">
 			</div>
 		</div>
+		<#if areaList?? && areaList?size gt 0>
+		<div class="layui-form-item" id="area" style="display:none;">
+			<label class="layui-form-label">启用地区：</label>
+			<div class="layui-input-block">
+				<#list areaList as area>
+				<input type="checkbox" name="area" title="${area.name!''}" value="${area.id!''}" lay-skin="primary" style="margin-top:0px;">
+				</#list>
+			</div>
+			<div class="layui-input-block" style="color:red;">
+				注意：无勾选为全部地区
+			</div>
+		</div>
+		</#if>
 		<div class="layui-form-button">
 			<div class="layui-button-block">
 				<button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
@@ -28,5 +41,12 @@
 layui.use('form', function(){
   var form = layui.form();
   form.render(); //更新全部
+  form.on("switch(area)",function(data){
+  	if(data.elem.checked){
+  		$('#area').show();
+  	}else{
+  		$('#area').hide();
+  	}
+  }) ;
 });
 </script>

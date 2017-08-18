@@ -340,7 +340,7 @@ public class ServiceQuene {
 	private static AgentService processAgentService(AgentStatus agentStatus , AgentUser agentUser , String orgi) throws Exception{
 		AgentService agentService = new AgentService();	//放入缓存的对象
 		agentService.setOrgi(orgi);
-
+		agentService.setSessionid(agentUser.getSessionid());
 		OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
 		agentUser.setLogindate(new Date());
 		List<OnlineUser> onlineUserList = onlineUserRes.findByUseridAndOrgi(agentUser.getUserid() , agentUser.getOrgi());

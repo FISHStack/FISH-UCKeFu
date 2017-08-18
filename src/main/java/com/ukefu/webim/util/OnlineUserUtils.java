@@ -44,6 +44,7 @@ import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.SessionConfig;
 import com.ukefu.webim.web.model.Topic;
 import com.ukefu.webim.web.model.User;
+import com.ukefu.webim.web.model.UserTraceHistory;
 
 public class OnlineUserUtils {
 	public static WebSseEmitterClient webIMClients = new WebSseEmitterClient();
@@ -215,7 +216,7 @@ public class OnlineUserUtils {
 
 				// onlineUser.setSource(user.getId());
 
-				String url = request.getHeader("Referer");
+				String url = request.getHeader("referer");
 				onlineUser.setUrl(url);
 				if (!StringUtils.isBlank(url)) {
 					try {
@@ -228,6 +229,10 @@ public class OnlineUserUtils {
 				onlineUser.setAppid(appid);
 				onlineUser.setUserid(user.getId());
 				onlineUser.setUsername(user.getUsername());
+				
+				if(!StringUtils.isBlank(request.getParameter("title"))){
+					onlineUser.setTitle(request.getParameter("title"));
+				}
 
 				String ip = UKTools.getIpAddr(request);
 				
@@ -283,6 +288,17 @@ public class OnlineUserUtils {
 					onlineUser.setUpdatetime(new Date());
 				}
 			}
+			if(invite.isRecordhis()){
+	    		UserTraceHistory trace = new UserTraceHistory();
+	    		trace.setId(request.getParameter("traceid"));
+	    		trace.setTitle(request.getParameter("title"));
+	    		trace.setUrl(request.getParameter("url"));
+	    		trace.setOrgi(invite.getOrgi());
+	    		trace.setUpdatetime(new Date());
+	    		trace.setUsername(onlineUser.getUsername());
+	    		
+	    		UKTools.published(trace);
+    		}
 			cacheOnlineUser(onlineUser, orgi , invite);
 		}
 		return onlineUser;
@@ -436,7 +452,7 @@ public class OnlineUserUtils {
 
 	private static NewRequestMessage newRequestMessage(String user , String nickname, String orgi,
 			String session, String appid, String ip, String osname,
-			String browser , String headimg , IP ipdata , String channel , String skill , String agent) throws Exception {
+			String browser , String headimg , IP ipdata , String channel , String skill , String agent, String title, String url , String traceid) throws Exception {
 		// 坐席服务请求，分配 坐席
 		NewRequestMessage data = new NewRequestMessage();
 		data.setAppid(appid);
@@ -459,6 +475,7 @@ public class OnlineUserUtils {
 			agentUser.setOsname(osname);
 			agentUser.setBrowser(browser);
 			agentUser.setAppid(appid);
+			agentUser.setSessionid(session);
 			
 			if (ipdata != null) {
 				agentUser.setCountry(ipdata.getCountry());
@@ -479,6 +496,9 @@ public class OnlineUserUtils {
 			agentUser.setNickname(nickname);
 		}
 		agentUser.setStatus(null); // 修改状态
+		agentUser.setTitle(title);
+		agentUser.setUrl(url);
+		agentUser.setTraceid(traceid);
 		
 		CousultInvite invite = OnlineUserUtils.cousult(appid, orgi, UKDataContext.getContext().getBean(ConsultInviteRepository.class)) ;
 		if(!invite.isTraceuser()){
@@ -540,7 +560,7 @@ public class OnlineUserUtils {
 	
 	public static NewRequestMessage newRequestMessage(String userid, String orgi,
 			String session, String appid, String ip, String osname,
-			String browser , String channel , String skill , String agent , String nickname) throws Exception {
+			String browser , String channel , String skill , String agent , String nickname, String title, String url , String traceid) throws Exception {
 		IP ipdata = null ;
 		if(!StringUtils.isBlank(ip)){
 			ipdata = IPTools.getInstance().findGeography(ip);
@@ -549,7 +569,7 @@ public class OnlineUserUtils {
 			nickname = "Guest_" + userid;
 		}
 		
-		return newRequestMessage(userid , nickname, orgi, session, appid, ip, osname, browser , "" , ipdata , channel , skill , agent) ;
+		return newRequestMessage(userid , nickname, orgi, session, appid, ip, osname, browser , "" , ipdata , channel , skill , agent , title ,url , traceid) ;
 	}
 	
 	public static NewRequestMessage newRequestMessage(String openid , String nickname, String orgi,
@@ -558,7 +578,7 @@ public class OnlineUserUtils {
 		ipdata.setCountry(country);
 		ipdata.setProvince(province);
 		ipdata.setCity(city);
-		return newRequestMessage(openid , nickname , orgi, session, appid, null , null , null , headimg , ipdata , channel , skill , agent) ;
+		return newRequestMessage(openid , nickname , orgi, session, appid, null , null , null , headimg , ipdata , channel , skill , agent , null , null , null) ;
 	}
 
 	public static void parseParameters(Map<String, String[]> map, String data,

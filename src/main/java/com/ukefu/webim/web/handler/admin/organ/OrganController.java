@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.util.Menu;
+import com.ukefu.webim.service.repository.AreaTypeRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.OrganRoleRepository;
 import com.ukefu.webim.service.repository.RoleRepository;
@@ -44,6 +45,9 @@ public class OrganController extends Handler{
 	private RoleRepository roleRepository;
 	
 	@Autowired
+	private AreaTypeRepository areaRepository;
+	
+	@Autowired
 	private UserRepository userRepository;
 	
 	@Autowired
@@ -70,6 +74,7 @@ public class OrganController extends Handler{
     			map.addAttribute("userList", userRepository.findByOrganAndOrgi(organData.getId() , super.getOrgi(request)));
     		}
     	}
+    	map.addAttribute("areaList", areaRepository.findByOrgi(super.getOrgi(request))) ;
     	map.addAttribute("roleList", roleRepository.findAll());
         return request(super.createAdminTempletResponse("/admin/organ/index"));
     }
@@ -77,6 +82,7 @@ public class OrganController extends Handler{
     @RequestMapping("/add")
     @Menu(type = "admin" , subtype = "organ")
     public ModelAndView add(ModelMap map , HttpServletRequest request) {
+    	map.addAttribute("areaList", areaRepository.findByOrgi(super.getOrgi(request))) ;
         return request(super.createRequestPageTempletResponse("/admin/organ/add"));
     }
     
@@ -142,6 +148,7 @@ public class OrganController extends Handler{
     @Menu(type = "admin" , subtype = "organ")
     public ModelAndView edit(ModelMap map ,HttpServletRequest request , @Valid String id) {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/admin/organ/edit")) ;
+    	map.addAttribute("areaList", areaRepository.findByOrgi(super.getOrgi(request))) ;
     	view.addObject("organData", organRepository.findByIdAndOrgi(id, super.getOrgi(request))) ;
         return view;
     }

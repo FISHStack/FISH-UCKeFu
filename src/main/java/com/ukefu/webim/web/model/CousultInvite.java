@@ -100,6 +100,9 @@ public class CousultInvite implements java.io.Serializable{
 	private boolean lvmcontent = true;
 	private boolean skill ;		//启用技能组功能
 	
+	private boolean onlyareaskill ;	//只显示地区技能组 ， 无地区技能组是 提示消息，不显示公共技能组
+	private String areaskilltipmsg ;//未配置地区技能组是提示消息
+	
 	private boolean consult_info;	//启用咨询信息收集功能
 	private boolean consult_info_cookies;	//启用Cookies存储用户录入的信息， 最长有效时间是 3600秒，超时需要重新填写
 	private boolean consult_info_name;//填写姓名
@@ -652,5 +655,17 @@ public class CousultInvite implements java.io.Serializable{
 	}
 	public void setConsult_skill_agent(boolean consult_skill_agent) {
 		this.consult_skill_agent = consult_skill_agent;
+	}
+	public boolean isOnlyareaskill() {
+		return onlyareaskill;
+	}
+	public void setOnlyareaskill(boolean onlyareaskill) {
+		this.onlyareaskill = onlyareaskill;
+	}
+	public String getAreaskilltipmsg() {
+		return areaskilltipmsg;
+	}
+	public void setAreaskilltipmsg(String areaskilltipmsg) {
+		this.areaskilltipmsg = areaskilltipmsg;
 	}
 }

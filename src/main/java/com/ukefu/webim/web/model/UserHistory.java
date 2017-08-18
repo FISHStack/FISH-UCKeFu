@@ -22,7 +22,7 @@ public class UserHistory implements UserEvent {
 	 * 
 	 */
 	private static final long serialVersionUID = -9167939944520945485L;
-	private String id;
+	private String id = UKTools.getUUID();
 	private String username;
 	private String creater;
 	private Date createtime = new Date();
@@ -54,7 +54,7 @@ public class UserHistory implements UserEvent {
 	@Id
 	@Column(length=32)
 	@GeneratedValue(generator="system-uuid")
-	@GenericGenerator(name="system-uuid", strategy="uuid")
+	@GenericGenerator(name="system-uuid", strategy="assigned")
 	public String getId() {
 		return id;
 	}

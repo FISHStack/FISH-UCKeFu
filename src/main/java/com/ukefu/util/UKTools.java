@@ -59,6 +59,7 @@ import com.ukefu.util.event.MultiUpdateEvent;
 import com.ukefu.util.event.UserDataEvent;
 import com.ukefu.util.event.UserEvent;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.AreaTypeRepository;
 import com.ukefu.webim.service.repository.AttachmentRepository;
 import com.ukefu.webim.service.repository.SecretRepository;
 import com.ukefu.webim.service.repository.SystemConfigRepository;
@@ -860,6 +861,17 @@ public class UKTools {
 			systemConfig = systemConfigRes.findByOrgi(UKDataContext.SYSTEM_ORGI) ;
 		}
 		return systemConfig;
+	}
+	
+	
+	/**
+	 * 获取系统地区配置
+	 * @return
+	 */
+	public static void initSystemArea(){
+		CacheHelper.getSystemCacheBean().delete(UKDataContext.UKEFU_SYSTEM_AREA, UKDataContext.SYSTEM_ORGI) ;
+		AreaTypeRepository areaTypeRes = UKDataContext.getContext().getBean(AreaTypeRepository.class) ;
+    	CacheHelper.getSystemCacheBean().put(UKDataContext.UKEFU_SYSTEM_AREA, areaTypeRes.findAll(), UKDataContext.SYSTEM_ORGI);
 	}
 	
 	public static Template getTemplate(String id){

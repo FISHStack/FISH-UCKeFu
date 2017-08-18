@@ -19,6 +19,9 @@ public class InviteRecord {
 	private String id ;
 	private String orgi ;
 	private String userid ;
+	private String title ;
+	private String traceid ;
+	private String url ;
 	private String appid ;
 	private String agentno ;
 	private Date createtime = new Date();
@@ -83,5 +86,23 @@ public class InviteRecord {
 	}
 	public void setAppid(String appid) {
 		this.appid = appid;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getTraceid() {
+		return traceid;
+	}
+	public void setTraceid(String traceid) {
+		this.traceid = traceid;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

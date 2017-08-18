@@ -15,6 +15,7 @@ public class UKDataContext {
 	public static final String IM_USER_SESSION_NAME = "im_user";
 	public static final String UKEFU_SYSTEM_DIC = "com.dic.system.template";
 	public static final String UKEFU_SYSTEM_AUTH_DIC = "com.dic.auth.resource";
+	public static final String UKEFU_SYSTEM_AREA_DIC ="com.dic.address.area" ;
 	public static final String UKEFU_SYSTEM_CALLCENTER = "callcenter";
 	public static final String UKEFU_SYSTEM_INFOACQ = "infoacq";		//数据采集模式
 	public static final String GUEST_USER_ID_CODE = "R3GUESTUSEKEY" ;
@@ -24,6 +25,8 @@ public class UKDataContext {
 	public static final String START = "start";					//流程默认的开始节点
 	public static final String CACHE_SKILL = "cache_skill";					//技能组的缓存
 	public static final String CACHE_AGENT = "cache_agent";					//坐席列表的缓存
+	
+	public static final String UKEFU_SYSTEM_AREA = "uckefu_system_area";
 	
 	public static final int MAX_IMAGE_WIDTH = 460 ;		
 	

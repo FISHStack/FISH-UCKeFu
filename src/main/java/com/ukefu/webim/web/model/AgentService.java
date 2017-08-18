@@ -30,6 +30,9 @@ public class AgentService implements Serializable {
 	private String userid;
 	private String channel;
 	private Date logindate;
+	
+	private String sessionid ;
+	
 	private String source;
 	private Date endtime;
 	private String ipaddr;
@@ -644,5 +647,13 @@ public class AgentService implements Serializable {
 
 	public void setAgentuserid(String agentuserid) {
 		this.agentuserid = agentuserid;
+	}
+
+	public String getSessionid() {
+		return sessionid;
+	}
+
+	public void setSessionid(String sessionid) {
+		this.sessionid = sessionid;
 	}
 }

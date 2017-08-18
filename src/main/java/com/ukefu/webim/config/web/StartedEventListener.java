@@ -10,6 +10,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import com.ukefu.core.UKDataContext;
+import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.BlackListRepository;
 import com.ukefu.webim.service.repository.GenerationRepository;
@@ -68,5 +69,7 @@ public class StartedEventListener implements ApplicationListener<ContextRefreshe
     	for(Generation generation : generationList){
     		CacheHelper.getSystemCacheBean().setAtomicLong(UKDataContext.ModelType.WORKORDERS.toString(), generation.getStartinx());
     	}
+    	
+    	UKTools.initSystemArea();
     }
 }

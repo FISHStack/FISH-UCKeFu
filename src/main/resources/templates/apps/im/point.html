@@ -78,7 +78,7 @@ function append(parent, text) {
 }
 var ukefu = {
 	time : new Date().getTime(),
-	in :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/${appid!''}/userlist?appid=${appid!''}&orgi=${orgi!''}&client=${client}" ,
+	in :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/${appid!''}/userlist.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}" ,
 	url :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/online?appid=${appid!''}&orgi=${orgi!''}&client=${client}" ,
 	chat : "${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/index.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}" , 
 	refuse :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/refuse.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}", 
@@ -149,6 +149,11 @@ var ukefu = {
 			if(data.mobile){
 				url = url + "&mobile="+encodeURIComponent(data.mobile);	
 			}
+			url = url + "&title="+encodeURIComponent(document.title);
+			<#if traceid??>
+			url = url+"&traceid=${traceid}"
+			</#if>
+			url = url+"&url="+encodeURIComponent(location.href)
 		}
 		ukefu.ajax(url + "&userid="+result+"&sessionid=${sessionid!''}&sign="+result+"&t="+new Date().getTime() , function(){ukefu.ping();});	
 	},
@@ -239,6 +244,11 @@ var ukefu = {
 			if(data.mobile){
 				url = url + "&mobile="+encodeURIComponent(data.mobile);	
 			}
+			url = url + "&title="+encodeURIComponent(document.title);
+			<#if traceid??>
+			url = url+"&traceid=${traceid}"
+			</#if>
+			url = url+"&url="+encodeURIComponent(location.href)
 		}
 		window.open(url+"&t="+new Date().getTime(), "ukefu-chat", "height=600, width=850, top="+ (window.screen.availHeight - 30 - 600) /2+", left="+(window.screen.availWidth - 10 - 750)/2+",toolbar=no, menubar=no, scrollbars=no, resizable=no, directories=no,location=no, status=no");
 		return false;	
@@ -311,9 +321,6 @@ ukefu.ajax(ukefu.in+"&userid="+result+"&t="+new Date().getTime() , function(data
 		ukefu.check();
 	}
 });
-
-
-
 </#if>
 
 

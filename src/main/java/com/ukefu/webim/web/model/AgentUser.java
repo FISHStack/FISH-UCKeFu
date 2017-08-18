@@ -28,11 +28,17 @@ public class AgentUser implements Serializable, Comparable<AgentUser> {
 	private Date logindate;
 	private String source;
 	private Date endtime;
+	
+	private String title ;
+	private String url;
+	private String traceid ;
+	
 	private String ipaddr;
 	private String osname;
 	private String browser;
 	private String nickname;
 	protected String city;
+	private String sessionid ;
 	protected String province;
 	protected String country;
 	protected String headimgurl;
@@ -492,6 +498,39 @@ public class AgentUser implements Serializable, Comparable<AgentUser> {
 	public void setResion(String resion) {
 		this.resion = resion;
 	}
+	
+	public String getSessionid() {
+		return sessionid;
+	}
+
+	public void setSessionid(String sessionid) {
+		this.sessionid = sessionid;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getTraceid() {
+		return traceid;
+	}
+
+	public void setTraceid(String traceid) {
+		this.traceid = traceid;
+	}
+
 	@Transient
 	public String getSkillname() {
 		return skillname;

@@ -7,8 +7,10 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.event.UserDataEvent;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.UserEventRepository;
+import com.ukefu.webim.service.repository.UserTraceRepository;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.UserHistory;
+import com.ukefu.webim.web.model.UserTraceHistory;
 
 public class UserEventHandler implements EventHandler<UserDataEvent>{
 
@@ -18,6 +20,9 @@ public class UserEventHandler implements EventHandler<UserDataEvent>{
 		if(arg0.getEvent() instanceof UserHistory){
 			UserEventRepository userEventRes = UKDataContext.getContext().getBean(UserEventRepository.class) ;
 			userEventRes.save((UserHistory)arg0.getEvent()) ;
+		}else if(arg0.getEvent() instanceof UserTraceHistory){
+			UserTraceRepository userTraceRes = UKDataContext.getContext().getBean(UserTraceRepository.class) ;
+			userTraceRes.save((UserTraceHistory)arg0.getEvent()) ;
 		}else if(arg0.getEvent() instanceof OnlineUser){
 			OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
 			OnlineUser onlineUser = (OnlineUser)arg0.getEvent() ;

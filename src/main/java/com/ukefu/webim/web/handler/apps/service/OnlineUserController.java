@@ -28,6 +28,7 @@ import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.ServiceSummaryRepository;
 import com.ukefu.webim.service.repository.TagRelationRepository;
 import com.ukefu.webim.service.repository.TagRepository;
+import com.ukefu.webim.service.repository.UserEventRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.WeiXinUserRepository;
 import com.ukefu.webim.web.handler.Handler;
@@ -49,6 +50,9 @@ public class OnlineUserController extends Handler{
 	
 	@Autowired
 	private OnlineUserRepository onlineUserRes; 
+	
+	@Autowired
+	private UserEventRepository userEventRes; 
 	
 	@Autowired
 	private ServiceSummaryRepository serviceSummaryRes; 
@@ -168,5 +172,12 @@ public class OnlineUserController extends Handler{
         return request(super.createRequestPageTempletResponse("/apps/service/online/chatmsg"));
     }
 	
-	
+	@RequestMapping("/trace")
+    @Menu(type = "service" , subtype = "trace" , admin= false)
+    public ModelAndView trace(ModelMap map , HttpServletRequest request , @Valid String sessionid) {
+		if(!StringUtils.isBlank(sessionid)){
+			map.addAttribute("traceHisList", userEventRes.findBySessionidAndOrgi(sessionid, super.getOrgi(request), new PageRequest(0, 100))) ;
+		}
+        return request(super.createRequestPageTempletResponse("/apps/service/online/trace"));
+    }
 }

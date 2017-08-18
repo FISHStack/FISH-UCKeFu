@@ -293,6 +293,25 @@
 														<textarea name=consult_skill_msg autocomplete="off" class="layui-input" resize="false" style="height:90px;line-height:22px;resize: none;">${(inviteData.consult_skill_msg!'工作时间<br/>08:30~17:30')?no_esc}</textarea>
 													</div>
 												</div>
+												<div class="row" style="margin-bottom:20px;">
+													<div class="col-lg-8">
+														<p>g、配置地区的时候，只显示访客所在地区的技能组</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">默认不开启，开启后，访客端只显示当前地区内配置的技能组</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="checkbox" title="启用" name="onlyareaskill" <#if inviteData?? && inviteData.onlyareaskill == true>checked="checked"</#if>>
+													</div>
+												</div>
+												<div class="row" style="margin-bottom:20px;">
+													<div class="col-lg-12">
+														<p>h、未配置地区技能组的提示消息</p>
+													</div>
+												</div>
+												<div class="row" style="margin-bottom:20px;">
+													<div class="col-lg-12">
+														<textarea name=areaskilltipmsg autocomplete="off" class="layui-input" resize="false" style="height:90px;line-height:22px;resize: none;">${(inviteData.areaskilltipmsg!'您好，您所在的地区没有在线客服人员！')?no_esc}</textarea>
+													</div>
+												</div>
 											</div>
 										</div>
 										<div class="ukefu-webim-prop">

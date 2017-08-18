@@ -10,9 +10,22 @@
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">启用技能组：</label>
 	    <div class="layui-input-block">
-	      <input type="checkbox" name="skill" lay-skin="switch" lay-text="开启|关闭" value="1" <#if organData.skill>checked</#if>>
+	      <input type="checkbox" name="skill" lay-skin="switch" lay-filter="area"  lay-text="开启|关闭" value="1" <#if organData.skill>checked</#if>>
 	    </div>
 	  </div>
+	  <#if areaList?? && areaList?size gt 0>
+		<div class="layui-form-item" id="area" style="<#if organData.skill == false>display:none;</#if>">
+			<label class="layui-form-label">启用地区：</label>
+			<div class="layui-input-block">
+				<#list areaList as area>
+				<input type="checkbox" name="area" title="${area.name!''}" <#if organData.area?? && organData.area?index_of(area.id) gte 0>checked="checked"</#if> value="${area.id!''}" lay-skin="primary" style="margin-top:0px;">
+				</#list>
+			</div>
+			<div class="layui-input-block" style="color:red;">
+				注意：无勾选为全部地区
+			</div>
+		</div>
+		</#if>
 	  <div class="layui-form-button">
 	    <div class="layui-button-block">
 	      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
@@ -27,5 +40,12 @@
 layui.use('form', function(){
   var form = layui.form();
   form.render(); //更新全部
+  form.on("switch(area)",function(data){
+  	if(data.elem.checked){
+  		$('#area').show();
+  	}else{
+  		$('#area').hide();
+  	}
+  }) ;
 });
 </script>

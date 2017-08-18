@@ -27,6 +27,7 @@ public class Organ implements java.io.Serializable{
 	private Date createtime ;
 	private String creater;
 	private boolean skill ;
+	private String area ;
 	private String username ;
 	private Date updatetime ;
 	private String orgi ;
@@ -94,5 +95,11 @@ public class Organ implements java.io.Serializable{
 	}
 	public void setSkill(boolean skill) {
 		this.skill = skill;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
 	}
 }

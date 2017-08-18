@@ -149,6 +149,9 @@ public class WebIMController extends Handler{
     			tempInviteData.setConsult_skill_numbers(inviteData.getConsult_skill_numbers());
     			tempInviteData.setConsult_skill_agent(inviteData.isConsult_skill_agent());
     			
+    			tempInviteData.setOnlyareaskill(inviteData.isOnlyareaskill());
+    			tempInviteData.setAreaskilltipmsg(inviteData.getAreaskilltipmsg());
+    			
     			tempInviteData.setConsult_info(inviteData.isConsult_info());
     			tempInviteData.setConsult_info_email(inviteData.isConsult_info_email());
     			tempInviteData.setConsult_info_name(inviteData.isConsult_info_name());

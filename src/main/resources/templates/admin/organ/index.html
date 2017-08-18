@@ -3,7 +3,7 @@
 		<h1 class="site-h1" style="background-color:#FFFFFF;">
 			组织机构
 			<span style="float:right;">
-				<button class="layui-btn layui-btn-small green" href="/admin/organ/add.html" data-toggle="ajax" data-height="200" data-width="550" data-title="创建新用户">
+				<button class="layui-btn layui-btn-small green" href="/admin/organ/add.html" data-toggle="ajax" data-height="300" data-width="550" data-title="创建新用户">
 					创建部门
 				</button>
 			</span>
@@ -13,6 +13,7 @@
 				<ul>
 					<#if organList??>
 					<#list organList as organ>
+					<#if !organ.area?? || organ.area == "">
 					<li class="uk_organ <#if organData?? && organData.id == organ.id>this</#if>">
 						<a href="/admin/organ/index.html?organ=${organ.id!''}">
 							<i class="layui-icon" style="position: relative;">&#xe613;</i>
@@ -24,11 +25,42 @@
 						</dic>
 						</#if>
 					</li>
+					</#if>
 					</#list>
 					</#if>
 				</ul>
 			</div>
 		</div>
+		<#if areaList?? && areaList?size gt 0>
+		<div class="layui-collapse">
+			<#list areaList as area>
+		    <div class="layui-colla-item">
+			    <h2 class="layui-colla-title">${area.name!''}</h2>
+			    <div class="layui-colla-content layui-show" style="padding:0px;">
+			    	<ul>
+					<#if organList??>
+					<#list organList as organ>
+					<#if organ.area?? && organ.area?index_of(area.id) gte 0>
+					<li class="uk_organ <#if organData?? && organData.id == organ.id>this</#if>" style="padding:5px;">
+						<a href="/admin/organ/index.html?organ=${organ.id!''}">
+							<i class="layui-icon" style="position: relative;">&#xe613;</i>
+							${organ.name!''}
+						</a>
+						<#if organ.skill>
+						<dic class="uk_organ_skill" title="启用技能组">
+						<i class="kfont">&#xe620;</i>
+						</dic>
+						</#if>
+					</li>
+					</#if>
+					</#list>
+					</#if>
+				</ul>
+			    </div>
+			</div>
+		    </#list>
+		</div>
+		</#if>
 	</div>
 	<div class="col-lg-9">
 		<h1 class="site-h1" style="background-color:#FFFFFF;">
@@ -38,7 +70,7 @@
 				<button class="layui-btn layui-btn-small green" href="/admin/organ/seluser.html?organ=${organData.id!''}" data-toggle="ajax" data-width="750" data-title="创建新用户">
 					添加用户到当前部门
 				</button>
-				<button class="layui-btn layui-btn-primary layui-btn-small" href="/admin/organ/edit.html?id=${organData.id}" data-toggle="ajax" data-width="550" data-height="200" data-title="修改坐席组">
+				<button class="layui-btn layui-btn-primary layui-btn-small" href="/admin/organ/edit.html?id=${organData.id}" data-toggle="ajax" data-width="550" data-height="300" data-title="修改坐席组">
 					修改部门
 				</button>
 				<button class="layui-btn layui-btn-primary layui-btn-small" href="/admin/organ/delete.html?id=${organData.id!''}" data-toggle="tip" data-title="请确认是否删除坐席组？">

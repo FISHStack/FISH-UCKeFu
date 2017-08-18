@@ -51,6 +51,10 @@ public class IMEventHandler
 			String agent = client.getHandshakeData().getSingleUrlParam("agent") ;
 			String skill = client.getHandshakeData().getSingleUrlParam("skill") ;
 			
+			String title = client.getHandshakeData().getSingleUrlParam("title") ;
+			String url = client.getHandshakeData().getSingleUrlParam("url") ;
+			String traceid = client.getHandshakeData().getSingleUrlParam("traceid") ;
+			
 			String nickname = client.getHandshakeData().getSingleUrlParam("nickname") ;
 			
 			if(!StringUtils.isBlank(user)){
@@ -59,7 +63,7 @@ public class IMEventHandler
 				 */
 				InetSocketAddress address = (InetSocketAddress) client.getRemoteAddress()  ;
 				String ip = UKTools.getIpAddr(client.getHandshakeData().getHttpHeaders(), address.getHostString()) ;
-				NewRequestMessage newRequestMessage = OnlineUserUtils.newRequestMessage(user, orgi , session , appid , ip , client.getHandshakeData().getSingleUrlParam("osname") , client.getHandshakeData().getSingleUrlParam("browser") , UKDataContext.ChannelTypeEnum.WEBIM.toString() , skill , agent , nickname) ;
+				NewRequestMessage newRequestMessage = OnlineUserUtils.newRequestMessage(user, orgi , session , appid , ip , client.getHandshakeData().getSingleUrlParam("osname") , client.getHandshakeData().getSingleUrlParam("browser") , UKDataContext.ChannelTypeEnum.WEBIM.toString() , skill , agent , nickname , title , url , traceid) ;
 //				/**
 //				 * 加入到 缓存列表
 //				 */

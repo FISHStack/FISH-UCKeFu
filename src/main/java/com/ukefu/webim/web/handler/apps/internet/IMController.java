@@ -52,6 +52,7 @@ import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.LeaveMsgRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.UserRepository;
+import com.ukefu.webim.service.repository.UserTraceRepository;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
@@ -88,6 +89,9 @@ public class IMController extends Handler{
 	
 	@Autowired
 	private ChatMessageRepository chatMessageRes ;
+	
+	@Autowired
+	private UserTraceRepository traceRes ;
 	
 	@Autowired
 	private AgentServiceSatisRepository agentServiceSatisRes ;
@@ -136,7 +140,7 @@ public class IMController extends Handler{
 	    		view.addObject("appid",id);
 	    	//记录用户行为日志
 				UserHistory userHistory = new UserHistory() ;
-				String url = request.getRequestURL().toString() ;
+				String url = request.getHeader("referer");
 				if(url.length() >255){
 					userHistory.setUrl(url.substring( 0 , 255));
 				}else{
@@ -191,6 +195,7 @@ public class IMController extends Handler{
 				     */
 				    view.addObject("agentList", OnlineUserUtils.agents(invite.getOrgi()))  ;
 			    }
+			    view.addObject("traceid", userHistory.getId()) ;
 			    if(invite.isRecordhis()){
 			    	UKTools.published(userHistory);
 			    }
@@ -222,7 +227,7 @@ public class IMController extends Handler{
      */
     @RequestMapping("/online")
     @Menu(type = "im" , subtype = "online" , access = true)
-    public SseEmitter callable(HttpServletRequest request , HttpServletResponse response , @Valid Contacts contacts, final @Valid String orgi , @Valid String appid, final @Valid String userid , @Valid String sign , final @Valid String client) {
+    public SseEmitter callable(HttpServletRequest request , HttpServletResponse response , @Valid Contacts contacts, final @Valid String orgi , @Valid String appid, final @Valid String userid , @Valid String sign , final @Valid String client, final @Valid String title, final @Valid String traceid) {
     	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) ;
     	SseEmitter retSseEmitter = null ;
     	if((black == null || (black.getEndtime()!=null && black.getEndtime().before(new Date()))) ){
@@ -270,7 +275,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/index")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
+    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String traceid , @Valid String title ,@Valid String url,@Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) ;
     	if(!StringUtils.isBlank(appid) &&  (black == null || (black.getEndtime()!=null && black.getEndtime().before(new Date()))) ){
@@ -296,6 +301,16 @@ public class IMController extends Handler{
 			map.addAttribute("userid", userid) ;
 			map.addAttribute("schema", request.getScheme()) ;
 			map.addAttribute("sessionid", sessionid) ;
+			
+			if(!StringUtils.isBlank(traceid)){
+				map.addAttribute("traceid", traceid) ;
+			}
+			if(!StringUtils.isBlank(title)){
+				map.addAttribute("title", title) ;
+			}
+			if(!StringUtils.isBlank(traceid)){
+				map.addAttribute("url", url) ;
+			}
 			
 			map.addAttribute("ukefport", request.getServerPort()) ;
 			
@@ -410,6 +425,9 @@ public class IMController extends Handler{
 		    	if(inviteRecordList.getContent()!=null && inviteRecordList.getContent().size()>0){
 		    		InviteRecord record = inviteRecordList.getContent().get(0) ;
 		    		record.setUpdatetime(new Date());
+		    		record.setTraceid(traceid);
+		    		record.setTitle(title);
+		    		record.setUrl(url);
 		    		record.setResponsetime((int) (System.currentTimeMillis() - record.getCreatetime().getTime()));
 		    		record.setResult(UKDataContext.OnlineUserInviteStatus.ACCEPT.toString());
 		    		inviteRecordRes.save(record) ;
@@ -465,7 +483,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/text/{appid}")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid , @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String mobile,@Valid String ai) throws Exception {
+    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid ,@Valid String traceid , @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String mobile,@Valid String ai) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/text")) ; 
     	
     	view.addObject("hostname", request.getServerName()) ;
@@ -490,6 +508,15 @@ public class IMController extends Handler{
 		view.addObject("emal", email) ;
 		view.addObject("mobile", mobile) ;
 		view.addObject("userid", userid) ;
+		if(!StringUtils.isBlank(traceid)){
+			view.addObject("traceid", traceid) ;
+		}
+		if(!StringUtils.isBlank(title)){
+			view.addObject("title", title) ;
+		}
+		if(!StringUtils.isBlank(traceid)){
+			view.addObject("url", url) ;
+		}
 		
 		CousultInvite invite = OnlineUserUtils.cousult(appid, super.getOrgi(request), inviteRepository);
     	if(invite!=null){
