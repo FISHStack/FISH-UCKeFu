@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-08-20 08:40:52
+Date: 2017-08-20 08:45:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -127,7 +127,8 @@ CREATE TABLE `uk_agentstatus` (
   `owner` varchar(255) DEFAULT NULL COMMENT '所属人',
   `datadept` varchar(255) DEFAULT NULL COMMENT '创建人部门',
   `batid` varchar(32) DEFAULT NULL COMMENT '批次ID',
-  `pulluser` tinyint(4) DEFAULT NULL COMMENT '是否允许拉取用户'
+  `pulluser` tinyint(4) DEFAULT NULL COMMENT '是否允许拉取用户',
+  `busy` tinyint(4) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------

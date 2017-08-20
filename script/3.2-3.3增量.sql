@@ -37,3 +37,5 @@ ALTER TABLE uk_agentuser ADD url varchar(255);
 ALTER TABLE uk_agentuser ADD traceid varchar(32);
 
 ALTER TABLE uk_chat_message ADD sessionid varchar(50);
+
+ALTER TABLE uk_agentstatus ADD busy tinyint DEFAULT 0;
