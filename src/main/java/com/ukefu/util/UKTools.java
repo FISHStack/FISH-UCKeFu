@@ -25,6 +25,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,15 +60,19 @@ import com.ukefu.util.event.MultiUpdateEvent;
 import com.ukefu.util.event.UserDataEvent;
 import com.ukefu.util.event.UserEvent;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.AdTypeRepository;
 import com.ukefu.webim.service.repository.AreaTypeRepository;
 import com.ukefu.webim.service.repository.AttachmentRepository;
 import com.ukefu.webim.service.repository.SecretRepository;
 import com.ukefu.webim.service.repository.SystemConfigRepository;
 import com.ukefu.webim.service.repository.TemplateRepository;
+import com.ukefu.webim.web.model.AdType;
 import com.ukefu.webim.web.model.AttachmentFile;
 import com.ukefu.webim.web.model.Secret;
+import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.Template;
+import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.WorkOrders;
 
@@ -874,9 +879,70 @@ public class UKTools {
     	CacheHelper.getSystemCacheBean().put(UKDataContext.UKEFU_SYSTEM_AREA, areaTypeRes.findAll(), UKDataContext.SYSTEM_ORGI);
 	}
 	
+	/**
+	 * 缓存 广告位
+	 * @return
+	 */
+	public static void initAdv(){
+		CacheHelper.getSystemCacheBean().delete(UKDataContext.UKEFU_SYSTEM_ADV, UKDataContext.SYSTEM_ORGI) ;
+		AdTypeRepository adRes = UKDataContext.getContext().getBean(AdTypeRepository.class) ;
+    	CacheHelper.getSystemCacheBean().put(UKDataContext.UKEFU_SYSTEM_ADV, adRes.findAll(), UKDataContext.SYSTEM_ORGI);
+	}
+	
 	public static Template getTemplate(String id){
 		TemplateRepository templateRes = UKDataContext.getContext().getBean(TemplateRepository.class) ;
 		return templateRes.findByIdAndOrgi(id, UKDataContext.SYSTEM_ORGI);
+	}
+	/**
+	 * 按照权重获取广告
+	 * @param adpos
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static AdType getPointAdv(String adpos){
+		List<AdType> adTypeList = new ArrayList<AdType>();
+		List <AdType> cacheAdTypeList = (List<AdType>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.UKEFU_SYSTEM_ADV, UKDataContext.SYSTEM_ORGI);
+		List<SysDic> sysDicList = UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_ADPOS_DIC) ;
+		SysDic sysDic = null ;
+		if(sysDicList!=null){
+			for(SysDic dic : sysDicList){
+				if(dic.getCode().equals(adpos)){
+					sysDic = dic ; break ;
+				}
+			}
+		}
+		if(adTypeList!=null && sysDic!=null){
+			for(AdType adType : cacheAdTypeList){
+				if(adType.getAdpos().equals(sysDic.getId())){
+					adTypeList.add(adType) ;
+				}
+			}
+		}
+		return weitht(adTypeList) ;
+	}
+	private static Random random = new Random();   
+	/**
+	 * 
+	 * 按照权重，获取广告内容
+	 * @param adList
+	 * @return
+	 */
+	private static AdType weitht(List<AdType> adList){
+		AdType adType = null;
+		int weight = 0 ;
+		if(adList!=null && adList.size() > 0){
+			for (AdType ad : adList) {    
+	            weight += ad.getWeight() ;
+	        }
+			int n = random.nextInt(weight)  , m = 0 ;
+			for (AdType ad : adList) {    
+				if (m <= n && n < m + ad.getWeight()) {   
+					adType = ad ; break; 
+				}
+				m += ad.getWeight();    
+	        }
+		}
+		return adType ;
 	}
 	
 	/** 

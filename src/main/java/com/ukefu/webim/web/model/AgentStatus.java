@@ -33,6 +33,8 @@ public class AgentStatus implements java.io.Serializable ,  Comparable<AgentStat
 	private int serusernum 	= 10 ;		//最大服务用户数量
 	private String skill ;				//接入的 技能组ID
 	
+	private boolean busy ;				//是否忙
+	
 	private Date createtime = new Date();
 	private String skillname ;			//接入的技能组 名称
 	private int users 	;				//已接入的 用户数量
@@ -166,5 +168,11 @@ public class AgentStatus implements java.io.Serializable ,  Comparable<AgentStat
 	@Override
 	public int compareTo(AgentStatus o) {
 		return this.users - o.users;
+	}
+	public boolean isBusy() {
+		return busy;
+	}
+	public void setBusy(boolean busy) {
+		this.busy = busy;
 	}
 }

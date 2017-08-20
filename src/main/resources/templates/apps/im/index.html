@@ -210,6 +210,17 @@
 	    </div>
         <div class="content-left">
             <div class="chat-above" id="above">
+            	<#if welcomeAd>
+            	<div class="clearfix message  welcome"> 
+            		<span id="welcome-message">
+            			<#if welcomeAd.adtype =="image">
+						<a href='${welcomeAd.url!''}' title='${welcomeAd.tiptext!''}' target='_blank'><img src='${welcomeAd.imgurl!''}' style='max-width:420px;max-height:178px;margin:0px;vertical-align: middle;'/></a>
+						<#else>
+						<div style='padding:0px 5px 10px 5px;border-bottom:1px solid #dedede;'><a href='${welcomeAd.url!''}' title='${welcomeAd.tiptext!''}' target='_blank' id='point_ad_text'>${(welcomeAd.content!'')?no_esc}</a></div>
+						</#if>
+            		</span>
+            	</div>
+            	</#if>
             	<div class="clearfix message  welcome"> 
             		<span id="welcome-message">${(inviteData.dialog_message!'欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.')?no_esc}</span></div>
 				<#if chatMessageList?? && chatMessageList.content??>
@@ -290,7 +301,15 @@
                 </ul>
             </div>
             <div class="content-pic" style="width:100%;height:192px;">
-                <img src="/res/image.html?id=${inviteData.dialog_ad!''}" style="height:190px;width:100%;">
+            	<#if imageAd>
+            		<#if imageAd.adtype =="image">
+					<a href='${imageAd.url!''}' title='${imageAd.tiptext!''}' target='_blank'><img src='${imageAd.imgurl!''}' style='max-width:100%;max-height:190px;margin:0px;vertical-align: middle;'/></a>
+					<#else>
+					<div style='padding:0px 5px 10px 5px;border-bottom:1px solid #dedede;'><a href='${imageAd.url!''}' title='${imageAd.tiptext!''}' target='_blank' id='point_ad_text'>${(imageAd.content!'')?no_esc}</a></div>
+					</#if>
+            	<#elseif inviteData.dialog_ad??>
+                	<img src="/res/image.html?id=${inviteData.dialog_ad!''}" style="height:190px;width:100%;">
+            	</#if>
             </div>
         </div>
     </div>

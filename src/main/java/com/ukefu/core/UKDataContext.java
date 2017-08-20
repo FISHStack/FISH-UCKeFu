@@ -16,6 +16,9 @@ public class UKDataContext {
 	public static final String UKEFU_SYSTEM_DIC = "com.dic.system.template";
 	public static final String UKEFU_SYSTEM_AUTH_DIC = "com.dic.auth.resource";
 	public static final String UKEFU_SYSTEM_AREA_DIC ="com.dic.address.area" ;
+	public static final String UKEFU_SYSTEM_ADPOS_DIC = "com.dic.adv.type" ;
+	
+	
 	public static final String UKEFU_SYSTEM_CALLCENTER = "callcenter";
 	public static final String UKEFU_SYSTEM_INFOACQ = "infoacq";		//数据采集模式
 	public static final String GUEST_USER_ID_CODE = "R3GUESTUSEKEY" ;
@@ -27,6 +30,8 @@ public class UKDataContext {
 	public static final String CACHE_AGENT = "cache_agent";					//坐席列表的缓存
 	
 	public static final String UKEFU_SYSTEM_AREA = "uckefu_system_area";
+	
+	public static final String UKEFU_SYSTEM_ADV = "uckefu_system_adv";		//系统广告位
 	
 	public static final int MAX_IMAGE_WIDTH = 460 ;		
 	
@@ -77,6 +82,16 @@ public class UKDataContext {
 	public enum SalesNamesStatus{
 		DIST,			//已分配
 		NOTDIST;		//未分配
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum AdPosEnum{
+		POINT,			
+		IMAGE,
+		WELCOME,
+		INVITE;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}

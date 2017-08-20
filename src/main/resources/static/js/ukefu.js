@@ -185,7 +185,11 @@ $(document).ready(function(){
 	});
 	
 	$(document).on('click','.ukefu-media-image , .workorders-content img', function ( e ) {
-		var html = $(this).attr("src");
+		var html = $(this).attr("src")+"_original";
+		var type = $(this).data("type");
+		if(type == "preview"){
+			html = $(this).attr("src") ;
+		}
 		top.layer.open({
 			  type: 1,
 			  title: "图片",
@@ -193,7 +197,7 @@ $(document).ready(function(){
 			  maxmin: true,
 			  area: ['750px','500px'],
 			  shadeClose: true,
-			  content: "<div class='ukefu-preview-image'><img src='"+html+"_original'></div>"
+			  content: "<div class='ukefu-preview-image'><img src='"+html+"'></div>"
 			});
 	});
 	

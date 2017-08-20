@@ -143,10 +143,13 @@ public class IMController extends Handler{
 	    	//记录用户行为日志
 				UserHistory userHistory = new UserHistory() ;
 				String url = request.getHeader("referer");
-				if(url.length() >255){
-					userHistory.setUrl(url.substring( 0 , 255));
-				}else{
-					userHistory.setUrl(url);
+				if(!StringUtils.isBlank(url)){
+					if(url.length() >255){
+						userHistory.setUrl(url.substring( 0 , 255));
+					}else{
+						userHistory.setUrl(url);
+					}
+					userHistory.setReferer(userHistory.getUrl());
 				}
 				userHistory.setParam(UKTools.getParameter(request));
 				if(userHistory!=null){
@@ -201,6 +204,9 @@ public class IMController extends Handler{
 			    if(invite.isRecordhis()){
 			    	UKTools.published(userHistory);
 			    }
+			    
+			    view.addObject("pointAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.POINT.toString())) ;
+			    view.addObject("inviteAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.INVITE.toString())) ;
 			}
     	}
 		
@@ -433,7 +439,8 @@ public class IMController extends Handler{
     			map.addAttribute("chatMessageList", chatMessageRes.findByUsessionAndOrgi(userid , orgi, new PageRequest(0, 20, Direction.DESC , "updatetime"))) ;
 	    	}
     		
-	    	
+    		view.addObject("welcomeAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.WELCOME.toString())) ;
+    		view.addObject("imageAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.IMAGE.toString())) ;
 	//    	OnlineUserUtils.sendWebIMClients(userid , "accept");
     		 
     		if(invite.isTraceuser()){

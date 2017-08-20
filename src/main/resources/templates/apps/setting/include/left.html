@@ -18,6 +18,19 @@
 	</li>
 	
 	<li class="layui-nav-item layui-nav-itemed">
+		<a class="layui-nav-title" href="javascript:;">广告位管理</a>
+		<dl class="layui-nav-child">
+			<#if advTypeList??>
+			<#list advTypeList as advDic>
+			<dd <#if advType?? && advDic.id == advType.id>class="layui-this"</#if>>
+				<a href="/setting/adv.html?adpos=${advDic.id!''}">${advDic.name!''}</a>
+			</dd>
+			</#list>
+			</#if>
+		</dl>
+	</li>
+	
+	<li class="layui-nav-item layui-nav-itemed">
 		<a class="layui-nav-title" href="javascript:;">标签管理</a>
 		<dl class="layui-nav-child">
 			<#if tagTypeList??>

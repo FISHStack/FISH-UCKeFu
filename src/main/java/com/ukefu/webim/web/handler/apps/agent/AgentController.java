@@ -399,7 +399,7 @@ public class AgentController extends Handler {
     	
     	ServiceQuene.allotAgent(agentStatus.getAgentno(), user.getOrgi());
     	
-    	return request(super.createAppsTempletResponse("/public/success")) ; 
+    	return request(super.createRequestPageTempletResponse("/public/success")) ; 
     }
 	
 	@RequestMapping(value="/notready") 
@@ -413,7 +413,35 @@ public class AgentController extends Handler {
     	CacheHelper.getAgentStatusCacheBean().delete(super.getUser(request).getId(), user.getOrgi());;
     	ServiceQuene.publishMessage(user.getOrgi());
     	
-    	return request(super.createAppsTempletResponse("/public/success")) ; 
+    	return request(super.createRequestPageTempletResponse("/public/success")) ; 
+    }
+	
+	@RequestMapping(value="/busy") 
+	@Menu(type = "apps", subtype = "agent")
+    public ModelAndView busy(HttpServletRequest request){ 
+		User user = super.getUser(request) ;
+		AgentStatus agentStatus = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
+		if(agentStatus!=null){
+			agentStatus.setBusy(true);
+			agentStatusRepository.save(agentStatus);
+			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, user.getOrgi());
+		}
+    	ServiceQuene.publishMessage(user.getOrgi());
+    	return request(super.createRequestPageTempletResponse("/public/success")) ; 
+    }
+	
+	@RequestMapping(value="/notbusy") 
+	@Menu(type = "apps", subtype = "agent")
+    public ModelAndView notbusy(HttpServletRequest request){ 
+		User user = super.getUser(request) ;
+		AgentStatus agentStatus = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
+		if(agentStatus!=null){
+			agentStatus.setBusy(false);
+			agentStatusRepository.save(agentStatus);
+			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, user.getOrgi());
+		}
+		ServiceQuene.allotAgent(agentStatus.getAgentno(), user.getOrgi());
+    	return request(super.createRequestPageTempletResponse("/public/success")) ; 
     }
 	
 	@RequestMapping(value="/clean") 

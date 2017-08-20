@@ -35,6 +35,7 @@ public class UserHistory implements UserEvent {
 	private String browser ;
 	private String appid ;
 	private String mobile ;
+	private String referer ;
 	private String name;
 	private boolean admin;
 	private boolean accessnum;
@@ -228,5 +229,11 @@ public class UserHistory implements UserEvent {
 	}
 	public void setCreatedate(String createdate) {
 		this.createdate = createdate;
+	}
+	public String getReferer() {
+		return referer;
+	}
+	public void setReferer(String referer) {
+		this.referer = referer;
 	}
 }

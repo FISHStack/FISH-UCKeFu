@@ -18,6 +18,7 @@ import com.ukefu.util.UKTools;
 import com.ukefu.util.WebIMReport;
 import com.ukefu.util.client.NettyClients;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.quene.AgentStatusBusyOrgiFilter;
 import com.ukefu.webim.service.quene.AgentStatusOrgiFilter;
 import com.ukefu.webim.service.quene.AgentUserOrgiFilter;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
@@ -72,6 +73,9 @@ public class ServiceQuene {
 		AgentStatusOrgiFilter filter = new AgentStatusOrgiFilter(orgi) ;
 		Long agents = (Long) agentStatusMap.aggregate(Supplier.fromKeyPredicate(filter), Aggregations.count()) ;
 		report.setAgents(agents.intValue());
+		
+		Long busyAgent = (Long) agentStatusMap.aggregate(Supplier.fromKeyPredicate(new AgentStatusBusyOrgiFilter(orgi)), Aggregations.count()) ;
+		report.setBusy(busyAgent.intValue());
 		
 		/**
 		 * 统计当前服务中的用户数量
@@ -291,11 +295,11 @@ public class ServiceQuene {
 		 * 处理ACD 的 技能组请求和 坐席请求
 		 */
 		if(!StringUtils.isBlank(agentUser.getAgent())){
-			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " agentno = '" + agentUser.getAgent() + "' AND users < " + initSessionConfig(orgi).getMaxuser() ) , 1 );
+			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND agentno = '" + agentUser.getAgent() + "' AND users < " + initSessionConfig(orgi).getMaxuser() ) , 1 );
 		}else if(!StringUtils.isBlank(agentUser.getSkill())){
-			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " skill = '" + agentUser.getSkill() + "' AND users < " + initSessionConfig(orgi).getMaxuser() ) , 1 );
+			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND skill = '" + agentUser.getSkill() + "' AND users < " + initSessionConfig(orgi).getMaxuser() ) , 1 );
 		}else{
-			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( "users < " + initSessionConfig(orgi).getMaxuser() ) , 1 );
+			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND users < " + initSessionConfig(orgi).getMaxuser() ) , 1 );
 		}
 		
 		agentStatusList.addAll(((IMap<String , AgentStatus>) CacheHelper.getAgentStatusCacheBean().getCache()).values(pagingPredicate)) ;
