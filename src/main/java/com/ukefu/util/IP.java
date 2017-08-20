@@ -1,6 +1,11 @@
 package com.ukefu.util;
 
-public class IP{
+public class IP implements java.io.Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -421278423658892060L;
 	private String country ;
 	private String province ;
 	private String city ;

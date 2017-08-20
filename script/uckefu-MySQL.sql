@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-08-18 22:41:31
+Date: 2017-08-20 08:40:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -715,6 +715,7 @@ CREATE TABLE `uk_chat_message` (
   `agentreplytime` int(11) DEFAULT NULL,
   `lastmsgtime` datetime DEFAULT NULL,
   `agentreplyinterval` int(11) DEFAULT NULL,
+  `sessionid` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sessionid` (`usession`) USING BTREE,
   KEY `orgi` (`orgi`) USING BTREE
@@ -828,7 +829,7 @@ CREATE TABLE `uk_consult_invite` (
 -- ----------------------------
 -- Records of uk_consult_invite
 -- ----------------------------
-INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '3', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', 'right,middle', '在线客服', null, null, null, '2', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '1', '0', '0', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E', '0', '1', '1', '1', '1', '您好，请填写以下信息，方便我们更好的为您服务！', '0', '1', '0', '0', null, null);
+INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '3', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', 'right,middle', '在线客服', null, null, null, '2', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '1', '1', '1', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E', '0', '1', '1', '1', '1', '您好，请填写以下信息，方便我们更好的为您服务！', '0', '1', '0', '1', null, '您好，您所在的地区没有在线客服人员，请电话联系！');
 
 -- ----------------------------
 -- Table structure for `uk_contacts`
@@ -1945,7 +1946,7 @@ CREATE TABLE `uk_snsaccount` (
 -- ----------------------------
 -- Records of uk_snsaccount
 -- ----------------------------
-INSERT INTO `uk_snsaccount` VALUES (null, null, null, null, null, null, '402888815ca1209a015ca122f24f0003', null, null, 'tet', null, null, null, null, 'weixin', '2017-06-13 19:07:20', 'sub', null, null, null, 'UCKeFuToken', 'tet', '8ccaFYMaT8i4HlBfeSEoVA==', 'etet', null, null, null, 'ukewo', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null, '1VYBFF', '0');
+INSERT INTO `uk_snsaccount` VALUES (null, null, 'www.ukewo.cn', null, null, null, '402888815dfa4e79015dfa51ae6a0002', null, null, '优客服', null, null, null, null, 'webim', '2017-08-19 19:47:23', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', '0');
 
 -- ----------------------------
 -- Table structure for `uk_sysdic`
@@ -5934,8 +5935,8 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815d5105b6015d510962b90006', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-18 22:33:06', null, null, null, '0', '0', '1');
-INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402888815dd4e007015dd4e0a3fc0001', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-08-16 21:36:30', null, null, null, '0', '0', '0');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815dfa678b015dfa75e6670004', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-20 08:38:13', null, null, null, '0', '0', '1');
+INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', null, '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-08-16 21:36:30', null, null, null, '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`

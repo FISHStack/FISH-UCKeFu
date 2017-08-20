@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,13 +35,16 @@ import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.router.RouterHelper;
 import com.ukefu.webim.util.server.message.NewRequestMessage;
 import com.ukefu.webim.web.model.AgentUser;
+import com.ukefu.webim.web.model.AreaType;
 import com.ukefu.webim.web.model.Contacts;
 import com.ukefu.webim.web.model.CousultInvite;
+import com.ukefu.webim.web.model.KnowledgeType;
 import com.ukefu.webim.web.model.MessageDataBean;
 import com.ukefu.webim.web.model.MessageInContent;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.OnlineUserHis;
 import com.ukefu.webim.web.model.Organ;
+import com.ukefu.webim.web.model.SceneType;
 import com.ukefu.webim.web.model.SessionConfig;
 import com.ukefu.webim.web.model.Topic;
 import com.ukefu.webim.web.model.User;
@@ -117,7 +121,7 @@ public class OnlineUserUtils {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Organ> organ(String orgi){
+	public static List<Organ> organ(String orgi , IP ipdata , CousultInvite invite){
 		List<Organ> skillList = (List<Organ>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.CACHE_SKILL, orgi) ;
 		if(skillList == null){
 			OrganRepository service = (OrganRepository) UKDataContext.getContext().getBean(OrganRepository.class);
@@ -126,9 +130,120 @@ public class OnlineUserUtils {
 				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_SKILL, skillList, orgi);
 			}
 		}
-		return skillList;
+		List<Organ> regOrganList = new ArrayList<Organ>()  ;
+		List<AreaType> areaTypeList = (List<AreaType>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.UKEFU_SYSTEM_AREA, UKDataContext.SYSTEM_ORGI) ;
+		if(areaTypeList!=null){
+			for(Organ organ : skillList){
+				if(invite.isOnlyareaskill() && !StringUtils.isBlank(organ.getArea())){
+					List<AreaType> atList = getAreaTypeList(organ.getArea(), areaTypeList) ;	//找到技能组配置的地区信息
+					for(AreaType areaType : atList){
+						if(areaType.getArea().indexOf(ipdata.getProvince()) >= 0 || areaType.getArea().indexOf(ipdata.getCity()) >= 0 ){
+							regOrganList.add(organ) ; break ;
+						}
+					}
+				}else if(StringUtils.isBlank(organ.getArea())){
+					regOrganList.add(organ) ;
+				}
+			}
+		}else{
+			for(Organ organ : skillList){
+				if(StringUtils.isBlank(organ.getArea())){
+					regOrganList.add(organ);
+				}
+			}
+		}
+		return regOrganList;
 	}
 	
+	private static List<AreaType> getAreaTypeList(String area , List<AreaType> areaTypeList){
+		List<AreaType> atList = new ArrayList<AreaType>() ;
+		if(areaTypeList!=null && areaTypeList.size() > 0){
+			for(AreaType areaType : areaTypeList){
+				if(!StringUtils.isBlank(area) && area.indexOf(areaType.getId()) >= 0){
+					atList.add(areaType) ;
+				}
+			}
+		}
+		return atList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<KnowledgeType> topicType(String orgi , IP ipdata , List<KnowledgeType> topicTypeList){
+		List<KnowledgeType> tempTopicTypeList = new ArrayList<KnowledgeType>();
+		List<AreaType> areaTypeList = (List<AreaType>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.UKEFU_SYSTEM_AREA, UKDataContext.SYSTEM_ORGI) ;
+		if(areaTypeList!=null){
+			for(KnowledgeType topicType : topicTypeList){
+				if(!StringUtils.isBlank(topicType.getArea())){
+					List<AreaType> atList = getAreaTypeList(topicType.getArea(), areaTypeList) ;	//找到技能组配置的地区信息
+					for(AreaType areaType : atList){
+						if(areaType.getArea().indexOf(ipdata.getProvince()) >= 0 || areaType.getArea().indexOf(ipdata.getCity()) >= 0 ){
+							tempTopicTypeList.add(topicType) ; break ;
+						}
+					}
+				}else{
+					tempTopicTypeList.add(topicType) ;
+				}
+			}
+		}else{
+			for(KnowledgeType topicType : topicTypeList){
+				if(StringUtils.isBlank(topicType.getArea())){
+					tempTopicTypeList.add(topicType);
+				}
+			}
+		}
+		return tempTopicTypeList ;
+	}
+	
+	public static List<Topic> topic(String orgi , List<KnowledgeType> topicTypeList , List<Topic> topicList){
+		List<Topic> tempTopicList = new ArrayList<Topic>();
+		if(topicList!=null){
+			for(Topic topic : topicList){
+				if(StringUtils.isBlank(topic.getCate()) || UKDataContext.DEFAULT_TYPE.equals(topic.getCate()) || getTopicType(topic.getCate(), topicTypeList)!=null){
+					tempTopicList.add(topic) ;
+				}
+			}
+		}
+		return tempTopicList;
+	}
+	/**
+	 * 根据热点知识找到 非空的 分类
+	 * @param topicTypeList
+	 * @param topicList
+	 * @return
+	 */
+	public static List<KnowledgeType> filterTopicType(List<KnowledgeType> topicTypeList , List<Topic> topicList){
+		List<KnowledgeType> tempTopicTypeList = new ArrayList<KnowledgeType>();
+		if(topicTypeList!=null){
+			boolean hasTopic = false ;
+			for(KnowledgeType knowledgeType : topicTypeList){
+				for(Topic topic : topicList){
+					if(knowledgeType.getId().equals(topic.getCate())){
+						hasTopic = true ; break ;
+					}
+				}
+				if(hasTopic){
+					tempTopicTypeList.add(knowledgeType) ;
+				}
+			}
+		}
+		return tempTopicTypeList ;
+	}
+	
+	/**
+	 * 找到知识点对应的 分类
+	 * @param cate
+	 * @param topicTypeList
+	 * @return
+	 */
+	private static KnowledgeType getTopicType(String cate , List<KnowledgeType> topicTypeList){
+		KnowledgeType kt = null ;
+		for(KnowledgeType knowledgeType : topicTypeList){
+			if(knowledgeType.getId().equals(cate)){
+				kt = knowledgeType ; break ;
+			}
+		}
+		return kt ;
+	}
 	/**
 	 * 
 	 * @param user
@@ -261,6 +376,7 @@ public class OnlineUserUtils {
 				onlineUser.setBrowser(client.getBrowser());
 				onlineUser.setUseragent(client.getUseragent());
 			}else{
+				onlineUser.setCreatetime(new Date());
 				if((!StringUtils.isBlank(onlineUser.getSessionid()) && !onlineUser.getSessionid().equals(sessionid)) || !UKDataContext.OnlineUserOperatorStatus.ONLINE.toString().equals(onlineUser.getStatus())){
 					onlineUser.setStatus(UKDataContext.OnlineUserOperatorStatus.ONLINE.toString());
 					onlineUser.setChannel(channel);
@@ -704,8 +820,66 @@ public class OnlineUserUtils {
 	public static List<Topic> cacheHotTopic(DataExchangeInterface dataExchange,User user , String orgi) {
 		List<Topic> topicList = null ;
 		if((topicList = (List<Topic>) CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopic", orgi))==null){ 
-			topicList = (List<Topic>) dataExchange.getListDataByIdAndOrgi(user.getId(), user.getId(),  orgi) ;
+			topicList = (List<Topic>) dataExchange.getListDataByIdAndOrgi(null, null,  orgi) ;
+			CacheHelper.getSystemCacheBean().put("xiaoeTopic" , topicList , orgi) ;
 		}
 		return topicList;
+	}
+	
+	public static void resetHotTopicType(DataExchangeInterface dataExchange,User user , String orgi) {
+		if(CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopicType", orgi)!=null){
+			CacheHelper.getSystemCacheBean().delete("xiaoeTopicType", orgi) ;
+		}
+		cacheHotTopicType(dataExchange,user , orgi) ;
+	}
+	@SuppressWarnings("unchecked")
+	public static List<KnowledgeType> cacheHotTopicType(DataExchangeInterface dataExchange,User user , String orgi) {
+		List<KnowledgeType> topicTypeList = null ;
+		if((topicTypeList = (List<KnowledgeType>) CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopicType", orgi))==null){ 
+			topicTypeList = (List<KnowledgeType>) dataExchange.getListDataByIdAndOrgi(null, null,  orgi) ;
+			CacheHelper.getSystemCacheBean().put("xiaoeTopicType" , topicTypeList , orgi) ;
+		}
+		return topicTypeList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<SceneType> cacheSceneType(DataExchangeInterface dataExchange,User user , String orgi) {
+		List<SceneType> sceneTypeList = null ;
+		if((sceneTypeList = (List<SceneType>) CacheHelper.getSystemCacheBean().getCacheObject("xiaoeSceneType", orgi))==null){ 
+			sceneTypeList = (List<SceneType>) dataExchange.getListDataByIdAndOrgi(null, null,  orgi) ;
+			CacheHelper.getSystemCacheBean().put("xiaoeSceneType" , sceneTypeList , orgi) ;
+		}
+		return sceneTypeList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static boolean filterSceneType(String cate ,String orgi , IP ipdata) {
+		boolean result = false ;
+		List<SceneType> sceneTypeList = cacheSceneType((DataExchangeInterface) UKDataContext.getContext().getBean("scenetype"), null, orgi) ;
+		List<AreaType> areaTypeList = (List<AreaType>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.UKEFU_SYSTEM_AREA, UKDataContext.SYSTEM_ORGI) ;
+		if(sceneTypeList!=null && cate != null && !UKDataContext.DEFAULT_TYPE.equals(cate)){
+			for(SceneType sceneType : sceneTypeList){
+				if(cate.equals(sceneType.getId())){
+					if(!StringUtils.isBlank(sceneType.getArea())){
+						if(ipdata!=null){
+							List<AreaType> atList = getAreaTypeList(sceneType.getArea(), areaTypeList) ;	//找到技能组配置的地区信息
+							for(AreaType areaType : atList){
+								if(areaType.getArea().indexOf(ipdata.getProvince()) >= 0 || areaType.getArea().indexOf(ipdata.getCity()) >= 0 ){
+									result = true ; break ;
+								}
+							}
+						}
+					}else{
+						result = true ;
+					}
+				}
+				if(result){
+					break ;
+				}
+			}
+		}else{
+			result = true; 
+		}
+		return result;
 	}
 }

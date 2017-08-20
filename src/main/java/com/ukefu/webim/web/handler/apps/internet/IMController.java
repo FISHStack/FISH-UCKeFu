@@ -64,8 +64,10 @@ import com.ukefu.webim.web.model.BlackEntity;
 import com.ukefu.webim.web.model.Contacts;
 import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.InviteRecord;
+import com.ukefu.webim.web.model.KnowledgeType;
 import com.ukefu.webim.web.model.LeaveMsg;
 import com.ukefu.webim.web.model.SessionConfig;
+import com.ukefu.webim.web.model.Topic;
 import com.ukefu.webim.web.model.UploadStatus;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserHistory;
@@ -189,7 +191,7 @@ public class IMController extends Handler{
 				    /***
 				     * 查询 技能组 ， 缓存？ 
 				     */
-				    view.addObject("skillList", OnlineUserUtils.organ(invite.getOrgi()))  ;
+				    view.addObject("skillList", OnlineUserUtils.organ(invite.getOrgi() , ipdata , invite))  ;
 				    /**
 				     * 查询坐席 ， 缓存？
 				     */
@@ -387,8 +389,8 @@ public class IMController extends Handler{
 			if(!StringUtils.isBlank(type)){
 				map.addAttribute("type", type) ;
 			}
-			
-			map.addAttribute("skillList", OnlineUserUtils.organ(invite.getOrgi()))  ;
+			IP ipdata = IPTools.getInstance().findGeography(UKTools.getIpAddr(request));
+			map.addAttribute("skillList", OnlineUserUtils.organ(invite.getOrgi() , ipdata , invite))  ;
 			
     		if(invite!=null && consult){
 				if(contacts!=null && !StringUtils.isBlank(contacts.getName())){
@@ -407,7 +409,21 @@ public class IMController extends Handler{
     					view = request(super.createRequestPageTempletResponse("/apps/im/ai/mobile")) ;		//智能机器人 移动端
     				}
     				if(UKDataContext.model.get("xiaoe")!=null){
-    					map.addAttribute("topicList", OnlineUserUtils.cacheHotTopic((DataExchangeInterface) UKDataContext.getContext().getBean("topic") , super.getUser(request) , super.getOrgi(request)) ) ;
+    					List<Topic> topicList = OnlineUserUtils.cacheHotTopic((DataExchangeInterface) UKDataContext.getContext().getBean("topic") , super.getUser(request) , super.getOrgi(request))  ;
+    					
+    					/**
+    					 * 初步按照地区匹配分类筛选
+    					 */
+    					List<KnowledgeType> topicTypeList = OnlineUserUtils.topicType(super.getOrgi(request),ipdata,OnlineUserUtils.cacheHotTopicType((DataExchangeInterface) UKDataContext.getContext().getBean("topictype") , super.getUser(request) , super.getOrgi(request))) ; 
+    					
+    					/**
+    					 * 第二步按照 有 热点主题的 分类做筛选
+    					 */
+    					map.addAttribute("topicList", OnlineUserUtils.topic(orgi, topicTypeList, topicList)) ;
+    					/**
+    					 * 第三步筛选 分类，如果无热点知识，则不显示分类
+    					 */
+    					map.addAttribute("topicTypeList",OnlineUserUtils.filterTopicType(topicTypeList, topicList)) ;
     				}
     			}else{
     				if(CheckMobile.check(request.getHeader("User-Agent")) || !StringUtils.isBlank(mobile)){

@@ -1,5 +1,7 @@
 package com.ukefu.webim.web.model;
 
+import com.ukefu.util.IP;
+
 public class AiUser implements java.io.Serializable{
 	/**
 	 * 
@@ -8,11 +10,13 @@ public class AiUser implements java.io.Serializable{
 	private String id ;
 	private String userid ;
 	private long time ;
+	private IP ipdata ;
 	
-	public AiUser(String id , String userid, long time){
+	public AiUser(String id , String userid, long time , IP ipdata){
 		this.id = id ;
 		this.userid = userid ;
 		this.time = time ;
+		this.ipdata = ipdata ;
 	}
 	
 	public String getId() {
@@ -32,5 +36,13 @@ public class AiUser implements java.io.Serializable{
 	}
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+
+	public IP getIpdata() {
+		return ipdata;
+	}
+
+	public void setIpdata(IP ipdata) {
+		this.ipdata = ipdata;
 	}
 }

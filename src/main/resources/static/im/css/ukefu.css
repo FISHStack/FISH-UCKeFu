@@ -1113,3 +1113,22 @@ p.submitBtnWrap{
 .ukefu-message-file .ukefu-file-desc a{
 	text-decoration: none !important;
 }
+.ukefu-xiaoe-topictype{
+    border-bottom: 1px solid #F0F0F0;
+    position: relative;
+    width: 100%;
+    line-height: 1.5em;
+    padding: 2px 0px;	
+}
+.ukefu-xiaoe-topictype-title{
+    height: 37px;
+    line-height: 37px;
+    color: #555555 !important;
+    font-size: 13px;
+    font-weight:400;	
+	
+	position: relative;
+    padding: 0 15px 0 10px;
+    background-color: #f2f2f2;
+}
+

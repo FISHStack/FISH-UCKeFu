@@ -1,5 +1,6 @@
 package com.ukefu.webim.util.server.handler;
 
+import java.net.InetSocketAddress;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
@@ -12,6 +13,7 @@ import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import com.ukefu.core.UKDataContext;
+import com.ukefu.util.IPTools;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
 import com.ukefu.webim.service.cache.CacheHelper;
@@ -58,7 +60,11 @@ public class AiIMEventHandler
 				outMessage.setCreatetime(UKTools.dateFormate.format(new Date()));
 				
 				client.sendEvent(UKDataContext.MessageTypeEnum.STATUS.toString(), outMessage);
-				CacheHelper.getOnlineUserCacheBean().put(client.getSessionId().toString(), new AiUser(client.getSessionId().toString(), user, System.currentTimeMillis()), UKDataContext.SYSTEM_ORGI);
+				
+				InetSocketAddress address = (InetSocketAddress) client.getRemoteAddress()  ;
+				String ip = UKTools.getIpAddr(client.getHandshakeData().getHttpHeaders(), address.getHostString()) ;
+				
+				CacheHelper.getOnlineUserCacheBean().put(client.getSessionId().toString(), new AiUser(client.getSessionId().toString(), user, System.currentTimeMillis() , IPTools.getInstance().findGeography(ip)), UKDataContext.SYSTEM_ORGI);
 				
 			}
 		} catch (Exception e) {
@@ -100,6 +106,7 @@ public class AiIMEventHandler
     	if(!StringUtils.isBlank(data.getMessage()) && data.getMessage().length() > 300){
     		data.setMessage(data.getMessage().substring(0 , 300));
     	}
+    	data.setSessionid(client.getSessionId().toString());
     	/**
 		 * 处理表情
 		 */

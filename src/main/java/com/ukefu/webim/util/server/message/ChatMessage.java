@@ -37,6 +37,9 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	private String creater; 
 	private String usession ;
 	private String agentserviceid ;
+	
+	private String sessionid ;	//增加记录 AI 的 Client Session ID
+	
 	private String message ;
 	private String orgi ;
 	private String channel ;
@@ -304,5 +307,11 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	}
 	public void setAgentreplyinterval(int agentreplyinterval) {
 		this.agentreplyinterval = agentreplyinterval;
+	}
+	public String getSessionid() {
+		return sessionid;
+	}
+	public void setSessionid(String sessionid) {
+		this.sessionid = sessionid;
 	}
 }
