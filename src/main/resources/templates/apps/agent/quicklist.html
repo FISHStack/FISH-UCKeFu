@@ -84,7 +84,7 @@
 	    <#if quickReplyList??>
 		    <#list quickReplyList as quickReply>
 		    <#if quickReply.cate?? && (quickReply.cate == pubQuckType.id)>
-		    ,{ id:'${quickReply.id!''}', pId:'${quickReply.cate!''}', name:"${quickReply.content!''}", open:true ,  icon:"/images/quickreply.png" , type : false  , pri:<#if pubQuckType.quicktype == "pri">true<#else>false</#if>}
+		    ,{ id:'${quickReply.id!''}', pId:'${quickReply.cate!''}', name:"${(quickReply.content!'')?replace('\r\n','<br/>')?no_esc}", open:true ,  icon:"/images/quickreply.png" , type : false  , pri:<#if pubQuckType.quicktype == "pri">true<#else>false</#if>}
 		    </#if>
 		    </#list>
 	    </#if>
@@ -93,7 +93,7 @@
 	    <#if quickReplyList??>
 		    <#list quickReplyList as quickReply>
 		    <#if quickReply.cate?? && quickReply.cate == '1'>
-		    ,{ id:'${quickReply.id!''}', pId:'${quickReply.cate!''}', name:"${quickReply.content!''}", open:true ,  icon:"/images/quickreply.png" , type : false  , pri:true}
+		    ,{ id:'${quickReply.id!''}', pId:'${quickReply.cate!''}', name:"${(quickReply.content!'')?replace('\r\n','<br/>')?no_esc}", open:true ,  icon:"/images/quickreply.png" , type : false  , pri:true}
 		    </#if>
 		    </#list>
 	    </#if>
