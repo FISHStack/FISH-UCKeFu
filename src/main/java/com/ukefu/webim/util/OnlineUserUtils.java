@@ -404,7 +404,7 @@ public class OnlineUserUtils {
 					onlineUser.setUpdatetime(new Date());
 				}
 			}
-			if(invite.isRecordhis()){
+			if(invite.isRecordhis() && !StringUtils.isBlank(request.getParameter("traceid"))){
 	    		UserTraceHistory trace = new UserTraceHistory();
 	    		trace.setId(request.getParameter("traceid"));
 	    		trace.setTitle(request.getParameter("title"));
