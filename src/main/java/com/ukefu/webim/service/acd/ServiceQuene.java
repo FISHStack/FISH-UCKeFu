@@ -473,7 +473,13 @@ public class ServiceQuene {
 					agentUser.getStatus())) {
 				serviceFinish(agentUser, orgi);
 			}
-			UKDataContext.getContext().getBean(AgentUserRepository.class).delete(agentUser);
+			if(!StringUtils.isBlank(agentUser.getId())){
+				AgentUserRepository agentUserRes = UKDataContext.getContext().getBean(AgentUserRepository.class) ;
+				agentUser = agentUserRes.findByIdAndOrgi(agentUser.getId(), orgi);
+				if(agentUser!=null){
+					agentUserRes.delete(agentUser);
+				}
+			}
 		}
 		return agentUser;
 	}
