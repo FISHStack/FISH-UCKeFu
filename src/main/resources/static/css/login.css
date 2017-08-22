@@ -2,7 +2,7 @@
 html { *overflow:auto; font-family:"Microsoft Yahei","Helvetica","Simsun","Arial";}
 body{
 	background: url(/images/bg.jpg) no-repeat;
-    background-size: cover;	
+    background-size: 100%;	
 }
 
 
