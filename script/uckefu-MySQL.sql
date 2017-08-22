@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-08-21 00:02:38
+Date: 2017-08-22 21:04:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -5686,6 +5686,8 @@ INSERT INTO `uk_sysdic` VALUES ('402888815dfd1c35015dfd2690740007', '访客入�
 INSERT INTO `uk_sysdic` VALUES ('402888815dfd1c35015dfd2690870008', '邀请框（询问窗口）', 'pub', 'invite', 'ukewo', 'layui-icon', '402888815dfd1c35015dfd2645510006', '图片尺寸：420x178', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-08-20 08:59:09', '2017-08-20 08:59:09', '0', '2', '402888815dfd1c35015dfd2645510006', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402888815dfd2cf1015dfd3029110002', '欢迎提示（对话窗口）', 'pub', 'welcome', 'ukewo', 'layui-icon', '402888815dfd1c35015dfd2645510006', '图片尺寸：520x50', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-08-20 09:09:38', null, '1', '0', '402888815dfd1c35015dfd2645510006', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402888815dfd2cf1015dfd312f870003', '形象展示（对话窗口）', 'pub', 'image', 'ukewo', 'layui-icon', '402888815dfd1c35015dfd2645510006', '图片尺寸：280x190', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-08-20 09:10:45', null, '1', '0', '402888815dfd1c35015dfd2645510006', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('402888815e097729015e0999f26e0002', '数据接口', 'pub', 'com.dic.data.impl', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-22 19:00:37', null, '1', '0', null, '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('402888815e097729015e099ac71b0003', '知识库分类', 'pub', 'topictype', 'ukewo', null, '402888815e097729015e0999f26e0002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-22 19:01:32', '2017-08-22 19:01:32', '0', '1', '402888815e097729015e0999f26e0002', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafaa94015bafb14edf0002', '服务类型', 'pub', 'summary', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2017-04-27 21:54:44', null, '1', '0', '4028838b5b565caf015b566d11d80010', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe5c8180009', '服务小结预约方式', 'pub', 'com.dic.summary.reservtype', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:03', null, '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64be2000a', '电话', 'pub', 'phone', 'ukewo', null, '4028e3815bafb323015bafe5c8180009', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:37', '2017-04-27 22:52:37', '0', '1', '4028e3815bafb323015bafe5c8180009', '0', '0', null, null, null, null, null);
@@ -5973,7 +5975,7 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815dfa678b015dfa75e6670004', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-20 23:53:13', null, null, null, '0', '0', '1');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815dfa678b015dfa75e6670004', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-22 20:15:47', null, null, null, '0', '0', '1');
 INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', null, '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-08-16 21:36:30', null, null, null, '0', '0', '0');
 
 -- ----------------------------
@@ -6256,6 +6258,8 @@ CREATE TABLE `uk_xiaoe_kbs_type` (
   `ORGI` varchar(32) DEFAULT NULL COMMENT '租户ID',
   `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
   `area` text,
+  `parentid` varchar(32) DEFAULT '0',
+  `typeid` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -6348,6 +6352,8 @@ CREATE TABLE `uk_xiaoe_scene_type` (
   `ORGI` varchar(32) DEFAULT NULL COMMENT '租户ID',
   `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
   `area` text,
+  `parentid` varchar(32) DEFAULT '0',
+  `typeid` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -6394,6 +6400,7 @@ CREATE TABLE `uk_xiaoe_topic` (
   `tts` varchar(255) DEFAULT NULL COMMENT 'TTS模板',
   `email` text COMMENT '邮件模板',
   `weixin` text COMMENT '微信回复模板',
+  `silimar` text COMMENT '类似问题',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

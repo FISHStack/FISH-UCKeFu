@@ -84,7 +84,7 @@ public class QuickReplyRepositoryImpl implements QuickReplyEsCommonRepository{
 	    }
 	    NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder).withSort(new FieldSortBuilder("createtime").unmappedType("date").order(SortOrder.DESC));
 	    searchQueryBuilder.withHighlightFields(new HighlightBuilder.Field("title").fragmentSize(200)) ;
-	    SearchQuery searchQuery = searchQueryBuilder.build() ;
+	    SearchQuery searchQuery = searchQueryBuilder.build().setPageable(new PageRequest(0, 10000)) ;
 	    if(elasticsearchTemplate.indexExists(QuickReply.class)){
 	    	pages = elasticsearchTemplate.queryForList(searchQuery, QuickReply.class);
 	    }
