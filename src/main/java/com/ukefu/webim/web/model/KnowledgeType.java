@@ -24,6 +24,8 @@ public class KnowledgeType implements java.io.Serializable{
 	private String name ;
 	private String code ;
 	private Date createtime ;
+	private String parentid ;
+	private String typeid ;
 	private String creater;
 	private String username ;
 	private Date updatetime ;
@@ -33,7 +35,7 @@ public class KnowledgeType implements java.io.Serializable{
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")	
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")	
 	public String getId() {
 		return id;
 	}
@@ -87,5 +89,17 @@ public class KnowledgeType implements java.io.Serializable{
 	}
 	public void setArea(String area) {
 		this.area = area;
+	}
+	public String getParentid() {
+		return parentid;
+	}
+	public void setParentid(String parentid) {
+		this.parentid = parentid;
+	}
+	public String getTypeid() {
+		return typeid;
+	}
+	public void setTypeid(String typeid) {
+		this.typeid = typeid;
 	}
 }

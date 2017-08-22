@@ -1,6 +1,8 @@
 package com.ukefu.webim.web.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,7 @@ import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.MultiField;
 
 import com.ukefu.util.UKTools;
 
@@ -60,6 +63,11 @@ public class Topic implements java.io.Serializable{
 	private boolean essence ;	//是否精华
 	private boolean accept ;	//是否已采纳最佳答案
 	private boolean finish	;	//结贴
+	
+	
+	@MultiField(mainField = @Field)
+	@Transient
+	private List<String> silimar = new ArrayList<String>();
 	
 	private int answers ;		//回答数量
 	private int views ;			//阅读数量
@@ -373,5 +381,13 @@ public class Topic implements java.io.Serializable{
 
 	public void setTts(String tts) {
 		this.tts = tts;
+	}
+	@Transient
+	public List<String> getSilimar() {
+		return silimar;
+	}
+
+	public void setSilimar(List<String> silimar) {
+		this.silimar = silimar;
 	}
 }

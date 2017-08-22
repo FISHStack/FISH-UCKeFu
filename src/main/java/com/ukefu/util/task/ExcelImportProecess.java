@@ -4,12 +4,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -19,9 +23,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.elasticsearch.common.lang3.StringUtils;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
+import com.ukefu.util.extra.DataExchangeInterface;
+import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.TableProperties;
 import com.ukefu.webim.web.model.UKeFuDic;
@@ -38,6 +46,7 @@ public class ExcelImportProecess extends DataProcess{
 		processExcel(event);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void processExcel(final DSDataEvent event){
 		InputStream is = null;  
     	try {
@@ -78,12 +87,21 @@ public class ExcelImportProecess extends DataProcess{
              * 需要检查Mapping 是否存在
              */
             long start = System.currentTimeMillis() ;
+            Map<Object, List> refValues = new HashMap<Object , List>() ;
+            MetadataTable table = event.getDSData().getTask() ;
+            for(TableProperties tp : table.getTableproperty()){
+            	if(tp.isReffk() && !StringUtils.isBlank(tp.getReftbid())){
+            		DataExchangeInterface exchange = (DataExchangeInterface) UKDataContext.getContext().getBean(tp.getReftbid()) ;
+            		refValues.put(tp.getFieldname(), exchange.getListDataByIdAndOrgi(null, null, UKDataContext.SYSTEM_ORGI)) ;
+            	}
+            }
             
             for(int i=1 ; i<totalRows; i++){
             	Row row = sheet.getRow(i) ;
             	if(row!=null){
 					Object data = event.getDSData().getClazz().newInstance() ;
 					Map<Object, Object> values = new HashMap<Object , Object>() ;
+					ArrayListMultimap<String, Object> multiValues = ArrayListMultimap.create();
 					for(int col=0 ; col<colNum ; col++){
 						Cell value = row.getCell(col) ;
 						Cell title = titleRow.getCell(col) ;
@@ -91,15 +109,24 @@ public class ExcelImportProecess extends DataProcess{
 						TableProperties tableProperties = getTableProperties(event, titleValue);
 						if(tableProperties!=null && value!=null){
 							String valuestr = getValue(value) ;
-							if(tableProperties.isSeldata()){
-								SysDic sysDic = UKeFuDic.getInstance().getDicItem(valuestr) ;
-								if(sysDic!=null){
-									values.put(tableProperties.getFieldname(), sysDic.getName()) ;
+							if(tableProperties.isModits()){
+								multiValues.put(tableProperties.getFieldname(), valuestr) ;
+							}else{
+								if(tableProperties.isSeldata()){
+									SysDic sysDic = UKeFuDic.getInstance().getDicItem(valuestr) ;
+									if(sysDic!=null){
+										values.put(tableProperties.getFieldname(), sysDic.getName()) ;
+									}else{
+										values.put(tableProperties.getFieldname(), valuestr) ;
+									}
+								}else if(tableProperties.isReffk() && refValues.get(tableProperties.getFieldname())!=null){
+									values.put(tableProperties.getFieldname() , getRefid(tableProperties,refValues.get(tableProperties.getFieldname()) , valuestr)) ;
 								}else{
 									values.put(tableProperties.getFieldname(), valuestr) ;
 								}
-							}else{
-								values.put(tableProperties.getFieldname(), valuestr) ;
+								if(tableProperties.isPk() && !tableProperties.getFieldname().equalsIgnoreCase("id")){
+									values.put("id", UKTools.md5(valuestr)) ;
+								}
 							}
 							event.getDSData().getReport().setBytes(event.getDSData().getReport().getBytes() + valuestr.length());
 							event.getDSData().getReport().getAtompages().incrementAndGet() ;
@@ -112,6 +139,8 @@ public class ExcelImportProecess extends DataProcess{
 					if(event.getValues()!=null && event.getValues().size() > 0){
 						values.putAll(event.getValues());
 					}
+					values.putAll(multiValues.asMap());
+					
 					UKTools.populate(data, values);
 					event.getDSData().getProcess().process(data);
             	}
@@ -134,6 +163,32 @@ public class ExcelImportProecess extends DataProcess{
 				event.getDSData().getFile().delete() ;
 			}
 		}
+	}
+	
+	private String getRefid(TableProperties tp , List<Object> dataList , String value) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+		String id = "" ;
+		for(Object data : dataList){
+			Object target = null ;
+			if(PropertyUtils.isReadable(data, "name")){
+				target = BeanUtils.getProperty(data, "name") ;
+				if(target!=null && target.equals(value)){
+					id = BeanUtils.getProperty(data, "id") ;
+				}
+			}
+			if(StringUtils.isBlank(id) && PropertyUtils.isReadable(data, "title")){
+				target = BeanUtils.getProperty(data, "title") ; 
+				if(target!=null && target.equals(value)){
+					id = BeanUtils.getProperty(data, "id") ;
+				}
+			}
+			if(StringUtils.isBlank(id)){
+				target = BeanUtils.getProperty(data, "id") ; 
+				if(target!=null && target.equals(value)){
+					id = target.toString() ;
+				}
+			}
+		}
+		return id ;
 	}
 	
 	private TableProperties getTableProperties(DSDataEvent event , String title){

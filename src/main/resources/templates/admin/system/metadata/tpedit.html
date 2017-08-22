@@ -52,6 +52,50 @@
 				</div>
 			</div>
 		</div>
+		
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">启用多值：</label>
+				<div class="layui-input-inline" style="line-height: 35px;width:80px;">
+					<input type="checkbox" name="modits" lay-skin="switch" value="1" <#if tp.modits == true>checked="checked"</#if> lay-text="开启|关闭">
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">生成ID：</label>
+				<div class="layui-input-inline" style="line-height: 35px;width:80px;">
+					<input type="checkbox" name="pk" lay-skin="switch" value="1" <#if tp.pk == true>checked="checked"</#if> lay-text="开启|关闭">
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">启用关联：</label>
+				<div class="layui-input-inline" style="line-height: 35px;width:80px;">
+					<input type="checkbox" name="reffk" lay-skin="switch" lay-filter="fk" value="1" <#if tp.reffk == true>checked="checked"</#if> lay-text="开启|关闭">
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item" id="fk" style="<#if tp.reffk?? && tp.reffk><#else>display:none;</#if>" lay-ignore>
+			<div class="layui-inline">
+				<label class="layui-form-label">关联表：</label>
+				<div class="layui-input-inline" style="line-height: 35px;width:80px;">
+					  <select name="reftbid" lay-ignore style="width:220px;">
+						<option value="">请选择数据接口</option>
+						<#if dataImplList??>
+						<#list dataImplList as datadic>
+						<option value="${datadic.code!''}" <#if tp.reftbid?? && tp.reftbid == datadic.code>selected="selected"</#if>>${datadic.name}</option>
+						</#list>
+						</#if>
+					</select>
+				</div>
+			</div>
+		</div>
 
 		<div class="layui-form-button">
 			<div class="layui-button-block">
@@ -72,6 +116,13 @@ layui.use('form', function(){
 	  	$("#sysdicsel").show();
   	}else{
   		$("#sysdicsel").hide();
+  	}
+  });
+  form.on("switch(fk)" , function(data){
+  	if(data.elem.checked){
+	  	$("#fk").show();
+  	}else{
+  		$("#fk").hide();
   	}
   });
 });

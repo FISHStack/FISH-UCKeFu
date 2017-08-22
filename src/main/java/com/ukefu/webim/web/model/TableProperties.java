@@ -64,8 +64,8 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	private String indexdatatype ;
 	private String groupid ;
 	private String userid ;
-	private Boolean pk = false;
-	private Boolean modits = false ;
+	private boolean pk = false;
+	private boolean modits = false ;
 	private String orgi ;
 	private String viewtype;
 	private int sortindex = 1;
@@ -231,31 +231,18 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	/**
-	 * @return the pk
-	 */
-	public Boolean getPk() {
+	public boolean isPk() {
 		return pk;
 	}
-	/**
-	 * @param pk the pk to set
-	 */
-	public void setPk(Boolean pk) {
+	public void setPk(boolean pk) {
 		this.pk = pk;
 	}
-	/**
-	 * @return the modits
-	 */
-	public Boolean getModits() {
+	public boolean isModits() {
 		return modits;
 	}
-	/**
-	 * @param modits the modits to set
-	 */
-	public void setModits(Boolean modits) {
+	public void setModits(boolean modits) {
 		this.modits = modits;
 	}
-	
 	public String getTablename() {
 		return tablename;
 	}

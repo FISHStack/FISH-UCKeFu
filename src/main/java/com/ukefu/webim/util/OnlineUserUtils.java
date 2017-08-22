@@ -617,7 +617,7 @@ public class OnlineUserUtils {
 		agentUser.setTraceid(traceid);
 		
 		CousultInvite invite = OnlineUserUtils.cousult(appid, orgi, UKDataContext.getContext().getBean(ConsultInviteRepository.class)) ;
-		if(!invite.isTraceuser()){
+		if(invite!=null && !invite.isTraceuser()){
 			OnlineUser onlineUser = (OnlineUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(user, orgi) ;
 			if(onlineUser!=null){
 				OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;

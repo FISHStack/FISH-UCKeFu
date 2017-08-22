@@ -32,6 +32,7 @@ import com.ukefu.webim.service.repository.TablePropertiesRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.TableProperties;
+import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
 
 @Controller
@@ -79,6 +80,7 @@ public class MetadataController extends Handler{
     public ModelAndView propertiesedit(ModelMap map , HttpServletRequest request , @Valid String id) {
     	map.addAttribute("tp", tablePropertiesRes.findById(id)) ;
     	map.addAttribute("sysdicList", sysDicRes.findByParentid("0")) ;
+    	map.addAttribute("dataImplList", UKeFuDic.getInstance().getDic("com.dic.data.impl")) ;
     	return request(super.createRequestPageTempletResponse("/admin/system/metadata/tpedit"));
     }
     
@@ -89,6 +91,12 @@ public class MetadataController extends Handler{
     	tableProperties.setName(tp.getName());
     	tableProperties.setSeldata(tp.isSeldata());
     	tableProperties.setSeldatacode(tp.getSeldatacode());
+    	
+    	tableProperties.setReffk(tp.isReffk());
+    	tableProperties.setReftbid(tp.getReftbid());
+    	
+    	tableProperties.setModits(tp.isModits());
+    	tableProperties.setPk(tp.isPk()) ;
     	
     	tableProperties.setSystemfield(tp.isSystemfield());
     	
