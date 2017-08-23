@@ -163,6 +163,9 @@ public class OrganController extends Handler{
     		tempOrgan.setUpdatetime(new Date());
     		tempOrgan.setOrgi(super.getOrgi(request));
     		tempOrgan.setSkill(organ.isSkill());
+    		
+    		tempOrgan.setArea(organ.getArea());
+    		
     		organRepository.save(tempOrgan) ;
     		OnlineUserUtils.clean(super.getOrgi(request));
     	}else{
