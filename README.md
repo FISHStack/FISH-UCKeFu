@@ -57,12 +57,14 @@ DEMO访问地址：[优客服（UCKeFu-WebIM）](http://uk.ukewo.cn/) ， 访问
 ### 1.  将代码拉取下来
 
 ### 1. 编译pom.xml文件，下载好jar包
-本项目有两个依赖包，IP2REGION 和 UCKeFu-Core，通过以下指令加入到本地Mavenue仓库：
+本项目有三个依赖包，IP2REGION 、 jave 和Mondrian，通过以下指令加入到本地Mavenue仓库：
 
 1、mvn install:install-file  -Dfile=src/main/resources/WEB-INF/lib/ip2region-1.2.4.jar -DgroupId=org.lionsoul.ip2region -DartifactId=ip2region -Dversion=1.2.4 -Dpackaging=jar
 
 
 2、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/jave-1.0.2.jar -DgroupId=lt.jave -DartifactId=jave -Dversion=1.0.2 -Dpackaging=jar
+
+3、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/mondrian-3.14.0.0-12.jar -DgroupId=mondrian -DartifactId=jave -Dversion=3.14.0 -Dpackaging=jar
 
  **确保两个依赖都安装成功** 
 
