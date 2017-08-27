@@ -56,6 +56,7 @@ import com.ukefu.webim.service.repository.UserTraceRepository;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.AgentReport;
 import com.ukefu.webim.web.model.AgentServiceSatis;
 import com.ukefu.webim.web.model.AgentUserContacts;
 import com.ukefu.webim.web.model.AiConfig;
@@ -266,7 +267,7 @@ public class IMController extends Handler{
 						}
 					});
 					CousultInvite invite = OnlineUserUtils.cousult(appid, super.getOrgi(request), inviteRepository);
-					if(invite.isTraceuser()){
+					if(invite!=null && invite.isTraceuser()){
 						contacts = processContacts(orgi, contacts, appid, userid);
 					}
 			    	if(!StringUtils.isBlank(sign)){
@@ -320,9 +321,10 @@ public class IMController extends Handler{
 				map.addAttribute("url", url) ;
 			}
 			
-			map.addAttribute("ukefport", request.getServerPort()) ;
+			map.addAttribute("ukefport", request.getServerPort()) ; 
+			AgentReport report = ServiceQuene.getAgentReport(invite.getOrgi()) ;
 			
-			if(sessionConfig.isHourcheck() && !UKTools.isInWorkingHours(sessionConfig.getWorkinghours()) && invite.isLeavemessage()){
+			if(report.getAgents() ==0 ||  (sessionConfig.isHourcheck() && !UKTools.isInWorkingHours(sessionConfig.getWorkinghours()) && invite.isLeavemessage())){
 				view = request(super.createRequestPageTempletResponse("/apps/im/leavemsg")) ;
 			}else if(invite.isConsult_info()){	//启用了信息收集 , 从Request获取 ， 或从 Cookies 里去
     			//验证 OnlineUser 信息
