@@ -74,10 +74,6 @@ public class IMAgentController extends Handler{
     	}
     	map.put("sessionConfig", sessionConfig) ;
     	
-    	map.put("tagTypeList", UKeFuDic.getInstance().getDic("com.dic.tag.type")) ;
-    	
-    	map.put("advTypeList", UKeFuDic.getInstance().getDic("com.dic.adv.type")) ;
-    	
         return request(super.createAppsTempletResponse("/apps/setting/agent/index"));
     }
     
