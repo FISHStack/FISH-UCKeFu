@@ -64,7 +64,7 @@ DEMO访问地址：[优客服（UCKeFu-WebIM）](http://uk.ukewo.cn/) ， 访问
 
 2、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/jave-1.0.2.jar -DgroupId=lt.jave -DartifactId=jave -Dversion=1.0.2 -Dpackaging=jar
 
-3、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/mondrian-3.14.0.0-12.jar -DgroupId=mondrian -DartifactId=mondrian -Dversion=3.14.0 -Dpackaging=jar
+3、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/mondrian-3.7.0.jar -DgroupId=mondrian -DartifactId=mondrian -Dversion=3.7.0 -Dpackaging=jar
 
  **确保两个依赖都安装成功** 
 
