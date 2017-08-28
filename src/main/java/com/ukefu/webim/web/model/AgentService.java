@@ -167,7 +167,6 @@ public class AgentService implements Serializable {
 	private boolean online = false;
 	@Transient
 	private boolean disconnect = false;
-	@Transient
 	private String agentskill;
 
 	@Id

@@ -15,6 +15,8 @@ public abstract interface AgentServiceRepository
   
   public abstract Page<AgentService> findByOrgi(String orgi, Pageable paramPageable);
   
+  public abstract Page<AgentService> findByOrgiAndSatisfaction(String orgi , boolean satisfaction, Pageable paramPageable);
+  
   public abstract Page<AgentService> findByOrgiAndStatus(String orgi ,String status , Pageable paramPageable);
   
   public abstract List<AgentService> findByAgentnoAndStatusAndOrgi(String agentno, String status , String orgi);

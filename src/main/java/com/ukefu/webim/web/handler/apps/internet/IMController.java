@@ -69,6 +69,7 @@ import com.ukefu.webim.web.model.KnowledgeType;
 import com.ukefu.webim.web.model.LeaveMsg;
 import com.ukefu.webim.web.model.SessionConfig;
 import com.ukefu.webim.web.model.Topic;
+import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.UploadStatus;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserHistory;
@@ -440,7 +441,7 @@ public class IMController extends Handler{
     			}
     			map.addAttribute("chatMessageList", chatMessageRes.findByUsessionAndOrgi(userid , orgi, new PageRequest(0, 20, Direction.DESC , "updatetime"))) ;
 	    	}
-    		
+    		view.addObject("commentList" , UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_DIC)) ;
     		view.addObject("welcomeAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.WELCOME.toString())) ;
     		view.addObject("imageAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.IMAGE.toString())) ;
 	//    	OnlineUserUtils.sendWebIMClients(userid , "accept");

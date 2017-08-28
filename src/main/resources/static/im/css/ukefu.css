@@ -752,7 +752,7 @@ p.submitBtnWrap {
 	filter: alpha(opacity=50)
 }
 .dialogWrap{
-	width:541px;
+	width:600px;
 	height:342px;
 	border-radius: 1px;
 	position: absolute;
@@ -795,7 +795,7 @@ p.submitBtnWrap {
 	height:130px;
 	resize: none;
 	position: relative;
-	top:-15px;
+	top:10px;
 	left:45px;
 }
 .submitBtnWrap .submitBtn{

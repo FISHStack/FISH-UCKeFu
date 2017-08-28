@@ -330,16 +330,14 @@
             <!--评价-->
             <p>
                 <span>评价：</span>
-                <input type="radio" name="satislevel" value="1" checked="checked" id="04">
-                <label for="04" class="radio">非常满意</label>
-                <input type="radio" name="satislevel" value="2"  id="03">
-                <label for="03" class="radio">满意</label>
-                <input type="radio" name="satislevel" value="3" id="02">
-                <label for="02" class="radio">一般</label>
-                <input type="radio" name="satislevel" value="4"  id="01">
-                <label for="01" class="radio">不满意</label>
-                <input type="radio" name="satislevel" value="5"  id="00">
-                <label for="00" class="radio">不满意</label>
+                <span style="position: relative;top: 0px;left: 45px;">
+                <#if commentList??>
+                <#list commentList as comment>
+                <input type="radio" name="satislevel" value="${comment.code!''}" checked="checked" id="dic_${comment.id!''}">
+                <label for="dic_${comment.id!''}" class="radio">${comment.name!''}</label>
+                </#list>
+                </#if>
+                </span>
             </p>
             <!--描述-->
             <p>

@@ -412,6 +412,8 @@ public class ServiceQuene {
 				agentService.setResion(agentUser.getResion());
 			}
 			
+			agentService.setAgentskill(agentUser.getSkill());
+			
 			agentService.setServicetime(new Date());
 			if(agentUser.getCreatetime()!=null){
 				agentService.setWaittingtime((int) (System.currentTimeMillis() - agentUser.getCreatetime().getTime()));

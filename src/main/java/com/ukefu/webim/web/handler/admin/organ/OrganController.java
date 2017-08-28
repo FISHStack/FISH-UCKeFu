@@ -81,8 +81,17 @@ public class OrganController extends Handler{
     
     @RequestMapping("/add")
     @Menu(type = "admin" , subtype = "organ")
-    public ModelAndView add(ModelMap map , HttpServletRequest request) {
+    public ModelAndView add(ModelMap map , HttpServletRequest request , @Valid String parent, @Valid String area) {
     	map.addAttribute("areaList", areaRepository.findByOrgi(super.getOrgi(request))) ;
+    	if(!StringUtils.isBlank(parent)){
+    		map.addAttribute("organ", organRepository.findByIdAndOrgi(parent, super.getOrgi(request))) ;
+    	}
+    	if(!StringUtils.isBlank(area)){
+    		map.addAttribute("area", areaRepository.findByIdAndOrgi(area, super.getOrgi(request))) ;
+    	}
+    	
+    	map.addAttribute("organList", organRepository.findAll());
+    	
         return request(super.createRequestPageTempletResponse("/admin/organ/add"));
     }
     
@@ -150,6 +159,8 @@ public class OrganController extends Handler{
     	ModelAndView view = request(super.createRequestPageTempletResponse("/admin/organ/edit")) ;
     	map.addAttribute("areaList", areaRepository.findByOrgi(super.getOrgi(request))) ;
     	view.addObject("organData", organRepository.findByIdAndOrgi(id, super.getOrgi(request))) ;
+    	
+    	map.addAttribute("organList", organRepository.findAll());
         return view;
     }
     

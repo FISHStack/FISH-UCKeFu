@@ -17,6 +17,7 @@ public class UKDataContext {
 	public static final String UKEFU_SYSTEM_AUTH_DIC = "com.dic.auth.resource";
 	public static final String UKEFU_SYSTEM_AREA_DIC ="com.dic.address.area" ;
 	public static final String UKEFU_SYSTEM_ADPOS_DIC = "com.dic.adv.type" ;
+	public static final String UKEFU_SYSTEM_COMMENT_DIC = "com.dic.webim.comment" ;
 	
 	
 	public static final String UKEFU_SYSTEM_CALLCENTER = "callcenter";
