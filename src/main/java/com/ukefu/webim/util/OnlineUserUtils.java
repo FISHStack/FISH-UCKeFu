@@ -346,7 +346,12 @@ public class OnlineUserUtils {
 				onlineUser.setUsername(user.getUsername());
 				
 				if(!StringUtils.isBlank(request.getParameter("title"))){
-					onlineUser.setTitle(request.getParameter("title"));
+					String title = request.getParameter("title") ;
+					if(title.length() > 255){
+						onlineUser.setTitle(title.substring(0,255));
+					}else{
+						onlineUser.setTitle(title);
+					}
 				}
 
 				String ip = UKTools.getIpAddr(request);

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -13,6 +15,7 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.BlackListRepository;
+import com.ukefu.webim.service.repository.DataSourceService;
 import com.ukefu.webim.service.repository.GenerationRepository;
 import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.SystemConfigRepository;
@@ -25,6 +28,11 @@ import com.ukefu.webim.web.model.SystemConfig;
 @ImportResource("classpath:config/applicationContext-snaker.xml")
 public class StartedEventListener implements ApplicationListener<ContextRefreshedEvent> {
 	
+	@Autowired
+	private DataSourceService dataSource ;
+	
+	@Value("${web.upload-path}")
+    private String path;
 	
 	private SysDicRepository sysDicRes;
 	private BlackListRepository blackListRes ;

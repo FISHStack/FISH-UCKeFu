@@ -7,6 +7,7 @@ import org.apache.commons.beanutils.ConvertUtils;
 import org.springframework.context.ApplicationContext;
 
 import com.ukefu.util.DateConverter;
+import com.ukefu.webim.service.repository.CubeService;
 
 public class UKDataContext {
 
@@ -29,6 +30,8 @@ public class UKDataContext {
 	public static final String START = "start";					//流程默认的开始节点
 	public static final String CACHE_SKILL = "cache_skill";					//技能组的缓存
 	public static final String CACHE_AGENT = "cache_agent";					//坐席列表的缓存
+	
+	public static final String CUBE_TITLE_MEASURE = "指标" ;
 	
 	public static final String UKEFU_SYSTEM_AREA = "uckefu_system_area";
 	

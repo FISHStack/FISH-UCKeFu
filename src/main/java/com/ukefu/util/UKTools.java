@@ -1,5 +1,7 @@
 package com.ukefu.util;
 
+import freemarker.template.Configuration;
+import freemarker.template.TemplateException;
 import io.netty.handler.codec.http.HttpHeaders;
 
 import java.beans.BeanInfo;
@@ -12,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -959,5 +962,29 @@ public class UKTools {
             hexString.append(strHex);  
         }  
         return hexString.toString();  
-    }  
+    }
+	
+	/**
+     * 
+     * @param templetid
+     * @throws IOException 
+     * @throws TemplateException 
+     */
+    @SuppressWarnings("deprecation")
+	public static String getTemplet(String templet , Map<String , Object> values) throws IOException, TemplateException{
+    	StringWriter writer = new StringWriter(); 
+		Configuration cfg = null;
+		freemarker.template.Template template = null ;
+		String retValue = templet ;
+		if(templet!=null && templet.length()>0 && templet.indexOf("$")>=0){
+			cfg = new Configuration();
+			TempletLoader loader = new TempletLoader(templet) ;
+			cfg.setTemplateLoader(loader);   
+			cfg.setDefaultEncoding("UTF-8");  
+			template = cfg.getTemplate("");
+			template.process(values, writer);  
+			retValue = writer.toString() ;
+		}
+		return  retValue;
+    }
 }
