@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.elasticsearch.common.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
+import com.ukefu.util.UKTools;
 import com.ukefu.util.bi.ReportData;
 import com.ukefu.util.bi.model.Level;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
@@ -21,6 +23,7 @@ import com.ukefu.webim.service.repository.CubeService;
 import com.ukefu.webim.service.repository.DataSourceService;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.WeiXinUserRepository;
+import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.UKeFuDic;
@@ -45,8 +48,8 @@ public class StatsController extends Handler{
 	
 	@RequestMapping("/stats/coment")
     @Menu(type = "service" , subtype = "statcoment" , admin= true)
-    public ModelAndView statcoment(ModelMap map , HttpServletRequest request , @Valid String agent , @Valid String skill , @Valid String databegin ,@Valid String dataend) throws Exception {
-		ReportData reportData = new CubeService("manyidu.xml", path, dataSource).execute("SELECT [comment].[满意度].members on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [满意度]") ;
+    public ModelAndView statcoment(ModelMap map , HttpServletRequest request , @Valid String agent , @Valid String skill , @Valid String begin ,@Valid String end) throws Exception {
+		ReportData reportData = new CubeService("coment.xml", path, dataSource , UKTools.getRequestParam(request)).execute("SELECT [comment].[满意度].members on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [满意度]") ;
 		
 		List<SysDic> dicList = UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_DIC) ;
 		for(Level title : reportData.getCol().getChilderen()){
@@ -58,15 +61,58 @@ public class StatsController extends Handler{
 		}
 		
 		map.addAttribute("reportData", reportData);
+		if(!StringUtils.isBlank(agent)){
+			map.addAttribute("agent", agent);
+		}
+		if(!StringUtils.isBlank(skill)){
+			map.addAttribute("skill", skill);
+		}
+		if(!StringUtils.isBlank(begin)){
+			map.addAttribute("begin", begin);
+		}
+		if(!StringUtils.isBlank(end)){
+			map.addAttribute("end", end);
+		}
+		
+		 /***
+	     * 查询 技能组 ， 缓存？ 
+	     */
+		map.addAttribute("skillList", OnlineUserUtils.organ(super.getOrgi(request)))  ;
+	    /**
+	     * 查询坐席 ， 缓存？
+	     */
+		map.addAttribute("agentList", OnlineUserUtils.agents(super.getOrgi(request)))  ;
 		
 		return request(super.createAppsTempletResponse("/apps/service/stats/coment"));
     }
 	
 	@RequestMapping("/stats/agent")
     @Menu(type = "service" , subtype = "statagent" , admin= true)
-    public ModelAndView statagent(ModelMap map , HttpServletRequest request , String userid , String agentservice , @Valid String channel) throws Exception {
-		ReportData reportData = new CubeService("consult.xml", path, dataSource).execute("SELECT {[Measures].[咨询数量],[Measures].[平均等待时长（秒）],[Measures].[平均咨询时长（秒）]} on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [咨询]") ;
+    public ModelAndView statagent(ModelMap map , HttpServletRequest request , @Valid String agent , @Valid String skill , @Valid String begin ,@Valid String end) throws Exception {
+		ReportData reportData = new CubeService("consult.xml", path, dataSource , UKTools.getRequestParam(request)).execute("SELECT {[Measures].[咨询数量],[Measures].[平均等待时长（秒）],[Measures].[平均咨询时长（秒）]} on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [咨询]") ;
 		map.addAttribute("reportData", reportData);
+		
+		if(!StringUtils.isBlank(agent)){
+			map.addAttribute("agent", agent);
+		}
+		if(!StringUtils.isBlank(skill)){
+			map.addAttribute("skill", skill);
+		}
+		if(!StringUtils.isBlank(begin)){
+			map.addAttribute("begin", begin);
+		}
+		if(!StringUtils.isBlank(end)){
+			map.addAttribute("end", end);
+		}
+		/***
+	     * 查询 技能组 ， 缓存？ 
+	     */
+		map.addAttribute("skillList", OnlineUserUtils.organ(super.getOrgi(request)))  ;
+	    /**
+	     * 查询坐席 ， 缓存？
+	     */
+		map.addAttribute("agentList", OnlineUserUtils.agents(super.getOrgi(request)))  ;
+		
 		return request(super.createAppsTempletResponse("/apps/service/stats/consult"));
     }
 }

@@ -2,7 +2,7 @@
 <Schema name='ukefu'>
     <Cube name='满意度'>
 		<View alias="agentservice">
-			<SQL>select * from uk_agentservice where satisfaction = true</SQL>
+			<SQL>select * from uk_agentservice where satisfaction = true <#if agentskill?? && agentskill!=""> AND agentskill = '${agentskill!''}'</#if> <#if agent?? && agent!=""> AND agentno = '${agent!''}'</#if> <#if beigin?? && begin!=""> AND createtime &gt; str_to_date('${begin!''}', '%Y-%m-%d')</#if> <#if end?? && end!=""> AND createtime &lt; str_to_date('${end!''}', '%Y-%m-%d')</#if></SQL>
 		</View>
 	
 		<Dimension name='agent' foreignKey="agentno">

@@ -213,6 +213,20 @@ public class UKTools {
 		disruptor.getRingBuffer().get(seq).setEvent(event); ;
 		disruptor.getRingBuffer().publish(seq);
 	}
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static Map<String,Object> getRequestParam(HttpServletRequest request){
+		Map<String,Object> values = new HashMap<String,Object>();
+		Enumeration<String> enums = request.getParameterNames() ;
+		while(enums.hasMoreElements()){
+			String param = enums.nextElement() ;
+			values.put(param,request.getParameter(param)) ;
+		}
+		return values;
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void multiupdate(MultiUpdateEvent event){

@@ -155,6 +155,28 @@ public class OnlineUserUtils {
 		return regOrganList;
 	}
 	
+	/**
+	 * 
+	 * @param user
+	 * @param orgi
+	 * @param id
+	 * @param service
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Organ> organ(String orgi){
+		List<Organ> skillList = (List<Organ>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.CACHE_SKILL, orgi) ;
+		if(skillList == null){
+			OrganRepository service = (OrganRepository) UKDataContext.getContext().getBean(OrganRepository.class);
+			skillList = service.findByOrgiAndSkill(orgi, true) ;
+			if(skillList.size() > 0){
+				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_SKILL, skillList, orgi);
+			}
+		}
+		return skillList;
+	}
+	
 	private static List<AreaType> getAreaTypeList(String area , List<AreaType> areaTypeList){
 		List<AreaType> atList = new ArrayList<AreaType>() ;
 		if(areaTypeList!=null && areaTypeList.size() > 0){

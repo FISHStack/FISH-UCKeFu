@@ -2,6 +2,7 @@ package com.ukefu.webim.service.repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,12 +20,16 @@ import mondrian.rolap.RolapCubeLevel;
 import mondrian.rolap.RolapLevel;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import com.ukefu.core.UKDataContext;
+import com.ukefu.util.UKTools;
 import com.ukefu.util.bi.CubeReportData;
 import com.ukefu.util.bi.model.FirstTitle;
 import com.ukefu.util.bi.model.Level;
 import com.ukefu.util.bi.model.ValueData;
+
+import freemarker.template.TemplateException;
 
 public class CubeService {
 	private DataSourceService dataSource ;
@@ -33,15 +38,16 @@ public class CubeService {
 	private File schemaFile = null ;
 	
 	
-	public CubeService(String xml , String path , DataSourceService dataSource) throws IOException {
+	public CubeService(String xml , String path , DataSourceService dataSource , Map<String,Object> requestValues) throws IOException, TemplateException {
 		this.dataSource = dataSource ;
-		schemaFile = new File(path , "mdx/"+xml) ;
-		if(schemaFile.getParentFile().exists()){
-			schemaFile.getParentFile().mkdirs() ;
+		File mdxFileDir = new File(path , "mdx") ;
+		if(!mdxFileDir.exists()){
+			mdxFileDir.mkdirs() ;
 		}
-		if(!schemaFile.exists()){
-			FileUtils.copyInputStreamToFile(CubeService.class.getClassLoader().getResourceAsStream(SCHEMA_DATA_PATH+xml),schemaFile);
-		}
+		schemaFile = new File(mdxFileDir , UKTools.getUUID()+".xml") ;
+		StringWriter writer = new StringWriter();
+		IOUtils.copy(CubeService.class.getClassLoader().getResourceAsStream(SCHEMA_DATA_PATH+xml), writer, "UTF-8"); 
+		FileUtils.writeByteArrayToFile(schemaFile,UKTools.getTemplet(writer.toString(), requestValues) .getBytes("UTF-8"));
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -82,6 +88,9 @@ public class CubeService {
 		}finally{
 			if(connection!=null){
 				connection.close();
+			}
+			if(schemaFile.exists()){
+				schemaFile.delete();
 			}
 		}
 		return cubeReportData ;

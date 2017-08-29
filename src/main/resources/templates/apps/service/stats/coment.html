@@ -26,15 +26,29 @@
 										<div class="layui-input-inline" style="width: auto;margin-right:0px;">
 											<label class="layui-form-label" style="width: auto;">技能组：</label>
 											<div class="layui-input-inline" style="width: auto;margin-right:0px;">
-										      <input type="text" name="ani" placeholder="请选择技能组" autocomplete="off" value="${ani!''}" class="layui-input ukefu-input">
+										    	<select name="skill" class="ukefu-input" lay-ignore>
+										    		<option value="">请选择技能组</option>
+										    		<#if skillList??>
+										    		<#list skillList as tpskill>
+														<option value="${tpskill.id}" <#if skill?? && skill == tpskill.id>selected="selected"</#if>>${tpskill.name!''}</option>
+										    		</#list>
+										    		</#if>
+												</select>
 										    </div>
 										</div>
 									</div>
 									<div class="layui-inline" style="margin-right:0px;">
 										<div class="layui-input-inline" style="width: auto;margin-right:0px;">
-											<label class="layui-form-label" style="width: auto;">坐席：</label>
+											<label class="layui-form-label" style="width: auto;">坐席：${agentskill!''}</label>
 											<div class="layui-input-inline" style="width: auto;margin-right:0px;">
-										      <input type="text" name="called" placeholder="请选择坐席" autocomplete="off" value="${called!''}" class="layui-input ukefu-input">
+										    	<select name="agent" class="ukefu-input" lay-ignore>
+										    		<option value="">请选择坐席</option>
+										    		<#if agentList??>
+										    		<#list agentList as useragent>
+														<option value="${useragent.id}" <#if agent?? && agent == useragent.id>selected="selected"</#if>>${useragent.uname!''}</option>
+										    		</#list>
+										    		</#if>
+												</select>
 										    </div>
 										</div>
 									</div>
@@ -42,7 +56,7 @@
 										<div class="layui-input-inline" style="width: auto;margin-right:0px;">
 											<label class="layui-form-label" style="width: auto;">日期范围：</label>
 											<div class="layui-input-inline" style="width: auto;margin-right:0px;">
-										      <input name="beign" class="layui-input ukefu-input" placeholder="开始日期" value="${begin!''}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+										      <input name="begin" class="layui-input ukefu-input" placeholder="开始日期" value="${begin!''}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
 										    </div>
 											<label class="layui-form-label" style="width: auto;">~</label>
 											<div class="layui-input-inline" style="width: auto;margin-right:0px;">
@@ -59,7 +73,6 @@
 										    </div>
 										</div>
 									</div>
-									
 								</div>
 							</form>
 							<div class="layui-btn-group ukefu-btn-group" style="margin-top:2px;">
@@ -73,26 +86,15 @@
 				<#include "/apps/service/stats/report.html">
 			</div>
 		</div>
-		<div class="row" style="padding:5px;">
-			<div class="col-lg-12" id="page" style="text-align:center;"></div>
-		</div>
 	</div>
 </div>
 <script>
-	layui.use(['laypage', 'layer'], function(){
-		  var laypage = layui.laypage
-		  ,layer = layui.layer;
-		  
-		  laypage({
-				cont: 'page'
-				,pages: <#if serviceList??>${serviceList.totalPages}<#else>0</#if> //总页数
-				,curr:<#if serviceList??>${serviceList.number+1}<#else>0</#if>
-				,groups: 5 //连续显示分页数
-				,jump:function(data , first){
-					if(!first){
-						location.href = "/service/comment/index.html?p="+data.curr ;
-					}
-				}
-		   });
-		});
+//Demo
+layui.use('form', function(){
+  var form = layui.form();
+  form.render(); //更新全部
+});
+layui.use('laydate', function() {
+	var laydate = layui.laydate;
+});
 </script>
