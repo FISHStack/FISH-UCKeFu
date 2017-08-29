@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-08-22 21:04:32
+Date: 2017-08-29 16:34:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -5694,6 +5694,12 @@ INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64be2000a', '电话', 'p
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64bf1000b', '邮件', 'pub', 'email', 'ukewo', null, '4028e3815bafb323015bafe5c8180009', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:37', '2017-04-27 22:52:37', '0', '2', '4028e3815bafb323015bafe5c8180009', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64c02000c', '短信', 'pub', 'sms', 'ukewo', null, '4028e3815bafb323015bafe5c8180009', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:37', '2017-04-27 22:52:37', '0', '3', '4028e3815bafb323015bafe5c8180009', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028e3815bafb323015bafe64c1e000d', '微信', 'pub', 'wechat', 'ukewo', null, '4028e3815bafb323015bafe5c8180009', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-04-27 22:52:37', '2017-04-27 22:52:37', '0', '4', '4028e3815bafb323015bafe5c8180009', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('8a7f82825e241666015e241d2b3b0002', '在线客服满意度', 'pub', 'com.dic.webim.comment', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-27 22:34:04', null, '1', '0', null, '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('8a7f82825e241666015e241da9660003', '非常满意', 'pub', '1', 'ukewo', null, '8a7f82825e241666015e241d2b3b0002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-27 22:34:37', '2017-08-27 22:34:37', '0', '1', '8a7f82825e241666015e241d2b3b0002', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('8a7f82825e241666015e241da97b0004', '满意', 'pub', '2', 'ukewo', null, '8a7f82825e241666015e241d2b3b0002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-27 22:34:37', '2017-08-27 22:34:37', '0', '2', '8a7f82825e241666015e241d2b3b0002', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('8a7f82825e241666015e241da9860005', '一般', 'pub', '3', 'ukewo', null, '8a7f82825e241666015e241d2b3b0002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-27 22:34:37', '2017-08-27 22:34:37', '0', '3', '8a7f82825e241666015e241d2b3b0002', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('8a7f82825e241666015e241da9970006', '不满意', 'pub', '4', 'ukewo', null, '8a7f82825e241666015e241d2b3b0002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-27 22:34:37', '2017-08-27 22:34:37', '0', '4', '8a7f82825e241666015e241d2b3b0002', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('8a7f82825e241666015e241da9a20007', '非常不满意', 'pub', '5', 'ukewo', null, '8a7f82825e241666015e241d2b3b0002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-27 22:34:37', '2017-08-27 22:34:37', '0', '5', '8a7f82825e241666015e241d2b3b0002', '0', '0', null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for `uk_systemconfig`
@@ -5975,8 +5981,8 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815dfa678b015dfa75e6670004', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-22 20:15:47', null, null, null, '0', '0', '1');
-INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', null, '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-08-16 21:36:30', null, null, null, '0', '0', '0');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815dfa678b015dfa75e6670004', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-08-29 16:30:11', null, null, null, '0', '0', '1');
+INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402888815dfa678b015dfa75e6670004', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-08-29 00:47:20', null, null, null, '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
