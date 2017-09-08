@@ -131,25 +131,11 @@ public class OnlineUserUtils {
 			}
 		}
 		List<Organ> regOrganList = new ArrayList<Organ>()  ;
-		List<AreaType> areaTypeList = (List<AreaType>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.UKEFU_SYSTEM_AREA, UKDataContext.SYSTEM_ORGI) ;
-		if(areaTypeList!=null){
-			for(Organ organ : skillList){
-				if(invite.isOnlyareaskill() && !StringUtils.isBlank(organ.getArea())){
-					List<AreaType> atList = getAreaTypeList(organ.getArea(), areaTypeList) ;	//找到技能组配置的地区信息
-					for(AreaType areaType : atList){
-						if(areaType.getArea().indexOf(ipdata.getProvince()) >= 0 || areaType.getArea().indexOf(ipdata.getCity()) >= 0 ){
-							regOrganList.add(organ) ; break ;
-						}
-					}
-				}else if(StringUtils.isBlank(organ.getArea())){
-					regOrganList.add(organ) ;
-				}
-			}
-		}else{
-			for(Organ organ : skillList){
-				if(StringUtils.isBlank(organ.getArea())){
-					regOrganList.add(organ);
-				}
+		for(Organ organ : skillList){
+			if(!StringUtils.isBlank(organ.getArea()) && (organ.getArea().indexOf(ipdata.getProvince()) >= 0 || organ.getArea().indexOf(ipdata.getCity()) >= 0 )){
+				regOrganList.add(organ) ;
+			}else if(StringUtils.isBlank(organ.getArea())){
+				regOrganList.add(organ) ;
 			}
 		}
 		return regOrganList;

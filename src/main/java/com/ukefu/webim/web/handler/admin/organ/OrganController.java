@@ -14,17 +14,21 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.webim.service.repository.AreaTypeRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.OrganRoleRepository;
 import com.ukefu.webim.service.repository.RoleRepository;
+import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.OrganRole;
 import com.ukefu.webim.web.model.Role;
+import com.ukefu.webim.web.model.SysDic;
+import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
 
 /**
@@ -43,6 +47,9 @@ public class OrganController extends Handler{
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private SysDicRepository sysDicRepository;
 	
 	@Autowired
 	private AreaTypeRepository areaRepository;
@@ -177,6 +184,37 @@ public class OrganController extends Handler{
     		
     		tempOrgan.setArea(organ.getArea());
     		
+    		organRepository.save(tempOrgan) ;
+    		OnlineUserUtils.clean(super.getOrgi(request));
+    	}else{
+    		msg =  "admin_organ_update_not_exist";
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/organ/index.html?msg="+msg));
+    }
+    
+    @RequestMapping("/area")
+    @Menu(type = "admin" , subtype = "area")
+    public ModelAndView area(ModelMap map ,HttpServletRequest request , @Valid String id) {
+    	
+    	SysDic sysDic = sysDicRepository.findByCode(UKDataContext.UKEFU_SYSTEM_AREA_DIC) ;
+    	if(sysDic!=null){
+	    	map.addAttribute("sysarea", sysDic) ;
+	    	map.addAttribute("areaList", sysDicRepository.findByDicid(sysDic.getId())) ;
+    	}
+    	map.addAttribute("cacheList", UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_AREA_DIC)) ;
+    	
+    	map.addAttribute("organData", organRepository.findByIdAndOrgi(id, super.getOrgi(request))) ;
+        return request(super.createRequestPageTempletResponse("/admin/organ/area"));
+    }
+    
+    
+    @RequestMapping("/area/update")
+    @Menu(type = "admin" , subtype = "organ")
+    public ModelAndView areaupdate(HttpServletRequest request ,@Valid Organ organ) {
+    	Organ tempOrgan = organRepository.findByIdAndOrgi(organ.getId(), super.getOrgi(request)) ;
+    	String msg = "admin_organ_update_success" ;
+    	if(tempOrgan != null){
+    		tempOrgan.setArea(organ.getArea());
     		organRepository.save(tempOrgan) ;
     		OnlineUserUtils.clean(super.getOrgi(request));
     	}else{

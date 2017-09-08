@@ -445,6 +445,7 @@ public class IMController extends Handler{
     			map.addAttribute("chatMessageList", chatMessageRes.findByUsessionAndOrgi(userid , orgi, new PageRequest(0, 20, Direction.DESC , "updatetime"))) ;
 	    	}
     		view.addObject("commentList" , UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_DIC)) ;
+    		view.addObject("commentItemList" , UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_ITEM_DIC)) ;
     		view.addObject("welcomeAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.WELCOME.toString())) ;
     		view.addObject("imageAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.IMAGE.toString())) ;
 	//    	OnlineUserUtils.sendWebIMClients(userid , "accept");
