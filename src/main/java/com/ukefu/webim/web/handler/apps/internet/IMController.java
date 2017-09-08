@@ -285,7 +285,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/index")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String traceid , @Valid String title ,@Valid String url,@Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
+    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url,@Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) ;
     	if(!StringUtils.isBlank(appid) &&  (black == null || (black.getEndtime()!=null && black.getEndtime().before(new Date()))) ){
@@ -314,6 +314,9 @@ public class IMController extends Handler{
 			
 			if(!StringUtils.isBlank(traceid)){
 				map.addAttribute("traceid", traceid) ;
+			}
+			if(!StringUtils.isBlank(exchange)){
+				map.addAttribute("exchange", exchange) ;
 			}
 			if(!StringUtils.isBlank(title)){
 				map.addAttribute("title", title) ;
@@ -509,7 +512,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/text/{appid}")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid ,@Valid String traceid , @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String mobile,@Valid String ai) throws Exception {
+    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid ,@Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String mobile,@Valid String ai) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/text")) ; 
     	
     	view.addObject("hostname", request.getServerName()) ;
@@ -530,6 +533,10 @@ public class IMController extends Handler{
 		if(!StringUtils.isBlank(ai)){
 			view.addObject("ai", ai) ;
 		}
+		if(!StringUtils.isBlank(exchange)){
+			view.addObject("exchange", exchange) ;
+		}
+		
 		view.addObject("name", name) ;
 		view.addObject("emal", email) ;
 		view.addObject("mobile", mobile) ;

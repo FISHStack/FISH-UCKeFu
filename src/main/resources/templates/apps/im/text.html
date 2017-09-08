@@ -12,7 +12,7 @@ var config = {} ;
 var result = new Fingerprint().get();
 var ukefu = {
 		time : new Date().getTime(),
-		chat : "${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/index.html?appid=${appid!''}<#if id??>&id=${id}</#if><#if name??>&name=${name}</#if><#if email??>&id=${email}</#if><#if id??>&mobile=${mobile}</#if>&orgi=${orgi!''}&client=${client}&type=text<#if skill??>&skill=${skill}</#if><#if agent??>&agent=${agent}</#if>" , 
+		chat : "${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/index.html?appid=${appid!''}<#if id??>&id=${id}</#if><#if exchange??>&id=${exchange}</#if><#if name??>&name=${name}</#if><#if email??>&id=${email}</#if><#if id??>&mobile=${mobile}</#if>&orgi=${orgi!''}&client=${client}&type=text<#if skill??>&skill=${skill}</#if><#if agent??>&agent=${agent}</#if>" , 
 		config : function(d){
 			data = d ;	
 		},

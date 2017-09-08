@@ -15,7 +15,7 @@
     <!-- kindeditor -->
     <link rel="stylesheet" type="text/css" href="/im/js/kindeditor/themes/default/default.css">
     
-    <script type="text/javascript" src="/im/js/kindeditor/kindeditor-min.js"></script>
+    <script type="text/javascript" src="/im/js/kindeditor/kindeditor.js"></script>
     <script type="text/javascript" src="/im/js/kindeditor/lang/zh-CN.js"></script>
     <script src="/im/js/socket.io.js"></script>
     <script type="text/javascript">
@@ -200,7 +200,9 @@
 	   		<div class="ukefu-func-tab">
 		   		<ul>
 		   			<#if models?? && models["xiaoe"]?? && models["xiaoe"] == true && inviteData.ai>
+		   				<#if !exchange?? || exchange == "true">
 		   				<li><a href="/im/index.html?appid=${appid!''}&orgi=${orgi!''}&ai=true<#if client??>&client=${client!''}</#if><#if type??>&type=text</#if><#if skill??>&skill=${skill!''}</#if><#if agent??>&agent=${agent!''}</#if><#if title??>&title=${title?url}</#if><#if url??>&url=${url?url}</#if><#if traceid??>&traceid=${traceid}</#if>&userid=${userid!''}&sessionid=${sessionid!''}&t=${.now?long}">智能客服</a></li>
+		   				</#if>
 		   				<li class="cur"><a href="javascript:void(0)">人工坐席</a></li>
 		   			<#else>
 		   				<li class="cur"><a href="javascript:void(0)">人工坐席</a></li>
@@ -445,7 +447,9 @@
 		}
         var element = ("<div class='clearfix "+clazz+"'>" +" " + message + "</div>");
         document.getElementById('above').innerHTML= (document.getElementById('above').innerHTML + element);
+        <#if !welcomeAd>
 		document.getElementById('above').scrollTop = document.getElementById('above').scrollHeight  ;
+		</#if>
     }
 	function update(id , message) {
         document.getElementById(id).innerHTML= message;

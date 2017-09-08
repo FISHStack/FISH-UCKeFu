@@ -167,16 +167,9 @@
 					
 					<li class="layui-nav-item"><a href="javascript:void(0)">
 						<i class="layui-icon" style="position: relative;">&#xe612;</i>
-						<#if user??>${user.email!''}</#if></a>
+						<#if user??>${user.uname!''}</#if></a>
 						<dl class="layui-nav-child">
 					      <dd><a href="/apps/profile.html" data-toggle="ajax" data-width="750" data-title="修改资料">个人资料</a></dd>
-					      <#if user?? && user.superuser>
-						      <#if infoace?? && infoace == "true">
-						      <dd><a href="/admin/auth/infoacq.html" title="请确认是否退出权限数据采集模式？" data-toggle="tip" >退出数据采集</a></dd>
-						      <#else>
-						      <dd><a href="/admin/auth/infoacq.html" title="请确认是否进入权限数据采集模式？" data-toggle="tip" >进入数据采集</a></dd>
-						      </#if>
-					      </#if>
 					      <dd><a href="/logout.html">退出系统</a></dd>
 					    </dl>
 					</li>
