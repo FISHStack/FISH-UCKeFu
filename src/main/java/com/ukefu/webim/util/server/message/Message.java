@@ -21,6 +21,7 @@ public abstract class Message implements java.io.Serializable{
 	private String sign ;
 	private String message ;
 	private String orgi ;
+	private String agentserviceid ;
 	private String channel ;
 	
 	public abstract String getType() ;
@@ -102,5 +103,13 @@ public abstract class Message implements java.io.Serializable{
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getAgentserviceid() {
+		return agentserviceid;
+	}
+
+	public void setAgentserviceid(String agentserviceid) {
+		this.agentserviceid = agentserviceid;
 	}
 }

@@ -187,6 +187,11 @@
 			return false ;
 		}
 		window.onbeforeunload = function(){
+			<#if sessionConfig?? && sessionConfig.satisfaction?? && sessionConfig.satisfaction>
+			
+			document.getElementById("diaShade").style.display = "block" ;
+			document.getElementById("dialogWrap").style.display = "block" ;
+			</#if>
 			return "您确定断开对话？" ;
 		}
     </script>
@@ -396,11 +401,11 @@
 			editor.readonly();
 			<#if sessionConfig?? && sessionConfig.satisfaction?? && sessionConfig.satisfaction>
 			
-			document.getElementById("agentserviceid").value = data.agentserviceid ;
 			document.getElementById("diaShade").style.display = "block" ;
 			document.getElementById("dialogWrap").style.display = "block" ;
 			</#if>
 		}
+		document.getElementById("agentserviceid").value = data.agentserviceid ;
     })
     socket.on('message', function(data) {
         var chat=document.getElementsByClassName('chatting-left').innerText;

@@ -247,7 +247,7 @@ public class AgentController extends Handler {
 	public ModelAndView agentusers(HttpServletRequest request , String userid) {
 		ModelAndView view = request(super.createRequestPageTempletResponse("/apps/agent/agentusers")) ;
 		User user = super.getUser(request) ;
-		view.addObject("agentUserList", agentUserRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request) , new Sort(Direction.ASC,"status"))) ;
+		view.addObject("agentUserList", agentUserRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request) , new Sort(Direction.DESC,"status"))) ;
 		List<AgentUser> agentUserList = agentUserRepository.findByUseridAndOrgi(userid, super.getOrgi(request)) ; 
 		view.addObject("curagentuser", agentUserList!=null && agentUserList.size() > 0 ? agentUserList.get(0) : null) ;
 		

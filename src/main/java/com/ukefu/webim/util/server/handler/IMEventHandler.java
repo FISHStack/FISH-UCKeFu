@@ -76,6 +76,7 @@ public class IMEventHandler
 			    	outMessage.setCalltype(UKDataContext.CallTypeEnum.IN.toString());
 			    	outMessage.setNickName(newRequestMessage.getUsername());
 					outMessage.setCreatetime(UKTools.dateFormate.format(new Date()));
+					outMessage.setAgentserviceid(newRequestMessage.getAgentserviceid());
 					
 					client.sendEvent(UKDataContext.MessageTypeEnum.STATUS.toString(), outMessage);
 				}

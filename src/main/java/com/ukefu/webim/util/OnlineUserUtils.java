@@ -694,6 +694,10 @@ public class OnlineUserUtils {
 			outMessageDataBean = RouterHelper.getRouteInstance().handler(inMessage);
 			if (outMessageDataBean != null) {
 				data.setMessage(outMessageDataBean.getMessage());
+				
+				if(outMessageDataBean.getAgentUser()!=null){
+					data.setAgentserviceid(outMessageDataBean.getAgentUser().getAgentserviceid());
+				}
 			}
 		}
 		
