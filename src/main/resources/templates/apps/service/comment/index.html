@@ -48,7 +48,10 @@
 									<#if agentService.satislevel?? && comment.code == agentService.satislevel>${comment.name!''}</#if>
 								</#list>
 							</td>
-							<td class=" ">${agentService.satiscomment!''}</td>
+							<td class=" ">
+								<#if uKeFuDic[agentService.satiscomment!'']??>${uKeFuDic[agentService.satiscomment!''].name!''}<#else>${agentService.satiscomment!''}</#if> 
+								
+							</td>
 						</tr>
 						</#list>
 						<#else>
