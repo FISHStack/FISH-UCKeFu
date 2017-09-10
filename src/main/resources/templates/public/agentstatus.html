@@ -3,9 +3,7 @@
 		class="layui-unselect layui-form-switch <#if agentStatus??>layui-form-onswitch</#if>">
 		<i></i>
 	</div>
-	<#if agentStatus??>
-	<div id="agentstatus_busy"
+	<div id="agentstatus_busy" style="<#if agentStatus??><#else>display:none;</#if>"
 		class="layui-unselect layui-form-switch layui-form-onswitch-notbusy <#if agentStatus?? && agentStatus.busy?? && agentStatus.busy>layui-form-onswitch-busy</#if>">
 		<i></i>
 	</div>
-	</#if>
