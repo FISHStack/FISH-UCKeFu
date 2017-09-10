@@ -56,6 +56,7 @@ import com.ukefu.webim.service.repository.TagRelationRepository;
 import com.ukefu.webim.service.repository.TagRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.WeiXinUserRepository;
+import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.util.router.OutMessageRouter;
 import com.ukefu.webim.util.server.message.ChatMessage;
 import com.ukefu.webim.web.handler.Handler;
@@ -807,12 +808,40 @@ public class AgentController extends Handler {
 			map.addAttribute("userid", userid) ;
 			map.addAttribute("agentserviceid", agentserviceid) ;
 			map.addAttribute("agentuserid", agentuserid) ;
-			map.addAttribute("agentservice", this.agentServiceRepository.findByIdAndOrgi(agentserviceid, super.getOrgi(request))) ;
 			
+			map.addAttribute("skillList", OnlineUserUtils.organ(super.getOrgi(request))) ;
+			
+			map.addAttribute("agentservice", this.agentServiceRepository.findByIdAndOrgi(agentserviceid, super.getOrgi(request))) ;
+			map.addAttribute("currentorgan", super.getUser(request).getOrgan()) ;
 		}
 		
     	return request(super.createRequestPageTempletResponse("/apps/agent/transfer")) ; 
     }
+	
+	@RequestMapping(value="/transfer/agent")  
+	@Menu(type = "apps", subtype = "transferagent")
+    public ModelAndView transferagent(ModelMap map , HttpServletRequest request , @Valid String organ){ 
+		if(!StringUtils.isBlank(organ) && !StringUtils.isBlank(organ)){
+			List<String> usersids = new ArrayList<String>();
+			
+			Collection<?> users =  CacheHelper.getAgentStatusCacheBean().getAllCacheObject(super.getOrgi(request)) ;
+			Iterator<?> iterator = users.iterator() ;
+			while(iterator.hasNext()){
+				String agentno = (String) iterator.next() ;
+				if(agentno!=null && !agentno.equals(super.getUser(request).getId())){
+					usersids.add(agentno) ;
+				}
+			}
+			List<User> userList = userRes.findAll(usersids) ;
+			for(User user : userList){
+				user.setAgentStatus((AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(user.getId(), super.getOrgi(request)));
+			}
+			map.addAttribute("userList", userList) ;
+			map.addAttribute("currentorgan", organ) ;
+		}
+    	return request(super.createRequestPageTempletResponse("/apps/agent/transferagentlist")) ; 
+    }
+	
 	
 	@RequestMapping(value="/transfer/save")  
 	@Menu(type = "apps", subtype = "transfersave")

@@ -2,76 +2,66 @@
 	<input type="hidden" name="userid" value="${userid!''}">
 	<input type="hidden" name="agentserviceid" value="${agentserviceid!''}">
 	<input type="hidden" name="agentuserid" value="${agentuserid!''}">
-		
-	<div class="layui-tab">
-	  <ul class="layui-tab-title">
-	    <li class="layui-this">转坐席</li>
-	    <!-- 
-	    <li>转技能组</li>
-	     -->
-	  </ul>
-	  <div class="layui-tab-content">
-	    <div class="layui-tab-item layui-show">
-	    	<div class="row">
-			    <div class="col-lg-12">
-			        <table class="layui-table" lay-skin="line">
-						<colgroup>
-							<col width="2%">
-							<col width="20%">
-							<col width="20%">
-							<col width="10%">
-							<col width="10%">
-						</colgroup>
-			            <thead>
-			                <tr>
-			                    <th style="width:3px;padding:10px 10px 10px 10px;"></th>
-			                    <th>用户</th>
-			                    <th>登陆时间</th>
-			                    <th>最大用户数</th>
-			                    <th>服务用户数</th>
-			            </thead>
-			            <tbody>
-			                <#if userList??>
-			                    <#list userList as user>
-			                        <tr class="ukefu-agentstatus">
-			                            <td style="width:1px;padding:10px 0px 10px 10px;">
-			                                <input type="checkbox" name="agentno" class="ctxid" value="${user.id!''}" id="user_${user.id}" style="display:block;">
-			                            </td>
-			                            <td>${user.username!''}（${user.uname!''}）</td>
-			                            <td><#if user.agentStatus??>${user.agentStatus.logindate?string('yyyy-MM-dd HH:mm:ss')}</#if></td>
-			                            <td>
-			                            	<#if user.agentStatus??>${user.agentStatus.maxusers!0}</#if>
-			                            </td>
-			                            <td>
-			                                <#if user.agentStatus??>${user.agentStatus.users!0}</#if>
-			                            </td>
-			                    </#list>
-			                </#if>
-			            </tbody>
-			        </table>
-			    </div>
-			</div>
-			<div class="row" style="margin-top:50px;">
-	    		<div class="col-lg-12">
-	    			<h1 class="site-h1" style="background-color:#EEEEEE;">
-						转接附言（最大不超过255个字符）
+	<div class="row" style="height:295px;">
+		<div class="col-lg-3">
+			<div class="box">
+				<div class="box-title">
+					<h1 class="site-h1" style="background-color:#FFFFFF;margin:0px;padding-bottom:4px;">
+						技能组
 					</h1>
-	    			<div class="layui-form-item">
-						<div class="layui-inline">
-							<div class="layui-input-inline" style="width: 720px;">
-								<textarea name="memo" placeholder="请输入转接附言" class="layui-textarea" style="resize:none;" maxlength="255"><#if agentservice??>${agentservice.transmemo!''}</#if></textarea>
-							</div>
-						</div>
+				</div>
+				<div class="box-body" style="padding:0px 0px;position: relative;height:250px;overflow-y:auto;">
+					<ul>
+						<#if skillList??>
+						<#list skillList as skill>
+						<#if skill.id == user.organ>
+						<#assign agentNum = 0 >
+						<#if userList??><#list userList as agent><#if agent.organ == skill.id><#assign agentNum = agentNum + 1 ></#if></#list></#if>
+						<li class="uk_role <#if skill.id == user.organ>this</#if>" style="margin:0px;padding:7px;"><a
+							href="/agent/transfer/agent.html?organ=${skill.id!''}" data-toggle="load" data-target="#skillAgentList">
+								<i class="kfont"></i> ${skill.name!''}（${agentNum!''}）
+						</a></li>
+						</#if>
+						</#list>
+						</#if>
+						
+						<#if skillList??>
+						<#list skillList as skill>
+						<#if skill.id != user.organ>
+						<#assign agentNum = 0 >
+						<#if userList??><#list userList as agent><#if agent.organ == skill.id><#assign agentNum = agentNum + 1 ></#if></#list></#if>
+						<li class="uk_role <#if skill.id == user.organ>this</#if>" style="margin:0px;padding:7px;"><a
+							href="/agent/transfer/agent.html?organ=${skill.id!''}" data-toggle="load" data-target="#skillAgentList">
+								<i class="kfont"></i> ${skill.name!''}（${agentNum!''}）
+						</a></li>
+						</#if>
+						</#list>
+						</#if>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-9" style="border-left:1px solid #dedede;">
+			<div class="box">
+				<div class="box-body" style="padding:0px 2px;position: relative;height:295px;overflow-y:auto;" id="skillAgentList">
+					<#include "/apps/agent/transferagentlist.html">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top:5px;">
+		<div class="col-lg-12">
+			<h1 class="site-h1" style="background-color:#EEEEEE;">
+				转接附言（最多不超过255个字符）</h1>
+			<div class="layui-form-item" style="padding-left:10px;padding-top:5px;">
+				<div class="layui-inline">
+					<div class="layui-input-inline" style="width: 720px;">
+						<textarea name="memo" placeholder="请输入转接附言" class="layui-textarea"
+							style="resize:none;height:90px;min-height:90px;" maxlength="255"><#if agentservice??>${agentservice.transmemo!''}</#if></textarea>
 					</div>
-	    		</div>
-	    	</div>
-	    </div>
-	    <!-- 
-	    <div class="layui-tab-item">
-	    	转技能组
-	    </div>
-	     -->
-	  </div>
+				</div>
+			</div>
+		</div>
 	</div>
 	
 	<div class="layui-form-button">
