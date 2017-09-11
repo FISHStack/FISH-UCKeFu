@@ -183,17 +183,20 @@
 				document.getElementById("diaShade").style.display = "none" ;
 				document.getElementById("dialogWrap").style.display = "none" ;
 				alert("服务评价已提及，请关闭浏览器！");
+				service_end = true;
 			} , "id="+form.id.value+"&satislevel="+form.satislevel.value+"&satiscomment="+encodeURIComponent(form.comment.value));
 			return false ;
 		}
 		window.onbeforeunload = function(){
-			<#if sessionConfig?? && sessionConfig.satisfaction?? && sessionConfig.satisfaction>
-			
-			document.getElementById("diaShade").style.display = "block" ;
-			document.getElementById("dialogWrap").style.display = "block" ;
-			</#if>
-			return "您确定断开对话？" ;
+			if(service_end == false){				
+				<#if sessionConfig?? && sessionConfig.satisfaction?? && sessionConfig.satisfaction>
+				document.getElementById("diaShade").style.display = "block" ;
+				document.getElementById("dialogWrap").style.display = "block" ;
+				</#if>
+				return "您确定断开对话？" ;
+			}
 		}
+
     </script>
     <!-- kindeditor -->
 </head>
