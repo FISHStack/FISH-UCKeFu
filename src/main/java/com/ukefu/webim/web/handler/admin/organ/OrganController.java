@@ -147,9 +147,11 @@ public class OrganController extends Handler{
 	    		 * 以下更新技能组状态
 	    		 */
 	    		AgentStatus agentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(user.getId(), super.getOrgi(request)) ;
-	    		agentStatus.setSkill(organ);
-	    		agentStatus.setSkillname(organData.getName());
-	    		CacheHelper.getAgentStatusCacheBean().put(agentStatus.getId(), agentStatus, super.getOrgi(request));
+	    		if(agentStatus!=null){
+		    		agentStatus.setSkill(organ);
+		    		agentStatus.setSkillname(organData.getName());
+		    		CacheHelper.getAgentStatusCacheBean().put(agentStatus.getId(), agentStatus, super.getOrgi(request));
+	    		}
 	    	}
 	    	userRepository.save(organUserList) ;
 	    	OnlineUserUtils.clean(super.getOrgi(request));
