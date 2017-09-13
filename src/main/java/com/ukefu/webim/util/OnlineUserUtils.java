@@ -174,32 +174,54 @@ public class OnlineUserUtils {
 		}
 		return atList;
 	}
-	
-	@SuppressWarnings("unchecked")
+	/**
+	 *	只要有一级 地区命中就就返回
+	 * @param orgi
+	 * @param ipdata
+	 * @param topicTypeList
+	 * @return
+	 */
 	public static List<KnowledgeType> topicType(String orgi , IP ipdata , List<KnowledgeType> topicTypeList){
 		List<KnowledgeType> tempTopicTypeList = new ArrayList<KnowledgeType>();
-		List<AreaType> areaTypeList = (List<AreaType>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.UKEFU_SYSTEM_AREA, UKDataContext.SYSTEM_ORGI) ;
-		if(areaTypeList!=null){
-			for(KnowledgeType topicType : topicTypeList){
-				if(!StringUtils.isBlank(topicType.getArea())){
-					List<AreaType> atList = getAreaTypeList(topicType.getArea(), areaTypeList) ;	//找到技能组配置的地区信息
-					for(AreaType areaType : atList){
-						if(areaType.getArea().indexOf(ipdata.getProvince()) >= 0 || areaType.getArea().indexOf(ipdata.getCity()) >= 0 ){
-							tempTopicTypeList.add(topicType) ; break ;
-						}
-					}
-				}else{
-					tempTopicTypeList.add(topicType) ;
-				}
-			}
-		}else{
-			for(KnowledgeType topicType : topicTypeList){
-				if(StringUtils.isBlank(topicType.getArea())){
-					tempTopicTypeList.add(topicType);
-				}
+		for(KnowledgeType topicType : topicTypeList){
+			if(getParentArea(ipdata, topicType, tempTopicTypeList) != null){
+				tempTopicTypeList.add(topicType) ;
 			}
 		}
 		return tempTopicTypeList ;
+	}
+	/**
+	 * 
+	 * @param topicType
+	 * @param topicTypeList
+	 * @return
+	 */
+	private static KnowledgeType getParentArea(IP ipdata , KnowledgeType topicType , List<KnowledgeType> topicTypeList){
+		KnowledgeType area = null ;
+		if(!StringUtils.isBlank(topicType.getArea())){
+			if((topicType.getArea().indexOf(ipdata.getProvince()) >=0 || topicType.getArea().indexOf(ipdata.getCity()) >= 0)){
+				area = topicType;
+			}
+		}else{
+			if(!StringUtils.isBlank(topicType.getParentid()) && !topicType.getParentid().equals("0")){
+				for(KnowledgeType temp : topicTypeList){
+					if(temp.getId().equals(topicType.getParentid())){
+						if(!StringUtils.isBlank(temp.getArea())){
+							if((temp.getArea().indexOf(ipdata.getProvince()) >=0 || temp.getArea().indexOf(ipdata.getCity()) >= 0)){
+								area = temp ; break ;
+							}else{
+								break ;
+							}
+						}else{
+							area = getParentArea(ipdata , temp, topicTypeList) ;
+						}
+					}
+				}
+			}else{
+				area = topicType ;
+			}
+		}
+		return area ;
 	}
 	
 	public static List<Topic> topic(String orgi , List<KnowledgeType> topicTypeList , List<Topic> topicList){

@@ -88,6 +88,7 @@ KindEditor.plugin('insertfile', function(K) {
 					} else {
 						alert(data.message);
 					}
+					self.hideDialog();
 				},
 				afterError : function(html) {
 					dialog.hideLoading();

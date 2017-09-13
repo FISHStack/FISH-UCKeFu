@@ -114,7 +114,7 @@
 	    { id:'0', pId:'00', name:"组织机构", open:true , topic : false}
 	    <#if organList??>
 	    <#list organList as organ>
-	    ,{ id:'${organ.id!''}', pId:'${organ.parent!'0'}', name:"${organ.name!''}", open:true , topic : true ,  icon:"/images/dept.png" }
+	    ,{ id:'${organ.id!''}', pId:'${organ.parent!'0'}', name:"${organ.name!''}", open:true , topic : true ,  <#if organ.area?? && organ.area != "">icon:"/images/area.png" <#else>icon:"/images/dept.png"</#if> }
 	    </#list>
 	    </#if>
 	];
