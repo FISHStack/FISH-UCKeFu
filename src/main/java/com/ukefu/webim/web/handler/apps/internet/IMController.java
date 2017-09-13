@@ -632,11 +632,11 @@ public class IMController extends Handler{
 	    		
 	    		upload = new UploadStatus("0" , "/res/image.html?id="+thumbnailsFileName);
 	    		
-	    		String image =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+thumbnailsFileName ;
+	    		String image =  "/res/image.html?id="+thumbnailsFileName ;
 	    		if(request.getServerPort() == 80){
-	    			image = request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+thumbnailsFileName;
+	    			image = "/res/image.html?id="+thumbnailsFileName;
 				}else{
-					image = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/image.html?id="+thumbnailsFileName;
+					image = "/res/image.html?id="+thumbnailsFileName;
 				}
 	    		if(paste == null){
 	    			if(!StringUtils.isBlank(channel)){
@@ -650,11 +650,11 @@ public class IMController extends Handler{
     			String id = processAttachmentFile(imgFile, request);
     			
     			upload = new UploadStatus("0" , "/res/file.html?id="+id);
-    			String file =  request.getScheme()+"://"+request.getServerName()+"/res/file.html?id="+id ;
+    			String file =  "/res/file.html?id="+id ;
 	    		if(request.getServerPort() == 80){
-	    			file = request.getScheme()+"://"+request.getServerName()+"/res/file.html?id="+id;
+	    			file = "/res/file.html?id="+id;
 				}else{
-					file = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/file.html?id="+id;
+					file = "/res/file.html?id="+id;
 				}
 	    		if(!StringUtils.isBlank(channel)){
 	    			MessageUtils.uploadFile(file ,(int)imgFile.getSize() , imgFile.getOriginalFilename() , channel, userid , username , appid , orgi , id);

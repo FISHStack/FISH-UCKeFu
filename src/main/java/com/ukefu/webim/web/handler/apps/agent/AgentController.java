@@ -583,11 +583,11 @@ public class AgentController extends Handler {
 	    		UKTools.processImage(new File(path , targetFile), imageFile) ;
 	    		
 	    		
-	    		fileURL =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+targetFile ;
+	    		fileURL =  "/res/image.html?id="+targetFile ;
 	    		if(request.getServerPort() == 80){
-	    			fileURL = request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+targetFile;
+	    			fileURL = "/res/image.html?id="+targetFile;
 				}else{
-					fileURL = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/image.html?id="+targetFile;
+					fileURL = "/res/image.html?id="+targetFile;
 				}
 	    		upload = new UploadStatus("0" , fileURL); //图片直接发送给 客户，不用返回
 	    		
@@ -595,11 +595,11 @@ public class AgentController extends Handler {
     			String attachid = processAttachmentFile(imgFile, request) ;
     			
     			upload = new UploadStatus("0" , "/res/file.html?id="+attachid);
-    			fileURL =  request.getScheme()+"://"+request.getServerName()+"/res/file.html?id="+attachid ;
+    			fileURL =  "/res/file.html?id="+attachid ;
 	    		if(request.getServerPort() == 80){
-	    			fileURL = request.getScheme()+"://"+request.getServerName()+"/res/file.html?id="+attachid;
+	    			fileURL = "/res/file.html?id="+attachid;
 				}else{
-					fileURL = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/file.html?id="+attachid;
+					fileURL = "/res/file.html?id="+attachid;
 				}
     		}
     		
