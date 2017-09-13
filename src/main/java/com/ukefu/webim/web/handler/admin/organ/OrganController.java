@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AreaTypeRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.OrganRoleRepository;
@@ -24,6 +25,7 @@ import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.OrganRole;
 import com.ukefu.webim.web.model.Role;
@@ -137,9 +139,17 @@ public class OrganController extends Handler{
 	    	for(String user : users){
 	    		userList.add(user) ;
 	    	}
+	    	Organ organData = organRepository.findByIdAndOrgi(organ, super.getOrgi(request)) ;
 	    	List<User> organUserList = userRepository.findAll(userList) ;
 	    	for(User user : organUserList){
 	    		user.setOrgan(organ);
+	    		/**
+	    		 * 以下更新技能组状态
+	    		 */
+	    		AgentStatus agentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(user.getId(), super.getOrgi(request)) ;
+	    		agentStatus.setSkill(organ);
+	    		agentStatus.setSkillname(organData.getName());
+	    		CacheHelper.getAgentStatusCacheBean().put(agentStatus.getId(), agentStatus, super.getOrgi(request));
 	    	}
 	    	userRepository.save(organUserList) ;
 	    	OnlineUserUtils.clean(super.getOrgi(request));

@@ -26,7 +26,7 @@ public class MessageRouter extends Router{
 			 */
 			if(outMessage.getAgentUser()!=null && outMessage.getAgentUser().getStatus()!=null){
 				if(outMessage.getAgentUser().getStatus().equals(UKDataContext.AgentUserStatusEnum.INQUENE.toString())){
-					int queneIndex = ServiceQuene.getQueneIndex(inMessage.getFromUser(), inMessage.getOrgi(), inMessage.getAgentUser().getOrdertime()) ;
+					int queneIndex = ServiceQuene.getQueneIndex(inMessage.getAgentUser().getAgent() , inMessage.getOrgi(), inMessage.getAgentUser().getSkill()) ;
 					if(UKDataContext.AgentUserStatusEnum.INQUENE.toString().equals(outMessage.getAgentUser().getStatus())){
 						outMessage.setMessage(ServiceQuene.getQueneMessage(queneIndex , outMessage.getAgentUser().getChannel()));
 					}
@@ -43,8 +43,11 @@ public class MessageRouter extends Router{
 					outMessage.setMessage(ServiceQuene.getSuccessMessage(agentService , inMessage.getAgentUser().getChannel()));
 					NettyClients.getInstance().sendAgentEventMessage(agentService.getAgentno(), UKDataContext.MessageTypeEnum.NEW.toString(), inMessage.getAgentUser());
 				}else{
-					int queneIndex = ServiceQuene.getQueneIndex(inMessage.getFromUser(), inMessage.getOrgi(), inMessage.getAgentUser().getOrdertime()) ;
-					outMessage.setMessage(ServiceQuene.getNoAgentMessage(queneIndex, inMessage.getAgentUser().getChannel()));
+					if(agentService.getQueneindex() >= 0){	//当前有坐席
+						outMessage.setMessage(ServiceQuene.getQueneMessage(agentService.getQueneindex(), inMessage.getAgentUser().getChannel()));
+					}else{
+						outMessage.setMessage(ServiceQuene.getNoAgentMessage(agentService.getQueneindex(), inMessage.getAgentUser().getChannel()));
+					}
 				}
 			}
 		} catch (Exception e1) {

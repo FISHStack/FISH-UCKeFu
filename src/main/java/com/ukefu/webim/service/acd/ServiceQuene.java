@@ -102,6 +102,23 @@ public class ServiceQuene {
 		
 		return queneUsers;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static int getQueneIndex(String agent , String orgi , String skill){
+		
+		int queneUsers = 0 ;
+		
+		PagingPredicate<String, AgentUser> pagingPredicate = null ;
+		if(!StringUtils.isBlank(skill)){
+			pagingPredicate = new PagingPredicate<String, AgentUser>(  new SqlPredicate( "status = 'inquene' AND skill = '" + skill + "'  AND orgi = '" + orgi +"'") , 100 );
+		}else if(!StringUtils.isBlank(agent)){
+			pagingPredicate = new PagingPredicate<String, AgentUser>(  new SqlPredicate( "status = 'inquene' AND agent = '"+agent+"' AND orgi = '" + orgi +"'") , 100 );
+		}else{
+			pagingPredicate = new PagingPredicate<String, AgentUser>(  new SqlPredicate( "status = 'inquene' AND agent =null AND skill = null AND orgi = '" + orgi +"'") , 100 );
+		}
+		queneUsers = ((IMap<String , AgentUser>) CacheHelper.getAgentUserCacheBean().getCache()).values(pagingPredicate) .size();
+		return queneUsers;
+	}
 	/**
 	 * 为坐席批量分配用户
 	 * @param agentStatus
@@ -295,17 +312,34 @@ public class ServiceQuene {
 		 * 处理ACD 的 技能组请求和 坐席请求
 		 */
 		if(!StringUtils.isBlank(agentUser.getAgent())){
-			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND agentno = '" + agentUser.getAgent() + "' AND users < " + initSessionConfig(orgi).getMaxuser() ) , 1 );
+			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND agentno = '" + agentUser.getAgent()+"'") , 1 );
 		}else if(!StringUtils.isBlank(agentUser.getSkill())){
-			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND skill = '" + agentUser.getSkill() + "' AND users < " + initSessionConfig(orgi).getMaxuser() ) , 1 );
+			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND skill = '" + agentUser.getSkill()+"'") , 1 );
 		}else{
-			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND users < " + initSessionConfig(orgi).getMaxuser() ) , 1 );
+			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false") , 1 );
 		}
 		
 		agentStatusList.addAll(((IMap<String , AgentStatus>) CacheHelper.getAgentStatusCacheBean().getCache()).values(pagingPredicate)) ;
+		AgentStatus agentStatus = null ;
+		int queneIndex = -1 ;
 		AgentService agentService = null ;	//放入缓存的对象
+		if(agentStatusList.size() > 0){
+			agentStatus = agentStatusList.get(0) ;
+			if(agentStatus.getUsers() >= initSessionConfig(orgi).getMaxuser()){
+				agentStatus = null ;
+				/**
+				 * 判断当前有多少人排队中 ， 分三种情况：1、请求技能组的，2、请求坐席的，3，默认请求的
+				 * 
+				 */
+				queneIndex = (getQueneIndex(agentUser.getAgent(), orgi, agentUser.getSkill()));
+			}
+		}
 		try {
-			agentService = processAgentService(agentStatusList.size()>0 ? agentStatusList.get(0) : null, agentUser, orgi) ;
+			agentService = processAgentService(agentStatus, agentUser, orgi) ;
+			if(queneIndex >= 0 && agentService.getStatus().equals(UKDataContext.AgentUserStatusEnum.INQUENE.toString())){
+				agentService.setQueneindex(queneIndex);
+			}
+			
 		}catch(Exception ex){
 			ex.printStackTrace(); 
 		}

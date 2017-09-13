@@ -612,7 +612,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/image/upload")
     @Menu(type = "im" , subtype = "image" , access = true)
-    public ModelAndView upload(ModelMap map,HttpServletRequest request , @RequestParam(value = "imgFile", required = false) MultipartFile imgFile , @Valid String channel, @Valid String userid, @Valid String username , @Valid String appid , @Valid String orgi) throws IOException {
+    public ModelAndView upload(ModelMap map,HttpServletRequest request , @RequestParam(value = "imgFile", required = false) MultipartFile imgFile , @Valid String channel, @Valid String userid, @Valid String username , @Valid String appid , @Valid String orgi, @Valid String paste) throws IOException {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/upload")) ; 
     	UploadStatus upload = null ;
     	String fileName = null ;
@@ -638,10 +638,12 @@ public class IMController extends Handler{
 				}else{
 					image = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/res/image.html?id="+thumbnailsFileName;
 				}
-	    		if(!StringUtils.isBlank(channel)){
-	    			MessageUtils.uploadImage(image ,(int)imgFile.getSize() , imgFile.getName() , channel, userid , username , appid , orgi);
-	    		}else{
-	    			MessageUtils.uploadImage(image ,(int)imgFile.getSize() , imgFile.getName() , userid);
+	    		if(paste == null){
+	    			if(!StringUtils.isBlank(channel)){
+		    			MessageUtils.uploadImage(image ,(int)imgFile.getSize() , imgFile.getName() , channel, userid , username , appid , orgi);
+		    		}else{
+		    			MessageUtils.uploadImage(image ,(int)imgFile.getSize() , imgFile.getName() , userid);
+		    		}
 	    		}
     		}else{
     			

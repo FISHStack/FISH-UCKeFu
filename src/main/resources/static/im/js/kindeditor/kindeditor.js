@@ -5875,7 +5875,7 @@ _plugin('core', function(K) {
 				    }  
 				}  
 			}
-			    function sendfile(b, t) {  
+			function sendfile(b, t) {  
 			        
 			        var xhr = new XMLHttpRequest();  
 			        var formData = new FormData();  
@@ -5886,7 +5886,7 @@ _plugin('core', function(K) {
 			        formData.append('imgFile', myBlob, "untitled." + t.split('/')[1]);  
 			        //formData.append('imgFile', b);  
 			        formData.append('dir', isImg ? 'image' : 'file');  
-			        xhr.open('POST', self.uploadJson);  
+			        xhr.open('POST', self.uploadJson+"&paste=true");  
 			        xhr.onreadystatechange = function () {  
 			    	if (xhr.readyState == 4&&xhr.status == 200) {  
 			    	    // if (fn) {  

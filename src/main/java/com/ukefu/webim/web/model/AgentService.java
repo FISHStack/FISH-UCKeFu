@@ -33,6 +33,8 @@ public class AgentService implements Serializable {
 	
 	private String sessionid ;
 	
+	private int queneindex = -1;
+	
 	private String source;
 	private Date endtime;
 	private String ipaddr;
@@ -655,4 +657,13 @@ public class AgentService implements Serializable {
 	public void setSessionid(String sessionid) {
 		this.sessionid = sessionid;
 	}
+	@Transient
+	public int getQueneindex() {
+		return queneindex;
+	}
+
+	public void setQueneindex(int queneindex) {
+		this.queneindex = queneindex;
+	}
+	
 }
