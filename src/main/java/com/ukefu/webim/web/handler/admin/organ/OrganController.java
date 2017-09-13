@@ -150,7 +150,8 @@ public class OrganController extends Handler{
 	    		if(agentStatus!=null){
 		    		agentStatus.setSkill(organ);
 		    		agentStatus.setSkillname(organData.getName());
-		    		CacheHelper.getAgentStatusCacheBean().put(agentStatus.getId(), agentStatus, super.getOrgi(request));
+		    		CacheHelper.getAgentStatusCacheBean().delete(user.getId(), user.getOrgi());
+		    		CacheHelper.getAgentStatusCacheBean().put(user.getId(), agentStatus, super.getOrgi(request));
 	    		}
 	    	}
 	    	userRepository.save(organUserList) ;
