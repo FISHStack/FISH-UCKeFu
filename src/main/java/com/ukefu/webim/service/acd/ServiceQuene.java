@@ -119,6 +119,14 @@ public class ServiceQuene {
 		queneUsers = ((IMap<String , AgentUser>) CacheHelper.getAgentUserCacheBean().getCache()).values(pagingPredicate) .size();
 		return queneUsers;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static int getAgentUsers(String agent , String orgi){
+		int users = 0 ;
+		PagingPredicate<String, AgentUser> pagingPredicate = new PagingPredicate<String, AgentUser>(  new SqlPredicate( "status = 'inservice' AND agent = '" + agent + "'  AND orgi = '" + orgi +"'") , 100 ) ;
+		users = ((IMap<String , AgentUser>) CacheHelper.getAgentUserCacheBean().getCache()).values(pagingPredicate) .size();
+		return users;
+	}
 	/**
 	 * 为坐席批量分配用户
 	 * @param agentStatus
@@ -275,14 +283,11 @@ public class ServiceQuene {
 	 * @param orgi
 	 */
 	public synchronized static void updateAgentStatus(AgentStatus agentStatus , AgentUser agentUser , String orgi , boolean in){
+		int users = getAgentUsers(agentStatus.getAgentno(), orgi) ;
 		Lock lock = CacheHelper.getAgentStatusCacheBean().getLock("LOCK", orgi) ;
 		lock.lock();
 		try{
-			if( in == false && agentStatus.getUsers()>0){
-				agentStatus.setUsers(agentStatus.getUsers() - 1);
-			}else if(in = true){
-				agentStatus.setUsers(agentStatus.getUsers() + 1);
-			}
+			agentStatus.setUsers(users);
 			agentStatus.setUpdatetime(new Date());
 			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, orgi);
 		}finally{
