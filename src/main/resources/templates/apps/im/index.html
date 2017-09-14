@@ -419,7 +419,9 @@
 			document.getElementById("dialogWrap").style.display = "block" ;
 			</#if>
 		}
-		document.getElementById("agentserviceid").value = data.agentserviceid ;
+		if(document.getElementById("agentserviceid")){
+			document.getElementById("agentserviceid").value = data.agentserviceid ;
+		}
     })
     socket.on('message', function(data) {
         var chat=document.getElementsByClassName('chatting-left').innerText;
