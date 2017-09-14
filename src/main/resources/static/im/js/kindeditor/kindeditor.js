@@ -5917,7 +5917,7 @@ _plugin('core', function(K) {
 			}  
 			    
 			if (dopasteImg(e)){  
-			    e.stop();  
+			   
 			}
 			if (self.pasteType === 0) {
 				e.stop();

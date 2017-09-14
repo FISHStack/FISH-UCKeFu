@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.corundumstudio.socketio.AckRequest;
@@ -103,6 +104,7 @@ public class AiIMEventHandler
     	if(data.getType() == null){
     		data.setType("message");
     	}
+    	data.setMessage(Jsoup.parse(data.getMessage()).text());
     	if(!StringUtils.isBlank(data.getMessage()) && data.getMessage().length() > 300){
     		data.setMessage(data.getMessage().substring(0 , 300));
     	}
