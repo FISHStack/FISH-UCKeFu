@@ -5830,22 +5830,22 @@ _plugin('core', function(K) {
 				    return true;  
 				}  
 			    } else {  
-				if (e.event.clipboardData.items)//chrome  
-				for (var i = 0; i < e.event.clipboardData.items.length; i++) {  
-				    if (e.event.clipboardData.items[i].kind === "file") {  
-					file = e.event.clipboardData.items[i];  
-					break;  
-				    }  
-				}  
-				if (file == null) {  
-			  
-				    if (!e.event.clipboardData.getData("url") && !e.event.clipboardData.getData("text")) {  
-					alert("不能粘贴文件或图片,请使用IE11或者Chrome浏览器,或使用上传功能");  
-					return true;  
-				    }  
-				}  
-			    }  
-			    if (file) {  
+			    	if (e.event.clipboardData.items){//chrome  
+						for (var i = 0; i < e.event.clipboardData.items.length; i++) {  
+						    if (e.event.clipboardData.items[i].kind === "file") {  
+							file = e.event.clipboardData.items[i];  
+							break;  
+						    }  
+						}  
+			    	}
+					if (file == null) {  
+					    if (!e.event.clipboardData.getData("url") && !e.event.clipboardData.getData("text")) {  
+							alert("不能粘贴文件或图片,请使用IE11或者Chrome浏览器,或使用上传功能");  
+							return true;  
+					    }  
+					}  
+			 }  
+			 if (file) {  
 				if (!K.undef(self.allowImageUpload, true)) {  
 				    alert("编辑器禁止上传图片,请与有关人员联系!");  
 				    return true;  
@@ -5913,7 +5913,7 @@ _plugin('core', function(K) {
 			        }  
 			        xhr.send(formData);  
 			    }  
-			    return true;  
+			    //return true;  
 			}  
 			
 			if (self.pasteType === 0) {
