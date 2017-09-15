@@ -5918,10 +5918,10 @@ _plugin('core', function(K) {
 			
 			if (self.pasteType === 0) {
 				e.stop();
-				return;
+//				return;
 			}
 			if (pasting) {
-				return;
+//				return;
 			}
 			pasting = true;
 			K('div.' + cls, doc).remove();

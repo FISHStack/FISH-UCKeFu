@@ -656,10 +656,11 @@ public class IMController extends Handler{
 				}else{
 					file = "/res/file.html?id="+id;
 				}
+	    		File tempFile = new File(imgFile.getOriginalFilename());
 	    		if(!StringUtils.isBlank(channel)){
-	    			MessageUtils.uploadFile(file ,(int)imgFile.getSize() , imgFile.getOriginalFilename() , channel, userid , username , appid , orgi , id);
+	    			MessageUtils.uploadFile(file ,(int)imgFile.getSize() , tempFile.getName() , channel, userid , username , appid , orgi , id);
 	    		}else{
-	    			MessageUtils.uploadFile(file ,(int)imgFile.getSize() , imgFile.getOriginalFilename(), userid , id);
+	    			MessageUtils.uploadFile(file ,(int)imgFile.getSize() , tempFile.getName() , userid , id);
 	    		}
     		}
     	}else{
