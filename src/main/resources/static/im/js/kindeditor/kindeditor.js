@@ -5915,8 +5915,6 @@ _plugin('core', function(K) {
 			    }  
 			    return true;  
 			}  
-			    
-			dopasteImg(e) ;
 			
 			if (self.pasteType === 0) {
 				e.stop();
@@ -5949,6 +5947,10 @@ _plugin('core', function(K) {
 				cmd.range.selectNodeContents(div[0]);
 				cmd.select();
 			}
+			if (dopasteImg(e)) {
+				e.stop();
+				return;
+			}    
 			setTimeout(function() {
 				movePastedData();
 				pasting = false;
