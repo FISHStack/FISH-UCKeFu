@@ -78,10 +78,10 @@ function append(parent, text) {
 }
 var ukefu = {
 	time : new Date().getTime(),
-	in :"/im/${appid!''}/userlist.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}" ,
-	url :"/im/online?appid=${appid!''}&orgi=${orgi!''}&client=${client}" ,
-	chat : "/im/index.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}" , 
-	refuse :"/im/refuse.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}", 
+	in :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/${appid!''}/userlist.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}" ,
+	url :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/online?appid=${appid!''}&orgi=${orgi!''}&client=${client}" ,
+	chat : "${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/index.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}" , 
+	refuse :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/refuse.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}", 
 	config : function(d){
 		data = d ;	
 		if(d.id != null && d.id != ''){
@@ -149,13 +149,12 @@ var ukefu = {
 			if(data.mobile){
 				url = url + "&mobile="+encodeURIComponent(data.mobile);	
 			}
+			url = url + "&title="+encodeURIComponent(document.title);
+			<#if traceid??>
+			url = url+"&traceid=${traceid}"
+			</#if>
+			url = url+"&url="+encodeURIComponent(location.href)
 		}
-		url = url + "&title="+encodeURIComponent(document.title);
-		<#if traceid??>
-		url = url+"&traceid=${traceid}"
-		</#if>
-		url = url+"&url="+encodeURIComponent(location.href)
-		
 		ukefu.ajax(url + "&userid="+result+"&sessionid=${sessionid!''}&sign="+result+"&t="+new Date().getTime() , function(){ukefu.ping();});	
 	},
 	writepoint:function(){
@@ -169,7 +168,7 @@ var ukefu = {
 							"<div style='padding:0px 5px 10px 5px;border-bottom:1px solid #dedede;'><a href='${pointAd.url!''}' title='${pointAd.tiptext!''}' target='_blank' id='point_ad_text'>${(pointAd.content!'')?no_esc}</a></div>"+
 							</#if>
 						<#else>
-						"<img src='/images/title.jpg' style='width:140px;margin:0 5px;vertical-align: middle;'/>"+
+						"<img src='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/images/title.jpg' style='width:140px;margin:0 5px;vertical-align: middle;'/>"+
 						</#if>
 						"<div style='padding:10px 5px;text-align:center;color:#555;'><#if inviteData?? && inviteData.skill == true && inviteData.consult_skill_msg??>${(inviteData.consult_skill_msg!'')?no_esc}</#if></div>"+
 						
@@ -183,7 +182,7 @@ var ukefu = {
 								</#if>
 							</#list>
 							"<div style='padding:5px;color:#555;border:1px solid #dddddd;background-color:#efefef;'>"+
-							"<a href='javascript:void(0)' url='/im/text/${appid}.html?skill=${skill.id}' onclick='return openAgentChatDialog(this)' style='color: #777;    text-decoration: none;'>${skill.name!''}（${skillNum}）</a>"+
+							"<a href='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/text/${appid!''}.html?skill=${skill.id!''}' onclick='return openAgentChatDialog(this.href)' style='color: #777;    text-decoration: none;'>${skill.name!''}（${skillNum}）</a>"+
 							"</div>"+
 							<#if inviteData.consult_skill_agent?? && inviteData.consult_skill_agent == true>
 							"<ul class='ichat-list-ul' style='border: 0 none;list-style: none outside none;margin: 0;padding: 0;width: 150px;'>"+
@@ -193,7 +192,7 @@ var ukefu = {
 								<#if agent.organ?? && agent.organ == skill.id && agentNum lt inviteData.consult_skill_maxagent >
 								<#assign agentNum = agentNum + 1>
 								"<li style='height: 23px;list-style: none outside none;margin-left: 6px;overflow: hidden;padding: 2px;'>"+
-								"<a href='javascript:void(0)' url='/im/text/${appid!''}.html?skill=${skill.id!''}&agent=${agent.id!''}' onclick='return openAgentChatDialog(this)' style='color: #777;    text-decoration: none;'> <img src='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/images/creater.png' style='vertical-align: middle;'></img> ${agent.uname!''}</a></li>"+
+								"<a href='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/text/${appid!''}.html?skill=${skill.id!''}&agent=${agent.id!''}' onclick='return openAgentChatDialog(this.href)' style='color: #777;    text-decoration: none;'> <img src='${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/images/creater.png' style='vertical-align: middle;'></img> ${agent.uname!''}</a></li>"+
 								"</li>"+
 								</#if>
 							</#list>
@@ -252,7 +251,7 @@ var ukefu = {
 		
 	},
 	openChatDialog:function(){
-		return ukefu.openChatDialogWithURL(ukefu.chat);		
+		ukefu.openChatDialogWithURL(ukefu.chat);		
 	},
 	openChatDialogWithURL:function(url){
 		url = url + "&userid="+result+"&sessionid=${sessionid!''}"
@@ -341,8 +340,8 @@ var ukefu = {
 	}
 }
 
-function openAgentChatDialog(object){
-	return ukefu.openChatDialogWithURL(object.getAttribute("url")) ;	
+function openAgentChatDialog(url){
+	return ukefu.openChatDialogWithURL(url) ;	
 }
 
 ukefu.ajax(ukefu.in+"&userid="+result+"&t="+new Date().getTime() , function(data){
