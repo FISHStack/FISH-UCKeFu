@@ -275,9 +275,6 @@ var ukefu = {
 		url = url+"&traceid=${traceid}"
 		</#if>
 		url = url+"&url="+encodeURIComponent(location.href) ;
-		if(window.event.target){
-			window.event.target.href = url ;
-		}
 		try{
 			window.open(url+"&t="+new Date().getTime(), "ukefu-chat", "height=600, width=850, top="+ (window.screen.availHeight - 30 - 600) /2+", left="+(window.screen.availWidth - 10 - 750)/2+",toolbar=no, menubar=no, scrollbars=no, resizable=no, directories=no,location=no, status=no");
 		}catch(e){}
