@@ -454,8 +454,10 @@ public class AgentController extends Handler {
 			if(agentUser!=null && super.getUser(request).getId().equals(agentUser.getAgentno())){
 				ServiceQuene.deleteAgentUser(agentUser, super.getOrgi(request));
 				AgentService agentService = agentServiceRepository.findByIdAndOrgi(agentUser.getAgentserviceid(), super.getOrgi(request)) ;
-				agentService.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
-				agentServiceList.add(agentService) ;
+				if(agentService!=null){
+					agentService.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
+					agentServiceList.add(agentService) ;
+				}
 			}
 		}
 		agentServiceRepository.save(agentServiceList) ;

@@ -53,10 +53,10 @@ public class CubeService {
 	@SuppressWarnings("deprecation")
 	public CubeReportData execute(String mdx) throws Exception{
 		Connection connection = dataSource.service(schemaFile.getAbsolutePath()) ;
-		Query query = connection.parseQuery(mdx);
-		Result result = connection.execute(query) ;
 		CubeReportData cubeReportData = new CubeReportData();
 		try{
+			Query query = connection.parseQuery(mdx);
+			Result result = connection.execute(query) ;
 			Axis[] axises = result.getAxes();
 			
 			
