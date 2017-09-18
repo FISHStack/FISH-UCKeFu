@@ -288,6 +288,7 @@ public class IMAgentController extends Handler{
     			ad.setImgurl(tempad.getImgurl());
     		}
     		adTypeRes.save(ad) ;
+    		UKTools.initAdv();
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/setting/adv.html?adpos="+adpos));
     }
