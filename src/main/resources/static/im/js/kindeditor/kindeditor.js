@@ -5822,13 +5822,12 @@ _plugin('core', function(K) {
 			    //debugger;  
 			    var file = null;  
 			    if (window.clipboardData) {//ie  
-			  
-				if (clipboardData.files && clipboardData.files.length)//IE11  
-				    file = clipboardData.files[0];  
-				else if (!clipboardData.getData("text") && !clipboardData.getData("url")) {  
-				    alert("不能粘贴文件或图片,请使用IE11或者Chrome浏览器,或使用上传功能");  
-				    return true;  
-				}  
+					if (clipboardData.files && clipboardData.files.length)//IE11  
+					    file = clipboardData.files[0];  
+					else if (!clipboardData.getData("text") && !clipboardData.getData("url")) {  
+					    alert("不能粘贴文件或图片,请使用IE11或者Chrome浏览器,或使用上传功能");  
+					    return true;  
+					}  
 			    } else {  
 			    	if (e.event.clipboardData.items){//chrome  
 						for (var i = 0; i < e.event.clipboardData.items.length; i++) {  
@@ -5874,6 +5873,8 @@ _plugin('core', function(K) {
 					fr.readAsArrayBuffer(file);  
 				    }  
 				}  
+			}else{
+				return false ;
 			}
 			function sendfile(b, t) {  
 			        
@@ -5913,15 +5914,18 @@ _plugin('core', function(K) {
 			        }  
 			        xhr.send(formData);  
 			    }  
-			    //return true;  
+			    return true;  
 			}  
-			
+			 
 			if (self.pasteType === 0) {
 				e.stop();
-//				return;
-			}
+				return;
+			}else if (dopasteImg(e)) {
+				e.stop();
+				return;
+			}   
 			if (pasting) {
-//				return;
+				return;
 			}
 			pasting = true;
 			K('div.' + cls, doc).remove();
@@ -5947,10 +5951,6 @@ _plugin('core', function(K) {
 				cmd.range.selectNodeContents(div[0]);
 				cmd.select();
 			}
-			if (dopasteImg(e)) {
-				e.stop();
-				return;
-			}    
 			setTimeout(function() {
 				movePastedData();
 				pasting = false;
