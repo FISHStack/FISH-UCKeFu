@@ -184,7 +184,7 @@
 				document.getElementById("dialogWrap").style.display = "none" ;
 				alert("服务评价已提及，请关闭浏览器！");
 				service_end = true;
-			} , "id="+form.id.value+"&satislevel="+form.satislevel.value+"&satiscomment="+encodeURIComponent(form.comment.value));
+			} , "id="+form.id.value+"&satislevel="+document.getElementById("satislevel_input").value +"&satiscomment="+encodeURIComponent(document.getElementById("comment_input").value ));
 			return false ;
 		}
 		window.onbeforeunload = function(){
@@ -341,9 +341,10 @@
             <p style="margin-top:20px;">
                 <span style="float:left;">评价：</span>
                 <span style="position: relative;top: 0px;left: 13px;">
+                <input type="hidden" id="satislevel_input" name="t">
                 <#if commentList??>
                 <#list commentList as comment>
-                <input type="radio" name="satislevel" value="${comment.code!''}" <#if comment_index == 0>checked="checked"</#if> id="dic_${comment.id!''}">
+                <input type="radio" name="satislevel" value="${comment.code!''}" <#if comment_index == 0>checked="checked"</#if> id="dic_${comment.id!''}" onclick="document.getElementById('satislevel_input').value = this.value">
                 <label for="dic_${comment.id!''}" class="radio">${comment.name!''}</label>
                 </#list>
                 </#if>
@@ -353,10 +354,11 @@
             <p style="margin-top:20px;">
                 <span style="float:left;">意见：</span>
                 <span style="position: relative;top: 0px;left: 10px;">
+                	<input type="hidden" id="comment_input" name="t">
                 	<#if commentItemList??>
                 	<#list commentItemList as item>
                 	<div style="margin-left:55px;margin-bottom:20px;">
-                		<input type="radio" name="comment" id="item_${item.id!''}" value="${item.id!''}">
+                		<input type="radio" name="comment" id="item_${item.id!''}" value="${item.id!''}" onclick="document.getElementById('comment_input').value = this.value">
                 		<label for="item_${item.id!''}" class="radio">
                 			${item.name!''}
                 		</label>
