@@ -1,4 +1,4 @@
-<#if quickReplyList?? && quickReplyList?size gt 0>
+<#if (quickReplyList?? && quickReplyList?size gt 0) || (pubQuickTypeList?? && pubQuickTypeList?size gt 0)>
 <ul class="ztree" id="quickTypeTree"></ul>
 <#else>
 	<div style="padding: 50px 0 50px;">
@@ -44,15 +44,15 @@
 		$('#quick_edit').attr("href","/agent/quickreply/edit.html?id="+id) ;
 		
 		if(id == "1"){
-			$('#quick_type_edit').parent().hide();
-			$('#quick_edit').parent().hide();
+			$('#quick_type_edit').hide();
+			$('#quick_edit').hide();
 		}else{
 			if(type == true){
-				$('#quick_type_edit').parent().show();
-				$('#quick_edit').parent().hide();
+				$('#quick_type_edit').show();
+				$('#quick_edit').hide();
 			}else{
-				$('#quick_type_edit').parent().hide();
-				$('#quick_edit').parent().show();
+				$('#quick_type_edit').hide();
+				$('#quick_edit').show();
 			}
 		}
 	}

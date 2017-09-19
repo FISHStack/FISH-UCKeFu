@@ -236,7 +236,8 @@ public class ChatServiceController extends Handler{
 				agentStatusList.remove(i) ;
 				continue ;
 			}else{
-				agentStatusList.set(i, (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentStatus.getAgentno(), super.getOrgi(request))) ;	
+				AgentStatus temp = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentStatus.getAgentno(), super.getOrgi(request)) ;
+				agentStatusList.set(i, temp) ;	
 			}
 			i++ ;
 		}

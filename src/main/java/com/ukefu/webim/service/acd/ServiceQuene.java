@@ -122,10 +122,13 @@ public class ServiceQuene {
 	
 	@SuppressWarnings("unchecked")
 	public static int getAgentUsers(String agent , String orgi){
-		int users = 0 ;
-		PagingPredicate<String, AgentUser> pagingPredicate = new PagingPredicate<String, AgentUser>(  new SqlPredicate( "status = 'inservice' AND agent = '" + agent + "'  AND orgi = '" + orgi +"'") , 100 ) ;
-		users = ((IMap<String , AgentUser>) CacheHelper.getAgentUserCacheBean().getCache()).values(pagingPredicate) .size();
-		return users;
+		/**
+		 * agentno自动是 服务的坐席， agent 是请求的坐席
+		 */
+		PagingPredicate<String, AgentUser> pagingPredicate = new PagingPredicate<String, AgentUser>(  new SqlPredicate( "status = 'inservice' AND agentno = '" + agent + "'  AND orgi = '" + orgi +"'") , 100 ) ;
+		List<AgentUser> agentUserList = new ArrayList<AgentUser>();
+		agentUserList.addAll(((IMap<String , AgentUser>) CacheHelper.getAgentUserCacheBean().getCache()).values(pagingPredicate)) ;
+		return agentUserList.size();
 	}
 	/**
 	 * 为坐席批量分配用户
@@ -419,8 +422,6 @@ public class ServiceQuene {
 			
 			agentService.setAgentuserid(agentUser.getId());
 			
-			updateAgentStatus(agentStatus  , agentUser , orgi , true) ;
-			
 			long waittingtime = 0  ;
 			if(agentUser.getWaittingtimestart()!=null){
 				waittingtime = System.currentTimeMillis() - agentUser.getWaittingtimestart().getTime() ;
@@ -503,7 +504,9 @@ public class ServiceQuene {
 		}
 
 		CacheHelper.getAgentUserCacheBean().put(agentUser.getUserid(), agentUser , UKDataContext.SYSTEM_ORGI) ;
-
+		
+		updateAgentStatus(agentStatus  , agentUser , orgi , true) ;
+		
 		return agentService ;
 	}
 	
