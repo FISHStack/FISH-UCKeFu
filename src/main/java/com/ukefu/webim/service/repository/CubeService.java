@@ -90,7 +90,7 @@ public class CubeService {
 				connection.close();
 			}
 			if(schemaFile.exists()){
-				schemaFile.delete();
+//				schemaFile.delete();
 			}
 		}
 		return cubeReportData ;

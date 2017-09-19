@@ -422,8 +422,6 @@ public class ServiceQuene {
 			
 			agentService.setAgentuserid(agentUser.getId());
 			
-			updateAgentStatus(agentStatus  , agentUser , orgi , true) ;
-			
 			long waittingtime = 0  ;
 			if(agentUser.getWaittingtimestart()!=null){
 				waittingtime = System.currentTimeMillis() - agentUser.getWaittingtimestart().getTime() ;
@@ -507,6 +505,10 @@ public class ServiceQuene {
 		}
 
 		CacheHelper.getAgentUserCacheBean().put(agentUser.getUserid(), agentUser , UKDataContext.SYSTEM_ORGI) ;
+		
+		if(agentStatus != null){
+			updateAgentStatus(agentStatus  , agentUser , orgi , true) ;
+		}
 		
 		return agentService ;
 	}
