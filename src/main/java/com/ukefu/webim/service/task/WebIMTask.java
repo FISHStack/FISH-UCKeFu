@@ -107,7 +107,7 @@ public class WebIMTask {
 				AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(task.getUserid(), UKDataContext.SYSTEM_ORGI);
 				if(agentUser!=null){
 					AgentStatus agentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentUser.getAgentno(), task.getOrgi()) ;
-					if(agentStatus!=null && task.getReptimes()!=null && task.getReptimes().equals("0")){
+					if(agentStatus!=null && ( (task.getReptimes()!=null && task.getReptimes().equals("0")) || task.getReptimes() == null  )){
 						task.setReptimes("1");
 						task.setReptime(new Date());
 						
