@@ -565,6 +565,9 @@ public class ServiceQuene {
 	}
 	
 	public static String getNoAgentMessage(int queneIndex , String channel){
+		if(queneIndex < 0){
+			queneIndex = 0 ;
+		}
 		String queneTip = "<span id='queneindex'>"+queneIndex+"</span>" ;
 		if(!UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(channel)){
 			queneTip = String.valueOf(queneIndex) ;
