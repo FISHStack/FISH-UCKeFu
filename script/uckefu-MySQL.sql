@@ -749,6 +749,7 @@ CREATE TABLE `uk_chat_message` (
   `lastmsgtime` datetime DEFAULT NULL,
   `agentreplyinterval` int(11) DEFAULT NULL,
   `sessionid` varchar(50) DEFAULT NULL,
+  `cooperation` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sessionid` (`usession`) USING BTREE,
   KEY `orgi` (`orgi`) USING BTREE
@@ -6703,3 +6704,33 @@ CREATE TABLE `wf_workitem` (
 -- ----------------------------
 -- Records of wf_workitem
 -- ----------------------------
+DROP TABLE IF EXISTS `uk_log`;
+CREATE TABLE `uk_log` (
+  `id` varchar(32) NOT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  `flowid` varchar(32) DEFAULT NULL,
+  `logtype` varchar(32) DEFAULT NULL,
+  `createdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `msg` longtext,
+  `LEVELS` varchar(32) DEFAULT NULL,
+  `thread` varchar(255) DEFAULT NULL,
+  `clazz` varchar(255) DEFAULT NULL,
+  `FILES` varchar(255) DEFAULT NULL,
+  `linenumber` varchar(32) DEFAULT NULL,
+  `method` varchar(255) DEFAULT NULL,
+  `startid` varchar(32) DEFAULT NULL,
+  `errorinfo` text,
+  `triggerwarning` varchar(32) DEFAULT NULL,
+  `triggertime` varchar(32) DEFAULT NULL,
+  `triggertimes` int(11) DEFAULT NULL,
+  `name` varchar(32) DEFAULT NULL,
+  `code` varchar(32) DEFAULT NULL,
+  `memo` varchar(255) DEFAULT NULL,
+  `userid` varchar(32) DEFAULT NULL,
+  `username` varchar(32) DEFAULT NULL,
+  `logtime` varchar(32) DEFAULT NULL,
+  `ipaddr` varchar(255) DEFAULT NULL,
+  `port` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
