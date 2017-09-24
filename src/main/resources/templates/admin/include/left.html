@@ -56,6 +56,24 @@
 	</li>
 	
 	<li class="layui-nav-item layui-nav-itemed">
+		<a class="layui-nav-title" href="javascript:;">系统日志</a>
+		<dl class="layui-nav-child">
+			<dd <#if subtype?? && subtype == 'syslog'>class="layui-this"</#if>>
+				<a href="/admin/log/index.html">所有日志</a>
+			</dd>
+			<dd <#if levels?? && levels == 'ERROR'>class="layui-this"</#if>>
+				<a href="/admin/log/levels.html?levels=ERROR">错误日志</a>
+			</dd>
+			<dd <#if levels?? && levels == 'WARN'>class="layui-this"</#if>>
+				<a href="/admin/log/levels.html?levels=WARN">警告日志</a>
+			</dd>
+			<dd <#if levels?? && levels == 'INFO'>class="layui-this"</#if>>
+				<a href="/admin/log/levels.html?levels=INFO">输出日志</a>
+			</dd>
+		</dl>
+	</li>
+	
+	<li class="layui-nav-item layui-nav-itemed">
 		<a class="layui-nav-title" href="javascript:;">系统设置</a>
 		<dl class="layui-nav-child">
 			<dd <#if subtype?? && subtype == 'config'>class="layui-this"</#if>>

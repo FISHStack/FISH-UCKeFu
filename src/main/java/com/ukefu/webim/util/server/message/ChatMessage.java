@@ -33,6 +33,8 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	private String touser ;
 	private String tousername ;
 	
+	private boolean cooperation ;
+	
 	private String msgtype ;
 	private String creater; 
 	private String usession ;
@@ -49,6 +51,8 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	private Date lastmsgtime ;		//前一条的访客发送消息时间
 	private int agentreplytime ;	//坐席回复消息时长		单位：秒
 	private int agentreplyinterval ;//坐席回复消息时间间隔 ， 单位：秒
+	
+	private String batid ;		//变更用处，修改为是否有协作保存的图片
 	
 	private String headimgurl ;		//用户头像 ，临时用
 	
@@ -171,7 +175,7 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")	
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")	
 	public String getId() {
 		return id;
 	}
@@ -313,5 +317,17 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	}
 	public void setSessionid(String sessionid) {
 		this.sessionid = sessionid;
+	}
+	public String getBatid() {
+		return batid;
+	}
+	public void setBatid(String batid) {
+		this.batid = batid;
+	}
+	public boolean isCooperation() {
+		return cooperation;
+	}
+	public void setCooperation(boolean cooperation) {
+		this.cooperation = cooperation;
 	}
 }

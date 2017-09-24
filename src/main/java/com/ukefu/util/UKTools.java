@@ -773,6 +773,13 @@ public class UKTools {
 		}
 		return destFile ;
     }
+    
+    public static File scaleImage(File destFile,File imageFile, float quality) throws FileNotFoundException, IOException{
+		if(imageFile != null && imageFile.exists()){
+			Thumbnails.of(imageFile).scale(1f).outputQuality(quality).toFile(destFile);
+		}
+		return destFile ;
+    }
 
 	public static String processEmoti(String message) {
 		Pattern pattern = Pattern.compile("\\[([\\d]*?)\\]");

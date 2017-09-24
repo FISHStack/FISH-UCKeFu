@@ -5,7 +5,6 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 
 import com.ukefu.core.UKDataContext;
-import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
@@ -21,11 +20,11 @@ public class MessageUtils {
 	 * @param image
 	 * @param userid
 	 */
-	public static ChatMessage uploadImage(String image , int size , String name  , String userid){
-		return createMessage(image , size , name , UKDataContext.MediaTypeEnum.IMAGE.toString(), userid , null);
+	public static ChatMessage uploadImage(String image ,String attachid, int size , String name  , String userid){
+		return createMessage(image , size , name , UKDataContext.MediaTypeEnum.IMAGE.toString(), userid , attachid);
 	}
-	public static ChatMessage uploadImage(String image , int size , String name , String channel , String userid , String username , String appid , String orgi){
-		return createMessage(image , size , name , channel , UKDataContext.MediaTypeEnum.IMAGE.toString(), userid , username, appid , orgi , null);
+	public static ChatMessage uploadImage(String image  , String attachid, int size , String name , String channel , String userid , String username , String appid , String orgi){
+		return createMessage(image , size , name , channel , UKDataContext.MediaTypeEnum.IMAGE.toString(), userid , username, appid , orgi , attachid);
 	}
 	
 	/**
@@ -110,7 +109,6 @@ public class MessageUtils {
     	}else{
     		data.setUserid(agentUser.getUserid());
     		data.setUsername(agentUser.getUsername());
-    		data.setId(UKTools.getUUID());
     		data.setTouser(agentUser.getAgentno());
     		
     		data.setAgentuser(agentUser.getId());
@@ -196,7 +194,6 @@ public class MessageUtils {
     	{
     		data.setUserid(userid);
     		data.setUsername(data.getUsername());
-    		data.setId(UKTools.getUUID());
     		data.setTouser(userid);
     		
     		data.setAgentuser(userid);

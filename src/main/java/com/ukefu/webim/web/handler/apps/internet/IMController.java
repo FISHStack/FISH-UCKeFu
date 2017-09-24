@@ -640,9 +640,9 @@ public class IMController extends Handler{
 				}
 	    		if(paste == null){
 	    			if(!StringUtils.isBlank(channel)){
-		    			MessageUtils.uploadImage(image ,(int)imgFile.getSize() , imgFile.getName() , channel, userid , username , appid , orgi);
+		    			MessageUtils.uploadImage(image , fileid ,(int)imgFile.getSize() , imgFile.getName() , channel, userid , username , appid , orgi);
 		    		}else{
-		    			MessageUtils.uploadImage(image ,(int)imgFile.getSize() , imgFile.getName() , userid);
+		    			MessageUtils.uploadImage(image , fileid ,(int)imgFile.getSize() , imgFile.getName() , userid);
 		    		}
 	    		}
     		}else{

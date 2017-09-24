@@ -57,6 +57,9 @@ $(document).ready(function(){
 
 var WebIM = {
 	sendMessage:function(message , userid , appid , session , orgi , touser , agentstatus){
+		WebIM.sendTypeMessage(message, userid, appid, session, orgi, touser, agentstatus, null , null) ;
+	},
+	sendTypeMessage:function(message , userid , appid , session , orgi , touser , agentstatus , msgtype , attachmentid){
 		socket.emit('message', {
 			appid : appid ,
 			userid:userid,
@@ -66,7 +69,9 @@ var WebIM = {
 			orgi:orgi,
 			username:agentstatus,
 			nickname:agentstatus,
-			message : message
+			message : message,
+			msgtype:msgtype,
+			attachmentid:attachmentid
         });
 	},
 	ping : function(){

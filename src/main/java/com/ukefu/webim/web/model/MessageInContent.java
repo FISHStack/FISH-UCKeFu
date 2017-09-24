@@ -19,6 +19,9 @@ public class MessageInContent implements MessageDataBean{
 	private AgentUser agentUser ;
 	private Object channelMessage ;
 	private String agentserviceid ;
+	
+	private String attachmentid ;
+	
 	private Object user ;
 	private String contextid ;
 	private String createtime ;
@@ -125,4 +128,11 @@ public class MessageInContent implements MessageDataBean{
 	public void setAgentserviceid(String agentserviceid) {
 		this.agentserviceid = agentserviceid;
 	}
+	public String getAttachmentid() {
+		return attachmentid;
+	}
+	public void setAttachmentid(String attachmentid) {
+		this.attachmentid = attachmentid;
+	}
+	
 }

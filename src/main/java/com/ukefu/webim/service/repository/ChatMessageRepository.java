@@ -13,6 +13,8 @@ public abstract interface ChatMessageRepository
 {
   public abstract List<ChatMessage> findByUsessionAndOrgi(String usession , String orgi);
   
+  public abstract ChatMessage findById(String id);
+  
   public abstract Page<ChatMessage> findByUsessionAndOrgi(String usession, String orgi , Pageable page );
   
   public abstract Page<ChatMessage> findByUseridAndOrgi(String userid, String orgi , Pageable page );

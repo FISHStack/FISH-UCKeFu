@@ -2,11 +2,14 @@ package com.ukefu.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.springframework.context.ApplicationContext;
 
 import com.ukefu.util.DateConverter;
+import com.ukefu.webim.web.model.Log;
 
 public class UKDataContext {
 
@@ -53,6 +56,8 @@ public class UKDataContext {
 	private static int WebIMPort = 8081 ;
 	
 	private static ApplicationContext applicationContext ;
+	
+	public static BlockingQueue<Log> tempLogQueue = new LinkedBlockingQueue<Log>();
 	
 	static{
 		ConvertUtils.register(new DateConverter(), java.util.Date.class); 
@@ -374,7 +379,7 @@ public class UKDataContext {
 		EVENT,
 		IMAGE, 
 		VIDIO,
-		VOICE,LOCATION, FILE;
+		VOICE,LOCATION, FILE , COOPERATION , ACTION;
 		
 		public String toString(){
 			return super.toString().toLowerCase() ;
@@ -384,7 +389,8 @@ public class UKDataContext {
 	public enum CallTypeEnum{
 		IN ,
 		OUT, 
-		SYSTEM;
+		SYSTEM,
+		INVITE;
 		
 		public String toString(){
 			return super.toString().toLowerCase() ;

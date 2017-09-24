@@ -87,7 +87,14 @@ public class AgentEventHandler
     	AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(data.getTouser(), data.getOrgi());
     	MessageOutContent outMessage = new MessageOutContent() ;
     	outMessage.setMessage(data.getMessage());
-    	outMessage.setMessageType(UKDataContext.MediaTypeEnum.TEXT.toString());
+    	if(UKDataContext.MediaTypeEnum.COOPERATION.toString().equals(data.getMsgtype())){
+    		outMessage.setMessageType(UKDataContext.MediaTypeEnum.COOPERATION.toString());
+		}else{
+			outMessage.setMessageType(UKDataContext.MediaTypeEnum.TEXT.toString());
+		}
+    	
+    	outMessage.setAttachmentid(data.getAttachmentid());
+    	
     	outMessage.setCalltype(UKDataContext.CallTypeEnum.OUT.toString());
     	outMessage.setAgentUser(agentUser);
     	outMessage.setSnsAccount(null);
@@ -109,7 +116,11 @@ public class AgentEventHandler
     		data.setAgentserviceid(agentUser.getAgentserviceid());
     		data.setCreater(agentUser.getAgentno());
     		
-    		data.setMsgtype(UKDataContext.MediaTypeEnum.TEXT.toString());
+    		if(UKDataContext.MediaTypeEnum.COOPERATION.toString().equals(data.getMsgtype())){
+    			data.setMsgtype(UKDataContext.MediaTypeEnum.COOPERATION.toString());
+    		}else{
+    			data.setMsgtype(UKDataContext.MediaTypeEnum.TEXT.toString());
+    		}
     		
     		data.setCalltype(UKDataContext.CallTypeEnum.OUT.toString());
     		if(!StringUtils.isBlank(agentUser.getAgentno())){

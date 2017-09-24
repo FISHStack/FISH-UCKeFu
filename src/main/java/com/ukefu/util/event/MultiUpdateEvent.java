@@ -4,6 +4,10 @@ import com.ukefu.webim.service.hibernate.BaseService;
 
 public class MultiUpdateEvent<S> implements UserEvent{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6657324711766725192L;
 	private S data ;
 	private BaseService<?> crudRes ;
 	private String eventype ;

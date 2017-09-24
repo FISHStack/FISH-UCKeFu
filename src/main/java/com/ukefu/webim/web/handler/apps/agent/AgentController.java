@@ -394,7 +394,10 @@ public class AgentController extends Handler {
 	    	agentStatus.setMaxusers(sessionConfig.getMaxuser());
 	    	agentStatusRepository.save(agentStatus) ;
     	}
-    	
+    	/**
+    	 * 更新当前用户状态
+    	 */
+    	agentStatus.setUsers(ServiceQuene.getAgentUsers(agentStatus.getAgentno(), super.getOrgi(request)));
     	agentStatus.setStatus(UKDataContext.AgentStatusEnum.READY.toString());
     	CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, user.getOrgi());
     	
@@ -592,7 +595,7 @@ public class AgentController extends Handler {
 					fileURL = "/res/image.html?id="+targetFile;
 				}
 	    		upload = new UploadStatus("0" , fileURL); //图片直接发送给 客户，不用返回
-	    		
+	    		data.setAttachmentid(fileid);
     		}else{
     			String attachid = processAttachmentFile(imgFile, request) ;
     			
@@ -604,7 +607,6 @@ public class AgentController extends Handler {
 					fileURL = "/res/file.html?id="+attachid;
 				}
     		}
-    		
     		data.setFilename(imgFile.getOriginalFilename());
     		data.setFilesize((int) imgFile.getSize());
     		
@@ -663,6 +665,68 @@ public class AgentController extends Handler {
     	}
     	map.addAttribute("upload", upload) ;
         return view ; 
+    }
+	
+	@RequestMapping("/message/image")
+    @Menu(type = "resouce" , subtype = "image" , access = true)
+    public ModelAndView messageimage(HttpServletResponse response,ModelMap map, @Valid String id, @Valid String t) throws IOException {
+    	ChatMessage message = chatMessageRepository.findById(id) ;
+    	map.addAttribute("chatMessage", message) ;
+    	map.addAttribute("agentUser", CacheHelper.getAgentUserCacheBean().getCacheObject(message.getUserid(), message.getOrgi())) ;
+    	if(!StringUtils.isBlank(t)){
+    		map.addAttribute("t", t) ;
+    	}
+    	return request(super.createRequestPageTempletResponse("/apps/agent/media/messageimage")) ; 
+    }
+	
+	@RequestMapping("/message/image/upload")
+    @Menu(type = "im" , subtype = "image" , access = false)
+    public ModelAndView messageimage(ModelMap map,HttpServletRequest request , @RequestParam(value = "image", required = false) MultipartFile image , @Valid String id, @Valid String userid , @Valid String fileid) throws IOException {
+    	if(image!=null && !StringUtils.isBlank(fileid)){
+    		File tempFile = File.createTempFile(fileid, ".png") ;
+    		try{
+	    		String fileName = "upload/"+fileid+"_cooperation"  ;
+	    		File imageFile = new File(path , fileName) ;
+	    		if(!tempFile.getParentFile().exists()){
+	    			tempFile.getParentFile().mkdirs();
+	    		}
+	    		FileCopyUtils.copy(image.getBytes(), tempFile);
+	    		ChatMessage chatMessage = chatMessageRepository.findById(id) ;
+	    		chatMessage.setCooperation(true);
+	    		chatMessageRepository.save(chatMessage) ;
+	    		
+	    		UKTools.scaleImage(imageFile, tempFile , 0.1F) ;
+	    		
+	    		
+	    		
+	    		OutMessageRouter router = null ; 
+	    		AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(chatMessage.getUserid(), chatMessage.getOrgi()) ;
+				
+				if(agentUser!=null){
+		    		router  = (OutMessageRouter) UKDataContext.getContext().getBean(agentUser.getChannel()) ;
+		    		MessageOutContent outMessage = new MessageOutContent() ;
+		    		if(router!=null){
+		    			outMessage.setMessage("/res/image.html?id="+fileName);
+		    			outMessage.setFilename(imageFile.getName());
+		    			
+		    			outMessage.setAttachmentid(chatMessage.getAttachmentid());
+		    			
+		    			outMessage.setFilesize((int) imageFile.length());
+		    			outMessage.setMessageType(UKDataContext.MediaTypeEnum.ACTION.toString());
+						outMessage.setCalltype(UKDataContext.CallTypeEnum.INVITE.toString());
+						outMessage.setCreatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+						outMessage.setNickName(super.getUser(request).getUsername());
+						
+		    			router.handler(agentUser.getUserid(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), agentUser.getAppid(), outMessage);
+		    		}
+				}
+    		}finally{
+    			if(tempFile.exists()){
+	    			tempFile.delete() ;
+	    		}
+    		}
+    	}
+    	return request(super.createRequestPageTempletResponse("/public/success")) ; 
     }
 	
 	private String processAttachmentFile(MultipartFile file , HttpServletRequest request) throws IOException{
