@@ -5833,7 +5833,7 @@ _plugin('core', function(K) {
 						for (var i = 0; i < e.event.clipboardData.items.length; i++) {  
 						    if (e.event.clipboardData.items[i].kind === "file") {  
 							file = e.event.clipboardData.items[i];  
-							break;  
+								break;  
 						    }  
 						}  
 			    	}
