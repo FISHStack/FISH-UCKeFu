@@ -3827,9 +3827,7 @@ _extend(KEdit, KWidget, {
 	afterChange : function(fn) {
 		var self = this, doc = self.doc, body = doc.body;
 		K(doc).keyup(function(e) {
-			if (!e.ctrlKey && !e.altKey && _CHANGE_KEY_MAP[e.which]) {
-				fn(e);
-			}
+			fn(e);
 		});
 		K(doc).mouseup(fn).contextmenu(fn);
 		K(self.win).blur(fn);
@@ -5819,10 +5817,113 @@ _plugin('core', function(K) {
 			self.insertHtml(html, true);
 		}
 		K(doc.body).bind('paste', function(e){
+			//处理IE11,Chrome粘贴图片上传  
+			function dopasteImg() {  
+			    //debugger;  
+			    var file = null;  
+			    if (window.clipboardData) {//ie  
+					if (clipboardData.files && clipboardData.files.length)//IE11  
+					    file = clipboardData.files[0];  
+					else if (!clipboardData.getData("text") && !clipboardData.getData("url")) {  
+					    alert("不能粘贴文件或图片,请使用IE11或者Chrome浏览器,或使用上传功能");  
+					    return true;  
+					}  
+			    } else {  
+			    	if (e.event.clipboardData.items){//chrome  
+						for (var i = 0; i < e.event.clipboardData.items.length; i++) {  
+						    if (e.event.clipboardData.items[i].kind === "file") {  
+							file = e.event.clipboardData.items[i];  
+							break;  
+						    }  
+						}  
+			    	}
+					if (file == null) {  
+					    if (!e.event.clipboardData.getData("url") && !e.event.clipboardData.getData("text")) {  
+							alert("不能粘贴文件或图片,请使用IE11或者Chrome浏览器,或使用上传功能");  
+							return true;  
+					    }  
+					}  
+			 }  
+			 if (file) {  
+				if (!K.undef(self.allowImageUpload, true)) {  
+				    alert("编辑器禁止上传图片,请与有关人员联系!");  
+				    return true;  
+				}  
+				//获取File Blob  
+				//debugger;  
+				var blb;  
+				if (file.getAsFile) {//Chrome  
+				    blb = file.getAsFile();  
+				    if (blb.size === 0) {  
+					alert("不能获取剪切板中的" + (file.type.indexOf("image/") === 0 ? "图像" : "文件")  
+						  +"\n如果是从OutLook中复制的,请换其他程序,如Word");  
+					return true;  
+				    }  
+				    sendfile(blb, file.type);  
+				} else {  
+				    var fr = new FileReader();  
+				    if (fr.readAsArrayBuffer) {//ie  
+			  
+			  
+					fr.onloadend = function (evt) {  
+					    blb = evt.target.result;  
+					    sendfile(blb, file.type);  
+					}  
+			  
+					fr.readAsArrayBuffer(file);  
+				    }  
+				}  
+			}else{
+				return false ;
+			}
+			function sendfile(b, t) {  
+			        
+			        var xhr = new XMLHttpRequest();  
+			        var formData = new FormData();  
+			        var isImg = t.indexOf("image/") === 0;  
+			        //formData.append('imgFile', file,"untitled." + t.split('/')[1]);  
+			        //formData.append('imgFile', b);  
+			        var myBlob = new Blob([b], { "type": t });  
+			        formData.append('imgFile', myBlob, "untitled." + t.split('/')[1]);  
+			        //formData.append('imgFile', b);  
+			        formData.append('dir', isImg ? 'image' : 'file');  
+			        xhr.open('POST', self.uploadJson+"&paste=true");  
+			        xhr.onreadystatechange = function () {  
+			    	if (xhr.readyState == 4&&xhr.status == 200) {  
+			    	    // if (fn) {  
+			    	    var data = _trim(xhr.responseText);  
+			    	    //if (dataType == 'json') {  
+			    	    data = _json(data);  
+			    	    if (data.error) {  
+			    		if (typeof ($) !== "undefined" && $.messager && $.messager.alert) {  
+			    		    $.messager.alert('Error', data.message, 'warning');  
+
+			    		} else {  
+			    		    alert(data.message);  
+			    		}  
+			    	    } else {  
+			    		//self.exec('insertimage', url, title, width, height, border, align);  
+			    		if(K.undef(self.formatUploadUrl, true))  
+			    		    data.url =K.formatUrl(data.url, 'absolute');  
+			    		self.exec('insertimage', data.url, "from clipboard", undefined, undefined, undefined, undefined);  
+			    	    }  
+			    	    //}  
+			    	    // fn(data);  
+			    	    // }  
+			    	}  
+			        }  
+			        xhr.send(formData);  
+			    }  
+			    return true;  
+			}  
+			 
 			if (self.pasteType === 0) {
 				e.stop();
 				return;
-			}
+			}else if (dopasteImg(e)) {
+				e.stop();
+				return;
+			}   
 			if (pasting) {
 				return;
 			}
