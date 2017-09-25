@@ -569,7 +569,7 @@ public class AgentController extends Handler {
 	
 	@RequestMapping("/image/upload")
     @Menu(type = "im" , subtype = "image" , access = false)
-    public ModelAndView upload(ModelMap map,HttpServletRequest request , @RequestParam(value = "imgFile", required = false) MultipartFile imgFile , @Valid String id) throws IOException {
+    public ModelAndView upload(ModelMap map,HttpServletRequest request , @RequestParam(value = "imgFile", required = false) MultipartFile imgFile , @Valid String id, @Valid String paste) throws IOException {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/agent/upload")) ; 
     	UploadStatus upload = null ;
     	String fileName = null ;
@@ -613,7 +613,7 @@ public class AgentController extends Handler {
     		OutMessageRouter router = null ; 
     		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(id, super.getOrgi(request)) ;
 			
-			if(agentUser!=null){
+			if(agentUser!=null && paste == null){
 	    		router  = (OutMessageRouter) UKDataContext.getContext().getBean(agentUser.getChannel()) ;
 	    		MessageOutContent outMessage = new MessageOutContent() ;
 	    		if(router!=null){
