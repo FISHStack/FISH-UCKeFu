@@ -745,10 +745,11 @@ public class AgentController extends Handler {
     			}else{
     				attachmentFile.setFiletype(file.getContentType());
     			}
-    			if(file.getOriginalFilename()!=null && file.getOriginalFilename().length() > 255){
-    				attachmentFile.setTitle(file.getOriginalFilename().substring(0 , 255));
+    			File uploadFile = new File(file.getOriginalFilename());
+    			if(uploadFile.getName()!=null && uploadFile.getName().length() > 255){
+    				attachmentFile.setTitle(uploadFile.getName().substring(0 , 255));
     			}else{
-    				attachmentFile.setTitle(file.getOriginalFilename());
+    				attachmentFile.setTitle(uploadFile.getName());
     			}
     			if(!StringUtils.isBlank(attachmentFile.getFiletype()) && attachmentFile.getFiletype().indexOf("image") >= 0){
     				attachmentFile.setImage(true);
