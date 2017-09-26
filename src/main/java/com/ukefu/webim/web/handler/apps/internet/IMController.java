@@ -135,6 +135,8 @@ public class IMController extends Handler{
 			view.addObject("client", UKTools.getUUID()) ;
 			view.addObject("sessionid", request.getSession().getId()) ;
 			
+			view.addObject("ip", UKTools.md5(request.getRemoteAddr())) ;
+			
 			view.addObject("mobile", CheckMobile.check(request.getHeader("User-Agent"))) ;
 			
 			CousultInvite invite = OnlineUserUtils.cousult(id, super.getOrgi(request), inviteRepository);
@@ -311,6 +313,8 @@ public class IMController extends Handler{
 			map.addAttribute("userid", userid) ;
 			map.addAttribute("schema", request.getScheme()) ;
 			map.addAttribute("sessionid", sessionid) ;
+			
+			map.addAttribute("ip", UKTools.md5(request.getRemoteAddr())) ;
 			
 			if(!StringUtils.isBlank(traceid)){
 				map.addAttribute("traceid", traceid) ;
@@ -520,6 +524,9 @@ public class IMController extends Handler{
 		view.addObject("port", request.getServerPort()) ;
 		view.addObject("schema", request.getScheme()) ;
 		view.addObject("appid", appid) ;
+		
+		view.addObject("ip", UKTools.md5(request.getRemoteAddr())) ;
+		
 		if(!StringUtils.isBlank(skill)){
 			view.addObject("skill", skill) ;
 		}

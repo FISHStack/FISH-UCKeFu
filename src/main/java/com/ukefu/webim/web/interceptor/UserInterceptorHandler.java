@@ -95,6 +95,7 @@ public class UserInterceptorHandler extends HandlerInterceptorAdapter {
 				systemConfig.setLoglevel(logger.getLevel().toString());
 			}
     	}
+    	view.addObject("ip", arg0.getRemoteAddr()) ;
     }
 
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
