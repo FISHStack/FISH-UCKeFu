@@ -26,11 +26,11 @@
 										<div class="layui-input-inline" style="width: auto;margin-right:0px;">
 											<label class="layui-form-label" style="width: auto;">技能组：</label>
 											<div class="layui-input-inline" style="width: auto;margin-right:0px;">
-										    	<select name="agentskill" class="ukefu-input" lay-ignore>
+										    	<select name="skill" class="ukefu-input" lay-ignore>
 										    		<option value="">请选择技能组</option>
 										    		<#if skillList??>
 										    		<#list skillList as skill>
-														<option value="${skill.id}" <#if agentskill?? && agentskill == skill.id>selected="selected"</#if>>${skill.name!''}</option>
+														<option value="${skill.id}" <#if skill?? && skill == skill.id>selected="selected"</#if>>${skill.name!''}</option>
 										    		</#list>
 										    		</#if>
 												</select>
