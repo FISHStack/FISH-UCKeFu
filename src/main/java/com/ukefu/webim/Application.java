@@ -51,6 +51,5 @@ public class Application {
 		SpringApplication springApplication = new SpringApplication(Application.class) ;
 		springApplication.addListeners(new StartedEventListener());
 		UKDataContext.setApplicationContext(springApplication.run(args));
-	}
-	
+	}	
 }
