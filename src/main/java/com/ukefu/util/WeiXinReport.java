@@ -22,6 +22,5 @@ public class WeiXinReport {
 	}
 	public void setUnsubs(long unsubs) {
 		this.unsubs = unsubs;
-	}
-	
+	}	
 }
