@@ -259,5 +259,4 @@ public class MD5 {
 	private byte buffer[];
 	private String digestHexStr;
 	private byte digest[];
-
 }
