@@ -63,6 +63,10 @@ public class SystemConfigController extends Handler{
     @Menu(type = "admin" , subtype = "config" , admin = true)
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String execute) throws SQLException {
     	map.addAttribute("server", server) ;
+    	if(UKDataContext.model.get("im")!=null){
+    		map.addAttribute("entim", UKDataContext.model.get("im")) ;
+    	}
+    	map.addAttribute("server", server) ;
     	map.addAttribute("imServerStatus", UKDataContext.getIMServerStatus()) ;
     	List<Secret> secretConfig = secRes.findByOrgi(super.getOrgi(request)) ;
     	if(secretConfig!=null && secretConfig.size() > 0){
@@ -96,6 +100,20 @@ public class SystemConfigController extends Handler{
 	    	UKDataContext.setIMServerStatus(false);
     	}
         return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html?execute="+execute));
+    }
+    
+    @RequestMapping("/startentim")
+    @Menu(type = "admin" , subtype = "startentim" , access = false , admin = true)
+    public ModelAndView startentim(ModelMap map , HttpServletRequest request) throws SQLException {
+    	UKDataContext.model.put("im", true) ;
+        return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html"));
+    }
+    
+    @RequestMapping("/stopentim")
+    @Menu(type = "admin" , subtype = "stopentim" , access = false , admin = true)
+    public ModelAndView stopentim(ModelMap map , HttpServletRequest request) throws SQLException {
+    	UKDataContext.model.remove("im") ;
+        return request(super.createRequestPageTempletResponse("redirect:/admin/config/index.html"));
     }
     
     /**

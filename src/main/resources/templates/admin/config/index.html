@@ -46,6 +46,25 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">3、启用EntIM内部IM功能</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>启用EntIM组件，右下角出现EntIM窗口,当前状态：<#if entim?? && entim == true><small class="ukefu-label theme4">已启用</small><#else><small class="ukefu-label theme4" style="background-color:#FF5722;">已关闭</small></#if></p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">建议通过界面停止或启动对话服务，避免出现端口被占用的问题</p>
+											</div>
+											<div class="col-lg-4">
+												<#if entim?? && entim == true>
+													<a href="/admin/config/stopentim.html" data-toggle="tip" title="请确认是否关闭EntIM功能？" class="layui-btn layui-btn-small layui-btn-danger">关闭EntIM功能</a>
+												<#else>
+													<a href="/admin/config/startentim.html" data-toggle="tip" title="启用EntIM功能" class="layui-btn layui-btn-small">启用EntIM功能</a>
+												</#if>		
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="ukefu-webim-prop">
 									<div class="ukefu-webim-tl" style="clear:both;">3、停止优客服系统</div>
 									<div class="box-item">
 										<div class="row">
