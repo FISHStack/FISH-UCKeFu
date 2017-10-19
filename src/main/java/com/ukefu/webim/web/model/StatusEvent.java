@@ -54,6 +54,9 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String calling ;
 	private String called ;
 	
+	private String discaller;
+	private String discalled;
+	
 	private String agentype ;	//callback
 	private String quene ;		//呼入队列
 	
@@ -475,5 +478,17 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setRecordfilename(String recordfilename) {
 		this.recordfilename = recordfilename;
+	}
+	public String getDiscaller() {
+		return discaller;
+	}
+	public void setDiscaller(String discaller) {
+		this.discaller = discaller;
+	}
+	public String getDiscalled() {
+		return discalled;
+	}
+	public void setDiscalled(String discalled) {
+		this.discalled = discalled;
 	}
 }

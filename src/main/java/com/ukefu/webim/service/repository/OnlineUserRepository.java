@@ -65,10 +65,13 @@ public abstract interface OnlineUserRepository extends JpaRepository<OnlineUser,
 	@Query("select count(id) from AgentService where orgi = ?1 and appid = ?2 and createtime > ?3 and createtime < ?4")
 	Long countByOrgiAndAppidForCount(String orgi ,String appid ,Date start,Date end);
 	
-	@Query("select count(id) from StatusEvent where ani = ?1 and direction = ?2")
-	Long countByAniFromCallCenter(String ani , String direction);
+	@Query("select count(id) from StatusEvent where discaller = ?1 and misscall = false")
+	Long countByCallerFromCallCenter(String caller);
 	
-	@Query("select count(id) from StatusEvent where ani = ?1")
+	@Query("select count(id) from StatusEvent where discalled = ?1 and misscall = false")
+	Long countByCalledFromCallCenter(String called);
+	
+	@Query("select count(id) from StatusEvent where (discaller = ?1 or discalled = ?1) and misscall = false")
 	Long countByAniFromCallCenter(String ani);
 	
 	
