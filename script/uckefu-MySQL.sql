@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-09-13 19:22:25
+Date: 2017-10-20 15:07:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -465,6 +465,8 @@ CREATE TABLE `uk_callcenter_event` (
   `BRIDGEID` varchar(100) DEFAULT NULL COMMENT '桥接ID',
   `BRIDGE` tinyint(4) DEFAULT NULL COMMENT '是否有桥接',
   `RECORDFILENAME` varchar(100) DEFAULT NULL COMMENT '录音文件名',
+  `DISCALLER` varchar(50) DEFAULT NULL,
+  `DISCALLED` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -863,7 +865,7 @@ CREATE TABLE `uk_consult_invite` (
 -- ----------------------------
 -- Records of uk_consult_invite
 -- ----------------------------
-INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', 'right,middle', '在线客服', null, null, null, '2', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '1', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '0', '1', '1', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E', '0', '1', '1', '1', '1', '您好，请填写以下信息，方便我们更好的为您服务！', '0', '1', '0', '1', null, '您好，您所在的地区没有在线客服人员，请电话联系！');
+INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', 'right,middle', '在线客服', null, null, null, '2', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '0', '0', '1', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E', '0', '1', '1', '1', '1', '您好，请填写以下信息，方便我们更好的为您服务！', '0', '1', '0', '1', null, '您好，您所在的地区没有在线客服人员，请电话联系！');
 
 -- ----------------------------
 -- Table structure for `uk_contacts`
@@ -1381,6 +1383,43 @@ CREATE TABLE `uk_leavemsg` (
 
 -- ----------------------------
 -- Records of uk_leavemsg
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_log`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_log`;
+CREATE TABLE `uk_log` (
+  `id` varchar(32) NOT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  `flowid` varchar(32) DEFAULT NULL,
+  `logtype` varchar(32) DEFAULT NULL,
+  `createdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `msg` longtext,
+  `LEVELS` varchar(32) DEFAULT NULL,
+  `thread` varchar(255) DEFAULT NULL,
+  `clazz` varchar(255) DEFAULT NULL,
+  `FILES` varchar(255) DEFAULT NULL,
+  `linenumber` varchar(32) DEFAULT NULL,
+  `method` varchar(255) DEFAULT NULL,
+  `startid` varchar(32) DEFAULT NULL,
+  `errorinfo` text,
+  `triggerwarning` varchar(32) DEFAULT NULL,
+  `triggertime` varchar(32) DEFAULT NULL,
+  `triggertimes` int(11) DEFAULT NULL,
+  `name` varchar(32) DEFAULT NULL,
+  `code` varchar(32) DEFAULT NULL,
+  `memo` varchar(255) DEFAULT NULL,
+  `userid` varchar(32) DEFAULT NULL,
+  `username` varchar(32) DEFAULT NULL,
+  `logtime` varchar(32) DEFAULT NULL,
+  `ipaddr` varchar(255) DEFAULT NULL,
+  `port` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_log
 -- ----------------------------
 
 -- ----------------------------
@@ -5987,7 +6026,8 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815dedf885015dee0037a90003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-09-13 19:20:48', null, null, null, '0', '0', '1');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815dedf885015dee0037a90003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-10-20 09:53:14', null, null, null, '0', '0', '1');
+INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402888815dedf885015dee0037a90003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-09-18 17:32:34', null, null, null, '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -6704,33 +6744,3 @@ CREATE TABLE `wf_workitem` (
 -- ----------------------------
 -- Records of wf_workitem
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_log`;
-CREATE TABLE `uk_log` (
-  `id` varchar(32) NOT NULL,
-  `orgi` varchar(32) DEFAULT NULL,
-  `flowid` varchar(32) DEFAULT NULL,
-  `logtype` varchar(32) DEFAULT NULL,
-  `createdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `msg` longtext,
-  `LEVELS` varchar(32) DEFAULT NULL,
-  `thread` varchar(255) DEFAULT NULL,
-  `clazz` varchar(255) DEFAULT NULL,
-  `FILES` varchar(255) DEFAULT NULL,
-  `linenumber` varchar(32) DEFAULT NULL,
-  `method` varchar(255) DEFAULT NULL,
-  `startid` varchar(32) DEFAULT NULL,
-  `errorinfo` text,
-  `triggerwarning` varchar(32) DEFAULT NULL,
-  `triggertime` varchar(32) DEFAULT NULL,
-  `triggertimes` int(11) DEFAULT NULL,
-  `name` varchar(32) DEFAULT NULL,
-  `code` varchar(32) DEFAULT NULL,
-  `memo` varchar(255) DEFAULT NULL,
-  `userid` varchar(32) DEFAULT NULL,
-  `username` varchar(32) DEFAULT NULL,
-  `logtime` varchar(32) DEFAULT NULL,
-  `ipaddr` varchar(255) DEFAULT NULL,
-  `port` varchar(32) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
