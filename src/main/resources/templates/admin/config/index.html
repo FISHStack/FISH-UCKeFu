@@ -51,7 +51,7 @@
 										<div class="row">
 											<div class="col-lg-8">
 												<p>启用EntIM组件，右下角出现EntIM窗口,当前状态：<#if entim?? && entim == true><small class="ukefu-label theme4">已启用</small><#else><small class="ukefu-label theme4" style="background-color:#FF5722;">已关闭</small></#if></p>
-												<p style="color:#888888;font-size:13px;margin-top:10px;">建议通过界面停止或启动对话服务，避免出现端口被占用的问题</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">默认关闭EntIM功能</p>
 											</div>
 											<div class="col-lg-4">
 												<#if entim?? && entim == true>
@@ -65,7 +65,26 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">3、停止优客服系统</div>
+									<div class="ukefu-webim-tl" style="clear:both;">4、启用权限数据采集功能功能</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>启用权限数据采集功能后，会进入数据采集模式,当前状态：<#if infoace?? && infoace == true><small class="ukefu-label theme4">已启用</small><#else><small class="ukefu-label theme4" style="background-color:#FF5722;">已关闭</small></#if></p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">启用后，在优客服界面上的任何链接点击操作都会触发数据收集功能</p>
+											</div>
+											<div class="col-lg-4">
+												<#if infoace?? && infoace == true>
+													<a href="/admin/auth/infoacq.html" target="parent" class="layui-btn layui-btn-small layui-btn-danger">退出数据采集功能</a>
+												<#else>
+													<a href="/admin/auth/infoacq.html" target="parent" class="layui-btn layui-btn-small">进入数据采集功能</a>
+												</#if>		
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">5、停止优客服系统</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -80,7 +99,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">4、修改微信接收消息的日志级别</div>
+									<div class="ukefu-webim-tl" style="clear:both;">6、修改微信接收消息的日志级别</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -97,7 +116,7 @@
 									</div>
 								</div>
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">5、启用服务SSL安全访问</div>
+									<div class="ukefu-webim-tl" style="clear:both;">7、启用服务SSL安全访问</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -139,7 +158,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">6、启用涉及重要操作的二次验证密码</div>
+									<div class="ukefu-webim-tl" style="clear:both;">8、启用涉及重要操作的二次验证密码</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -182,7 +201,7 @@
 									</div>
 								</div>
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">7、百度地图的Key代码（AK）</div>
+									<div class="ukefu-webim-tl" style="clear:both;">9、百度地图的Key代码（AK）</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -197,7 +216,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">8、工单系统布局方式</div>
+									<div class="ukefu-webim-tl" style="clear:both;">10、工单系统布局方式</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -212,7 +231,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">9、启用权限控制</div>
+									<div class="ukefu-webim-tl" style="clear:both;">11、启用权限控制</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -227,7 +246,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">10、启用语音平台模板配置</div>
+									<div class="ukefu-webim-tl" style="clear:both;">12、启用语音平台模板配置</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">

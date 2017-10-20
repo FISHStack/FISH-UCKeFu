@@ -66,6 +66,9 @@ public class SystemConfigController extends Handler{
     	if(UKDataContext.model.get("im")!=null){
     		map.addAttribute("entim", UKDataContext.model.get("im")) ;
     	}
+    	if(request.getSession().getAttribute(UKDataContext.UKEFU_SYSTEM_INFOACQ)!=null){
+    		map.addAttribute("entim", request.getSession().getAttribute(UKDataContext.UKEFU_SYSTEM_INFOACQ)) ;
+    	}
     	map.addAttribute("server", server) ;
     	map.addAttribute("imServerStatus", UKDataContext.getIMServerStatus()) ;
     	List<Secret> secretConfig = secRes.findByOrgi(super.getOrgi(request)) ;
