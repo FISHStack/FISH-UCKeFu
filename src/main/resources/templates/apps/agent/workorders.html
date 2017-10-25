@@ -40,8 +40,7 @@
 						<#if workOrdersStatus.id == workOrders.status || workOrdersStatus.code == workOrders.status>
 						<small class="ukefu-label" <#if workOrdersStatus.iconskin?? && workOrdersStatus.iconskin != "">style="background-color:${workOrdersStatus.iconskin}"</#if>>${workOrdersStatus.name!''}</small>
 						</#if>
-						</#list>
-						<small class="ukefu-label theme4">${uKeFuDic[workOrders.wotype!''].name!''}</small>
+						</#list>>
 					</div>
 				</div>
 				<div class="ukefu-workorders-block">
