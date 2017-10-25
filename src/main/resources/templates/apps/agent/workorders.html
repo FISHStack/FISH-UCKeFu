@@ -35,12 +35,12 @@
 				</div>
 				<div class="ukefu-workorders-block">
 					<div class="ukefu-workorders-status">
-						状态/类型：
+						状态：
 						<#list uKeFuDic['com.dic.workorders.status'] as workOrdersStatus>
 						<#if workOrdersStatus.id == workOrders.status || workOrdersStatus.code == workOrders.status>
 						<small class="ukefu-label" <#if workOrdersStatus.iconskin?? && workOrdersStatus.iconskin != "">style="background-color:${workOrdersStatus.iconskin}"</#if>>${workOrdersStatus.name!''}</small>
 						</#if>
-						</#list>>
+						</#list>
 					</div>
 				</div>
 				<div class="ukefu-workorders-block">
