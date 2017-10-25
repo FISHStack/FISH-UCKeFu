@@ -324,7 +324,7 @@ public class AgentController extends Handler {
 			
 			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
 				AgentService agentService = this.agentServiceRepository.findOne(agentUser.getAgentserviceid()) ;
-				
+				view.addObject("curAgentService", agentService) ;
 				if(agentService!=null){
 					/**
 					 * 获取关联数据
