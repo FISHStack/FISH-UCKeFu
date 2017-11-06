@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-10-20 15:07:48
+Date: 2017-11-06 18:14:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -467,6 +467,9 @@ CREATE TABLE `uk_callcenter_event` (
   `RECORDFILENAME` varchar(100) DEFAULT NULL COMMENT '录音文件名',
   `DISCALLER` varchar(50) DEFAULT NULL,
   `DISCALLED` varchar(50) DEFAULT NULL,
+  `SATISF` tinyint(4) DEFAULT '0',
+  `SATISFACTION` varchar(32) DEFAULT NULL,
+  `SATISFDATE` datetime DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -493,6 +496,7 @@ CREATE TABLE `uk_callcenter_extention` (
   `record` tinyint(4) DEFAULT NULL COMMENT '录音',
   `extype` varchar(50) DEFAULT NULL COMMENT '分机类型',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `subtype` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -865,7 +869,7 @@ CREATE TABLE `uk_consult_invite` (
 -- ----------------------------
 -- Records of uk_consult_invite
 -- ----------------------------
-INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', 'right,middle', '在线客服', null, null, null, '2', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '0', '0', '1', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E', '0', '1', '1', '1', '1', '您好，请填写以下信息，方便我们更好的为您服务！', '0', '1', '0', '1', null, '您好，您所在的地区没有在线客服人员，请电话联系！');
+INSERT INTO `uk_consult_invite` VALUES ('4028838b5ac815e3015ac81645f90000', null, 'ukewo', null, null, null, null, null, null, null, null, '欢迎来到本网站，请问有什么可以帮您？', null, '1', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', 'right,middle', '在线客服', null, null, null, '2', '1', null, null, null, null, '6', null, null, '0', '优客服', '', '', '', '', '欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', null, '0', '现在咨询', '稍后再说', '0', 'invote/4028838b5ac815e3015ac81645f90000.jpg', '0', '1', '1', '1', '1', '0', '1', '08:30~11:30,13:30~17:30', 'access', '1', '您好，当前非工作时间段。我们的工作时间是8:30~11:30，下午13:30~17:30', null, '优客服', null, '工作时间<br/>08:30~17:30', '5', '5', 'UCKeFu智能客服系统', '1', '1', '1', '0', '欢迎您使用智能机器人咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.', '欢迎使用优客服小E，我来帮您解答问题', '小E', '0', '1', '1', '1', '1', '您好，请填写以下信息，方便我们更好的为您服务！', '0', '1', '0', '1', null, '您好，您所在的地区没有在线客服人员，请电话联系！');
 
 -- ----------------------------
 -- Table structure for `uk_contacts`
@@ -2020,6 +2024,7 @@ CREATE TABLE `uk_snsaccount` (
 -- Records of uk_snsaccount
 -- ----------------------------
 INSERT INTO `uk_snsaccount` VALUES (null, null, 'www.ukewo.cn', null, null, null, '402888815dfa4e79015dfa51ae6a0002', null, null, '优客服', null, null, null, null, 'webim', '2017-08-19 19:47:23', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null, '4028838b5ac815e3015ac81645f90000', '0');
+INSERT INTO `uk_snsaccount` VALUES (null, null, null, null, null, null, '402888815f6ae5d0015f6b65a523061e', null, null, 'wrwr', null, null, null, null, 'weixin', '2017-10-30 11:49:04', 'sub', null, null, null, 'UCKeFuToken', 'sf', 'jnMUPeiHWaGWkvFNhqnMcg==', 'sfd', null, null, null, 'ukewo', '0', null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, '0', null, null, null, null, null, null, null, null, null, '1x9IZo', '0');
 
 -- ----------------------------
 -- Table structure for `uk_sysdic`
@@ -6026,8 +6031,7 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-07-17 23:27:29', '402888815dedf885015dee0037a90003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-10-20 09:53:14', null, null, null, '0', '0', '1');
-INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402888815dedf885015dee0037a90003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-09-18 17:32:34', null, null, null, '0', '0', '0');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '402888815dedf885015dee0037a90003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-11-06 12:24:46', null, null, null, '0', '1', '1');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
