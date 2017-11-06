@@ -1,17 +1,17 @@
-package com.ukefu.webim.service.repository.es;
+package com.ukefu.webim.service.es;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.common.lang3.StringUtils;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
+import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
 
 import com.ukefu.webim.web.model.UKAgg;
 
@@ -26,7 +26,7 @@ public class UKAggTopResultExtractor extends UKResultMapper{
 	}
 
 	@Override
-	public <T> Page<T> mapResults(SearchResponse response, Class<T> clazz, Pageable pageable) {
+	public <T> AggregatedPage<T> mapResults(SearchResponse response, Class<T> clazz, Pageable pageable) {
 		Aggregations aggregations = response.getAggregations();
 		Terms agg = aggregations.get(term) ;
 		long total = agg.getSumOfOtherDocCounts() ;
@@ -46,6 +46,6 @@ public class UKAggTopResultExtractor extends UKResultMapper{
 				}
 			}
 		}
-		return new PageImpl<T>(results, pageable, total);
+		return new AggregatedPageImpl<T>(results, pageable, total);
 	}
 }

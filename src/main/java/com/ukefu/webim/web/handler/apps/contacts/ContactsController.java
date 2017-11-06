@@ -37,7 +37,7 @@ import com.ukefu.util.task.DSDataEvent;
 import com.ukefu.util.task.ExcelImportProecess;
 import com.ukefu.util.task.export.ExcelExporterProcess;
 import com.ukefu.util.task.process.ContactsProcess;
-import com.ukefu.webim.service.repository.ContactsRepository;
+import com.ukefu.webim.service.es.ContactsRepository;
 import com.ukefu.webim.service.repository.MetadataRepository;
 import com.ukefu.webim.service.repository.PropertiesEventRepository;
 import com.ukefu.webim.service.repository.ReporterRepository;

@@ -10,10 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.ukefu.util.UKTools;
 
@@ -21,7 +18,7 @@ import com.ukefu.util.UKTools;
 /**
  * 
  */
-@Document(indexName = "uckefu", type = "uk_workorders")
+@Document(indexName = "uckefu", type = "uk_workorders" , createIndex = false )
 @Entity
 @Table(name = "uk_workorders")
 @org.hibernate.annotations.Proxy(lazy = false)
@@ -86,9 +83,9 @@ public class WorkOrders extends ESBean implements UKAgg{
 	private String username ;
 	private String orgi ;
 	private String creater;
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date createtime = new Date();
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date updatetime = new Date();
 	private String memo;
 	

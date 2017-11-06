@@ -1,4 +1,4 @@
-package com.ukefu.webim.service.repository.es;
+package com.ukefu.webim.service.es;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
@@ -89,5 +89,4 @@ public class KbsTopicCommentRepositoryImpl implements KbsTopicCommentEsCommonRep
 	    }
 	    return pages ; 
 	}
-	
 }

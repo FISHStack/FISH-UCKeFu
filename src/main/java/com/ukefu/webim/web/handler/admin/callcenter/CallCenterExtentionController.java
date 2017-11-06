@@ -6,7 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.elasticsearch.common.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -130,6 +130,8 @@ public class CallCenterExtentionController extends Handler{
 				ext.setCallout(extention.isCallout());
 				ext.setRecord(extention.isRecord());
 				ext.setExtype(extention.getExtype());
+				ext.setSubtype(extention.getSubtype());
+				ext.setDescription(extention.getDescription());
 				
 				ext.setUpdatetime(new Date());
 				extentionRes.save(ext) ;

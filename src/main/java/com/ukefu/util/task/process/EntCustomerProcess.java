@@ -1,6 +1,6 @@
 package com.ukefu.util.task.process;
 
-import com.ukefu.webim.service.repository.EntCustomerRepository;
+import com.ukefu.webim.service.es.EntCustomerRepository;
 import com.ukefu.webim.web.model.EntCustomer;
 
 public class EntCustomerProcess implements JPAProcess{

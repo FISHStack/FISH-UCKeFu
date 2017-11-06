@@ -55,9 +55,9 @@ public class KbsTopic extends ESBean implements java.io.Serializable , UKAgg{
 	
 	private boolean approval ;		//是否已经审批通过
 	
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date begintime ;		//有效期开始
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date endtime ;			//有效期结束
 	
 	private boolean top ;		//是否置顶
@@ -79,9 +79,9 @@ public class KbsTopic extends ESBean implements java.io.Serializable , UKAgg{
 	private String username ;
 	private String orgi ;
 	private String creater;
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date createtime = new Date();
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date updatetime = new Date();
 	private String memo;
 	private String organ;

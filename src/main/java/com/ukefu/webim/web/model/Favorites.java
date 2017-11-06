@@ -10,7 +10,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -18,7 +17,7 @@ import org.springframework.data.elasticsearch.annotations.Parent;
 
 import com.ukefu.util.UKTools;
 
-@Document(indexName = "uckefu", type = "uk_favorites")
+@Document(indexName = "uckefu", type = "uk_favorites" , createIndex = false )
 @Entity
 @Table(name = "uk_favorites")
 @org.hibernate.annotations.Proxy(lazy = false)
@@ -40,9 +39,9 @@ public class Favorites implements java.io.Serializable{
 	
 	private WorkOrders workOrders;
 	
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date createtime = new Date();
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date updatetime = new Date();
 	private String creater;
 	private String username ;

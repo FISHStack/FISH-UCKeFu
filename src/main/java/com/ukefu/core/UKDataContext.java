@@ -168,6 +168,16 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum DTMFTypeEnum{
+		SATISF,
+		PASSWORD,		//密码验证
+		IDCARD,			//身份证号码
+		CARDNO;			//银行卡号
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	
 	public enum AiItemType{
 		USERINPUT , 

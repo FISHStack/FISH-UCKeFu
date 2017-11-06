@@ -38,7 +38,7 @@
 							<#list extentionList as extention>
 							<tr>
 							  <td>
-									${extention.extention!''}
+									${extention.extention!''}<#if extention.description?? && extention.description != "">（${extention.description!''}）</#if>
 							  </td>
 							  <td>
 									<#if extention.callout>

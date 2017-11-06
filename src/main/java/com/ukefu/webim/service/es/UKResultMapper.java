@@ -1,4 +1,4 @@
-package com.ukefu.webim.service.repository.es;
+package com.ukefu.webim.service.es;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,8 +19,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHitField;
 import org.elasticsearch.search.highlight.HighlightField;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.ElasticsearchException;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -28,6 +26,8 @@ import org.springframework.data.elasticsearch.annotations.ScriptedField;
 import org.springframework.data.elasticsearch.core.AbstractResultMapper;
 import org.springframework.data.elasticsearch.core.DefaultEntityMapper;
 import org.springframework.data.elasticsearch.core.EntityMapper;
+import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
+import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
 import org.springframework.data.elasticsearch.core.mapping.ElasticsearchPersistentEntity;
 import org.springframework.data.elasticsearch.core.mapping.ElasticsearchPersistentProperty;
 import org.springframework.data.mapping.PersistentProperty;
@@ -62,7 +62,7 @@ public class UKResultMapper extends AbstractResultMapper {
 	}
 
 	@Override
-	public <T> Page<T> mapResults(SearchResponse response, Class<T> clazz, Pageable pageable) {
+	public <T> AggregatedPage<T> mapResults(SearchResponse response, Class<T> clazz, Pageable pageable) {
 		long totalHits = response.getHits().totalHits();
 		List<T> results = new ArrayList<T>();
 		for (SearchHit hit : response.getHits()) {
@@ -79,7 +79,7 @@ public class UKResultMapper extends AbstractResultMapper {
 			}
 		}
 
-		return new PageImpl<T>(results, pageable, totalHits);
+		return new AggregatedPageImpl<T>(results, pageable, totalHits);
 	}
 	
 	public <T> T mapEntity(String source , SearchHit hit , Class<T> clazz) {

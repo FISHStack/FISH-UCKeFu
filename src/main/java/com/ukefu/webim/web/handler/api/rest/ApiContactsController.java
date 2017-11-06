@@ -1,9 +1,9 @@
 package com.ukefu.webim.web.handler.api.rest;
 
-import java.util.Date;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ukefu.util.Menu;
-import com.ukefu.webim.service.repository.ContactsRepository;
+import com.ukefu.webim.service.es.ContactsRepository;
 import com.ukefu.webim.util.RestResult;
 import com.ukefu.webim.util.RestResultType;
 import com.ukefu.webim.web.handler.Handler;

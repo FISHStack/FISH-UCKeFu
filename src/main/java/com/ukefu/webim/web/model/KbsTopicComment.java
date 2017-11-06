@@ -25,14 +25,14 @@ public class KbsTopicComment implements UKAgg{
 	private String id = UKTools.getUUID();
 	private String username;
 	private String creater ;
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date createtime = new Date() ;
 	
 	@Field(index = FieldIndex.not_analyzed , type = FieldType.String)
 	private String dataid ;
 	
 	private String content ; 	//评论内容
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date updatetime = new Date() ;
 	
 	private boolean optimal ;	//是否最佳答案

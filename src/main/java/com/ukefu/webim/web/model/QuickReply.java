@@ -9,10 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.ukefu.util.UKTools;
 
@@ -29,7 +26,6 @@ public class QuickReply {
 	
 	private String type ;		//公用 /私有
 	private String creater; 	//创建人
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createtime = new Date();	//创建时间
 	
 	private String orgi ;		//

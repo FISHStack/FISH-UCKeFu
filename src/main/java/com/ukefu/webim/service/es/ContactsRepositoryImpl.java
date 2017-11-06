@@ -1,4 +1,4 @@
-package com.ukefu.webim.service.repository.es;
+package com.ukefu.webim.service.es;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
@@ -171,5 +171,4 @@ private SimpleDateFormat dateFromate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss
 	    }
 		return processQuery(boolQueryBuilder , page);
 	}
-
 }

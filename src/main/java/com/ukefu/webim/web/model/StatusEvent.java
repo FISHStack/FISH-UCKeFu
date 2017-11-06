@@ -106,6 +106,10 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private boolean servicesummary ;	//是否记录服务小结
 	private String serviceid 	;		//服务小结ID
 	
+	private boolean satisf ;	//是否记录满意度调查
+	private String satisfaction 	;		//服务小结ID
+	private Date satisfdate ;				//满意度调查提交时间
+	
 	private int calls ;
 	
 	private String orgi ;
@@ -490,5 +494,23 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setDiscalled(String discalled) {
 		this.discalled = discalled;
+	}
+	public boolean isSatisf() {
+		return satisf;
+	}
+	public void setSatisf(boolean satisf) {
+		this.satisf = satisf;
+	}
+	public String getSatisfaction() {
+		return satisfaction;
+	}
+	public void setSatisfaction(String satisfaction) {
+		this.satisfaction = satisfaction;
+	}
+	public Date getSatisfdate() {
+		return satisfdate;
+	}
+	public void setSatisfdate(Date satisfdate) {
+		this.satisfdate = satisfdate;
 	}
 }

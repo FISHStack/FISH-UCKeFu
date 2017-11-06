@@ -1,6 +1,6 @@
 package com.ukefu.util.task.process;
 
-import com.ukefu.webim.service.repository.ContactsRepository;
+import com.ukefu.webim.service.es.ContactsRepository;
 import com.ukefu.webim.web.model.Contacts;
 
 public class ContactsProcess implements JPAProcess{

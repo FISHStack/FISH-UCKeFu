@@ -10,6 +10,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.ukefu.core.UKDataContext;
+
 @Entity
 @Table(name = "uk_callcenter_extention")
 @org.hibernate.annotations.Proxy(lazy = false)
@@ -25,6 +27,7 @@ public class Extention implements java.io.Serializable{
 	private String password ;	//pbx host password
 	
 	private String extype ;		//分机类型 ： 直线分机 : IVR分机：组分机 ： 队列分机 ：会议分机
+	private String subtype = UKDataContext.DTMFTypeEnum.SATISF.toString() ;	//二级类型，如果是 IVR分机，则显示IVR类型：满意度调查，密码，身份证号 ， 银行卡号
 	
 	private boolean callout;	//是否允许外呼 OutBound
 	private boolean playnum ;	//是否播报工号
@@ -125,5 +128,11 @@ public class Extention implements java.io.Serializable{
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public String getSubtype() {
+		return subtype;
+	}
+	public void setSubtype(String subtype) {
+		this.subtype = subtype;
 	}
 }

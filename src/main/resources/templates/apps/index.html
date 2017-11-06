@@ -29,6 +29,11 @@
 <script src="/js/ukefu.js"></script>
 <script src="/im/js/socket.io.js"></script>	
 <script src="/js/UCKeFu_IM.v1.js"></script>	
+
+<#if models?? && models["callcenter"]?? && models["callcenter"] == true && user.callcenter == true>
+<script src="/js/UKeFu-SoftPhone.js"></script>
+</#if>
+
 <script src="/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="/js/ace/theme-chrome.js" type="text/javascript" charset="utf-8"></script>
 <script src="/js/weixinAudio.js"></script>
@@ -46,11 +51,6 @@
 <script src="/js/ztree/jquery.ztree.all.min.js"></script>
 <script type="text/javascript" src="/js/kindeditor/kindeditor.js"></script>
 <script type="text/javascript" src="/js/kindeditor/lang/zh-CN.js"></script>
-
-<#if models?? && models["callcenter"]?? && models["callcenter"] == true>
-<script src="/js/UKeFu-SoftPhone.js"></script>
-<script src="/js/sip-0.7.7.js"></script>
-</#if>
 
 <script type="text/javascript" src="/js/jquery.darktooltip.js"></script>
 <script language="javascript">
@@ -139,7 +139,7 @@
 		<div class="layui-header header header-ukefu">
 			<div class="layui-main">
 				<a class="logo" href="/"><img src="images/logo.png"></a>
-				<#if models?? && models["callcenter"]?? && models["callcenter"] == true>
+				<#if models?? && models["callcenter"]?? && models["callcenter"] == true && user.callcenter == true>
 				<#include "/apps/include/softphone.html">
 				</#if>
 				<ul class="layui-nav">

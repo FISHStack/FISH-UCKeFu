@@ -9,10 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.ukefu.util.UKTools;
 
@@ -76,7 +73,7 @@ public class Contacts extends ESBean implements java.io.Serializable{
 	private String weibo;
 	private String weiboid;
 	private String qqcode;
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date touchtime;
 	private boolean datastatus;
 	private String processid;
@@ -85,11 +82,11 @@ public class Contacts extends ESBean implements java.io.Serializable{
 	private String updateuser;
 	private String memo;
 	private String updateusername;
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date updatetime = new Date();
 	private String orgi;
 	private String compper;
-	@Field(type = FieldType.Date , format= DateFormat.custom , pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	private Date createtime = new Date();
 	private String name;
 	private String assignedto;

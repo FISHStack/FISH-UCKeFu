@@ -6,13 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.elasticsearch.common.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.repository.AclRepository;
@@ -164,6 +165,13 @@ public class ExtentionController extends Handler{
 		}
 		response.setContentType("Content-type: text/json; charset=utf-8"); 
     	return request(super.createRequestPageTempletResponse("/apps/business/callcenter/extention/detail"));
+    }
+	
+	@RequestMapping(value = "/ivr")
+    @Menu(type = "callcenter" , subtype = "ivr" , access = false)
+    public ModelAndView ivr(ModelMap map , HttpServletRequest request , HttpServletResponse response ,@Valid String hostid) {
+		map.addAttribute("ivrList" , extentionRes.findByHostidAndExtypeAndOrgi(hostid, UKDataContext.ExtentionType.IVR.toString() , super.getOrgi(request)));
+    	return request(super.createRequestPageTempletResponse("/apps/business/callcenter/extention/ivr"));
     }
 	
 }

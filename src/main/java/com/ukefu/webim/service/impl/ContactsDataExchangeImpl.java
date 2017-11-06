@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ukefu.util.extra.DataExchangeInterface;
-import com.ukefu.webim.service.repository.ContactsRepository;
+import com.ukefu.webim.service.es.ContactsRepository;
 import com.ukefu.webim.web.model.Contacts;
 
 @Service("contacts")

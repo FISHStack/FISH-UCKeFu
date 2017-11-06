@@ -1,5 +1,8 @@
 package com.ukefu.webim.web.handler.api.rest;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import java.util.Date;
 import java.util.List;
 
@@ -15,15 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ukefu.util.Menu;
-import com.ukefu.webim.service.repository.QuickReplyRepository;
+import com.ukefu.webim.service.es.QuickReplyRepository;
 import com.ukefu.webim.service.repository.QuickTypeRepository;
 import com.ukefu.webim.util.RestResult;
 import com.ukefu.webim.util.RestResultType;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.QuickType;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/quicktype")

@@ -21,7 +21,7 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.acd.ServiceQuene;
-import com.ukefu.webim.service.repository.ContactsRepository;
+import com.ukefu.webim.service.es.ContactsRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.UserEventRepository;

@@ -1,4 +1,4 @@
-package com.ukefu.webim.service.repository.es;
+package com.ukefu.webim.service.es;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
@@ -6,10 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.FilteredQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
@@ -55,6 +53,7 @@ public class KbsTopicRepositoryImpl implements KbsTopicEsCommonRepository{
 	    return pages ; 
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public Page<KbsTopic> getTopicByTop(boolean top , final int p , final int ps) {
 
@@ -63,16 +62,10 @@ public class KbsTopicRepositoryImpl implements KbsTopicEsCommonRepository{
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.must(termQuery("top" , top)) ;
 		
-		BoolFilterBuilder beginFilter = FilterBuilders.boolFilter().should(FilterBuilders.missingFilter("begintime") , FilterBuilders.rangeFilter("begintime").lte(UKTools.dateFormate.format(new Date()))) ;
-		BoolFilterBuilder endFilter = FilterBuilders.boolFilter().should(FilterBuilders.missingFilter("endtime") , FilterBuilders.rangeFilter("endtime").gte(UKTools.dateFormate.format(new Date()))) ;
+		QueryBuilder beginFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("begintime")).should(QueryBuilders.rangeQuery("begintime").from(UKTools.dateFormate.format(new Date()))) ;
+		QueryBuilder endFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("endtime")).should(QueryBuilders.rangeQuery("endtime").to(UKTools.dateFormate.format(new Date()))) ;
 		
-		
-		FilteredQueryBuilder query = QueryBuilders.filteredQuery(
-				boolQueryBuilder, 
-	                FilterBuilders.boolFilter()
-	                .must(beginFilter).must(endFilter));
-		
-	    NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(query).withSort(new FieldSortBuilder("createtime").unmappedType("date").order(SortOrder.DESC));
+	    NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder).withFilter(QueryBuilders.boolQuery().must(beginFilter).must(endFilter)).withSort(new FieldSortBuilder("createtime").unmappedType("date").order(SortOrder.DESC));
 	    
 	    searchQueryBuilder.withHighlightFields(new HighlightBuilder.Field("title").fragmentSize(200)) ;
 	    SearchQuery searchQuery = searchQueryBuilder.build().setPageable(new PageRequest(p, ps)) ;
@@ -102,21 +95,16 @@ public class KbsTopicRepositoryImpl implements KbsTopicEsCommonRepository{
 	    return pages ; 
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public Page<KbsTopic> getTopicByCon(BoolQueryBuilder boolQueryBuilder, final int p , final int ps) {
 
 		Page<KbsTopic> pages  = null ;
 		
-		BoolFilterBuilder beginFilter = FilterBuilders.boolFilter().should(FilterBuilders.missingFilter("begintime") , FilterBuilders.rangeFilter("begintime").lte(UKTools.dateFormate.format(new Date()))) ;
-		BoolFilterBuilder endFilter = FilterBuilders.boolFilter().should(FilterBuilders.missingFilter("endtime") , FilterBuilders.rangeFilter("endtime").gte(UKTools.dateFormate.format(new Date()))) ;
+		QueryBuilder beginFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("begintime")).should(QueryBuilders.rangeQuery("begintime").from(UKTools.dateFormate.format(new Date()))) ;
+		QueryBuilder endFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("endtime")).should(QueryBuilders.rangeQuery("endtime").to(UKTools.dateFormate.format(new Date()))) ;
 		
-		
-		FilteredQueryBuilder query = QueryBuilders.filteredQuery(
-				boolQueryBuilder, 
-	                FilterBuilders.boolFilter()
-	                .must(beginFilter).must(endFilter));
-		
-	    NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(query).withSort(new FieldSortBuilder("createtime").unmappedType("date").order(SortOrder.DESC));
+	    NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder).withFilter(QueryBuilders.boolQuery().must(beginFilter).must(endFilter)).withSort(new FieldSortBuilder("createtime").unmappedType("date").order(SortOrder.DESC));
 	    
 	    SearchQuery searchQuery = searchQueryBuilder.build().setPageable(new PageRequest(p, ps)) ;
 	    if(elasticsearchTemplate.indexExists(KbsTopic.class)){

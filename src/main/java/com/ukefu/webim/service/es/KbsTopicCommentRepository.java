@@ -1,4 +1,4 @@
-package com.ukefu.webim.service.repository.es;
+package com.ukefu.webim.service.es;
 
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
