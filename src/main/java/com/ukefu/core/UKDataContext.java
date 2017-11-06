@@ -160,6 +160,7 @@ public class UKDataContext {
 	public enum ExtentionType{
 		LINE, 
 		IVR,
+		BUSINESS,
 		SKILL,
 		CONFERENCE,
 		QUENE;
