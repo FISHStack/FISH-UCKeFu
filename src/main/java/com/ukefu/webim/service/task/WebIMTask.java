@@ -162,13 +162,17 @@ public class WebIMTask {
 						}
 					}else if(data instanceof AiUser){
 						AiUser aiUser = (AiUser)data ;
-						DataExchangeInterface dataInterface = (DataExchangeInterface) UKDataContext.getContext().getBean("aiconfig") ;
-						AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(aiUser.getId(), UKDataContext.SYSTEM_ORGI) ;
-						if(aiConfig!=null){
-							long leavetime = (System.currentTimeMillis() - aiUser.getTime())/1000 ;
-							if(leavetime > 600 || leavetime > aiConfig.getAsktimes()){//最大空闲时间不能超过540秒 
-								NettyClients.getInstance().closeIMEventClient(aiUser.getUserid(), aiUser.getId(), UKDataContext.SYSTEM_ORGI) ;
+						if(UKDataContext.model.get("xiaoe")!=null){
+							DataExchangeInterface dataInterface = (DataExchangeInterface) UKDataContext.getContext().getBean("aiconfig") ;
+							AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(aiUser.getId(), UKDataContext.SYSTEM_ORGI) ;
+							if(aiConfig!=null){
+								long leavetime = (System.currentTimeMillis() - aiUser.getTime())/1000 ;
+								if(leavetime > 600 || leavetime > aiConfig.getAsktimes()){//最大空闲时间不能超过540秒 
+									NettyClients.getInstance().closeIMEventClient(aiUser.getUserid(), aiUser.getId(), UKDataContext.SYSTEM_ORGI) ;
+								}
 							}
+						}else{
+							NettyClients.getInstance().closeIMEventClient(aiUser.getUserid(), aiUser.getId(), UKDataContext.SYSTEM_ORGI) ;
 						}
 					}
 				}

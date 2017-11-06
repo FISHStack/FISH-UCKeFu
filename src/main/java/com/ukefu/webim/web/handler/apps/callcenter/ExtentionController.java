@@ -170,7 +170,7 @@ public class ExtentionController extends Handler{
 	@RequestMapping(value = "/ivr")
     @Menu(type = "callcenter" , subtype = "ivr" , access = false)
     public ModelAndView ivr(ModelMap map , HttpServletRequest request , HttpServletResponse response ,@Valid String hostid) {
-		map.addAttribute("ivrList" , extentionRes.findByHostidAndExtypeAndOrgi(hostid, UKDataContext.ExtentionType.IVR.toString() , super.getOrgi(request)));
+		map.addAttribute("ivrList" , extentionRes.findByHostidAndExtypeAndOrgi(hostid, UKDataContext.ExtentionType.BUSINESS.toString() , super.getOrgi(request)));
     	return request(super.createRequestPageTempletResponse("/apps/business/callcenter/extention/ivr"));
     }
 	
