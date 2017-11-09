@@ -14,6 +14,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.UKeFuDic;
@@ -64,6 +65,8 @@ public class UserInterceptorHandler extends HandlerInterceptorAdapter {
 	    	view.addObject("sessionid", UKTools.getContextID(arg0.getSession().getId())) ;
 	    	
 	    	view.addObject("models", UKDataContext.model) ;
+	    	
+	    	view.addObject("agentStatusReport",ServiceQuene.getAgentReport(user.getOrgi())) ;
 			/**
 			 * WebIM共享用户
 			 */
