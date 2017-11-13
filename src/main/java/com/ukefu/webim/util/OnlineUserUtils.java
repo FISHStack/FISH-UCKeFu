@@ -99,7 +99,7 @@ public class OnlineUserUtils {
 	 */
 	public static OnlineUser onlineuser(String userid ,String orgi , CousultInvite invite){
 		OnlineUser onlineUser = (OnlineUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(userid, orgi) ;
-		if(onlineUser == null && invite.isTraceuser()){
+		if(onlineUser == null && invite != null && invite.isTraceuser()){
 			OnlineUserRepository service = (OnlineUserRepository) UKDataContext.getContext().getBean(OnlineUserRepository.class);
 
 			List<OnlineUser> tempOnlineUserList = service.findByUseridAndOrgi(userid , orgi);
