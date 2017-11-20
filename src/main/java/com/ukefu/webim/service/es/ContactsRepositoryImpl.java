@@ -28,7 +28,7 @@ import com.ukefu.webim.web.model.User;
 
 @Component
 public class ContactsRepositoryImpl implements ContactsEsCommonRepository{
-private SimpleDateFormat dateFromate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
+	private SimpleDateFormat dateFromate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
 	
 	@Autowired
 	private UserRepository userRes ;
@@ -116,12 +116,12 @@ private SimpleDateFormat dateFromate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss
 		}
 		RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery("createtime") ;
 		if(begin!=null){
-			rangeQuery.from(dateFromate.format(begin)) ;
+			rangeQuery.from(begin.getTime()) ;
 		}
 		if(end!=null){
-			rangeQuery.to(dateFromate.format(end)) ;
+			rangeQuery.to(end.getTime()) ;
 		}else{
-			rangeQuery.to(dateFromate.format(new Date())) ;
+			rangeQuery.to(new Date().getTime()) ;
 		}
 		if(begin!=null || end!=null){
 			boolQueryBuilder.must(rangeQuery) ;
