@@ -67,7 +67,7 @@ public class KbsTopic extends ESBean implements java.io.Serializable , UKAgg{
 	private int followers ;		//关注数量
 	private int collections;	//收藏数量
 	private int comments ;		//评论数量
-	private boolean mobile ;	//是否移动端提问
+	private boolean frommobile ;	//是否移动端提问
 	private String status ;	//	状态	
 	private String tptype;	//知识分类
 	private String cate ;	//知识 栏目 
@@ -207,12 +207,12 @@ public class KbsTopic extends ESBean implements java.io.Serializable , UKAgg{
 		this.comments = comments;
 	}
 
-	public boolean isMobile() {
-		return mobile;
+	public boolean isFrommobile() {
+		return frommobile;
 	}
 
-	public void setMobile(boolean mobile) {
-		this.mobile = mobile;
+	public void setFrommobile(boolean frommobile) {
+		this.frommobile = frommobile;
 	}
 
 	public String getStatus() {

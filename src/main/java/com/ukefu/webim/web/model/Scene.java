@@ -63,7 +63,7 @@ public class Scene implements java.io.Serializable{
 	private int followers ;		//关注数量
 	private int collections;	//收藏数量
 	private int comments ;		//评论数量
-	private boolean mobile ;	//是否移动端提问
+	private boolean frommobile ;	//是否移动端提问
 	private String status ;	//	状态	
 	private String tptype;	//主题类型		问答:分享:讨论
 	private String cate ;	//主题 栏目 
@@ -194,12 +194,12 @@ public class Scene implements java.io.Serializable{
 		this.comments = comments;
 	}
 
-	public boolean isMobile() {
-		return mobile;
+	public boolean isFrommobile() {
+		return frommobile;
 	}
 
-	public void setMobile(boolean mobile) {
-		this.mobile = mobile;
+	public void setFrommobile(boolean frommobile) {
+		this.frommobile = frommobile;
 	}
 
 	public String getStatus() {
