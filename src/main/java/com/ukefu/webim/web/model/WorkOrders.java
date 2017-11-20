@@ -54,7 +54,7 @@ public class WorkOrders extends ESBean implements UKAgg{
 	private int followers ;		//关注数量
 	private int collections;	//收藏数量
 	private int comments ;		//评论数量
-	private boolean mobile ;	//是否移动端提问
+	private boolean frommobile ;	//是否移动端提问
 	private String status ;	//	状态	
 	private String wotype;	//工单类型
 	private boolean datastatus ;	//数据状态，是否删除 , 逻辑删除
@@ -272,13 +272,13 @@ public class WorkOrders extends ESBean implements UKAgg{
 	public void setComments(int comments) {
 		this.comments = comments;
 	}
-
-	public boolean isMobile() {
-		return mobile;
+	
+	public boolean isFrommobile() {
+		return frommobile;
 	}
 
-	public void setMobile(boolean mobile) {
-		this.mobile = mobile;
+	public void setFrommobile(boolean frommobile) {
+		this.frommobile = frommobile;
 	}
 
 	public String getStatus() {

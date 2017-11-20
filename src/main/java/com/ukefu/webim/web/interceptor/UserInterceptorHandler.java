@@ -66,7 +66,9 @@ public class UserInterceptorHandler extends HandlerInterceptorAdapter {
 	    	
 	    	view.addObject("models", UKDataContext.model) ;
 	    	
-	    	view.addObject("agentStatusReport",ServiceQuene.getAgentReport(user.getOrgi())) ;
+	    	if(user!=null){
+	    		view.addObject("agentStatusReport",ServiceQuene.getAgentReport(user.getOrgi())) ;
+	    	}
 			/**
 			 * WebIM共享用户
 			 */
