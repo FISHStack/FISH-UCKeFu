@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-11-06 18:14:16
+Date: 2017-11-22 11:31:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1309,7 +1309,7 @@ CREATE TABLE `uk_kbs_topic` (
   `followers` int(11) DEFAULT NULL COMMENT '关注人数',
   `collections` int(11) DEFAULT NULL COMMENT '引用次数',
   `comments` int(11) DEFAULT NULL COMMENT '回复数',
-  `frommobile` tinyint(4) DEFAULT NULL COMMENT '移动端支持',
+  `mobile` tinyint(4) DEFAULT NULL COMMENT '移动端支持',
   `status` varchar(32) DEFAULT NULL COMMENT '状态',
   `tptype` varchar(32) DEFAULT NULL COMMENT '分类ID',
   `cate` varchar(32) DEFAULT NULL COMMENT '分类ID',
@@ -1468,7 +1468,7 @@ CREATE TABLE `uk_onlineuser` (
   `wfstatus` varchar(255) DEFAULT NULL COMMENT '流程状态',
   `resolution` varchar(255) DEFAULT NULL,
   `opersystem` varchar(100) DEFAULT NULL COMMENT '操作系统',
-  `ip` varchar(32) DEFAULT NULL COMMENT 'IP',
+  `ip` varchar(50) DEFAULT NULL COMMENT 'IP',
   `hostname` varchar(32) DEFAULT NULL COMMENT '主机名称',
   `browser` varchar(32) DEFAULT NULL COMMENT '浏览器',
   `status` varchar(11) DEFAULT NULL COMMENT '状态',
@@ -1528,7 +1528,7 @@ CREATE TABLE `uk_onlineuser_his` (
   `wfstatus` varchar(255) DEFAULT NULL COMMENT '流程状态',
   `resolution` varchar(255) DEFAULT NULL,
   `opersystem` varchar(100) DEFAULT NULL COMMENT '操作系统',
-  `ip` varchar(32) DEFAULT NULL COMMENT 'IP',
+  `ip` varchar(50) DEFAULT NULL COMMENT 'IP',
   `hostname` varchar(32) DEFAULT NULL COMMENT '主机名称',
   `browser` varchar(32) DEFAULT NULL COMMENT '浏览器',
   `status` varchar(11) DEFAULT NULL COMMENT '状态',
@@ -6031,7 +6031,9 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '402888815dedf885015dee0037a90003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-11-06 12:24:46', null, null, null, '0', '1', '1');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '402888815dedf885015dee0037a90003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-11-17 09:28:53', null, null, null, '0', '1', '1');
+INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402888815dedf885015dee0037a90003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-09-18 17:32:34', null, null, null, '0', '0', '0');
+INSERT INTO `uk_user` VALUES ('402888815f87aca9015f89a93dc70893', null, 'ace', '14e1b600b1fd579f47433b88e8d85291', '5', 'a@ace.com', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-11-05 08:51:30', null, '2017-11-05 08:56:52', null, '18510129944', '2017-11-05 08:51:30', null, '0', 'ace', null, '0', null, null, null, '0', '0', '0', '2017-11-05 08:51:30', null, null, null, '1', '0', '0');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -6047,7 +6049,7 @@ CREATE TABLE `uk_userevent` (
   `name` varchar(32) DEFAULT NULL COMMENT '名称',
   `admin` tinyint(32) DEFAULT NULL COMMENT '是否管理员',
   `accessnum` tinyint(32) DEFAULT NULL COMMENT '访问次数',
-  `ip` varchar(20) DEFAULT NULL COMMENT 'IP',
+  `ip` varchar(50) DEFAULT NULL COMMENT 'IP',
   `hostname` varchar(50) DEFAULT NULL COMMENT '主机名',
   `country` varchar(50) DEFAULT NULL COMMENT '国家',
   `region` varchar(50) DEFAULT NULL COMMENT '区域',
@@ -6154,7 +6156,7 @@ CREATE TABLE `uk_workorders` (
   `FOLLOWERS` int(11) DEFAULT NULL COMMENT '关注数',
   `COLLECTIONS` int(11) DEFAULT NULL COMMENT '收藏数',
   `COMMENTS` int(11) DEFAULT NULL COMMENT '评论数',
-  `FROMMOBILE` tinyint(4) DEFAULT NULL COMMENT '移动端',
+  `MOBILE` tinyint(4) DEFAULT NULL COMMENT '移动端',
   `STATUS` varchar(32) DEFAULT NULL COMMENT '状态',
   `WOTYPE` varchar(32) DEFAULT NULL COMMENT '工单类型',
   `DATASTATUS` tinyint(4) DEFAULT NULL COMMENT '数据状态',
@@ -6175,6 +6177,7 @@ CREATE TABLE `uk_workorders` (
   `ROWCOUNT` int(11) DEFAULT NULL,
   `KEY` varchar(32) DEFAULT NULL,
   `MEMO` varchar(100) DEFAULT NULL COMMENT '备注',
+  `frommobile` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -6345,7 +6348,7 @@ CREATE TABLE `uk_xiaoe_scene` (
   `followers` int(11) DEFAULT NULL COMMENT '关注数量',
   `collections` int(11) DEFAULT NULL COMMENT '回复数量',
   `comments` int(11) DEFAULT NULL COMMENT '评论数量',
-  `frommobile` tinyint(4) DEFAULT NULL COMMENT '移动端',
+  `mobile` tinyint(4) DEFAULT NULL COMMENT '移动端',
   `status` varchar(32) DEFAULT NULL COMMENT '状态',
   `tptype` varchar(32) DEFAULT NULL COMMENT '类型',
   `cate` varchar(32) DEFAULT NULL COMMENT '分类',
@@ -6439,7 +6442,7 @@ CREATE TABLE `uk_xiaoe_topic` (
   `followers` int(11) DEFAULT NULL COMMENT '关注人数',
   `collections` int(11) DEFAULT NULL COMMENT '引用次数',
   `comments` int(11) DEFAULT NULL COMMENT '回复数',
-  `frommobile` tinyint(4) DEFAULT NULL COMMENT '移动端支持',
+  `mobile` tinyint(4) DEFAULT NULL COMMENT '移动端支持',
   `status` varchar(32) DEFAULT NULL COMMENT '状态',
   `tptype` varchar(32) DEFAULT NULL COMMENT '分类',
   `cate` varchar(32) DEFAULT NULL COMMENT '分类ID',
