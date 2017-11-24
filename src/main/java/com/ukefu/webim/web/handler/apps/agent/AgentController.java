@@ -414,7 +414,7 @@ public class AgentController extends Handler {
 		if(agentStatus!=null){
 			agentStatusRepository.delete(agentStatus);
 		}
-    	CacheHelper.getAgentStatusCacheBean().delete(super.getUser(request).getId(), user.getOrgi());;
+    	CacheHelper.getAgentStatusCacheBean().delete(super.getUser(request).getId(), user.getOrgi());
     	ServiceQuene.publishMessage(user.getOrgi());
     	
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 

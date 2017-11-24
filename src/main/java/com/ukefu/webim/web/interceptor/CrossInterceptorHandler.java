@@ -16,7 +16,7 @@ public class CrossInterceptorHandler extends HandlerInterceptorAdapter {
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,accept,authorization,content-type");
-        response.setHeader("X-Frame-Options", "SAMEORIGIN");
+//        response.setHeader("X-Frame-Options", "SAMEORIGIN");
         return true ; 
     }
 
