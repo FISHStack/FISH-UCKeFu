@@ -24,7 +24,7 @@ public class UKDatabaseMetadata{
 
 	private final List<UKTableMetaData> tables = new ArrayList<UKTableMetaData>();
 	private DatabaseMetaData meta;
-	private Properties properties ;
+	public Properties properties ;
 	private static final String[] TYPES = { "TABLE", "VIEW" };
 	/**
 	 * 

@@ -93,7 +93,7 @@ public class LoginController extends Handler{
 		        		view = request(super.createRequestPageTempletResponse("redirect:"+referer));
 			    	}
 		        	List<UserRole> userRoleList = userRoleRes.findByOrgiAndUser(loginUser.getOrgi(), loginUser);
-		        	if(userRoleList!=null & userRoleList.size()>0){
+		        	if(userRoleList!=null && userRoleList.size()>0){
 		        		for(UserRole userRole : userRoleList){
 		        			loginUser.getRoleList().add(userRole.getRole()) ;
 		        		}

@@ -888,7 +888,7 @@ public class AgentController extends Handler {
 	@RequestMapping(value="/transfer/agent")  
 	@Menu(type = "apps", subtype = "transferagent")
     public ModelAndView transferagent(ModelMap map , HttpServletRequest request , @Valid String organ){ 
-		if(!StringUtils.isBlank(organ) && !StringUtils.isBlank(organ)){
+		if(!StringUtils.isBlank(organ)){
 			List<String> usersids = new ArrayList<String>();
 			
 			Collection<?> users =  CacheHelper.getAgentStatusCacheBean().getAllCacheObject(super.getOrgi(request)) ;

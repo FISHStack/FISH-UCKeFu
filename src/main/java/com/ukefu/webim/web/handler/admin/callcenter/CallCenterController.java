@@ -71,7 +71,7 @@ public class CallCenterController extends Handler{
     public ModelAndView pbxhostsave(ModelMap map , HttpServletRequest request , @Valid PbxHost pbxHost) {
 		ModelAndView view = request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/pbxhost.html"));
 		String msg = null ;
-		if(!StringUtils.isBlank(pbxHost.getName()) && !StringUtils.isBlank(pbxHost.getName())){
+		if(!StringUtils.isBlank(pbxHost.getName())){
 			int count = pbxHostRes.countByHostnameAndOrgi(pbxHost.getHostname(), super.getOrgi(request)) ;
 			if(count == 0){	
 				pbxHost.setOrgi(super.getOrgi(request));
@@ -80,14 +80,12 @@ public class CallCenterController extends Handler{
 				if(UKDataContext.model.get("callcenter")!=null){
 					CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
 					if(callCenterImpl!=null){
-						if(callCenterImpl!=null){
-							try{
-								callCenterImpl.init(pbxHost);
-							}catch(Exception ex){
-								msg = ex.getMessage() ;
-								ex.printStackTrace();
-							}
-						}
+                        try{
+                            callCenterImpl.init(pbxHost);
+                        }catch(Exception ex){
+                            msg = ex.getMessage() ;
+                            ex.printStackTrace();
+                        }
 					}
 				}
 			}
