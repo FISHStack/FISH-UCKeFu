@@ -415,7 +415,7 @@ input,textarea{
 .mobile-chat-bottom .btn-push{
 	position: absolute;
     right: 5px;
-    width:70px
+    width:70px;
     top:5px;
 }
 .mobile-chat-bottom .send-btn{

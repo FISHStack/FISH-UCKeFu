@@ -424,7 +424,7 @@ public class OnlineUserUtils {
 						onlineUser.setInvitetimes(0);
 					}
 				}else if(contacts!=null){
-					if(contacts!=null && !StringUtils.isBlank(contacts.getId()) && !StringUtils.isBlank(contacts.getName()) &&(StringUtils.isBlank(onlineUser.getContactsid()) || !contacts.getName().equals(onlineUser.getUsername()))){
+					if(!StringUtils.isBlank(contacts.getId()) && !StringUtils.isBlank(contacts.getName()) &&(StringUtils.isBlank(onlineUser.getContactsid()) || !contacts.getName().equals(onlineUser.getUsername()))){
 						if(StringUtils.isBlank(onlineUser.getContactsid())){
 							onlineUser.setContactsid(contacts.getId());
 						}

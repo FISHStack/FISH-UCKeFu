@@ -1,7 +1,6 @@
 package com.ukefu.webim.web.handler.apps.service;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,7 +95,7 @@ public class ProcessedSummaryController extends Handler{
 					if(!StringUtils.isBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
 						list.add(cb.equal(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(end))) ;
 					}
-				} catch (ParseException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				Predicate[] p = new Predicate[list.size()];  
@@ -208,7 +207,7 @@ public class ProcessedSummaryController extends Handler{
 						if(!StringUtils.isBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
 							list.add(cb.equal(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(end))) ;
 						}
-					} catch (ParseException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 					Predicate[] p = new Predicate[list.size()];  

@@ -1,6 +1,7 @@
 package com.ukefu.util.client;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.google.common.collect.ArrayListMultimap;
@@ -25,7 +26,7 @@ public class NettyCallCenterClient implements NettyClient{
 	public void removeClient(String key , String id){
 		List<SocketIOClient> keyClients = this.getClients(key) ;
 		for(SocketIOClient client : keyClients){
-			if(client.getSessionId().equals(id)){
+			if(client.getSessionId().equals(UUID.fromString(id))){
 				keyClients.remove(client) ;
 				break ;
 			}

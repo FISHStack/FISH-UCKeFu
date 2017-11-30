@@ -12,7 +12,7 @@ import com.ukefu.util.bi.model.RequestData;
 import com.ukefu.util.bi.model.ValueData;
 
 
-public class CubeReportData implements ReportData {
+public class CubeReportData implements ReportData, Cloneable {
 	/**
 	 * 
 	 */

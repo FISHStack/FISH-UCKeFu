@@ -246,16 +246,15 @@ public class WebIMTask {
 	    		if(agentUser!=null && !StringUtils.isBlank(agentUser.getAgentno())){	//同时发送消息给双方
 	        		NettyClients.getInstance().sendAgentEventMessage(agentUser.getAgentno(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), data);
 	        	}
-	    		
-		    	if(!StringUtils.isBlank(data.getTouser())){
-		    		if(!StringUtils.isBlank(data.getTouser())){
-			    		OutMessageRouter router = null ; 
-			    		router  = (OutMessageRouter) UKDataContext.getContext().getBean(agentUser.getChannel()) ;
-			    		if(router!=null){
-			    			router.handler(data.getTouser(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), agentUser.getAppid(), outMessage);
-			    		}
-			    	}
-		    	}
+
+                if(!StringUtils.isBlank(data.getTouser())){
+                    OutMessageRouter router = null ;
+                    router  = (OutMessageRouter) UKDataContext.getContext().getBean(agentUser.getChannel()) ;
+                    if(router!=null){
+                        router.handler(data.getTouser(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), agentUser.getAppid(), outMessage);
+                    }
+                }
+
 	    	}
 		}
 	}
