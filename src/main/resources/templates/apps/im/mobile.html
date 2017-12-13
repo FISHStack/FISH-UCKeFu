@@ -207,7 +207,7 @@
 					src="<#if inviteData?? && inviteData.consult_dialog_headimg??>/res/image.html?id=${inviteData.consult_dialog_headimg?url}<#else>/images/agent.png</#if>"
 					alt="">
 				<div class="chat-message">
-					<label class="user">${inviteData.ainame!'小E'}</label> <label
+					<label class="user">${chatMessage.username!''}</label> <label
 						class="time">${chatMessage.createtime!''}</label>
 				</div>
 				<div class="chatting-left">
