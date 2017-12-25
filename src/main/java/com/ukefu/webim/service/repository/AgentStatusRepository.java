@@ -12,7 +12,7 @@ public abstract interface AgentStatusRepository extends
 		JpaRepository<AgentStatus, String> {
 	public abstract AgentStatus findByIdAndOrgi(String paramString,String orgi);
 	
-	public abstract AgentStatus findByAgentnoAndOrgi(String agentid, String orgi);
+	public abstract List<AgentStatus> findByAgentnoAndOrgi(String agentid, String orgi);
 	
 	public abstract Page<AgentStatus> findByOrgi(String orgi , Pageable page);
 	

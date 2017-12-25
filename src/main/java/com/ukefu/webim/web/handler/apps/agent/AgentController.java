@@ -370,8 +370,10 @@ public class AgentController extends Handler {
 	@Menu(type = "apps", subtype = "agent")
     public ModelAndView ready(HttpServletRequest request){ 
 		User user = super.getUser(request) ;
-    	AgentStatus agentStatus = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
-    	if(agentStatus==null){
+    	List<AgentStatus> agentStatusList = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
+    	AgentStatus agentStatus = null ;
+    	if(agentStatusList.size() > 0){
+    		agentStatus = agentStatusList.get(0) ;
     		agentStatus = new AgentStatus() ;
 	    	agentStatus.setUserid(user.getId());
 	    	agentStatus.setUsername(user.getUname());
@@ -394,14 +396,16 @@ public class AgentController extends Handler {
 	    	agentStatus.setMaxusers(sessionConfig.getMaxuser());
 	    	agentStatusRepository.save(agentStatus) ;
     	}
-    	/**
-    	 * 更新当前用户状态
-    	 */
-    	agentStatus.setUsers(ServiceQuene.getAgentUsers(agentStatus.getAgentno(), super.getOrgi(request)));
-    	agentStatus.setStatus(UKDataContext.AgentStatusEnum.READY.toString());
-    	CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, user.getOrgi());
-    	
-    	ServiceQuene.allotAgent(agentStatus.getAgentno(), user.getOrgi());
+    	if(agentStatus!=null){
+	    	/**
+	    	 * 更新当前用户状态
+	    	 */
+	    	agentStatus.setUsers(ServiceQuene.getAgentUsers(agentStatus.getAgentno(), super.getOrgi(request)));
+	    	agentStatus.setStatus(UKDataContext.AgentStatusEnum.READY.toString());
+	    	CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, user.getOrgi());
+	    	
+	    	ServiceQuene.allotAgent(agentStatus.getAgentno(), user.getOrgi());
+    	}
     	
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 
     }
@@ -410,8 +414,10 @@ public class AgentController extends Handler {
 	@Menu(type = "apps", subtype = "agent")
     public ModelAndView notready(HttpServletRequest request){ 
 		User user = super.getUser(request) ;
-		AgentStatus agentStatus = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
-		if(agentStatus!=null){
+		List<AgentStatus> agentStatusList = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
+		AgentStatus agentStatus = null ;
+    	if(agentStatusList.size() > 0){
+    		agentStatus = agentStatusList.get(0) ;
 			agentStatusRepository.delete(agentStatus);
 		}
     	CacheHelper.getAgentStatusCacheBean().delete(super.getUser(request).getId(), user.getOrgi());
@@ -424,8 +430,10 @@ public class AgentController extends Handler {
 	@Menu(type = "apps", subtype = "agent")
     public ModelAndView busy(HttpServletRequest request){ 
 		User user = super.getUser(request) ;
-		AgentStatus agentStatus = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
-		if(agentStatus!=null){
+		List<AgentStatus> agentStatusList = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
+		AgentStatus agentStatus = null ;
+    	if(agentStatusList.size() > 0){
+    		agentStatus = agentStatusList.get(0) ;
 			agentStatus.setBusy(true);
 			agentStatusRepository.save(agentStatus);
 			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, user.getOrgi());
@@ -438,8 +446,10 @@ public class AgentController extends Handler {
 	@Menu(type = "apps", subtype = "agent")
     public ModelAndView notbusy(HttpServletRequest request){ 
 		User user = super.getUser(request) ;
-		AgentStatus agentStatus = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
-		if(agentStatus!=null){
+		List<AgentStatus> agentStatusList = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
+		AgentStatus agentStatus = null ;
+    	if(agentStatusList.size() > 0){
+    		agentStatus = agentStatusList.get(0) ;
 			agentStatus.setBusy(false);
 			agentStatusRepository.save(agentStatus);
 			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, user.getOrgi());
