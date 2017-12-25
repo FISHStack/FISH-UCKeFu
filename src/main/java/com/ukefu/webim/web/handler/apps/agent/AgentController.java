@@ -374,6 +374,7 @@ public class AgentController extends Handler {
     	AgentStatus agentStatus = null ;
     	if(agentStatusList.size() > 0){
     		agentStatus = agentStatusList.get(0) ;
+    	}else{
     		agentStatus = new AgentStatus() ;
 	    	agentStatus.setUserid(user.getId());
 	    	agentStatus.setUsername(user.getUname());
@@ -415,7 +416,7 @@ public class AgentController extends Handler {
     public ModelAndView notready(HttpServletRequest request){ 
 		User user = super.getUser(request) ;
 		List<AgentStatus> agentStatusList = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
-    	for(AgentStatus agentStatus : agentStatusList){
+		for(AgentStatus agentStatus : agentStatusList){
 			agentStatusRepository.delete(agentStatus);
 		}
     	CacheHelper.getAgentStatusCacheBean().delete(super.getUser(request).getId(), user.getOrgi());
