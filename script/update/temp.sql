@@ -1,3 +1,4 @@
+
 ALTER TABLE uk_callcenter_event ADD DISCALLER VARCHAR(50);
 ALTER TABLE uk_callcenter_event ADD DISCALLED VARCHAR(50);
 
