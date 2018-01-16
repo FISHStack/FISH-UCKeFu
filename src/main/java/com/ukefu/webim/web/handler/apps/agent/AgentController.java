@@ -525,10 +525,10 @@ public class AgentController extends Handler {
 	public ModelAndView blacklist(HttpServletRequest request, @Valid String agentuserid , @Valid String agentserviceid ,  @Valid String userid , @Valid BlackEntity blackEntity)
 			throws Exception {
 		User user = super.getUser(request);
-		List<OnlineUser> onlineUserList = this.onlineUserRes.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
-		if(onlineUserList.size()  > 0){
-			OnlineUser onlineUser = onlineUserList.get(0) ;
-			BlackEntity tempBlackEntiry = blackListRes.findByUseridAndOrgi(onlineUser.getUserid(), super.getOrgi(request)) ;
+		List<AgentUser> agentUserList = this.agentUserRepository.findByUseridAndOrgi(userid, super.getOrgi(request)) ;
+		if(agentUserList.size()  > 0){
+			AgentUser agentUser = agentUserList.get(0) ;
+			BlackEntity tempBlackEntiry = blackListRes.findByUseridAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
 			if(tempBlackEntiry == null){
 				blackEntity.setUserid(userid);
 				blackEntity.setCreater(user.getId());
@@ -537,10 +537,10 @@ public class AgentController extends Handler {
 					blackEntity.setEndtime(new Date(System.currentTimeMillis() + blackEntity.getControltime()*3600*1000L));
 				}
 				blackEntity.setAgentid(user.getId());
-				blackEntity.setAgentuser(onlineUser.getUsername());
-				blackEntity.setSessionid(onlineUser.getSessionid());
+				blackEntity.setAgentuser(agentUser.getUsername());
+				blackEntity.setSessionid(agentUser.getSessionid());
 				blackEntity.setAgentserviceid(agentserviceid);
-				blackEntity.setChannel(onlineUser.getChannel());
+				blackEntity.setChannel(agentUser.getChannel());
 				blackListRes.save(blackEntity) ;
 			}else{
 				if(blackEntity.getControltime() > 0){
@@ -548,7 +548,7 @@ public class AgentController extends Handler {
 				}
 				tempBlackEntiry.setDescription(tempBlackEntiry.getDescription());
 				tempBlackEntiry.setControltime(blackEntity.getControltime());
-				tempBlackEntiry.setAgentuser(onlineUser.getUsername());
+				tempBlackEntiry.setAgentuser(agentUser.getUsername());
 				blackListRes.save(tempBlackEntiry) ;
 				blackEntity = tempBlackEntiry ;
 			}
