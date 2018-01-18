@@ -25,6 +25,9 @@ public class UKDataContext {
 	
 	
 	public static final String UKEFU_SYSTEM_CALLCENTER = "callcenter";
+	public static final String UKEFU_SYSTEM_WORKORDEREMAIL = "workordermail";
+	public static final String UKEFU_SYSTEM_SMSEMAIL = "callcenter";
+	
 	public static final String UKEFU_SYSTEM_INFOACQ = "infoacq";		//数据采集模式
 	public static final String GUEST_USER_ID_CODE = "R3GUESTUSEKEY" ;
 	public static final String WORKORDERS_CLOSED_STATUS = "uckefu_workorders_closed" ;
@@ -65,6 +68,13 @@ public class UKDataContext {
 	
 	public enum AskSectionType{
 		DEFAULT ;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum SystemMessageType{
+		EMAIL,SMS;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}

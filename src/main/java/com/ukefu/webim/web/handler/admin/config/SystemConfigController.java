@@ -30,6 +30,7 @@ import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.SecretRepository;
 import com.ukefu.webim.service.repository.SystemConfigRepository;
+import com.ukefu.webim.service.repository.SystemMessageRepository;
 import com.ukefu.webim.service.repository.TemplateRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Secret;
@@ -52,6 +53,10 @@ public class SystemConfigController extends Handler{
 	
 	@Autowired
 	private SystemConfigRepository systemConfigRes ;
+	
+	
+	@Autowired
+	private SystemMessageRepository systemMessageRes ;
 	
 	@Autowired
 	private SecretRepository secRes ;
@@ -76,15 +81,30 @@ public class SystemConfigController extends Handler{
     		map.addAttribute("secret", secretConfig.get(0)) ;
     	}
     	List<SysDic> dicList = UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_DIC) ;
-    	SysDic callCenterDic = null ;
+    	SysDic callCenterDic = null , workOrderDic = null  , smsDic = null ;
     	for(SysDic dic : dicList){
     		if(dic.getCode().equals(UKDataContext.UKEFU_SYSTEM_CALLCENTER)){
-    			callCenterDic = dic ; break ;
+    			callCenterDic = dic ;
+    		}
+    		if(dic.getCode().equals(UKDataContext.UKEFU_SYSTEM_WORKORDEREMAIL)){
+    			workOrderDic = dic ;
+    		}
+    		if(dic.getCode().equals(UKDataContext.UKEFU_SYSTEM_SMSEMAIL)){
+    			smsDic = dic ;
     		}
     	}
     	if(callCenterDic!=null){
     		map.addAttribute("templateList", templateRes.findByTemplettypeAndOrgi(callCenterDic.getId(), super.getOrgi(request))) ;
     	}
+    	if(workOrderDic!=null){
+    		map.addAttribute("workOrderList", templateRes.findByTemplettypeAndOrgi(workOrderDic.getId(), super.getOrgi(request))) ;
+    	}
+    	if(smsDic!=null){
+    		map.addAttribute("smsList", templateRes.findByTemplettypeAndOrgi(smsDic.getId(), super.getOrgi(request))) ;
+    	}
+    	
+    	map.addAttribute("sysMessageList", systemMessageRes.findByMsgtypeAndOrgi(UKDataContext.SystemMessageType.EMAIL.toString(), super.getOrgi(request))) ;
+    	
     	if(!StringUtils.isBlank(execute) && execute.equals("false")){
     		map.addAttribute("execute", execute) ;
     	}

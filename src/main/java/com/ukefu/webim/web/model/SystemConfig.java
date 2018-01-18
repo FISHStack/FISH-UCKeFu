@@ -52,6 +52,28 @@ public class SystemConfig implements java.io.Serializable{
 	private String cc_siptrunk ;
 	private String cc_callcenter ;
 	
+	
+	private boolean enablemail ;	//启用电子邮件
+	private String emailid ;		//电子邮件服务器
+	private String emailworkordertp;//工单电子邮件默认模板
+	private String mailcreatetp;	//工单创建的邮件模板
+	private String mailupdatetp;	//工单状态更新的邮件模板
+	private String mailprocesstp ;	//工单审批信息的邮件模板
+	
+	private boolean emailtocreater ;	//工单状态有更新的时候通知创建人
+	private String emailtocreatertp ;	//发送给创建人的邮件模板
+	
+	private boolean enablesms ;		//启用短信
+	private String smsid ;			//短信网关ID
+	private String smsworkordertp ;	//工单短信通知的模板
+	
+	private String smscreatetp;	//工单创建的邮件模板
+	private String smsupdatetp;	//工单状态更新的邮件模板
+	private String smsprocesstp ;	//工单审批信息的邮件模板
+	
+	private boolean smstocreater ;	//工单状态有更新的时候通知创建人
+	private String smstocreatertp ;//工单状态有更新的时候通知创建人的短信模板
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -221,6 +243,104 @@ public class SystemConfig implements java.io.Serializable{
 	}
 	public void setAuth(boolean auth) {
 		this.auth = auth;
+	}
+	
+	public boolean isEnablemail() {
+		return enablemail;
+	}
+	public void setEnablemail(boolean enablemail) {
+		this.enablemail = enablemail;
+	}
+	public String getEmailid() {
+		return emailid;
+	}
+	public void setEmailid(String emailid) {
+		this.emailid = emailid;
+	}
+	public String getEmailworkordertp() {
+		return emailworkordertp;
+	}
+	public void setEmailworkordertp(String emailworkordertp) {
+		this.emailworkordertp = emailworkordertp;
+	}
+	public boolean isEnablesms() {
+		return enablesms;
+	}
+	public void setEnablesms(boolean enablesms) {
+		this.enablesms = enablesms;
+	}
+	public String getSmsid() {
+		return smsid;
+	}
+	public void setSmsid(String smsid) {
+		this.smsid = smsid;
+	}
+	public String getSmsworkordertp() {
+		return smsworkordertp;
+	}
+	public void setSmsworkordertp(String smsworkordertp) {
+		this.smsworkordertp = smsworkordertp;
+	}
+	
+	public String getMailcreatetp() {
+		return mailcreatetp;
+	}
+	public void setMailcreatetp(String mailcreatetp) {
+		this.mailcreatetp = mailcreatetp;
+	}
+	public String getMailupdatetp() {
+		return mailupdatetp;
+	}
+	public void setMailupdatetp(String mailupdatetp) {
+		this.mailupdatetp = mailupdatetp;
+	}
+	public String getMailprocesstp() {
+		return mailprocesstp;
+	}
+	public void setMailprocesstp(String mailprocesstp) {
+		this.mailprocesstp = mailprocesstp;
+	}
+	public boolean isEmailtocreater() {
+		return emailtocreater;
+	}
+	public void setEmailtocreater(boolean emailtocreater) {
+		this.emailtocreater = emailtocreater;
+	}
+	public String getSmscreatetp() {
+		return smscreatetp;
+	}
+	public void setSmscreatetp(String smscreatetp) {
+		this.smscreatetp = smscreatetp;
+	}
+	public String getSmsupdatetp() {
+		return smsupdatetp;
+	}
+	public void setSmsupdatetp(String smsupdatetp) {
+		this.smsupdatetp = smsupdatetp;
+	}
+	public String getSmsprocesstp() {
+		return smsprocesstp;
+	}
+	public void setSmsprocesstp(String smsprocesstp) {
+		this.smsprocesstp = smsprocesstp;
+	}
+	public boolean isSmstocreater() {
+		return smstocreater;
+	}
+	public void setSmstocreater(boolean smstocreater) {
+		this.smstocreater = smstocreater;
+	}
+	public String getEmailtocreatertp() {
+		return emailtocreatertp;
+	}
+	public void setEmailtocreatertp(String emailtocreatertp) {
+		this.emailtocreatertp = emailtocreatertp;
+	}
+	public String getSmstocreatertp() {
+		return smstocreatertp;
+	}
+	public void setSmstocreatertp(String smstocreatertp) {
+		this.smstocreatertp = smstocreatertp;
 	}
 	@Transient
 	public String getBackgroundColor(){

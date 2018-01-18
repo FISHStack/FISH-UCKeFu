@@ -54,6 +54,7 @@ public class SessionConfig implements java.io.Serializable{
 	private String workinghours ;	//工作时间段，格式   9:00-12:00,13:30-15:30
 	private String notinwhmsg ;		//非工作时间段 访客咨询的提示消息
 	
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
