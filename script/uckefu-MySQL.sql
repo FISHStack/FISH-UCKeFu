@@ -10,8 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-
-Date: 2017-11-22 11:31:39
+Date: 2018-01-18 23:44:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -5593,6 +5592,8 @@ INSERT INTO `uk_sysdic` VALUES ('297e1e874f83129d014f83396c2e101d', '图木舒�
 INSERT INTO `uk_sysdic` VALUES ('297e1e874f83129d014f83396c3d101e', '五家渠市', 'pub', '659004', 'ukewo', null, '297e1e874f83129d014f83351347039d', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2015-08-31 18:07:02', '2015-08-31 18:07:02', '0', '3178', '297e1e874f83129d014f832090e200b8', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('297e63f05d1da6be015d1dae6de20002', '系统模板分类', 'pub', 'com.dic.system.template', null, 'resu', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-07-07 23:32:36', null, '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('297e63f05d1da6be015d1daee82c0003', '呼叫中心', 'pub', 'callcenter', 'ukewo', null, '297e63f05d1da6be015d1dae6de20002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-07-07 23:33:08', '2017-07-07 23:33:08', '0', '1', '297e63f05d1da6be015d1dae6de20002', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b6109050201610928ed6a030d', '工单邮件', 'pub', 'workordermail', 'ukewo', 'layui-icon', '297e63f05d1da6be015d1dae6de20002', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2018-01-18 20:05:32', null, '1', '0', '297e63f05d1da6be015d1dae6de20002', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b61090502016109293494030e', '工单短信', 'pub', 'workordersms', 'ukewo', 'layui-icon', '297e63f05d1da6be015d1dae6de20002', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2018-01-18 20:05:50', null, '1', '0', '297e63f05d1da6be015d1dae6de20002', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028838b5ae97036015ae972b6f10003', '客户类型', 'pub', 'com.dic.contacts.entype', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-03-20 10:01:33', null, '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028838b5ae97036015ae972d48d0004', '普通客户', 'pub', '01', 'ukewo', null, '4028838b5ae97036015ae972b6f10003', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-03-20 10:01:41', '2017-03-20 10:01:41', '0', '1', '4028838b5ae97036015ae972b6f10003', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028838b5ae97036015ae972d4970005', 'VIP客户', 'pub', '02', 'ukewo', null, '4028838b5ae97036015ae972b6f10003', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-03-20 10:01:41', '2017-03-20 10:01:41', '0', '2', '4028838b5ae97036015ae972b6f10003', '0', '0', null, null, null, null, null);
@@ -5793,11 +5794,55 @@ CREATE TABLE `uk_systemconfig` (
   `cc_callcenter` varchar(32) DEFAULT NULL COMMENT '呼叫中心配置',
   `CALLOUT` tinyint(4) DEFAULT NULL COMMENT '是否允许点击号码外呼',
   `AUTH` tinyint(4) DEFAULT NULL COMMENT '启用权限控制',
+  `enablemail` tinyint(4) DEFAULT '0',
+  `enablesms` tinyint(4) DEFAULT '0',
+  `emailid` varchar(32) DEFAULT NULL,
+  `emailworkordertp` varchar(32) DEFAULT NULL,
+  `smsid` varchar(32) DEFAULT NULL,
+  `smsworkordertp` varchar(32) DEFAULT NULL,
+  `mailcreatetp` varchar(32) DEFAULT NULL,
+  `mailupdatetp` varchar(32) DEFAULT NULL,
+  `mailprocesstp` varchar(32) DEFAULT NULL,
+  `emailtocreater` tinyint(4) DEFAULT '0',
+  `smscreatetp` varchar(32) DEFAULT NULL,
+  `smsupdatetp` varchar(32) DEFAULT NULL,
+  `smsprocesstp` varchar(32) DEFAULT NULL,
+  `smstocreater` tinyint(4) DEFAULT '0',
+  `emailtocreatertp` varchar(32) DEFAULT NULL,
+  `smstocreatertp` varchar(32) DEFAULT NULL,
   UNIQUE KEY `SQL121227155532210` (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uk_systemconfig
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_system_message`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_system_message`;
+CREATE TABLE `uk_system_message` (
+  `ID` varchar(32) NOT NULL,
+  `MSGTYPE` varchar(20) DEFAULT NULL,
+  `SMTPSERVER` varchar(255) DEFAULT NULL,
+  `SMTPUSER` varchar(255) DEFAULT NULL,
+  `SMTPPASSWORD` varchar(255) DEFAULT NULL,
+  `MAILFROM` varchar(255) DEFAULT NULL,
+  `SECLEV` varchar(50) DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `URL` varchar(255) DEFAULT NULL,
+  `SMSTYPE` varchar(20) DEFAULT NULL,
+  `APPKEY` varchar(200) DEFAULT NULL,
+  `APPSEC` varchar(200) DEFAULT NULL,
+  `SIGN` varchar(50) DEFAULT NULL,
+  `TPCODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_system_message
 -- ----------------------------
 
 -- ----------------------------
@@ -6032,7 +6077,7 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '402888815dedf885015dee0037a90003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2017-11-17 09:28:53', null, null, null, '0', '1', '1');
+INSERT INTO `uk_user` VALUES ('297e8c7b455798280145579c73e501c1', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '402888815dedf885015dee0037a90003', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-01-18 23:02:47', null, null, null, '0', '1', '1');
 INSERT INTO `uk_user` VALUES ('402883965c1dfe92015c1e12651d0002', null, 'chenfarong', '14e1b600b1fd579f47433b88e8d85291', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-05-19 08:19:01', null, '2017-07-05 16:52:39', '402888815dedf885015dee0037a90003', '18510294566', '2017-05-19 08:19:01', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2017-09-18 17:32:34', null, null, null, '0', '0', '0');
 INSERT INTO `uk_user` VALUES ('402888815f87aca9015f89a93dc70893', null, 'ace', '14e1b600b1fd579f47433b88e8d85291', '5', 'a@ace.com', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', null, '2017-11-05 08:51:30', null, '2017-11-05 08:56:52', null, '18510129944', '2017-11-05 08:51:30', null, '0', 'ace', null, '0', null, null, null, '0', '0', '0', '2017-11-05 08:51:30', null, null, null, '1', '0', '0');
 
@@ -6367,6 +6412,7 @@ CREATE TABLE `uk_xiaoe_scene` (
   `outputcon` varchar(255) DEFAULT NULL COMMENT '输出条件',
   `userinput` text COMMENT '用户输入',
   `aireply` text COMMENT 'AI回复内容（首条）',
+  `frommobile` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -6752,3 +6798,9 @@ CREATE TABLE `wf_workitem` (
 -- ----------------------------
 -- Records of wf_workitem
 -- ----------------------------
+
+-- ----------------------------
+-- View structure for `c_d_1078382417522583651`
+-- ----------------------------
+DROP VIEW IF EXISTS `c_d_1078382417522583651`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `c_d_1078382417522583651` AS select `c_d_1078382417522583651_vt`.`dim_3287492154152530262` AS `dim_3287492154152530262`,`c_d_1078382417522583651_vt`.`dim_6381132066889044038` AS `dim_6381132066889044038`,`c_d_1078382417522583651_vt`.`mea_7145637977087596681` AS `mea_7145637977087596681`,`c_d_1078382417522583651_vt`.`r3_cube_data_id` AS `r3_cube_data_id`,`c_d_1078382417522583651_vt`.`r3_cube_data_version` AS `r3_cube_data_version` from `c_d_1078382417522583651_vt` where (`c_d_1078382417522583651_vt`.`r3_cube_data_version` = '0') ;
