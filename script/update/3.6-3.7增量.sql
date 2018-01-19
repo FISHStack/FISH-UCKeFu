@@ -1,3 +1,27 @@
+CREATE TABLE `uk_tenant` (
+  `id` varchar(32) NOT NULL DEFAULT '',
+  `datasourceid` varchar(32) DEFAULT NULL,
+  `tenantname` varchar(255) DEFAULT NULL,
+  `tenantcode` varchar(255) DEFAULT NULL,
+  `remark` varchar(200) DEFAULT NULL,
+  `lastmenutime` timestamp NULL DEFAULT NULL,
+  `lastbasetime` timestamp NULL DEFAULT NULL,
+  `tenantlogo` varchar(255) DEFAULT NULL,
+  `tenantvalid` varchar(10) DEFAULT NULL,
+  `genpasstype` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `adminuser` varchar(255) DEFAULT NULL,
+  `initdb` tinyint(4) DEFAULT '0',
+  `inites` tinyint(4) DEFAULT NULL COMMENT '0',
+  `inited` tinyint(4) DEFAULT '0',
+  `systemtenant` tinyint(4) DEFAULT '0',
+  `createtime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `sign` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 CREATE TABLE `uk_system_message` (
   `ID` varchar(32) NOT NULL,
   `MSGTYPE` varchar(20) DEFAULT NULL,
@@ -44,3 +68,7 @@ ALTER TABLE uk_systemconfig ADD smsprocesstp varchar(32);
 ALTER TABLE uk_systemconfig ADD smstocreater tinyint DEFAULT 0;
 ALTER TABLE uk_systemconfig ADD smstocreatertp varchar(32);
 
+
+
+ALTER TABLE uk_systemconfig ADD enabletneant tinyint DEFAULT 0;
+ALTER TABLE uk_systemconfig ADD tenantshare tinyint DEFAULT 0;
