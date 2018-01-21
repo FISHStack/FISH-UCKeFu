@@ -72,3 +72,7 @@ ALTER TABLE uk_systemconfig ADD smstocreatertp varchar(32);
 
 ALTER TABLE uk_systemconfig ADD enabletneant tinyint DEFAULT 0;
 ALTER TABLE uk_systemconfig ADD tenantshare tinyint DEFAULT 0;
+ALTER TABLE uk_systemconfig ADD namealias varchar(100);
+
+
+ALTER TABLE uk_systemconfig ADD tenantconsole tinyint DEFAULT 0;
