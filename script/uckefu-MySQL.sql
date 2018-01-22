@@ -6798,9 +6798,3 @@ CREATE TABLE `wf_workitem` (
 -- ----------------------------
 -- Records of wf_workitem
 -- ----------------------------
-
--- ----------------------------
--- View structure for `c_d_1078382417522583651`
--- ----------------------------
-DROP VIEW IF EXISTS `c_d_1078382417522583651`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `c_d_1078382417522583651` AS select `c_d_1078382417522583651_vt`.`dim_3287492154152530262` AS `dim_3287492154152530262`,`c_d_1078382417522583651_vt`.`dim_6381132066889044038` AS `dim_6381132066889044038`,`c_d_1078382417522583651_vt`.`mea_7145637977087596681` AS `mea_7145637977087596681`,`c_d_1078382417522583651_vt`.`r3_cube_data_id` AS `r3_cube_data_id`,`c_d_1078382417522583651_vt`.`r3_cube_data_version` AS `r3_cube_data_version` from `c_d_1078382417522583651_vt` where (`c_d_1078382417522583651_vt`.`r3_cube_data_version` = '0') ;
