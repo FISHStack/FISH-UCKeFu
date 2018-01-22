@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-01-18 23:44:31
+Date: 2018-01-22 18:44:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -5810,6 +5810,10 @@ CREATE TABLE `uk_systemconfig` (
   `smstocreater` tinyint(4) DEFAULT '0',
   `emailtocreatertp` varchar(32) DEFAULT NULL,
   `smstocreatertp` varchar(32) DEFAULT NULL,
+  `enabletneant` tinyint(4) DEFAULT '0',
+  `tenantshare` tinyint(4) DEFAULT '0',
+  `namealias` varchar(100) DEFAULT NULL,
+  `tenantconsole` tinyint(4) DEFAULT '0',
   UNIQUE KEY `SQL121227155532210` (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
