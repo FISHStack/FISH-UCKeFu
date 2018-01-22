@@ -74,6 +74,12 @@ public class SystemConfig implements java.io.Serializable{
 	private boolean smstocreater ;	//工单状态有更新的时候通知创建人
 	private String smstocreatertp ;//工单状态有更新的时候通知创建人的短信模板
 	
+	
+	private boolean enabletneant ;	//启用多租户管理模式
+	private boolean tenantshare;	//多租户模式下共享组织机构
+	private String namealias ;		//多租户模式的名称
+	private boolean tenantconsole ;	//登录后进入租户选择模式
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -341,6 +347,31 @@ public class SystemConfig implements java.io.Serializable{
 	}
 	public void setSmstocreatertp(String smstocreatertp) {
 		this.smstocreatertp = smstocreatertp;
+	}
+	public boolean isEnabletneant() {
+		return enabletneant;
+	}
+	public void setEnabletneant(boolean enabletneant) {
+		this.enabletneant = enabletneant;
+	}
+	public boolean isTenantshare() {
+		return tenantshare;
+	}
+	public void setTenantshare(boolean tenantshare) {
+		this.tenantshare = tenantshare;
+	}
+	
+	public String getNamealias() {
+		return namealias;
+	}
+	public void setNamealias(String namealias) {
+		this.namealias = namealias;
+	}
+	public boolean isTenantconsole() {
+		return tenantconsole;
+	}
+	public void setTenantconsole(boolean tenantconsole) {
+		this.tenantconsole = tenantconsole;
 	}
 	@Transient
 	public String getBackgroundColor(){

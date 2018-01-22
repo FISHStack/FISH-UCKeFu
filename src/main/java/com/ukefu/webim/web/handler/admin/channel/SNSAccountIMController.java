@@ -47,7 +47,7 @@ public class SNSAccountIMController extends Handler{
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "im" , access = false ,admin = true)
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String execute) {
-    	map.addAttribute("snsAccountList", snsAccountRes.findBySnstype( UKDataContext.ChannelTypeEnum.WEBIM.toString(), new PageRequest(super.getP(request), super.getPs(request)))) ;
+    	map.addAttribute("snsAccountList", snsAccountRes.findBySnstypeAndOrgi( UKDataContext.ChannelTypeEnum.WEBIM.toString() , super.getOrgi(request), new PageRequest(super.getP(request), super.getPs(request)))) ;
     	List<Secret> secretConfig = secRes.findByOrgi(super.getOrgi(request)) ;
     	if(secretConfig!=null && secretConfig.size() > 0){
     		map.addAttribute("secret", secretConfig.get(0)) ;

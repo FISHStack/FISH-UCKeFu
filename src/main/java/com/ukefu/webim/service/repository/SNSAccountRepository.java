@@ -19,7 +19,9 @@ public abstract interface SNSAccountRepository
   
   public abstract int countBySnsidAndOrgi(String snsid, String orgi);
   
-  public abstract List<SNSAccount> findBySnstype(String paramString);
+  public abstract List<SNSAccount> findBySnstypeAndOrgi(String paramString , String orgi);
   
-  public abstract Page<SNSAccount> findBySnstype(String paramString , Pageable page);
+  public abstract List<SNSAccount> findBySnstype(String snsType);
+  
+  public abstract Page<SNSAccount> findBySnstypeAndOrgi(String paramString ,String orgi, Pageable page);
 }

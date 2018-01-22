@@ -509,6 +509,59 @@
 									</div>
 								</div>
 								
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">14、启用多${systemConfig.namealias!'租户'}管理模式</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>启用多${systemConfig.namealias!'租户'}管理模式，运行系统中运行多个组织机构</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">开启后登录后首页会进入到${systemConfig.namealias!'租户'}选择模式</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<input type="checkbox" title="启用" name="enabletneant" lay-filter="tenant" <#if systemConfig?? && systemConfig.enabletneant == true>checked="checked"</#if>>
+											</div>
+										</div>
+									</div>
+									<div class="box-item" id="tenant" style="position: relative;<#if systemConfig?? && systemConfig.enabletneant == true><#else>display:none;</#if>">
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>a、多${systemConfig.namealias!'租户'}模式下共享组织机构、角色和用户</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">系统的组织机构、角色和账号系统租户共享</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												     <input type="checkbox" title="启用" name="tenantshare" <#if systemConfig?? && systemConfig.tenantshare == true>checked="checked"</#if>>
+												</div>	
+											</div>
+										</div>
+										
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>b、多${systemConfig.namealias!'租户'}模式别称</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">多${systemConfig.namealias!'租户'}模式在业务种的名称别称。</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												     <input type="text" name="namealias" value="<#if systemConfig.namealias?? && systemConfig.namealias!= ''>${systemConfig.namealias!''}<#else>租户</#if>" autocomplete="off" class="layui-input">
+												</div>	
+											</div>
+										</div>
+										
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>c、登录后进入到${systemConfig.namealias!'租户'}选择界面</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">登录后进入到${systemConfig.namealias!'租户'}选择界面</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												     <input type="checkbox" title="启用" name="tenantconsole" <#if systemConfig?? && systemConfig.tenantconsole == true>checked="checked"</#if>>
+												</div>	
+											</div>
+										</div>
+										
+									</div>
+								</div>
+								
 							</div>
 							<div class="col-md-4">
 								<div class="ukefu-im-preview ukefu-im-preview-dialog" id="pv" style="width:380px;position: fixed;background-color:#e6e6e6;">
@@ -589,6 +642,13 @@
 				$('#email').show();		
 			}else{
 				$('#email').hide();
+			}
+		});
+		form.on("checkbox(tenant)" , function(data){
+			if(data.elem.checked == true){
+				$('#tenant').show();		
+			}else{
+				$('#tenant').hide();
 			}
 		});
 		form.verify({

@@ -53,15 +53,13 @@ public class WebIMController extends Handler{
     	CousultInvite coultInvite = invite.findBySnsaccountidAndOrgi(snsid, super.getOrgi(request)) ;
     	if(coultInvite!=null){
     		map.addAttribute("inviteData", coultInvite);
+    		map.addAttribute("skillList", organRes.findByOrgiAndSkill(super.getOrgi(request), true)) ;
+        	map.addAttribute("agentList", userRes.findByOrgiAndAgent(super.getOrgi(request), true , new PageRequest(0, super.getPs(request)))) ;
+        	
+        	map.addAttribute("import", request.getServerPort()) ;
+        	
+        	map.addAttribute("snsAccount", snsAccountRes.findBySnsidAndOrgi(snsid, super.getOrgi(request))) ;
     	}
-    	map.addAttribute("skillList", organRes.findByOrgiAndSkill(super.getOrgi(request), true)) ;
-    	map.addAttribute("agentList", userRes.findByOrgiAndAgent(super.getOrgi(request), true , new PageRequest(0, super.getPs(request)))) ;
-    	
-    	map.addAttribute("import", request.getServerPort()) ;
-    	
-    	map.addAttribute("snsAccount", snsAccountRes.findBySnsidAndOrgi(snsid, super.getOrgi(request))) ;
-    	
-    	
         return request(super.createAdminTempletResponse("/admin/webim/index"));
     }
     
