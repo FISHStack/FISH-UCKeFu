@@ -1,9 +1,5 @@
 package com.ukefu.util;
 
-import freemarker.template.Configuration;
-import freemarker.template.TemplateException;
-import io.netty.handler.codec.http.HttpHeaders;
-
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -36,8 +32,6 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.coobird.thumbnailator.Thumbnails;
-
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.ConvertUtils;
@@ -62,22 +56,30 @@ import com.ukefu.util.event.AiEvent;
 import com.ukefu.util.event.MultiUpdateEvent;
 import com.ukefu.util.event.UserDataEvent;
 import com.ukefu.util.event.UserEvent;
+import com.ukefu.util.mail.MailSender;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AdTypeRepository;
 import com.ukefu.webim.service.repository.AreaTypeRepository;
 import com.ukefu.webim.service.repository.AttachmentRepository;
 import com.ukefu.webim.service.repository.SecretRepository;
 import com.ukefu.webim.service.repository.SystemConfigRepository;
+import com.ukefu.webim.service.repository.SystemMessageRepository;
 import com.ukefu.webim.service.repository.TemplateRepository;
 import com.ukefu.webim.web.model.AdType;
 import com.ukefu.webim.web.model.AttachmentFile;
 import com.ukefu.webim.web.model.Secret;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.SystemConfig;
+import com.ukefu.webim.web.model.SystemMessage;
 import com.ukefu.webim.web.model.Template;
 import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.WorkOrders;
+
+import freemarker.template.Configuration;
+import freemarker.template.TemplateException;
+import io.netty.handler.codec.http.HttpHeaders;
+import net.coobird.thumbnailator.Thumbnails;
 
 
 public class UKTools {
@@ -1008,4 +1010,23 @@ public class UKTools {
 		}
 		return  retValue;
     }
+    
+    /**
+	 * 发送邮件
+	 * @param email
+	 * @param cc
+	 * @param subject
+	 * @param content
+	 * @throws Exception
+	 */
+	public static void sendMail(String email , String cc , String subject , String content ,List<String> filenames) throws Exception{
+		SystemConfig config = UKTools.getSystemConfig() ;
+		if(config!=null && config.isEnablemail() && config.getEmailid()!=null) {
+			SystemMessage systemMessage = UKDataContext.getContext().getBean(SystemMessageRepository.class).findByIdAndOrgi(config.getEmailid(),config.getOrgi()) ;
+			MailSender sender = new MailSender(systemMessage.getSmtpserver(),systemMessage.getMailfrom(),systemMessage.getSmtpuser(), decryption(systemMessage.getSmtppassword()));
+			if(email!=null){
+				sender.send(email,cc, subject, content,filenames);
+			}
+		}
+	}
 }
