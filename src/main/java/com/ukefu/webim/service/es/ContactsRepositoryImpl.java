@@ -72,12 +72,12 @@ public class ContactsRepositoryImpl implements ContactsEsCommonRepository{
 		}
 		RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery("createtime") ;
 		if(begin!=null){
-			rangeQuery.from(dateFromate.format(begin)) ;
+			rangeQuery.from(begin.getTime()) ;
 		}
 		if(end!=null){
-			rangeQuery.to(dateFromate.format(end)) ;
+			rangeQuery.to(end.getTime()) ;
 		}else{
-			rangeQuery.to(dateFromate.format(new Date())) ;
+			rangeQuery.to(new Date().getTime()) ;
 		}
 		if(begin!=null || end!=null){
 			boolQueryBuilder.must(rangeQuery) ;
