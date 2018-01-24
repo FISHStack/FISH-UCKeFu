@@ -164,10 +164,10 @@ public class MailSender {
 		final MimeMessage message = new MimeMessage(session);
 		if(authenticator!=null && authenticator.getUsername().indexOf("@") >0){
 			// 设置发信人
-			message.setFrom(new InternetAddress(authenticator.getUsername()));
+			message.setFrom(new InternetAddress(MimeUtility.encodeText(authenticator.getUsername(), "UTF-8", "B")));
 		}
 		if(this.fromEmail!=null){
-			message.setFrom(new InternetAddress(this.fromEmail));
+			message.setFrom(new InternetAddress(MimeUtility.encodeText(this.fromEmail, "UTF-8", "B")));
 		}
 		// 设置收件人
 		String name = null;
@@ -299,17 +299,6 @@ public class MailSender {
 	public void send(List<String> recipients, MailInfo mail)
 			throws AddressException, MessagingException, UnsupportedEncodingException {
 		send(recipients, mail.getSubject(), mail.getContent());
-	}
-
-	public static void main(String[] args) {
-		try {
-			MailSender sender = new MailSender("smtp.r3yun.com","postmaster@r3yun.com", "R3rivuES2015");
-			sender.send("卢芳雷<lufangleiww@163.com>","卢芳雷<lufangleiww@163.com>", "test", "testddd",null);
-			System.out.println("adf");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }
