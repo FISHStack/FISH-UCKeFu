@@ -127,6 +127,7 @@ public class TemplateController extends Handler{
     	Template oldTemplate = templateRes.findByIdAndOrgi(template.getId(), super.getOrgi(request)) ;
     	if(oldTemplate!=null){
     		oldTemplate.setTemplettext(template.getTemplettext());
+    		oldTemplate.setTemplettitle(template.getTemplettitle());
     		templateRes.save(oldTemplate) ;
     	}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/template/list.html?type="+template.getTemplettype()));

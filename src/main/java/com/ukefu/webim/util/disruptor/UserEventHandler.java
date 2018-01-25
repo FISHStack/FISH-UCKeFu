@@ -2,15 +2,20 @@ package com.ukefu.webim.util.disruptor;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.lmax.disruptor.EventHandler;
 import com.ukefu.core.UKDataContext;
+import com.ukefu.util.UKTools;
 import com.ukefu.util.event.UserDataEvent;
+import com.ukefu.util.mail.Mail;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.UserEventRepository;
 import com.ukefu.webim.service.repository.UserTraceRepository;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.UserHistory;
 import com.ukefu.webim.web.model.UserTraceHistory;
+
 
 public class UserEventHandler implements EventHandler<UserDataEvent>{
 
@@ -29,6 +34,11 @@ public class UserEventHandler implements EventHandler<UserDataEvent>{
 			List<OnlineUser> onlineUserList = onlineUserRes.findByUseridAndOrgi(onlineUser.getUserid(), onlineUser.getOrgi()) ;
 			if(onlineUserList.size() == 0){
 				onlineUserRes.save(onlineUser) ;
+			}
+		}if(arg0.getEvent() instanceof Mail){
+			Mail mail = (Mail)arg0.getEvent() ;
+			if(null!=mail&&!StringUtils.isBlank(mail.getEmail())) {
+				UKTools.sendMail(mail.getEmail(), mail.getCc(), mail.getSubject(), mail.getContent(), mail.getFilenames());
 			}
 		}
 	}

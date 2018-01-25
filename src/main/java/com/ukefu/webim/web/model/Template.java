@@ -32,6 +32,7 @@ public class Template implements java.io.Serializable{
 	private String userid ;					
 	private String groupid ;				
 	private String description ;
+	private String templettitle;//邮件头
 	private String templettext ;
 	private String templettype ; //List OR Preview
 	private Date createtime = new Date();
@@ -128,4 +129,11 @@ public class Template implements java.io.Serializable{
 	public void setTypeid(String typeid) {
 		this.typeid = typeid;
 	}
+	public String getTemplettitle() {
+		return templettitle;
+	}
+	public void setTemplettitle(String templettitle) {
+		this.templettitle = templettitle;
+	}
+	
 }

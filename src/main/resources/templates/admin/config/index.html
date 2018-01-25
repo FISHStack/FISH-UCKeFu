@@ -439,7 +439,7 @@
 										<div class="row" style="margin-bottom:20px;">
 											<div class="col-lg-8">
 												<p>c、创建工单的邮件模板</p>
-												<p style="color:#888888;font-size:13px;margin-top:10px;">创建工单的时候，发送给创建人的邮件模板</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">创建工单的时候，发送给发起人的邮件模板</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
 												<div class="layui-input-block">
@@ -476,8 +476,8 @@
 										
 										<div class="row" style="margin-bottom:20px;">
 											<div class="col-lg-8">
-												<p>e、工单有状态变更的时候发送邮件给发起人</p>
-												<p style="color:#888888;font-size:13px;margin-top:10px;">工单的状态发生改变时候，发送给工单状态变更邮件给发起人</p>
+												<p>e、工单有状态变更的时候发送邮件给创建人</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">工单的状态发生改变时候，发送给工单状态变更邮件给创建人</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
 												<div class="layui-input-block">
@@ -488,8 +488,8 @@
 										
 										<div class="row" style="margin-bottom:20px;">
 											<div class="col-lg-8">
-												<p>f、工单有状态变更的时候发送给发起人的邮件模板</p>
-												<p style="color:#888888;font-size:13px;margin-top:10px;">工单的状态发生改变时候，发送给工单发起人的邮件模板</p>
+												<p>f、工单有状态变更的时候发送给创建人的邮件模板</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">工单的状态发生改变时候，发送给工单创建人的邮件模板</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
 												<div class="layui-input-block">
@@ -504,7 +504,17 @@
 												</div>	
 											</div>
 										</div>
-										
+										<div class="row" style="margin-bottom:20px;">
+											<div class="col-lg-8">
+												<p>g、工单邮件是否显示邮件收件人名称</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">工单邮件是否显示邮件收件人名称</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<div class="layui-input-block">
+												     <input type="checkbox" title="启用" name="emailshowrecipient" <#if systemConfig?? && systemConfig.emailshowrecipient== true>checked="checked"</#if>>
+												</div>	
+											</div>
+										</div>
 										
 									</div>
 								</div>

@@ -1023,7 +1023,7 @@ public class UKTools {
 		SystemConfig config = UKTools.getSystemConfig() ;
 		if(config!=null && config.isEnablemail() && config.getEmailid()!=null) {
 			SystemMessage systemMessage = UKDataContext.getContext().getBean(SystemMessageRepository.class).findByIdAndOrgi(config.getEmailid(),config.getOrgi()) ;
-			MailSender sender = new MailSender(systemMessage.getSmtpserver(),systemMessage.getMailfrom(),systemMessage.getSmtpuser(), decryption(systemMessage.getSmtppassword()));
+			MailSender sender = new MailSender(systemMessage.getSmtpserver(),systemMessage.getMailfrom(),systemMessage.getSmtpuser(), decryption(systemMessage.getSmtppassword()),systemMessage.getSeclev(),systemMessage.getSslport());
 			if(email!=null){
 				sender.send(email,cc, subject, content,filenames);
 			}

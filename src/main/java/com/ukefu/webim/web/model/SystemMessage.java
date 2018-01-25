@@ -34,6 +34,7 @@ public class SystemMessage implements java.io.Serializable {
 	private String smtppassword ;
 	private String mailfrom ;
 	private String seclev;   //ssl...
+	private String sslport;   //sslport...
 	private String orgi;
 	
 	private String smstype ;	//短信发送类型 ,SDK或者 URL提交方式
@@ -151,5 +152,10 @@ public class SystemMessage implements java.io.Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	public String getSslport() {
+		return sslport;
+	}
+	public void setSslport(String sslport) {
+		this.sslport = sslport;
+	}
 }

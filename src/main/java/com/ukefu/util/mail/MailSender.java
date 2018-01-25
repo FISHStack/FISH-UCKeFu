@@ -1,6 +1,7 @@
 package com.ukefu.util.mail;
 
 import java.io.UnsupportedEncodingException;
+import java.security.Security;
 import java.util.List;
 import java.util.Properties;
 
@@ -50,8 +51,8 @@ public class MailSender {
 	 *            发送邮件的密码
 	 */
 	public MailSender(final String smtpHostName, final String username,
-			final String password) {
-		init(username, password, smtpHostName);
+			final String password,final String seclev,String sslport) {
+		init(username, password, smtpHostName,seclev,sslport);
 	}
 	
 	/**
@@ -65,11 +66,13 @@ public class MailSender {
 	 *            发送邮件的用户名(地址)
 	 * @param password
 	 *            发送邮件的密码
+	 * @param seclev
+	 *            是否开启ssl       
 	 */
 	public MailSender(final String smtpHostName,final String fromEmail, final String username,
-			final String password) {
+			final String password,final String seclev,String sslport) {
 		this.fromEmail = fromEmail;
-		init(username, password, smtpHostName);
+		init(username, password, smtpHostName,seclev,sslport);
 	}
 
 	/**
@@ -80,10 +83,10 @@ public class MailSender {
 	 * @param password
 	 *            发送邮件的密码
 	 */
-	public MailSender(final String username, final String password) {
+	public MailSender(final String username, final String password,final String seclev,String sslport) {
 		// 通过邮箱地址解析出smtp服务器，对大多数邮箱都管用
 		final String smtpHostName = "smtp." + username.split("@")[1];
-		init(username, password, smtpHostName);
+		init(username, password, smtpHostName,seclev,sslport);
 
 	}
 
@@ -97,10 +100,19 @@ public class MailSender {
 	 * @param smtpHostName
 	 *            SMTP主机地址
 	 */
-	private void init(String username, String password, String smtpHostName) {
+	private void init(String username, String password, String smtpHostName,String seclev,String sslport) {
 		// 初始化props
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.host", smtpHostName);
+		//ssl
+		if(!StringUtils.isBlank(seclev)&&seclev.equals("true")) {
+			Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());  
+			final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";  
+			props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
+			props.put("mail.smtp.socketFactory.fallback", "false");
+			props.put("mail.smtp.port", sslport);
+			props.put("mail.smtp.socketFactory.port", sslport);
+		}
 		// 验证
 		authenticator = new MailAuthenticator(username, password);
 		// 创建session
@@ -162,12 +174,11 @@ public class MailSender {
 			throws Exception {
 		// 创建mime类型邮件
 		final MimeMessage message = new MimeMessage(session);
-		if(authenticator!=null && authenticator.getUsername().indexOf("@") >0){
+		if(this.fromEmail!=null){
+			message.setFrom(new InternetAddress(MimeUtility.encodeText(this.fromEmail, "UTF-8", "B"))+" <"+authenticator.getUsername()+">");
+		}else if(authenticator!=null && authenticator.getUsername().indexOf("@") >0){
 			// 设置发信人
 			message.setFrom(new InternetAddress(MimeUtility.encodeText(authenticator.getUsername(), "UTF-8", "B")));
-		}
-		if(this.fromEmail!=null){
-			message.setFrom(new InternetAddress(MimeUtility.encodeText(this.fromEmail, "UTF-8", "B")));
 		}
 		// 设置收件人
 		String name = null;

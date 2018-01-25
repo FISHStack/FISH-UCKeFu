@@ -63,6 +63,8 @@ public class SystemConfig implements java.io.Serializable{
 	private boolean emailtocreater ;	//工单状态有更新的时候通知创建人
 	private String emailtocreatertp ;	//发送给创建人的邮件模板
 	
+	private boolean emailshowrecipient; //是否显示收件人名称
+	
 	private boolean enablesms ;		//启用短信
 	private String smsid ;			//短信网关ID
 	private String smsworkordertp ;	//工单短信通知的模板
@@ -76,6 +78,13 @@ public class SystemConfig implements java.io.Serializable{
 	
 	
 	private boolean enabletneant ;	//启用多租户管理模式
+	public boolean isEmailshowrecipient() {
+		return emailshowrecipient;
+	}
+	public void setEmailshowrecipient(boolean emailshowrecipient) {
+		this.emailshowrecipient = emailshowrecipient;
+	}
+
 	private boolean tenantshare;	//多租户模式下共享组织机构
 	private String namealias ;		//多租户模式的名称
 	private boolean tenantconsole ;	//登录后进入租户选择模式

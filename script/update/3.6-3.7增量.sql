@@ -30,6 +30,7 @@ CREATE TABLE `uk_system_message` (
   `SMTPPASSWORD` varchar(255) DEFAULT NULL,
   `MAILFROM` varchar(255) DEFAULT NULL,
   `SECLEV` varchar(50) DEFAULT NULL,
+  `SSLPORT` varchar(50) DEFAULT NULL,
   `ORGI` varchar(32) DEFAULT NULL,
   `URL` varchar(255) DEFAULT NULL,
   `SMSTYPE` varchar(20) DEFAULT NULL,
@@ -76,3 +77,7 @@ ALTER TABLE uk_systemconfig ADD namealias varchar(100);
 
 
 ALTER TABLE uk_systemconfig ADD tenantconsole tinyint DEFAULT 0;
+
+ALTER TABLE uk_systemconfig ADD emailshowrecipient tinyint DEFAULT 0;
+
+ALTER TABLE uk_templet ADD templettitle varchar(500);
