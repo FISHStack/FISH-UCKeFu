@@ -3,7 +3,9 @@ package com.ukefu.webim.web.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -81,7 +83,7 @@ public class User implements java.io.Serializable{
 	private int follows ;		//关注
 	private int integral ;		//积分
 	private List<Role> roleList = new ArrayList<Role>() ;
-	private List<RoleAuth> roleAuthList  = new ArrayList<RoleAuth>() ;
+	private Map<String ,Object> roleAuthMap  = new HashMap<String ,Object>() ;
 	
 	public User(){}
 	public User(String id){
@@ -455,14 +457,14 @@ public class User implements java.io.Serializable{
 		this.callcenter = callcenter;
 	}
 	@Transient
-	public List<RoleAuth> getRoleAuthList() {
-		return roleAuthList;
-	}
-	public void setRoleAuthList(List<RoleAuth> roleAuthList) {
-		this.roleAuthList = roleAuthList;
-	}
 	public boolean isSuperuser() {
 		return superuser;
+	}
+	public Map<String, Object> getRoleAuthMap() {
+		return roleAuthMap;
+	}
+	public void setRoleAuthMap(Map<String, Object> roleAuthMap) {
+		this.roleAuthMap = roleAuthMap;
 	}
 	public void setSuperuser(boolean superuser) {
 		this.superuser = superuser;

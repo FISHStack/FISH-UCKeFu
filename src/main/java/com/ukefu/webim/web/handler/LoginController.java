@@ -88,7 +88,7 @@ public class LoginController extends Handler{
 		    	final User loginUser = userRepository.findByUsernameAndPassword(user.getUsername() , UKTools.md5(user.getPassword())) ;
 		        if(loginUser!=null && !StringUtils.isBlank(loginUser.getId())){
 		        	loginUser.setLogin(true);
-		        	super.setUser(request, loginUser);
+		        	
 		        	if(!StringUtils.isBlank(referer)){
 		        		view = request(super.createRequestPageTempletResponse("redirect:"+referer));
 			    	}
@@ -104,7 +104,7 @@ public class LoginController extends Handler{
 		        			List<OrganRole> organRoleList = organRoleRes.findByOrgiAndOrgan(loginUser.getOrgi(), organ) ;
 		        			if(organRoleList.size() > 0){
 		        				for(OrganRole organRole : organRoleList){
-		        					loginUser.getRoleList().add(organRole.getRole()) ;
+		        					loginUser.getRoleAuthMap().put(organRole.getDicvalue(),true);
 		        				}
 		        			}
 		        		}
@@ -124,8 +124,11 @@ public class LoginController extends Handler{
 							cb.and(cb.equal(root.get("orgi").as(String.class), loginUser.getOrgi())) ;
 						    return cb.or(list.toArray(p));  
 						}}) ;
-		        	
-		        	loginUser.setRoleAuthList(roleAuthList);//获取用户收取的资源信息
+		        	if(roleAuthList!=null) {
+		        		for(RoleAuth roleAuth:roleAuthList) {
+		        			loginUser.getRoleAuthMap().put(roleAuth.getDicvalue(), true);
+		        		}
+		        	}
 		        	
 		        	loginUser.setLastlogintime(new Date());
 		        	if(!StringUtils.isBlank(loginUser.getId())){
@@ -138,6 +141,7 @@ public class LoginController extends Handler{
 			    	}
 		        	view.addObject("msg", "0") ;
 		        }
+		        super.setUser(request, loginUser);
 	        }
     	}
     	return view;
