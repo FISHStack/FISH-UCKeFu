@@ -460,6 +460,7 @@ public class User implements java.io.Serializable{
 	public boolean isSuperuser() {
 		return superuser;
 	}
+	@Transient
 	public Map<String, Object> getRoleAuthMap() {
 		return roleAuthMap;
 	}
