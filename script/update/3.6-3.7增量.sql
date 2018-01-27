@@ -81,3 +81,7 @@ ALTER TABLE uk_systemconfig ADD tenantconsole tinyint DEFAULT 0;
 ALTER TABLE uk_systemconfig ADD emailshowrecipient tinyint DEFAULT 0;
 
 ALTER TABLE uk_templet ADD templettitle varchar(500);
+
+
+ALTER TABLE uk_organrole ADD dicid varchar(32);
+ALTER TABLE uk_organrole ADD dicvalue varchar(50);
