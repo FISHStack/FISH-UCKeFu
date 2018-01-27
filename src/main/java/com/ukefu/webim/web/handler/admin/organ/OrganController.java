@@ -28,7 +28,6 @@ import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.OrganRole;
-import com.ukefu.webim.web.model.Role;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
@@ -61,6 +60,9 @@ public class OrganController extends Handler{
 	
 	@Autowired
 	private OrganRoleRepository organRoleRes ;
+	
+	@Autowired
+	private SysDicRepository sysDicRes; 
 
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "organ")
@@ -252,6 +254,13 @@ public class OrganController extends Handler{
     @RequestMapping("/auth")
     @Menu(type = "admin" , subtype = "organ")
     public ModelAndView auth(ModelMap map ,HttpServletRequest request , @Valid String id) {
+    	
+    	SysDic sysDic = sysDicRes.findByCode(UKDataContext.UKEFU_SYSTEM_AUTH_DIC) ;
+    	if(sysDic!=null){
+    		map.addAttribute("resourceList", sysDicRes.findByDicid(sysDic.getId())) ;
+    	}
+    	
+    	map.addAttribute("sysDic", sysDic) ;
     	Organ organData = organRepository.findByIdAndOrgi(id, super.getOrgi(request)) ;
     	map.addAttribute("organData", organData) ;
     	map.addAttribute("roleList", roleRepository.findByOrgi(super.getOrgi(request))) ;
@@ -263,17 +272,18 @@ public class OrganController extends Handler{
     
     @RequestMapping("/auth/save")
     @Menu(type = "admin" , subtype = "role")
-    public ModelAndView authsave(HttpServletRequest request ,@Valid String id ,@Valid String roles) {
+    public ModelAndView authsave(HttpServletRequest request ,@Valid String id ,@Valid String menus) {
     	Organ organData = organRepository.findByIdAndOrgi(id, super.getOrgi(request)) ;
     	List<OrganRole>  organRoleList = organRoleRes.findByOrgiAndOrgan(super.getOrgi(request), organData) ;
     	organRoleRes.delete(organRoleList);
-    	if(!StringUtils.isBlank(roles)){
-    		String[] rolesarray = roles.split(",") ;
-    		for(String role : rolesarray){
+    	if(!StringUtils.isBlank(menus)){
+    		String[] menusarray = menus.split(",") ;
+    		for(String menu : menusarray){
     			OrganRole organRole = new OrganRole();
-    			Role tempRole = new Role();
-    			tempRole.setId(role);
-    			organRole.setRole(tempRole);
+    			SysDic sysDic = UKeFuDic.getInstance().getDicItem(menu) ;
+    			organRole.setDicid(menu);
+    			organRole.setDicvalue(sysDic.getCode());
+    			
     			organRole.setOrgan(organData);
     			organRole.setCreater(super.getUser(request).getId());
     			organRole.setOrgi(super.getOrgi(request));

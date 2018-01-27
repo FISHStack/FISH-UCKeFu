@@ -21,7 +21,8 @@ public class OrganRole implements java.io.Serializable{
 	private static final long serialVersionUID = 707069993826500239L;
 	private String id ;
 	private Organ organ;
-	private Role role ;
+	private String dicid ;
+	private String dicvalue ;
 	private String creater ;
 	private String orgi ;
 	private Date createtime = new Date();
@@ -43,12 +44,17 @@ public class OrganRole implements java.io.Serializable{
 	public void setOrgan(Organ organ) {
 		this.organ = organ;
 	}
-	@OneToOne(optional = true)
-	public Role getRole() {
-		return role;
+	public String getDicid() {
+		return dicid;
 	}
-	public void setRole(Role role) {
-		this.role = role;
+	public void setDicid(String dicid) {
+		this.dicid = dicid;
+	}
+	public String getDicvalue() {
+		return dicvalue;
+	}
+	public void setDicvalue(String dicvalue) {
+		this.dicvalue = dicvalue;
 	}
 	public String getCreater() {
 		return creater;
