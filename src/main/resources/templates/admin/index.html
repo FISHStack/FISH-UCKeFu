@@ -46,10 +46,12 @@
 							首页
 						</a>
 					</li>
+					<#if user?? && user.roleAuthMap["B01"]?? >
 					<li class="layui-nav-item "><a href="/agent/index.html" target="maicontent">
 						<i class="kfont icon-iconfontagent"	style="position: relative;"></i>
 						坐席工作台</a>
 					</li>
+					<#if user?? && user.roleAuthMap["B01"]?? >
 					<li class="layui-nav-item layui-this"><a href="/admin">
 						<i class="layui-icon" style="position: relative;">&#xe631;</i>
 						系统管理</a>

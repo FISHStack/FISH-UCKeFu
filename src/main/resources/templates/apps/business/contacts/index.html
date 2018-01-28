@@ -32,17 +32,19 @@
 								</div>
 							</div>
 						</form>
+						<#if user?? && (user.roleAuthMap["A02_A01_A02_B05"]?? || user.usertype == "0") >
 						<div class="layui-btn-group">
 						  <a href="/apps/contacts/add.html" title="新建联系人" data-toggle="ajax" data-width="950" data-height="600" class="layui-btn layui-btn-small" ><i class="layui-icon">&#xe608;</i>新建联系人</a>
 						</div>
-						
+						</#if>
+						<#if user?? && (user.roleAuthMap["A02_A01_A02_B08"]?? || user.usertype == "0") >
 						<div class="layui-btn-group ukefu-btn-group">
 							<button class="layui-btn layui-btn-small" href="/apps/contacts/imp.html" title="导入联系人" data-toggle="ajax" data-width="950" data-height="600">
 								<i class="kfont">&#xe641;</i> 导入 
 							</button>
 						</div>
-						
-						
+						</#if>
+						<#if user?? && (user.roleAuthMap["A02_A01_A02_B09"]?? || user.usertype == "0") >
 						<div class="layui-btn-group ukefu-btn-group">
 							<button class="layui-btn layui-btn-small dropdown-menu">
 								<i class="kfont">&#xe672;</i> 导出 
@@ -69,6 +71,7 @@
 								</li>
 							</ul>
 						</div>
+						</#if>
 					</div>
 				</h1>
 				<table class="layui-table" lay-skin="line">
@@ -120,14 +123,18 @@
 								<#if contacts.user??>${contacts.user.username!''}</#if>
 							</td>
 							<td style="white-space:nowrap;width:1%;" nowrap="nowrap">
+								<#if user?? && (user.roleAuthMap["A02_A01_A02_B06"]?? || user.usertype == "0") >
 						  		<a href="/apps/contacts/edit.html?id=${contacts.id!''}" data-toggle="ajax" data-width="950" data-height="600" data-title="编辑联系人信息">
 						  			<i class="layui-icon">&#xe642;</i>
 						  			编辑
 						  		</a>
+						  		</#if>
+						  		<#if user?? && (user.roleAuthMap["A02_A01_A02_B07"]?? || user.usertype == "0") >
 						  		<a href="/apps/contacts/delete.html?id=${contacts.id!''}" style="margin-left:10px;" data-toggle="tip" data-title="请确认是否删除联系人？">
 						  			<i class="layui-icon" style="color:red;">&#x1006;</i>
 						  			删除
 						  		</a>
+						  		</#if>
 						  </td>
 						</tr>
 						</#list>
