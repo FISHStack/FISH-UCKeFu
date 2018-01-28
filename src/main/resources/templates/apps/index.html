@@ -61,6 +61,8 @@
 			layerhelper = layer ;
 			<#if Request["msg"]?? && Request["msg"] == "security">
 			layer.alert("您访问的资源需要安全验证，请确认您有系统管理员权限！", {icon: 2});
+			<#elseif msg?? && msg == 't0'>
+				layer.alert('当前坐席就绪或对话未结束，不能切换${systemConfig.namealias!''}', {icon: 1});
 			</#if>
 			<#if models?? && models["im"]?? && models["im"] == true>
 			var imDialogHelper = {
@@ -124,6 +126,8 @@
 		$(".ukefu-left-menu").darkTooltip({
     		gravity: "west"
     	});
+		
+		
 	});
 	function closeentim(){
 		if(layerhelper){
@@ -149,6 +153,14 @@
 							首页
 						</a>
 					</li>
+					<#if istenantshare?? && istenantshare==true>
+						<li class="layui-nav-item">
+							<a href="javascript:void(0)" onclick="return false;" data-title="${systemConfig.namealias!''}" data-href="/apps/tenant/index.html" class="iframe_btn" data-id="maincontent" data-type="tabChange">
+								<i class="layui-icon" style="position: relative;">&#xe620;</i>
+								${systemConfig.namealias!''}
+							</a>
+						</li>
+					</#if>
 					<#if user?? && user.agent == true>
 					<li class="layui-nav-item " style="position: relative;">
 						<div class="ukefu-last-msg" data-num="0" id="ukefu-last-msg">
@@ -171,7 +183,7 @@
 					
 					<li class="layui-nav-item"><a href="javascript:void(0)">
 						<i class="layui-icon" style="position: relative;">&#xe612;</i>
-						<#if user??>${user.uname!''}</#if></a>
+						<#if user??>${user.uname!''}<#if tenant??&&tenant.tenantname??>（${tenant.tenantname!''}）</#if></#if></a>
 						<dl class="layui-nav-child">
 					      <dd><a href="/apps/profile.html" data-toggle="ajax" data-width="750" data-title="修改资料">个人资料</a></dd>
 					      <dd><a href="/logout.html">退出系统</a></dd>
@@ -289,7 +301,7 @@
 				</div>
 				<div class="layui-tab-content product-content ukefu-tab">
 					<div class="layui-tab-item layui-show" style="height:100%;">
-						<iframe frameborder="0" src="/apps/content.html" id="maincontent" name="maincontent" width="100%" height="100%"></iframe>
+						<iframe frameborder="0" src="<#if vt?? && vt==true>/apps/tenant/index.html<#else>/apps/content.html</#if>" id="maincontent" name="maincontent" width="100%" height="100%"></iframe>
 					</div>
 				</div>
 			</div>

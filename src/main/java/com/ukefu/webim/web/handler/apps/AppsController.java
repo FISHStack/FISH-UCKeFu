@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -12,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +29,7 @@ import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.es.ContactsRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
+import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
 import com.ukefu.webim.service.repository.UserEventRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
@@ -31,6 +37,9 @@ import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Contacts;
 import com.ukefu.webim.web.model.InviteRecord;
 import com.ukefu.webim.web.model.OnlineUser;
+import com.ukefu.webim.web.model.OrgiSkillRel;
+import com.ukefu.webim.web.model.Role;
+import com.ukefu.webim.web.model.RoleAuth;
 import com.ukefu.webim.web.model.User;
 
 @Controller
@@ -51,6 +60,9 @@ public class AppsController extends Handler{
 	@Autowired
 	private ContactsRepository contactsRes ;
 
+	@Autowired
+	private OrgiSkillRelRepository orgiSkillRelRepository ;
+	
 	@RequestMapping({"/apps/content"})
 	@Menu(type="apps", subtype="content")
 	public ModelAndView content(ModelMap map , HttpServletRequest request){
@@ -84,7 +96,8 @@ public class AppsController extends Handler{
 	private void aggValues(ModelMap map , HttpServletRequest request){
 		map.put("agentReport", ServiceQuene.getAgentReport(super.getOrgi(request))) ;
 		map.put("webIMReport", UKTools.getWebIMReport(userEventRes.findByOrgiAndCreatetimeRange(super.getOrgi(request), UKTools.getStartTime() , UKTools.getEndTime()))) ;
-		map.put("agents", userRes.countByOrgiAndAgent(super.getOrgi(request), true)) ;
+		
+		map.put("agents",getAgent(request).size()) ;
 
 		map.put("webIMInvite", UKTools.getWebIMInviteStatus(onlineUserRes.findByOrgiAndStatus(super.getOrgi(request), UKDataContext.OnlineUserOperatorStatus.ONLINE.toString()))) ;
 		
@@ -97,7 +110,26 @@ public class AppsController extends Handler{
 		map.put("agentServicesAvg", onlineUserRes.countByAgentForAvagTime(super.getOrgi(request), UKDataContext.AgentUserStatusEnum.END.toString(),super.getUser(request).getId() , UKTools.getStartTime() , UKTools.getEndTime())) ;
 		
 	}
-	
+	private List<User> getAgent(HttpServletRequest request){
+		//获取当前租户坐席数
+		final String orgi = super.getOrgi(request);
+		final List<OrgiSkillRel> orgiSkillRelList = orgiSkillRelRepository.findByOrgi(super.getOrgi(request));
+    	List<User> userList = userRes.findAll(new Specification<User>(){
+			@Override
+			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query,
+					CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<Predicate>();  
+				if(!orgiSkillRelList.isEmpty()){
+					for(OrgiSkillRel rel : orgiSkillRelList){
+						list.add(cb.equal(root.get("organ").as(String.class), rel.getSkillid())) ;
+					}
+				}
+				Predicate[] p = new Predicate[list.size()];  
+				cb.and(cb.equal(root.get("orgi").as(String.class),orgi)) ;
+			    return cb.or(list.toArray(p));  
+			}}) ;
+    	return userList.isEmpty()?new ArrayList<User>():userList;
+	}
 	@RequestMapping({"/apps/onlineuser"})
 	@Menu(type="apps", subtype="onlineuser")
 	public ModelAndView onlineuser(ModelMap map , HttpServletRequest request){

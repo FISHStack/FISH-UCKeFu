@@ -31,6 +31,7 @@ import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.OnlineUserHisRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.router.RouterHelper;
 import com.ukefu.webim.util.server.message.NewRequestMessage;
@@ -44,8 +45,10 @@ import com.ukefu.webim.web.model.MessageInContent;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.OnlineUserHis;
 import com.ukefu.webim.web.model.Organ;
+import com.ukefu.webim.web.model.OrgiSkillRel;
 import com.ukefu.webim.web.model.SceneType;
 import com.ukefu.webim.web.model.SessionConfig;
+import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.Topic;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserTraceHistory;
@@ -117,17 +120,45 @@ public class OnlineUserUtils {
 	 * @param orgi
 	 * @param id
 	 * @param service
+	 * @param isJudgeShare 是否判断是否共享租户
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Organ> organ(String orgi , IP ipdata , CousultInvite invite){
-		List<Organ> skillList = (List<Organ>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.CACHE_SKILL, orgi) ;
+	public static List<Organ> organ(String orgi , IP ipdata , CousultInvite invite,boolean isJudgeShare){
+		String origOrig = orgi;
+		boolean isShare = false;
+		if(isJudgeShare) {
+			SystemConfig systemConfig = UKTools.getSystemConfig();
+			if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantshare()) {
+				orgi = UKDataContext.SYSTEM_ORGI;
+				isShare =true;
+	    	}
+		}
+		List<Organ> skillList = (List<Organ>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.CACHE_SKILL+origOrig, origOrig) ;
 		if(skillList == null){
 			OrganRepository service = (OrganRepository) UKDataContext.getContext().getBean(OrganRepository.class);
 			skillList = service.findByOrgiAndSkill(orgi, true) ;
+			//租户共享时 查出该租住要显的绑定的技能组
+			if(isShare&&!invite.getOrgi().equals(UKDataContext.SYSTEM_ORGI)) {
+				OrgiSkillRelRepository orgiSkillRelService = (OrgiSkillRelRepository) UKDataContext.getContext().getBean(OrgiSkillRelRepository.class);
+				List<OrgiSkillRel> orgiSkillRelList = null;
+				orgiSkillRelList = orgiSkillRelService.findByOrgi(invite.getOrgi()) ;
+				List<Organ> skillTempList = new ArrayList<>();
+				if(!orgiSkillRelList.isEmpty()) {
+					for(Organ organ:skillList) {
+						for(OrgiSkillRel rel:orgiSkillRelList) {
+							if(organ.getId().equals(rel.getSkillid())) {
+								skillTempList.add(organ);
+							}
+						}
+					}
+				}
+				skillList = skillTempList;
+	    	}
+			
 			if(skillList.size() > 0){
-				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_SKILL, skillList, orgi);
+				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_SKILL+origOrig, skillList, origOrig);
 			}
 		}
 		List<Organ> regOrganList = new ArrayList<Organ>()  ;
@@ -151,14 +182,40 @@ public class OnlineUserUtils {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Organ> organ(String orgi){
-		List<Organ> skillList = (List<Organ>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.CACHE_SKILL, orgi) ;
+	public static List<Organ> organ(String orgi,boolean isJudgeShare){
+		String origOrig = orgi;
+		boolean isShare = false;
+		if(isJudgeShare) {
+			SystemConfig systemConfig = UKTools.getSystemConfig();
+			if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantshare()) {
+				orgi = UKDataContext.SYSTEM_ORGI;
+	    	}
+		}
+		List<Organ> skillList = (List<Organ>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.CACHE_SKILL+origOrig, origOrig) ;
 		if(skillList == null){
 			OrganRepository service = (OrganRepository) UKDataContext.getContext().getBean(OrganRepository.class);
 			skillList = service.findByOrgiAndSkill(orgi, true) ;
+			//租户共享时 查出该租住要显的绑定的技能组
+			if(isShare&&!origOrig.equals(UKDataContext.SYSTEM_ORGI)) {
+				OrgiSkillRelRepository orgiSkillRelService = (OrgiSkillRelRepository) UKDataContext.getContext().getBean(OrgiSkillRelRepository.class);
+				List<OrgiSkillRel> orgiSkillRelList = null;
+				orgiSkillRelList = orgiSkillRelService.findByOrgi(origOrig) ;
+				List<Organ> skillTempList = new ArrayList<>();
+				if(!orgiSkillRelList.isEmpty()) {
+					for(Organ organ:skillList) {
+						for(OrgiSkillRel rel:orgiSkillRelList) {
+							if(organ.getId().equals(rel.getSkillid())) {
+								skillTempList.add(organ);
+							}
+						}
+					}
+				}
+				skillList = skillTempList;
+	    	}
 			if(skillList.size() > 0){
-				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_SKILL, skillList, orgi);
+				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_SKILL+origOrig, skillList, origOrig);
 			}
+			
 		}
 		return skillList;
 	}
@@ -284,13 +341,20 @@ public class OnlineUserUtils {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<User> agents(String orgi){
-		List<User> agentList = (List<User>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.CACHE_AGENT, orgi) ;
+	public static List<User> agents(String orgi,boolean isJudgeShare){
+		String origOrig = orgi;
+		if(isJudgeShare) {
+			SystemConfig systemConfig = UKTools.getSystemConfig();
+			if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantshare()) {
+				orgi = UKDataContext.SYSTEM_ORGI;
+	    	}
+		}
+		List<User> agentList = (List<User>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.CACHE_AGENT+origOrig, origOrig) ;
 		if(agentList == null){
 			UserRepository service = (UserRepository) UKDataContext.getContext().getBean(UserRepository.class);
 			agentList = service.findByOrgiAndAgent(orgi, true) ;
 			if(agentList.size() > 0){
-				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_AGENT, agentList, orgi);
+				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_AGENT+origOrig, agentList, origOrig);
 			}
 		}
 		return agentList;
@@ -298,8 +362,8 @@ public class OnlineUserUtils {
 	
 	
 	public static void clean(String orgi){
-		CacheHelper.getSystemCacheBean().delete(UKDataContext.CACHE_SKILL, orgi) ;
-		CacheHelper.getSystemCacheBean().delete(UKDataContext.CACHE_AGENT, orgi) ;
+		CacheHelper.getSystemCacheBean().delete(UKDataContext.CACHE_SKILL+orgi, orgi) ;
+		CacheHelper.getSystemCacheBean().delete(UKDataContext.CACHE_AGENT+orgi, orgi) ;
 	}
 	/**
 	 * 

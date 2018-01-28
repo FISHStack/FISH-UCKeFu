@@ -13,6 +13,8 @@ public abstract interface SNSAccountRepository
 {
   public abstract SNSAccount findByIdAndOrgi(String paramString, String orgi);
   
+  public abstract SNSAccount findBySnsid(String snsid);
+  
   public abstract SNSAccount findBySnsidAndOrgi(String snsid, String orgi);
   
   public abstract int countByAppkeyAndOrgi(String appkey, String orgi);

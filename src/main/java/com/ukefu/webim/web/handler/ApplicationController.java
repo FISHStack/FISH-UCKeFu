@@ -1,7 +1,9 @@
 package com.ukefu.webim.web.handler;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,14 +17,16 @@ import com.ukefu.webim.web.model.User;
 @Controller
 public class ApplicationController extends Handler{
 	
-	@Autowired
-	private UserRepository userRepository;
-
 	@RequestMapping("/")
-    public ModelAndView admin(HttpServletRequest request) {
+    public ModelAndView admin(HttpServletRequest request,@Valid String vt) {
 		ModelAndView view = request(super.createRequestPageTempletResponse("/apps/index"));
 		User user = super.getUser(request) ;
         view.addObject("agentStatusReport",ServiceQuene.getAgentReport(user.getOrgi())) ;
+        if(!StringUtils.isBlank(vt)) {
+        	 view.addObject("vt",true) ;
+        }
+        view.addObject("tenant",super.getTenant(request));
+        view.addObject("istenantshare",super.isTenantshare());
 		view.addObject("agentStatus",CacheHelper.getAgentStatusCacheBean().getCacheObject(user.getId(), user.getOrgi())) ;
         return view;
     }

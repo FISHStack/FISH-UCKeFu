@@ -1,13 +1,19 @@
 package com.ukefu.webim.web.handler.admin;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +27,13 @@ import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
+import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
 import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.UserEventRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.OrgiSkillRel;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.User;
 
@@ -49,7 +57,8 @@ public class AdminController extends Handler{
 	
 	@Autowired
 	private InviteRecordRepository inviteRecordRes ;
-	
+	@Autowired
+	private OrgiSkillRelRepository orgiSkillRelRepository ;
     @RequestMapping("/admin")
     public ModelAndView index(ModelMap map ,HttpServletRequest request) {
     	ModelAndView view = request(super.createRequestPageTempletResponse("redirect:/"));
@@ -69,7 +78,8 @@ public class AdminController extends Handler{
     	
 		map.put("agentReport", ServiceQuene.getAgentReport(super.getOrgi(request))) ;
 		map.put("webIMReport", UKTools.getWebIMReport(userEventRes.findByOrgiAndCreatetimeRange(super.getOrgi(request), UKTools.getStartTime() , UKTools.getEndTime()))) ;
-		map.put("agents", userRes.countByOrgiAndAgent(super.getOrgi(request), true)) ;
+		
+		map.put("agents",getAgent(request).size()) ;
 
 		map.put("webIMInvite", UKTools.getWebIMInviteStatus(onlineUserRes.findByOrgiAndStatus(super.getOrgi(request), UKDataContext.OnlineUserOperatorStatus.ONLINE.toString()))) ;
 		
@@ -89,7 +99,26 @@ public class AdminController extends Handler{
 		
 		map.put("browserConsultReport", UKTools.getWebIMDataAgg(onlineUserRes.findByOrgiAndCreatetimeRangeForBrowser(super.getOrgi(request), UKTools.getLast30Day(), UKTools.getEndTime(), UKDataContext.ChannelTypeEnum.WEBIM.toString()))) ;
 	}
-    
+    private List<User> getAgent(HttpServletRequest request){
+		//获取当前租户坐席数
+		final String orgi = super.getOrgi(request);
+		final List<OrgiSkillRel> orgiSkillRelList = orgiSkillRelRepository.findByOrgi(super.getOrgi(request));
+    	List<User> userList = userRes.findAll(new Specification<User>(){
+			@Override
+			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query,
+					CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<Predicate>();  
+				if(!orgiSkillRelList.isEmpty()){
+					for(OrgiSkillRel rel : orgiSkillRelList){
+						list.add(cb.equal(root.get("organ").as(String.class), rel.getSkillid())) ;
+					}
+				}
+				Predicate[] p = new Predicate[list.size()];  
+				cb.and(cb.equal(root.get("orgi").as(String.class),orgi)) ;
+			    return cb.or(list.toArray(p));  
+			}}) ;
+    	return userList.isEmpty()?new ArrayList<User>():userList;
+	}
     
     @RequestMapping("/admin/content")
     @Menu(type = "admin" , subtype = "content")

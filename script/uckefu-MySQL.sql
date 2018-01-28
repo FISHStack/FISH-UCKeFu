@@ -6805,3 +6805,53 @@ CREATE TABLE `wf_workitem` (
 -- ----------------------------
 -- Records of wf_workitem
 -- ----------------------------
+
+
+-- ----------------------------
+-- Table structure for `uk_tenant`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_tenant`;
+CREATE TABLE `uk_tenant` (
+  `id` varchar(32) NOT NULL DEFAULT '',
+  `datasourceid` varchar(32) DEFAULT NULL,
+  `tenantname` varchar(255) DEFAULT NULL,
+  `tenantcode` varchar(255) DEFAULT NULL,
+  `remark` varchar(200) DEFAULT NULL,
+  `lastmenutime` timestamp NULL DEFAULT NULL,
+  `lastbasetime` timestamp NULL DEFAULT NULL,
+  `tenantlogo` varchar(255) DEFAULT NULL,
+  `tenantvalid` varchar(10) DEFAULT NULL,
+  `genpasstype` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `adminuser` varchar(255) DEFAULT NULL,
+  `initdb` tinyint(4) DEFAULT '0',
+  `inites` tinyint(4) DEFAULT NULL COMMENT '0',
+  `inited` tinyint(4) DEFAULT '0',
+  `systemtenant` tinyint(4) DEFAULT '0',
+  `createtime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `sign` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- ----------------------------
+-- Records of uk_tenant
+-- ----------------------------
+
+
+-- ----------------------------
+-- Table structure for `uk_orgi_skill_rel`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_orgi_skill_rel`;
+CREATE TABLE `uk_orgi_skill_rel` (
+  `ID` varchar(32) NOT NULL COMMENT '主键ID',
+  `SKILLID` varchar(50) DEFAULT NULL COMMENT '技能组织ID',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `CREATER` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `UPDATETIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `ORGI` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_orgi_skill_rel
+-- ----------------------------
+

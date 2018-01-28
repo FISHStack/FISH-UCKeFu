@@ -7,4 +7,5 @@ import com.ukefu.webim.web.model.Tenant;
 public abstract interface TenantRepository extends JpaRepository<Tenant, String> {
 	
 	public abstract Tenant findById(String id);
+	
 }

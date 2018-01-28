@@ -51,6 +51,7 @@ import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.LeaveMsgRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.SNSAccountRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserTraceRepository;
 import com.ukefu.webim.util.MessageUtils;
@@ -67,7 +68,9 @@ import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.InviteRecord;
 import com.ukefu.webim.web.model.KnowledgeType;
 import com.ukefu.webim.web.model.LeaveMsg;
+import com.ukefu.webim.web.model.SNSAccount;
 import com.ukefu.webim.web.model.SessionConfig;
+import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.Topic;
 import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.UploadStatus;
@@ -123,6 +126,9 @@ public class IMController extends Handler{
 	@Autowired
 	private AgentUserContactsRepository agentUserContactsRes ;
 	
+	@Autowired
+	private SNSAccountRepository snsAccountRepository ;
+	
     @RequestMapping("/{id}")
     @Menu(type = "im" , subtype = "point" , access = true)
     public ModelAndView point(HttpServletRequest request , HttpServletResponse response, @PathVariable String id , @Valid String orgi , @Valid String userid , @Valid String title) {
@@ -139,10 +145,12 @@ public class IMController extends Handler{
 			
 			view.addObject("mobile", CheckMobile.check(request.getHeader("User-Agent"))) ;
 			
-			CousultInvite invite = OnlineUserUtils.cousult(id, super.getOrgi(request), inviteRepository);
+			SNSAccount snsAccount = snsAccountRepository.findBySnsid(id);
+			orgi = snsAccount.getOrgi();//getOrgiByTenantshare(snsAccount.getOrgi());
+			CousultInvite invite = OnlineUserUtils.cousult(id,orgi, inviteRepository);
 	    	if(invite!=null){
 	    		view.addObject("inviteData", invite);
-	    		view.addObject("orgi",invite.getOrgi());
+	    		view.addObject("orgi",orgi);
 	    		view.addObject("appid",id);
 	    	//记录用户行为日志
 				UserHistory userHistory = new UserHistory() ;
@@ -198,11 +206,11 @@ public class IMController extends Handler{
 				    /***
 				     * 查询 技能组 ， 缓存？ 
 				     */
-				    view.addObject("skillList", OnlineUserUtils.organ(invite.getOrgi() , ipdata , invite))  ;
+				    view.addObject("skillList", OnlineUserUtils.organ(orgi, ipdata , invite,true))  ;
 				    /**
 				     * 查询坐席 ， 缓存？
 				     */
-				    view.addObject("agentList", OnlineUserUtils.agents(invite.getOrgi()))  ;
+				    view.addObject("agentList", OnlineUserUtils.agents(orgi,true))  ;
 			    }
 			    view.addObject("traceid", userHistory.getId()) ;
 			    if(invite.isRecordhis()){
@@ -240,11 +248,11 @@ public class IMController extends Handler{
     @RequestMapping("/online")
     @Menu(type = "im" , subtype = "online" , access = true)
     public SseEmitter callable(HttpServletRequest request , HttpServletResponse response , @Valid Contacts contacts, final @Valid String orgi , @Valid String appid, final @Valid String userid , @Valid String sign , final @Valid String client, final @Valid String title, final @Valid String traceid) {
-    	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) ;
+    	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid,  orgi) ;
     	SseEmitter retSseEmitter = null ;
     	if((black == null || (black.getEndtime()!=null && black.getEndtime().before(new Date()))) ){
 	    	final SseEmitter emitter = new SseEmitter(30000L);
-			if(CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) == null){
+			if(CacheHelper.getSystemCacheBean().getCacheObject(userid, orgi) == null){
 				if(!StringUtils.isBlank(userid)){
 					emitter.onCompletion(new Runnable() {
 						@Override
@@ -269,7 +277,7 @@ public class IMController extends Handler{
 							}
 						}
 					});
-					CousultInvite invite = OnlineUserUtils.cousult(appid, super.getOrgi(request), inviteRepository);
+					CousultInvite invite = OnlineUserUtils.cousult(appid, orgi, inviteRepository);
 					if(invite!=null && invite.isTraceuser()){
 						contacts = processContacts(orgi, contacts, appid, userid);
 					}
@@ -406,7 +414,7 @@ public class IMController extends Handler{
 				map.addAttribute("type", type) ;
 			}
 			IP ipdata = IPTools.getInstance().findGeography(UKTools.getIpAddr(request));
-			map.addAttribute("skillList", OnlineUserUtils.organ(invite.getOrgi() , ipdata , invite))  ;
+			map.addAttribute("skillList", OnlineUserUtils.organ(invite.getOrgi() , ipdata , invite,true))  ;
 			
     		if(invite!=null && consult){
 				if(contacts!=null && !StringUtils.isBlank(contacts.getName())){
@@ -517,7 +525,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/text/{appid}")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid ,@Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String mobile,@Valid String ai) throws Exception {
+    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid ,@Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String mobile,@Valid String ai,@Valid String orgi) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/text")) ; 
     	
     	view.addObject("hostname", request.getServerName()) ;
@@ -558,11 +566,10 @@ public class IMController extends Handler{
 		if(!StringUtils.isBlank(traceid)){
 			view.addObject("url", url) ;
 		}
-		
-		CousultInvite invite = OnlineUserUtils.cousult(appid, super.getOrgi(request), inviteRepository);
+		CousultInvite invite = OnlineUserUtils.cousult(appid, orgi, inviteRepository);
     	if(invite!=null){
     		view.addObject("inviteData", invite);
-    		view.addObject("orgi",invite.getOrgi());
+    		view.addObject("orgi",orgi);
     		view.addObject("appid",appid);
     	}
     	
@@ -574,7 +581,9 @@ public class IMController extends Handler{
     @Menu(type = "admin" , subtype = "user")
     public ModelAndView leavemsgsave(HttpServletRequest request ,@Valid String appid ,@Valid LeaveMsg msg) {
     	if(!StringUtils.isBlank(appid)){
-    		CousultInvite invite = inviteRepository.findBySnsaccountidAndOrgi(appid, super.getOrgi(request)) ; ;
+    		SNSAccount snsAccount = snsAccountRepository.findBySnsid(appid);
+			String orgi = snsAccount.getOrgi();
+    		CousultInvite invite = inviteRepository.findBySnsaccountidAndOrgi(appid, orgi) ; ;
 	    	List<LeaveMsg> msgList = leaveMsgRes.findByOrgiAndMobile(invite.getOrgi(), msg.getMobile()) ;
 	    	if(msg!=null && msgList.size() == 0){
 	    		msg.setOrgi(invite.getOrgi());

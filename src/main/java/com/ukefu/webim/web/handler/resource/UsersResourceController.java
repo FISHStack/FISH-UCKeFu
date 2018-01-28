@@ -30,7 +30,7 @@ public class UsersResourceController extends Handler {
 		if(q==null){
 			q = "" ;
 		}
-    	map.addAttribute("usersList", userRes.findByDatastatusAndOrgiAndUsernameLike(false , super.getOrgi(request), "%"+q+"%" , new PageRequest(0, 10))) ;
+    	map.addAttribute("usersList", userRes.findByDatastatusAndOrgiAndUsernameLike(false , super.getOrgiByTenantshare(request), "%"+q+"%" , new PageRequest(0, 10))) ;
         return request(super.createRequestPageTempletResponse("/public/users"));
     }
 	
@@ -40,15 +40,15 @@ public class UsersResourceController extends Handler {
 		if(q==null){
 			q = "" ;
 		}
-    	map.addAttribute("usersList", userRes.findByDatastatusAndOrgiAndUsernameLike(false , super.getOrgi(request), "%"+q+"%" , new PageRequest(0, 10))) ;
+    	map.addAttribute("usersList", userRes.findByDatastatusAndOrgiAndUsernameLike(false , super.getOrgiByTenantshare(request), "%"+q+"%" , new PageRequest(0, 10))) ;
         return request(super.createRequestPageTempletResponse("/public/bpmusers"));
     }
 	
 	@RequestMapping("/bpm/organ")
     @Menu(type = "res" , subtype = "users")
     public ModelAndView organ(ModelMap map , HttpServletRequest request , @Valid String q , @Valid String ids) {
-    	map.addAttribute("organList", organRes.findByOrgi(super.getOrgi(request))) ;
-    	map.addAttribute("usersList", userRes.findByOrgi(super.getOrgi(request))) ;
+    	map.addAttribute("organList", organRes.findByOrgi(super.getOrgiByTenantshare(request))) ;
+    	map.addAttribute("usersList", userRes.findByOrgi(super.getOrgiByTenantshare(request))) ;
     	map.addAttribute("ids", ids) ;
         return request(super.createRequestPageTempletResponse("/public/organ"));
     }

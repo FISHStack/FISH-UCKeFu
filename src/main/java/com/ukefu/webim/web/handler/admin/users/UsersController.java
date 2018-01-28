@@ -18,12 +18,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
 
@@ -51,7 +53,7 @@ public class UsersController extends Handler{
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "user")
     public ModelAndView index(ModelMap map , HttpServletRequest request) throws FileNotFoundException, IOException {
-    	map.addAttribute("userList", userRepository.findByDatastatusAndOrgi(false, super.getOrgi(request), new PageRequest(super.getP(request), super.getPs(request), Sort.Direction.ASC, "createtime")));
+    	map.addAttribute("userList", userRepository.findByDatastatusAndOrgi(false, super.getOrgiByTenantshare(request), new PageRequest(super.getP(request), super.getPs(request), Sort.Direction.ASC, "createtime")));
     	return request(super.createAdminTempletResponse("/admin/user/index"));
     }
     
@@ -64,7 +66,8 @@ public class UsersController extends Handler{
     @RequestMapping("/save")
     @Menu(type = "admin" , subtype = "user")
     public ModelAndView save(HttpServletRequest request ,@Valid User user) {
-    	User tempUser = userRepository.findByUsernameAndOrgi(user.getUsername(), super.getOrgi(request)) ;
+    	//User tempUser = userRepository.findByUsernameAndOrgi(user.getUsername(), super.getOrgiByTenantshare(request)) ;
+    	User tempUser = userRepository.findByUsername(user.getUsername()) ;
     	String msg = "admin_user_save_success" ;
     	if(tempUser != null){
     		msg =  "admin_user_save_exist";
@@ -77,9 +80,9 @@ public class UsersController extends Handler{
     		if(!StringUtils.isBlank(user.getPassword())){
     			user.setPassword(UKTools.md5(user.getPassword()));
     		}
-    		user.setOrgi(super.getOrgi(request));
+    		user.setOrgi(super.getOrgiByTenantshare(request));
     		userRepository.save(user) ;
-    		OnlineUserUtils.clean(super.getOrgi(request));
+    		OnlineUserUtils.clean(super.getOrgiByTenantshare(request));
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/user/index.html?msg="+msg));
     }
@@ -88,7 +91,7 @@ public class UsersController extends Handler{
     @Menu(type = "admin" , subtype = "user")
     public ModelAndView edit(ModelMap map ,HttpServletRequest request , @Valid String id) {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/admin/user/edit")) ;
-    	view.addObject("userData", userRepository.findByIdAndOrgi(id, super.getOrgi(request))) ;
+    	view.addObject("userData", userRepository.findByIdAndOrgi(id, super.getOrgiByTenantshare(request))) ;
         return view;
     }
     
@@ -96,7 +99,8 @@ public class UsersController extends Handler{
     @Menu(type = "admin" , subtype = "user" , admin = true)
     public ModelAndView update(HttpServletRequest request ,@Valid User user) {
     	User tempUser = userRepository.getOne(user.getId()) ;
-    	User exist = userRepository.findByUsernameAndOrgi(user.getUsername(), super.getOrgi(request)) ;
+    	//User exist = userRepository.findByUsernameAndOrgi(user.getUsername(), super.getOrgi(request)) ;
+    	User exist = userRepository.findByUsername(user.getUsername()) ;
     	if(exist==null || exist.getId().equals(user.getId())){
 	    	if(tempUser != null){
 	    		tempUser.setUname(user.getUname());
@@ -104,7 +108,7 @@ public class UsersController extends Handler{
 	    		tempUser.setEmail(user.getEmail());
 	    		tempUser.setMobile(user.getMobile());
 	    		tempUser.setAgent(user.isAgent());
-	    		tempUser.setOrgi(super.getOrgi(request));
+	    		tempUser.setOrgi(super.getOrgiByTenantshare(request));
 	    		tempUser.setCallcenter(user.isCallcenter());
 	    		if(!StringUtils.isBlank(user.getPassword())){
 	    			tempUser.setPassword(UKTools.md5(user.getPassword()));
@@ -121,7 +125,7 @@ public class UsersController extends Handler{
 	    		}
 	    		tempUser.setUpdatetime(new Date());
 	    		userRepository.save(tempUser) ;
-	    		OnlineUserUtils.clean(super.getOrgi(request));
+	    		OnlineUserUtils.clean(super.getOrgiByTenantshare(request));
 	    	}
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/user/index.html"));
@@ -132,12 +136,12 @@ public class UsersController extends Handler{
     public ModelAndView delete(HttpServletRequest request ,@Valid User user) {
     	String msg = "admin_user_delete" ;
     	if(user!=null){
-	    	List<UserRole> userRole = userRoleRes.findByOrgiAndUser(super.getOrgi(request), user) ;
+	    	List<UserRole> userRole = userRoleRes.findByOrgiAndUser(super.getOrgiByTenantshare(request), user) ;
 	    	userRoleRes.delete(userRole);	//删除用户的时候，同时删除用户对应的
 	    	user = userRepository.getOne(user.getId()) ;
 	    	user.setDatastatus(true);
 	    	userRepository.save(user) ;
-	    	OnlineUserUtils.clean(super.getOrgi(request));
+	    	OnlineUserUtils.clean(super.getOrgiByTenantshare(request));
     	}else{
     		msg = "admin_user_not_exist" ;
     	}

@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.OrganRoleRepository;
 import com.ukefu.webim.service.repository.RoleAuthRepository;
@@ -33,6 +34,7 @@ import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.OrganRole;
 import com.ukefu.webim.web.model.Role;
 import com.ukefu.webim.web.model.RoleAuth;
+import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
 
@@ -92,6 +94,11 @@ public class LoginController extends Handler{
 		        	if(!StringUtils.isBlank(referer)){
 		        		view = request(super.createRequestPageTempletResponse("redirect:"+referer));
 			    	}
+		        	//登录成功 判断是否进入多租户页面
+		        	SystemConfig systemConfig = UKTools.getSystemConfig();
+		        	if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantconsole()) {
+		        		view = request(super.createRequestPageTempletResponse("redirect:/?vt=orgi"));
+		        	}
 		        	List<UserRole> userRoleList = userRoleRes.findByOrgiAndUser(loginUser.getOrgi(), loginUser);
 		        	if(userRoleList!=null && userRoleList.size()>0){
 		        		for(UserRole userRole : userRoleList){
@@ -150,6 +157,7 @@ public class LoginController extends Handler{
     @RequestMapping("/logout")  
     public String logout(HttpServletRequest request  ){  
     	request.getSession().removeAttribute(UKDataContext.USER_SESSION_NAME) ;
+    	request.getSession().removeAttribute(UKDataContext.USER_CURRENT_ORGI_SESSION) ;
          return "redirect:/";
     }  
     

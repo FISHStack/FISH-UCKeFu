@@ -40,7 +40,7 @@ public class Tenant implements java.io.Serializable{
 	private Date lastbasetime;
 	private String tenantlogo;
 	private String tenantvalid;//0未认证，1邮箱认证，2手机认证
-	private Date createtime;//创建时间
+	private Date createtime  = new Date();//创建时间
 	private String password ;
 	private String genpasstype ;//密码生成方式
 	private String sign;

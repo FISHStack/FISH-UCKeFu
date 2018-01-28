@@ -81,11 +81,11 @@ public class StatsController extends Handler{
 		 /***
 	     * 查询 技能组 ， 缓存？ 
 	     */
-		map.addAttribute("skillList", OnlineUserUtils.organ(super.getOrgi(request)))  ;
+		map.addAttribute("skillList", OnlineUserUtils.organ(super.getOrgi(request),true))  ;
 	    /**
 	     * 查询坐席 ， 缓存？
 	     */
-		map.addAttribute("agentList", OnlineUserUtils.agents(super.getOrgi(request)))  ;
+		map.addAttribute("agentList", OnlineUserUtils.agents(super.getOrgi(request),true))  ;
 		
 		return request(super.createAppsTempletResponse("/apps/service/stats/coment"));
     }
@@ -131,11 +131,11 @@ public class StatsController extends Handler{
 		/***
 	     * 查询 技能组 ， 缓存？ 
 	     */
-		map.addAttribute("skillList", OnlineUserUtils.organ(super.getOrgi(request)))  ;
+		map.addAttribute("skillList", OnlineUserUtils.organ(super.getOrgi(request),true))  ;
 	    /**
 	     * 查询坐席 ， 缓存？
 	     */
-		map.addAttribute("agentList", OnlineUserUtils.agents(super.getOrgi(request)))  ;
+		map.addAttribute("agentList", OnlineUserUtils.agents(super.getOrgi(request),true))  ;
 		
 		return request(super.createAppsTempletResponse("/apps/service/stats/consult"));
     }

@@ -1,0 +1,46 @@
+<div class="layui-layout layui-layout-content">
+	<div class="layui-layout layui-layout-content" style="height: 100%;">
+		<div class="box default-box" style="height: 100%;">
+			<div class="box-body ukefu-im-theme">
+					<#if tenantList??> <#list tenantList as tenant>
+					<div  class="ukefu-teant-items">
+						<a target="_parent"
+							href="/apps/tenant/switch.html?id=<#if tenant?? && tenant.id??>${tenant.id!''}</#if>">
+							<div class="ukefu-tenant-item" style="positon: relative;">
+								<img style="position: absolute;"
+									src="<#if tenant?? && tenant.tenantlogo??>/res/image.html?id=${tenant.tenantlogo?url}</#if>" />
+									
+								<div class="ukefu-bt-text-title ukefu-tenant-item-div" 
+									style="font-weight: 400; position: absolute;">${tenant.tenantname}
+										<#if user?? && user.usertype == "0">
+											<i class="layui-icon ukefu-bt-text-title" href="/apps/tenant/delete.html?id=${tenant.id!''}"  data-toggle="tip" data-title="请确认是否删除？" 
+											style="font-size: 24px;float:right;">&#xe640;</i>
+											<i class="layui-icon ukefu-bt-text-title"  href="/apps/tenant/edit.html?id=<#if tenant?? && tenant.id??>${tenant.id!''}</#if>" data-toggle="ajax" data-width="550" data-height="400" data-title="${systemConfig.namealias!''}修改"
+											style="font-size: 24px;float:right;margin-right:10px;">&#xe642;</i>
+										</#if>
+									</div>
+							</div>
+						</a>
+					</div>
+					</#list> </#if>
+					<#if user?? && user.usertype == "0">
+						<div  class="ukefu-teant-items" ">
+							<a href="/apps/tenant/add.html" data-toggle="ajax"
+								data-width="550" data-height="300"
+								data-title="${systemConfig.namealias!''}添加" class="ukefu-bt">
+								<div class="ukefu-tenant-item">
+									<i class="layui-icon ukefu-bt-text-title"
+										style="font-size: 22px;margin-left:60px;margin-top:2px;margin-right:5px;">&#xe608;</i>
+									<div class="ukefu-bt-text-title"
+										style="font-weight: 400; font-size: 15px;">${systemConfig.namealias!''}添加</div>
+								</div>
+							</a>
+						</div>
+					</#if>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+	

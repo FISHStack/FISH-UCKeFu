@@ -4,6 +4,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,12 +13,18 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.UKView;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.TenantRepository;
+import com.ukefu.webim.web.model.SystemConfig;
+import com.ukefu.webim.web.model.Tenant;
 import com.ukefu.webim.web.model.User;
 
 
 @Controller
 @SessionAttributes
 public class Handler {
+	@Autowired
+	private TenantRepository tenantRes;
+	
 	public final static int PAGE_SIZE_BG = 1 ;
 	public final static int PAGE_SIZE_TW = 20 ;
 	public final static int PAGE_SIZE_FV = 50 ;
@@ -147,8 +154,36 @@ public class Handler {
 		return pagesize;
 	}
 	
-	public String getOrgi(HttpServletRequest request)
-	{
-		return getUser(request).getOrgi();
+	public String getOrgi(HttpServletRequest request){	
+		String orgi = (String) request.getSession(true).getAttribute(UKDataContext.USER_CURRENT_ORGI_SESSION)  ;
+		return StringUtils.isBlank(orgi)?getUser(request).getOrgi():orgi;
+	}
+	
+	public Tenant getTenant(HttpServletRequest request){
+		return tenantRes.findById(getOrgi(request));
+	}
+	/**
+	 * 根据是否租户共享获取orgi
+	 * @param request
+	 * @return
+	 */
+	public String getOrgiByTenantshare(HttpServletRequest request){	
+		SystemConfig systemConfig = UKTools.getSystemConfig();
+		if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantshare()) {
+			return UKDataContext.SYSTEM_ORGI;
+    	}
+		return getOrgi(request);
+	}
+	
+	/**
+	 * 判断是否租户共享
+	 * @return
+	 */
+	public boolean isTenantshare(){	
+		SystemConfig systemConfig = UKTools.getSystemConfig();
+		if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantshare()) {
+			return true;
+    	}
+		return false;
 	}
 }

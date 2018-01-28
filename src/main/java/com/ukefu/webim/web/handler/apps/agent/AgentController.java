@@ -393,7 +393,7 @@ public class AgentController extends Handler {
 	    	
 	    	agentStatus.setUsers(agentUserRepository.countByAgentnoAndStatusAndOrgi(user.getId(), UKDataContext.AgentUserStatusEnum.INSERVICE.toString(), super.getOrgi(request)));
 	    	
-	    	agentStatus.setOrgi(user.getOrgi());
+	    	agentStatus.setOrgi(super.getOrgi(request));
 	    	agentStatus.setMaxusers(sessionConfig.getMaxuser());
 	    	agentStatusRepository.save(agentStatus) ;
     	}
@@ -403,9 +403,9 @@ public class AgentController extends Handler {
 	    	 */
 	    	agentStatus.setUsers(ServiceQuene.getAgentUsers(agentStatus.getAgentno(), super.getOrgi(request)));
 	    	agentStatus.setStatus(UKDataContext.AgentStatusEnum.READY.toString());
-	    	CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, user.getOrgi());
+	    	CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, super.getOrgi(request));
 	    	
-	    	ServiceQuene.allotAgent(agentStatus.getAgentno(), user.getOrgi());
+	    	ServiceQuene.allotAgent(agentStatus.getAgentno(), super.getOrgi(request));
     	}
     	
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 
@@ -419,8 +419,8 @@ public class AgentController extends Handler {
 		for(AgentStatus agentStatus : agentStatusList){
 			agentStatusRepository.delete(agentStatus);
 		}
-    	CacheHelper.getAgentStatusCacheBean().delete(super.getUser(request).getId(), user.getOrgi());
-    	ServiceQuene.publishMessage(user.getOrgi());
+    	CacheHelper.getAgentStatusCacheBean().delete(super.getUser(request).getId(),super.getOrgi(request));
+    	ServiceQuene.publishMessage(super.getOrgi(request));
     	
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 
     }
@@ -435,9 +435,9 @@ public class AgentController extends Handler {
     		agentStatus = agentStatusList.get(0) ;
 			agentStatus.setBusy(true);
 			agentStatusRepository.save(agentStatus);
-			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, user.getOrgi());
+			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, super.getOrgi(request));
 		}
-    	ServiceQuene.publishMessage(user.getOrgi());
+    	ServiceQuene.publishMessage(super.getOrgi(request));
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 
     }
 	
@@ -451,9 +451,9 @@ public class AgentController extends Handler {
     		agentStatus = agentStatusList.get(0) ;
 			agentStatus.setBusy(false);
 			agentStatusRepository.save(agentStatus);
-			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, user.getOrgi());
+			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus,super.getOrgi(request));
 		}
-		ServiceQuene.allotAgent(agentStatus.getAgentno(), user.getOrgi());
+		ServiceQuene.allotAgent(agentStatus.getAgentno(), super.getOrgi(request));
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 
     }
 	
@@ -485,7 +485,7 @@ public class AgentController extends Handler {
 		User user = super.getUser(request);
 		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(userid, super.getOrgi(request));
 		if(agentUser!=null && super.getUser(request).getId().equals(agentUser.getAgentno())){
-			ServiceQuene.deleteAgentUser(agentUser, user.getOrgi());
+			ServiceQuene.deleteAgentUser(agentUser, super.getOrgi(request));
 			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
 				AgentService agentService = agentServiceRepository.findByIdAndOrgi(agentUser.getAgentserviceid(), super.getOrgi(request)) ;
 				agentService.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
@@ -885,7 +885,7 @@ public class AgentController extends Handler {
 			map.addAttribute("agentserviceid", agentserviceid) ;
 			map.addAttribute("agentuserid", agentuserid) ;
 			
-			map.addAttribute("skillList", OnlineUserUtils.organ(super.getOrgi(request))) ;
+			map.addAttribute("skillList", OnlineUserUtils.organ(super.getOrgi(request),true)) ;
 			
 			map.addAttribute("agentservice", this.agentServiceRepository.findByIdAndOrgi(agentserviceid, super.getOrgi(request))) ;
 			map.addAttribute("currentorgan", super.getUser(request).getOrgan()) ;
