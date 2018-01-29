@@ -35,8 +35,7 @@ public class DruidConfiguration {
     @ConfigurationProperties("spring.datasource.druid")
     public com.alibaba.druid.pool.DruidDataSource dataSource(DataSourceProperties properties) {
 
-        com.alibaba.druid.pool.DruidDataSource dataSource = createDataSource(
-                properties, com.alibaba.druid.pool.DruidDataSource.class);
+        com.alibaba.druid.pool.DruidDataSource dataSource = createDataSource(properties, com.alibaba.druid.pool.DruidDataSource.class);
 
         DatabaseDriver databaseDriver = DatabaseDriver.fromJdbcUrl(properties.determineUrl());
 
