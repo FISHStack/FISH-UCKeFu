@@ -200,15 +200,18 @@ public class RoleController extends Handler{
     		String[] menuarray = menus.split(",") ;
     		for(String menu : menuarray){
     			RoleAuth roleAuth = new RoleAuth();
+    			
     			roleAuth.setRoleid(id);
     			roleAuth.setDicid(menu);
-    			roleAuth.setCreater(super.getUser(request).getId());
-    			roleAuth.setOrgi(super.getOrgiByTenantshare(request));
-    			roleAuth.setCreatetime(new Date());
     			SysDic sysDic = UKeFuDic.getInstance().getDicItem(menu) ;
-    			roleAuth.setName(sysDic.getName());
-    			roleAuth.setDicvalue(sysDic.getCode());
-    			roleAuthRes.save(roleAuth) ;
+    			if(!"0".equals(sysDic.getParentid())) {
+	    			roleAuth.setCreater(super.getUser(request).getId());
+	    			roleAuth.setOrgi(super.getOrgiByTenantshare(request));
+	    			roleAuth.setCreatetime(new Date());
+	    			roleAuth.setName(sysDic.getName());
+	    			roleAuth.setDicvalue(sysDic.getCode());
+	    			roleAuthRes.save(roleAuth) ;
+    			}
     		}
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/role/index.html"));
