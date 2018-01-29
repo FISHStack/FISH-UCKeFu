@@ -1,11 +1,19 @@
 package com.ukefu.webim.web.handler.apps.setting;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,17 +22,28 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
+import com.ukefu.util.UKTools;
+import com.ukefu.util.task.DSData;
+import com.ukefu.util.task.DSDataEvent;
+import com.ukefu.util.task.ExcelImportProecess;
+import com.ukefu.util.task.export.ExcelExporterProcess;
+import com.ukefu.util.task.process.QuickReplyProcess;
 import com.ukefu.webim.service.es.QuickReplyRepository;
 import com.ukefu.webim.service.repository.BlackListRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
+import com.ukefu.webim.service.repository.MetadataRepository;
 import com.ukefu.webim.service.repository.QuickTypeRepository;
+import com.ukefu.webim.service.repository.ReporterRepository;
 import com.ukefu.webim.service.repository.SessionConfigRepository;
 import com.ukefu.webim.service.repository.TagRepository;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.QuickReply;
 import com.ukefu.webim.web.model.QuickType;
 
@@ -50,6 +69,12 @@ public class QuickReplyController extends Handler{
 	@Autowired
 	private BlackListRepository blackListRes;
 	
+	@Autowired
+	private MetadataRepository metadataRes ;
+	
+	@Autowired
+	private ReporterRepository reporterRes ;
+	
 	@Value("${web.upload-path}")
     private String path;
 
@@ -64,7 +89,6 @@ public class QuickReplyController extends Handler{
     		map.put("quickReplyList", quickReplyRes.getByOrgi(super.getOrgi(request) , null, new PageRequest(super.getP(request), super.getPs(request)))) ;
     	}
     	map.put("pubQuickTypeList", quickTypeList) ;
-    	
     	return request(super.createAppsTempletResponse("/apps/setting/quickreply/index"));
     }
     @RequestMapping("/replylist")
@@ -195,4 +219,112 @@ public class QuickReplyController extends Handler{
     	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html"));
 	}
     
+    @RequestMapping("/imp")
+    @Menu(type = "setting" , subtype = "quickreplyimp")
+    public ModelAndView imp(ModelMap map , HttpServletRequest request , @Valid String type) {
+    	map.addAttribute("type", type) ;
+        return request(super.createRequestPageTempletResponse("/apps/setting/quickreply/imp"));
+    }
+    
+    @RequestMapping("/impsave")
+    @Menu(type = "setting" , subtype = "quickreplyimpsave")
+    public ModelAndView impsave(ModelMap map , HttpServletRequest request , @RequestParam(value = "cusfile", required = false) MultipartFile cusfile , @Valid String type) throws IOException {
+    	DSDataEvent event = new DSDataEvent();
+    	String fileName = "quickreply/"+UKTools.getUUID()+cusfile.getOriginalFilename().substring(cusfile.getOriginalFilename().lastIndexOf(".")) ;
+    	File excelFile = new File(path , fileName) ;
+    	if(!excelFile.getParentFile().exists()){
+    		excelFile.getParentFile().mkdirs() ;
+    	}
+    	MetadataTable table = metadataRes.findByTablename("uk_quickreply") ;
+    	if(table!=null){
+	    	FileUtils.writeByteArrayToFile(new File(path , fileName), cusfile.getBytes());
+	    	event.setDSData(new DSData(table,excelFile , cusfile.getContentType(), super.getUser(request)));
+	    	event.getDSData().setClazz(QuickReply.class);
+	    	event.setOrgi(super.getOrgi(request));
+	    	if(!StringUtils.isBlank(type)){
+	    		event.getValues().put("cate", type) ;
+	    	}else{
+	    		event.getValues().put("cate", UKDataContext.DEFAULT_TYPE) ;
+	    	}
+	    	event.getValues().put("creater", super.getUser(request).getId()) ;
+	    	event.getDSData().setProcess(new QuickReplyProcess(quickReplyRes));
+	    	reporterRes.save(event.getDSData().getReport()) ;
+	    	new ExcelImportProecess(event).process() ;		//启动导入任务
+    	}
+    	
+    	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html"));
+    }
+    
+    @RequestMapping("/batdelete")
+    @Menu(type = "setting" , subtype = "quickreplybatdelete")
+    public ModelAndView batdelete(ModelMap map , HttpServletRequest request , HttpServletResponse response , @Valid String[] ids ,@Valid String type) throws IOException {
+    	if(ids!=null && ids.length > 0){
+    		Iterable<QuickReply> topicList = quickReplyRes.findAll(Arrays.asList(ids)) ;
+    		quickReplyRes.delete(topicList);
+    	}
+    	
+    	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html"+(!StringUtils.isBlank(type) ? "?typeid="+type:"")));
+    }
+    
+    @RequestMapping("/expids")
+    @Menu(type = "setting" , subtype = "quickreplyexpids")
+    public void expids(ModelMap map , HttpServletRequest request , HttpServletResponse response , @Valid String[] ids) throws IOException {
+    	if(ids!=null && ids.length > 0){
+    		Iterable<QuickReply> topicList = quickReplyRes.findAll(Arrays.asList(ids)) ;
+    		MetadataTable table = metadataRes.findByTablename("uk_quickreply") ;
+    		List<Map<String,Object>> values = new ArrayList<Map<String,Object>>();
+    		for(QuickReply topic : topicList){
+    			values.add(UKTools.transBean2Map(topic)) ;
+    		}
+    		
+    		response.setHeader("content-disposition", "attachment;filename=UCKeFu-QuickReply-"+new SimpleDateFormat("yyyy-MM-dd").format(new Date())+".xlsx");  
+    		if(table!=null){
+    			ExcelExporterProcess excelProcess = new ExcelExporterProcess( values, table, response.getOutputStream()) ;
+    			excelProcess.process();
+    		}
+    	}
+    	
+        return ;
+    }
+    
+    @RequestMapping("/expall")
+    @Menu(type = "setting" , subtype = "quickreplyexpall")
+    public void expall(ModelMap map , HttpServletRequest request , HttpServletResponse response,@Valid String type) throws IOException {
+    	Iterable<QuickReply> topicList = quickReplyRes.getQuickReplyByOrgi(super.getOrgi(request) , !StringUtils.isBlank(type) ? type : null, null) ;
+    	
+    	MetadataTable table = metadataRes.findByTablename("uk_quickreply") ;
+		List<Map<String,Object>> values = new ArrayList<Map<String,Object>>();
+		for(QuickReply topic : topicList){
+			values.add(UKTools.transBean2Map(topic)) ;
+		}
+		
+		response.setHeader("content-disposition", "attachment;filename=UCKeFu-QuickReply-"+new SimpleDateFormat("yyyy-MM-dd").format(new Date())+".xls");  
+		
+		if(table!=null){
+			ExcelExporterProcess excelProcess = new ExcelExporterProcess( values, table, response.getOutputStream()) ;
+			excelProcess.process();
+		}
+        return ;
+    }
+    
+    @RequestMapping("/expsearch")
+    @Menu(type = "setting" , subtype = "quickreplyexpsearch")
+    public void expall(ModelMap map , HttpServletRequest request , HttpServletResponse response , @Valid String q , @Valid String type) throws IOException {
+    	
+    	Iterable<QuickReply> topicList = quickReplyRes.getQuickReplyByOrgi(super.getOrgi(request) , type , q) ;
+    	
+    	MetadataTable table = metadataRes.findByTablename("uk_quickreply") ;
+		List<Map<String,Object>> values = new ArrayList<Map<String,Object>>();
+		for(QuickReply topic : topicList){
+			values.add(UKTools.transBean2Map(topic)) ;
+		}
+		
+		response.setHeader("content-disposition", "attachment;filename=UCKeFu-QuickReply-"+new SimpleDateFormat("yyyy-MM-dd").format(new Date())+".xls");  
+		
+		if(table!=null){
+			ExcelExporterProcess excelProcess = new ExcelExporterProcess( values, table, response.getOutputStream()) ;
+			excelProcess.process();
+		}
+        return ;
+    }
 }

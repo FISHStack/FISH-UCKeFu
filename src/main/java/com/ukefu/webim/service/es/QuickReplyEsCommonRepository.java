@@ -23,4 +23,6 @@ public interface QuickReplyEsCommonRepository {
 	public Page<QuickReply> getByCon(BoolQueryBuilder booleanQueryBuilder , int p, int ps) ;
 	
 	public void deleteByCate(String cate , String orgi) ;
+
+	public List<QuickReply> getQuickReplyByOrgi(String orgi, String type, String q);
 }

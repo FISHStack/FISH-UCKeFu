@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.webim.web.model.QuickReply;
+import com.ukefu.webim.web.model.Topic;
 
 @Component
 public class QuickReplyRepositoryImpl implements QuickReplyEsCommonRepository{
@@ -172,5 +173,29 @@ public class QuickReplyRepositoryImpl implements QuickReplyEsCommonRepository{
 		boolQueryBuilder.must(termQuery("cate" , cate)) ;
 		deleteQuery.setQuery(boolQueryBuilder);
 		elasticsearchTemplate.delete(deleteQuery);
+	}
+	
+	@Override
+	public List<QuickReply> getQuickReplyByOrgi(String orgi , String type, String q) {
+		
+		List<QuickReply> list  = null ;
+		
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		boolQueryBuilder.must(termQuery("orgi" , orgi)) ;
+		
+		if(!StringUtils.isBlank(type)){
+			boolQueryBuilder.must(termQuery("cate" , type)) ;
+		}
+		
+	    if(!StringUtils.isBlank(q)){
+	    	boolQueryBuilder.must(new QueryStringQueryBuilder(q).defaultOperator(Operator.AND)) ;
+	    }
+		
+		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder).withSort(new FieldSortBuilder("top").unmappedType("boolean").order(SortOrder.DESC)).withSort(new FieldSortBuilder("updatetime").unmappedType("date").order(SortOrder.DESC));
+		SearchQuery searchQuery = searchQueryBuilder.build().setPageable(new PageRequest(0, 10000));
+		if(elasticsearchTemplate.indexExists(QuickReply.class)){
+			list = elasticsearchTemplate.queryForList(searchQuery, QuickReply.class);
+	    }
+	    return list ; 
 	}
 }
