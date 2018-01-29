@@ -252,7 +252,7 @@ public class QuickReplyController extends Handler{
 	    	new ExcelImportProecess(event).process() ;		//启动导入任务
     	}
     	
-    	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html"));
+    	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html"+(!StringUtils.isBlank(type)? "?typeid="+type:"")));
     }
     
     @RequestMapping("/batdelete")
