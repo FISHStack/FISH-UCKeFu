@@ -65,7 +65,9 @@
 				  </colgroup>
 				  <thead>
 					<tr>
-					  <th style="width:1%;padding-right:0px;"></th>
+					  <th style="width:1%;padding-right:0px;">
+					  	<input type="checkbox" id="checkall" />
+					  </th>
 					  <th>标题</th>
 					  <th>内容</th>
 					  <th>创建时间</th>
@@ -151,6 +153,19 @@ $(document).ready(function(){
 			}
 		} , 500);
 	});
+	
+	$('#checkall').click(function(){
+		var isCheckAll = $(this).prop('checked');
+		if (isCheckAll) {  
+               $("input[type='checkbox']").each(function() {  
+                   this.checked = true;  
+               });  
+           } else {  
+               $("input[type='checkbox']").each(function() {  
+                   this.checked = false;  
+               });  
+           } 
+	})
 });
 	layui.use(['laypage', 'layer'], function(){
 		  var laypage = layui.laypage
