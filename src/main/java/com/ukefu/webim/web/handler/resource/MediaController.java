@@ -104,7 +104,7 @@ public class MediaController extends Handler{
     		if(!uploadDir.exists()){
     			uploadDir.mkdirs() ;
     		}
-    		fileName = "upload/"+UKTools.md5(imgFile.getBytes())+imgFile.getOriginalFilename().substring(imgFile.getOriginalFilename().lastIndexOf(".")) ;
+    		fileName = "upload/"+UKTools.md5(imgFile.getBytes())+imgFile.getOriginalFilename().substring(imgFile.getOriginalFilename().lastIndexOf(".")).toLowerCase() ;
     		FileCopyUtils.copy(imgFile.getBytes(), new File(path , fileName));
     		
     		String fileURL =  request.getScheme()+"://"+request.getServerName()+"/res/image.html?id="+fileName ;
