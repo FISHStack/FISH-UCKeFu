@@ -261,7 +261,7 @@ public class OrganController extends Handler{
     	}
     	
     	map.addAttribute("sysDic", sysDic) ;
-    	Organ organData = organRepository.findByIdAndOrgi(id, super.getOrgi(request)) ;
+    	Organ organData = organRepository.findByIdAndOrgi(id, super.getOrgiByTenantshare(request)) ;
     	map.addAttribute("organData", organData) ;
     	map.addAttribute("roleList", roleRepository.findByOrgi(super.getOrgiByTenantshare(request))) ;
     	
@@ -281,14 +281,17 @@ public class OrganController extends Handler{
     		for(String menu : menusarray){
     			OrganRole organRole = new OrganRole();
     			SysDic sysDic = UKeFuDic.getInstance().getDicItem(menu) ;
-    			organRole.setDicid(menu);
-    			organRole.setDicvalue(sysDic.getCode());
+    			if(!"0".equals(sysDic.getParentid())) {
+    				organRole.setDicid(menu);
+        			organRole.setDicvalue(sysDic.getCode());
+        			
+        			organRole.setOrgan(organData);
+        			organRole.setCreater(super.getUser(request).getId());
+        			organRole.setOrgi(super.getOrgiByTenantshare(request));
+        			organRole.setCreatetime(new Date());
+        			organRoleRes.save(organRole) ;
+    			}
     			
-    			organRole.setOrgan(organData);
-    			organRole.setCreater(super.getUser(request).getId());
-    			organRole.setOrgi(super.getOrgiByTenantshare(request));
-    			organRole.setCreatetime(new Date());
-    			organRoleRes.save(organRole) ;
     		}
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/organ/index.html"));
