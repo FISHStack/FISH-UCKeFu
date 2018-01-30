@@ -146,7 +146,9 @@ public class IMController extends Handler{
 			view.addObject("mobile", CheckMobile.check(request.getHeader("User-Agent"))) ;
 			
 			SNSAccount snsAccount = snsAccountRepository.findBySnsid(id);
-			orgi = snsAccount.getOrgi();//getOrgiByTenantshare(snsAccount.getOrgi());
+			if(snsAccount!=null) {
+				orgi = snsAccount.getOrgi();//getOrgiByTenantshare(snsAccount.getOrgi());
+			}
 			CousultInvite invite = OnlineUserUtils.cousult(id,orgi, inviteRepository);
 	    	if(invite!=null){
 	    		view.addObject("inviteData", invite);
