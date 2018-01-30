@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
-import org.snaker.engine.SnakerEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,7 +24,6 @@ import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
-import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
 
@@ -42,10 +40,6 @@ public class UsersController extends Handler{
 	
 	@Autowired
 	private UserRepository userRepository;
-	
-
-	@Autowired
-	private SnakerEngine engine ;
 	
 	@Autowired
 	private UserRoleRepository userRoleRes;
@@ -80,7 +74,13 @@ public class UsersController extends Handler{
     		if(!StringUtils.isBlank(user.getPassword())){
     			user.setPassword(UKTools.md5(user.getPassword()));
     		}
+    		
     		user.setOrgi(super.getOrgiByTenantshare(request));
+    		if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
+    			user.setOrgid(super.getUser(request).getOrgid());
+    		}else {
+    			user.setOrgid(UKDataContext.SYSTEM_ORGI);
+    		}
     		userRepository.save(user) ;
     		OnlineUserUtils.clean(super.getOrgiByTenantshare(request));
     	}
@@ -109,6 +109,13 @@ public class UsersController extends Handler{
 	    		tempUser.setMobile(user.getMobile());
 	    		tempUser.setAgent(user.isAgent());
 	    		tempUser.setOrgi(super.getOrgiByTenantshare(request));
+	    		
+	    		if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
+	    			tempUser.setOrgid(super.getUser(request).getOrgid());
+	    		}else {
+	    			tempUser.setOrgid(UKDataContext.SYSTEM_ORGI);
+	    		}
+	    		
 	    		tempUser.setCallcenter(user.isCallcenter());
 	    		if(!StringUtils.isBlank(user.getPassword())){
 	    			tempUser.setPassword(UKTools.md5(user.getPassword()));

@@ -31,6 +31,7 @@ public class Organ implements java.io.Serializable{
 	private String username ;
 	private Date updatetime ;
 	private String orgi ;
+	private String orgid ;	//企业ID
 	
 	@Id
 	@Column(length = 32)
@@ -101,5 +102,11 @@ public class Organ implements java.io.Serializable{
 	}
 	public void setArea(String area) {
 		this.area = area;
+	}
+	public String getOrgid() {
+		return orgid;
+	}
+	public void setOrgid(String orgid) {
+		this.orgid = orgid;
 	}
 }

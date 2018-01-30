@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -44,9 +43,7 @@ public class Tenant implements java.io.Serializable{
 	private String password ;
 	private String genpasstype ;//密码生成方式
 	private String sign;
-	private int initstats ;
-	private int tables; 
-	private int dones ;
+	private String orgid ;	//企业ID
 	
 	
 	@Id
@@ -161,26 +158,10 @@ public class Tenant implements java.io.Serializable{
 	public void setInitdb(boolean initdb) {
 		this.initdb = initdb;
 	}
-	@Transient
-	public int getInitstats() {
-		return initstats;
+	public String getOrgid() {
+		return orgid;
 	}
-	public void setInitstats(int initstats) {
-		this.initstats = initstats;
-	}
-	@Transient
-	public int getTables() {
-		return tables;
-	}
-	public void setTables(int tables) {
-		this.tables = tables;
-	}
-	@Transient
-	public int getDones() {
-		return dones;
-	}
-	
-	public void setDones(int dones) {
-		this.dones = dones;
+	public void setOrgid(String orgid) {
+		this.orgid = orgid;
 	}
 }

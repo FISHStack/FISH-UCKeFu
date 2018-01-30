@@ -115,6 +115,13 @@ public class OrganController extends Handler{
     		msg =  "admin_organ_save_exist";
     	}else{
     		organ.setOrgi(super.getOrgiByTenantshare(request));
+    		
+    		if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
+    			organ.setOrgid(super.getUser(request).getOrgid());
+    		}else {
+    			organ.setOrgid(UKDataContext.SYSTEM_ORGI);
+    		}
+    		
     		organRepository.save(organ) ;
     		
     		OnlineUserUtils.clean(super.getOrgiByTenantshare(request));
@@ -198,6 +205,12 @@ public class OrganController extends Handler{
     		tempOrgan.setSkill(organ.isSkill());
     		
     		tempOrgan.setArea(organ.getArea());
+    		
+    		if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
+    			tempOrgan.setOrgid(super.getUser(request).getOrgid());
+    		}else {
+    			tempOrgan.setOrgid(UKDataContext.SYSTEM_ORGI);
+    		}
     		
     		organRepository.save(tempOrgan) ;
     		OnlineUserUtils.clean(super.getOrgiByTenantshare(request));

@@ -90,6 +90,13 @@ public class RoleController extends Handler{
     		role.setCreater(super.getUser(request).getId());
     		role.setCreatetime(new Date());
     		role.setUpdatetime(new Date());
+    		
+    		if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
+    			role.setOrgid(super.getUser(request).getOrgid());
+    		}else {
+    			role.setOrgid(UKDataContext.SYSTEM_ORGI);
+    		}
+    		
     		roleRepository.save(role) ;
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/role/index.html?msg="+msg));
@@ -157,6 +164,13 @@ public class RoleController extends Handler{
     	if(tempRole != null){
     		tempRole.setName(role.getName());
     		tempRole.setUpdatetime(new Date());
+    		
+    		if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
+    			tempRole.setOrgid(super.getUser(request).getOrgid());
+    		}else {
+    			tempRole.setOrgid(UKDataContext.SYSTEM_ORGI);
+    		}
+    		
     		roleRepository.save(tempRole) ;
     	}else{
     		msg =  "admin_role_update_not_exist";

@@ -28,6 +28,8 @@ public class Role implements java.io.Serializable{
 	private String username ;
 	private Date updatetime ;
 	private String orgi ;
+	private String orgid ;
+	
 	
 	public Role(){}
 	
@@ -85,5 +87,13 @@ public class Role implements java.io.Serializable{
 	}
 	public void setUpdatetime(Date updatetime) {
 		this.updatetime = updatetime;
+	}
+
+	public String getOrgid() {
+		return orgid;
+	}
+
+	public void setOrgid(String orgid) {
+		this.orgid = orgid;
 	}
 }

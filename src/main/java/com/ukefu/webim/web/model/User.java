@@ -58,6 +58,8 @@ public class User implements java.io.Serializable{
 	private boolean superuser ;	//是否是超级管理员
 	
 	private String orgi ;
+	private String orgid ;
+	
 	private String creater;
 	private Date createtime = new Date();
 	private Date passupdatetime = new Date();
@@ -469,5 +471,11 @@ public class User implements java.io.Serializable{
 	}
 	public void setSuperuser(boolean superuser) {
 		this.superuser = superuser;
+	}
+	public String getOrgid() {
+		return orgid;
+	}
+	public void setOrgid(String orgid) {
+		this.orgid = orgid;
 	}
 }

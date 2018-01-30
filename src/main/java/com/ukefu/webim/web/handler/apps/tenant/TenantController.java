@@ -24,7 +24,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
-import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.OrganRepository;
@@ -116,6 +115,12 @@ public class TenantController extends Handler{
     			orgiSkillRelRes.save(rel) ;
     		}
     	}
+    	
+    	if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
+    		tenant.setOrgid(super.getUser(request).getOrgid());
+		}else {
+			tenant.setOrgid(UKDataContext.SYSTEM_ORGI);
+		}
     	tenantRes.save(tenant) ;
     	return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index"));
     }
@@ -151,6 +156,11 @@ public class TenantController extends Handler{
         	}else {
         		tenant.setTenantlogo(temp.getTenantlogo());
         	}
+    		if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
+        		tenant.setOrgid(super.getUser(request).getOrgid());
+    		}else {
+    			tenant.setOrgid(UKDataContext.SYSTEM_ORGI);
+    		}
     		tenantRes.save(tenant) ;
     		List<OrgiSkillRel>  orgiSkillRelList = orgiSkillRelRes.findByOrgi(tenant.getId()) ;
         	orgiSkillRelRes.delete(orgiSkillRelList);
