@@ -104,3 +104,10 @@ CREATE TABLE `uk_orgi_skill_rel` (
 -- ----------------------------
 -- Records of uk_orgi_skill_rel
 -- ----------------------------
+
+
+
+ALTER TABLE uk_user ADD orgid varchar(32);
+ALTER TABLE uk_organ ADD orgid varchar(32);
+ALTER TABLE uk_role ADD orgid varchar(32);
+
