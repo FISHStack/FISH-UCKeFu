@@ -89,6 +89,9 @@ public class SystemConfig implements java.io.Serializable{
 	private String namealias ;		//多租户模式的名称
 	private boolean tenantconsole ;	//登录后进入租户选择模式
 	
+	private boolean enableregorgi ; //启用自主注册功能
+	
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -381,6 +384,12 @@ public class SystemConfig implements java.io.Serializable{
 	}
 	public void setTenantconsole(boolean tenantconsole) {
 		this.tenantconsole = tenantconsole;
+	}
+	public boolean isEnableregorgi() {
+		return enableregorgi;
+	}
+	public void setEnableregorgi(boolean enableregorgi) {
+		this.enableregorgi = enableregorgi;
 	}
 	@Transient
 	public String getBackgroundColor(){
