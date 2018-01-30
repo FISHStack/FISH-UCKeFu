@@ -111,3 +111,4 @@ ALTER TABLE uk_user ADD orgid varchar(32);
 ALTER TABLE uk_organ ADD orgid varchar(32);
 ALTER TABLE uk_role ADD orgid varchar(32);
 ALTER TABLE uk_tenant ADD orgid varchar(32);
+ALTER TABLE uk_systemconfig ADD enableregorgi tinyint DEFAULT 0;

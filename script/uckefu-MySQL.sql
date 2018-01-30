@@ -5726,6 +5726,7 @@ CREATE TABLE `uk_systemconfig`  (
   `enabletneant` tinyint(4) NULL DEFAULT 0,
   `tenantshare` tinyint(4) NULL DEFAULT 0,
   `namealias` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `enableregorgi` tinyint(4) NULL DEFAULT 0,
   `tenantconsole` tinyint(4) NULL DEFAULT 0,
   UNIQUE INDEX `SQL121227155532210`(`ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
