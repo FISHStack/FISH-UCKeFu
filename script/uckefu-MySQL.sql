@@ -5666,6 +5666,23 @@ CREATE TABLE `uk_system_message`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Table structure for uk_organization
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_organization`;
+CREATE TABLE `uk_organization` (
+  `id` varchar(32) NOT NULL DEFAULT '' COMMENT '机构ID',
+  `name` varchar(255) DEFAULT NULL COMMENT '名称',
+  `orgtype` varchar(255) DEFAULT NULL COMMENT '类型',
+  `code` varchar(255) DEFAULT NULL COMMENT '代码',
+  `memo` varchar(200) DEFAULT NULL COMMENT '备注',
+  `logo` varchar(200) DEFAULT NULL COMMENT 'LOGO URL',
+  `createtime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+
+
+-- ----------------------------
 -- Table structure for uk_systemconfig
 -- ----------------------------
 DROP TABLE IF EXISTS `uk_systemconfig`;
