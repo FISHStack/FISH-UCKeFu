@@ -81,7 +81,7 @@ public class WebIMController extends Handler{
     	}else{
     		inviteData.setSnsaccountid(super.getUser(request).getId());
     	}
-    	inviteData.setOrgi(super.getUser(request).getOrgi());
+    	inviteData.setOrgi(super.getOrgi(request));
     	if(webimlogo!=null && webimlogo.getOriginalFilename().lastIndexOf(".") > 0){
     		File logoDir = new File(path , "logo");
     		if(!logoDir.exists()){
