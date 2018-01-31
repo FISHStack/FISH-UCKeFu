@@ -66,12 +66,24 @@ body{
 
 
 /***********LOGIN**************/
+/***********LOGIN**************/
+.login{
+	background: #f0f2f5;
+    background-image: url(https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg);
+    width: 100%;
+    min-height: 100%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 100%;
+    padding: 20px 0;
+    position: relative;
+}
 .login-box-body, .register-box-body{
     border-radius: 3px;	
     position: relative;
 }
 .login-box, .register-box{
-    width: 340px;	
+    width: 368px;	
 }
 .login-box-msg, .register-box-msg{
 	text-align: left;
@@ -85,7 +97,7 @@ body{
 	margin-bottom:20px;
 }
 .login-box-body .form-control {
-    width: 240px;
+    width: 280px;
     height: 32px;
     padding: 6px 6px 6px 40px;
     background-color: #fff;
@@ -514,7 +526,7 @@ body .form-group label[class*=" icon-"]+input, body .form-group label[class*=" i
 	color:#666666;
 }
 .login-box, .register-box {
-    margin: 8% auto !important;
+    margin: 5% auto !important;
 }
 
 .login-logo, .register-logo {
@@ -524,7 +536,6 @@ body .form-group label[class*=" icon-"]+input, body .form-group label[class*=" i
     font-weight: 300;
 }
 .login-box-body, .register-box-body {
-    background: #fff;
     padding: 20px;
     border-top: 0;
     color: #666;
@@ -547,7 +558,6 @@ body .form-group label[class*=" icon-"]+input, body .form-group label[class*=" i
     display: block;
 }
 .login-box-body, .register-box-body {
-    background: #fff;
     padding: 20px;
     border-top: 0;
     color: #666;
@@ -615,4 +625,3 @@ body .form-group label[class*=" icon-"]+input, body .form-group label[class*=" i
     text-align: center;
     pointer-events: none;
 }
-
