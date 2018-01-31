@@ -50,10 +50,7 @@ import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.LeaveMsgRepository;
-import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.SNSAccountRepository;
-import com.ukefu.webim.service.repository.UserRepository;
-import com.ukefu.webim.service.repository.UserTraceRepository;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
@@ -70,7 +67,6 @@ import com.ukefu.webim.web.model.KnowledgeType;
 import com.ukefu.webim.web.model.LeaveMsg;
 import com.ukefu.webim.web.model.SNSAccount;
 import com.ukefu.webim.web.model.SessionConfig;
-import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.Topic;
 import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.UploadStatus;
@@ -98,20 +94,10 @@ public class IMController extends Handler{
 	private ChatMessageRepository chatMessageRes ;
 	
 	@Autowired
-	private UserTraceRepository traceRes ;
-	
-	@Autowired
 	private AgentServiceSatisRepository agentServiceSatisRes ;
 	
 	@Autowired
 	private InviteRecordRepository inviteRecordRes ;
-	
-	
-	@Autowired
-	private OrganRepository organRes ;
-	
-	@Autowired
-	private UserRepository agentRes ;
 	
 	@Autowired
 	private LeaveMsgRepository leaveMsgRes ;
