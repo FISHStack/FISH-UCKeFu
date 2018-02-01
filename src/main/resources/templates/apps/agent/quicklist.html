@@ -61,11 +61,11 @@
 		if(editor != null && treeNode.type == false){
 			var quickReply = treeNode.name ;
 			if(editor.count("text") == 0 ){
-				editor.html(quickReply);
+				getQuickReplyContent( treeNode.id,editor)
 			}else{
 				top.layer.confirm("您已经输入了内容，覆盖当前输入框中内容？", {icon: 3, title:'覆盖提示'}, function(index){
 					top.layer.close(index);
-					editor.html(quickReply);
+					getQuickReplyContent( treeNode.id,editor)
 				});
 			}
 		}else if(editor != null && treeNode.pri == true){
@@ -73,6 +73,12 @@
 		}else{
 			$('#pri_btn_group').hide();
 		}
+	}
+
+	function getQuickReplyContent(id , editor){
+		loadURL("/agent//quickreply/content.html?id="+id , null , function(data){
+			editor.html(data);
+		})
 	}
 
 	var zNodes =[
@@ -84,7 +90,7 @@
 	    <#if quickReplyList??>
 		    <#list quickReplyList as quickReply>
 		    <#if quickReply.cate?? && (quickReply.cate == pubQuckType.id)>
-		    ,{ id:'${quickReply.id!''}', pId:'${quickReply.cate!''}', name:"${(quickReply.content!'')?replace('\r\n','<br/>')?no_esc}", open:true ,  icon:"/images/quickreply.png" , type : false  , pri:<#if pubQuckType.quicktype == "pri">true<#else>false</#if>}
+		    ,{ id:'${quickReply.id!''}', pId:'${quickReply.cate!''}', name:"${(quickReply.title!'')?replace('\r\n','<br/>')?no_esc}", open:true ,  icon:"/images/quickreply.png" , type : false  , pri:<#if pubQuckType.quicktype == "pri">true<#else>false</#if>}
 		    </#if>
 		    </#list>
 	    </#if>
@@ -93,7 +99,7 @@
 	    <#if quickReplyList??>
 		    <#list quickReplyList as quickReply>
 		    <#if quickReply.cate?? && quickReply.cate == '1'>
-		    ,{ id:'${quickReply.id!''}', pId:'${quickReply.cate!''}', name:"${(quickReply.content!'')?replace('\r\n','<br/>')?no_esc}", open:true ,  icon:"/images/quickreply.png" , type : false  , pri:true}
+		    ,{ id:'${quickReply.id!''}', pId:'${quickReply.cate!''}', name:"${(quickReply.title!'')?replace('\r\n','<br/>')?no_esc}", open:true ,  icon:"/images/quickreply.png" , type : false  , pri:true}
 		    </#if>
 		    </#list>
 	    </#if>

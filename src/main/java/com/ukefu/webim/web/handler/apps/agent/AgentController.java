@@ -482,7 +482,6 @@ public class AgentController extends Handler {
 	@Menu(type = "apps", subtype = "agent")
 	public ModelAndView end(HttpServletRequest request, @Valid String userid)
 			throws Exception {
-		User user = super.getUser(request);
 		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(userid, super.getOrgi(request));
 		if(agentUser!=null && super.getUser(request).getId().equals(agentUser.getAgentno())){
 			ServiceQuene.deleteAgentUser(agentUser, super.getOrgi(request));
@@ -1102,6 +1101,14 @@ public class AgentController extends Handler {
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/agent/quicklist.html"+(tempQuickType!=null ? "?typeid="+tempQuickType.getParentid():"")));
 	}
-	
-	
+    
+    @RequestMapping({"/quickreply/content"})
+	@Menu(type="apps", subtype="quickreply")
+	public ModelAndView quickreplycontent(ModelMap map , HttpServletRequest request , @Valid String id){
+    	QuickReply quickReply = quickReplyRes.findOne(id);
+    	if(quickReply != null){
+    		map.addAttribute("quickReply", quickReply) ;
+    	}
+    	return request(super.createRequestPageTempletResponse("/apps/agent/quickreplycontent"));
+	}
 }

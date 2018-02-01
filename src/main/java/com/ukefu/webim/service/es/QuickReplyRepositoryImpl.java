@@ -26,7 +26,6 @@ import org.springframework.stereotype.Component;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.webim.web.model.QuickReply;
-import com.ukefu.webim.web.model.Topic;
 
 @Component
 public class QuickReplyRepositoryImpl implements QuickReplyEsCommonRepository{
