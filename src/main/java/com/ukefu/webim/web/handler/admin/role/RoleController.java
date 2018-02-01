@@ -228,6 +228,6 @@ public class RoleController extends Handler{
     			}
     		}
     	}
-    	return request(super.createRequestPageTempletResponse("redirect:/admin/role/index.html"));
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/role/index.html?role="+id));
     }
 }

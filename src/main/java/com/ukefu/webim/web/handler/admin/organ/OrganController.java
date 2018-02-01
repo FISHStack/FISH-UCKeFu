@@ -204,6 +204,8 @@ public class OrganController extends Handler{
     		tempOrgan.setOrgi(super.getOrgiByTenantshare(request));
     		tempOrgan.setSkill(organ.isSkill());
     		
+    		tempOrgan.setParent(organ.getParent());
+    		
     		tempOrgan.setArea(organ.getArea());
     		
     		if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
@@ -307,6 +309,6 @@ public class OrganController extends Handler{
     			
     		}
     	}
-    	return request(super.createRequestPageTempletResponse("redirect:/admin/organ/index.html"));
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/organ/index.html?organ="+id));
     }
 }
