@@ -26,10 +26,8 @@ import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
-import com.ukefu.webim.service.es.QuickReplyRepository;
 import com.ukefu.webim.service.repository.AdTypeRepository;
 import com.ukefu.webim.service.repository.BlackListRepository;
-import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.SessionConfigRepository;
 import com.ukefu.webim.service.repository.TagRepository;
 import com.ukefu.webim.web.handler.Handler;
@@ -45,16 +43,10 @@ import com.ukefu.webim.web.model.UKeFuDic;
 public class IMAgentController extends Handler{
 	
 	@Autowired
-	private ConsultInviteRepository invite;
-	
-	@Autowired
 	private SessionConfigRepository sessionConfigRes ;
 	
 	@Autowired
 	private TagRepository tagRes ;
-	
-	@Autowired
-	private QuickReplyRepository quickReplyRes ;
 	
 	@Autowired
 	private BlackListRepository blackListRes;
