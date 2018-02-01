@@ -47,49 +47,50 @@ public class WebIMTask {
 	
 	@Scheduled(fixedDelay= 5000) // 每5秒执行一次
     public void task() {
-		SessionConfig sessionConfig = ServiceQuene.initSessionConfig(UKDataContext.SYSTEM_ORGI) ;
-		if(sessionConfig!=null && UKDataContext.getContext() != null){
-			
-			if(sessionConfig.isSessiontimeout()){		//设置了启用 超时提醒
-				List<AgentUserTask> agentUserTask = agentUserTaskRes.findByLastmessageLessThanAndStatusAndOrgi(UKTools.getLastTime(sessionConfig.getTimeout()) , UKDataContext.AgentUserStatusEnum.INSERVICE.toString() , sessionConfig.getOrgi()) ;
-				for(AgentUserTask task : agentUserTask){		// 超时未回复
-					AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(task.getUserid(), UKDataContext.SYSTEM_ORGI);
-					if(agentUser!=null && agentUser.getAgentno()!=null){
-						AgentStatus agentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentUser.getAgentno(), task.getOrgi()) ;
-						if(agentStatus!=null && (task.getWarnings()==null || task.getWarnings().equals("0"))){
-							task.setWarnings("1");
-							task.setWarningtime(new Date());
-							//发送提示消息
-							processMessage(sessionConfig, sessionConfig.getTimeoutmsg() ,agentUser , agentStatus , task);
-							agentUserTaskRes.save(task) ;
-						}else if(sessionConfig.isResessiontimeout() && agentStatus!=null && task.getWarningtime()!=null && UKTools.getLastTime(sessionConfig.getRetimeout()).after(task.getWarningtime())){	//再次超时未回复
-							/**
-							 * 设置了再次超时 断开
-							 */
-							processMessage(sessionConfig, sessionConfig.getRetimeoutmsg() , agentUser , agentStatus , task);
-							try {
-								ServiceQuene.serviceFinish(agentUser, task.getOrgi());
-							} catch (Exception e) {
-								e.printStackTrace();
+		List<SessionConfig> sessionConfigList = ServiceQuene.initSessionConfigList() ;
+		if(sessionConfigList!=null && sessionConfigList.size() > 0 && UKDataContext.getContext() != null){
+			for(SessionConfig sessionConfig : sessionConfigList) {
+				if(sessionConfig.isSessiontimeout()){		//设置了启用 超时提醒
+					List<AgentUserTask> agentUserTask = agentUserTaskRes.findByLastmessageLessThanAndStatusAndOrgi(UKTools.getLastTime(sessionConfig.getTimeout()) , UKDataContext.AgentUserStatusEnum.INSERVICE.toString() , sessionConfig.getOrgi()) ;
+					for(AgentUserTask task : agentUserTask){		// 超时未回复
+						AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(task.getUserid(), UKDataContext.SYSTEM_ORGI);
+						if(agentUser!=null && agentUser.getAgentno()!=null){
+							AgentStatus agentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentUser.getAgentno(), task.getOrgi()) ;
+							if(agentStatus!=null && (task.getWarnings()==null || task.getWarnings().equals("0"))){
+								task.setWarnings("1");
+								task.setWarningtime(new Date());
+								//发送提示消息
+								processMessage(sessionConfig, sessionConfig.getTimeoutmsg() ,agentUser , agentStatus , task);
+								agentUserTaskRes.save(task) ;
+							}else if(sessionConfig.isResessiontimeout() && agentStatus!=null && task.getWarningtime()!=null && UKTools.getLastTime(sessionConfig.getRetimeout()).after(task.getWarningtime())){	//再次超时未回复
+								/**
+								 * 设置了再次超时 断开
+								 */
+								processMessage(sessionConfig, sessionConfig.getRetimeoutmsg() , agentUser , agentStatus , task);
+								try {
+									ServiceQuene.serviceFinish(agentUser, task.getOrgi());
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
 							}
 						}
 					}
-				}
-			}else if(sessionConfig.isResessiontimeout()){	//未启用超时提醒，只设置了超时断开
-				List<AgentUserTask> agentUserTask = agentUserTaskRes.findByLastmessageLessThanAndStatusAndOrgi(UKTools.getLastTime(sessionConfig.getRetimeout()) , UKDataContext.AgentUserStatusEnum.INSERVICE.toString() , sessionConfig.getOrgi()) ;
-				for(AgentUserTask task : agentUserTask){		// 超时未回复
-					AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(task.getUserid(), UKDataContext.SYSTEM_ORGI);
-					if(agentUser!=null){
-						AgentStatus agentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentUser.getAgentno(), task.getOrgi()) ;
-						if(agentStatus!=null && task.getWarningtime()!=null && UKTools.getLastTime(sessionConfig.getRetimeout()).after(task.getWarningtime())){	//再次超时未回复
-							/**
-							 * 设置了再次超时 断开
-							 */
-							processMessage(sessionConfig, sessionConfig.getRetimeoutmsg() , agentUser , agentStatus , task);
-							try {
-								ServiceQuene.serviceFinish(agentUser, task.getOrgi());
-							} catch (Exception e) {
-								e.printStackTrace();
+				}else if(sessionConfig.isResessiontimeout()){	//未启用超时提醒，只设置了超时断开
+					List<AgentUserTask> agentUserTask = agentUserTaskRes.findByLastmessageLessThanAndStatusAndOrgi(UKTools.getLastTime(sessionConfig.getRetimeout()) , UKDataContext.AgentUserStatusEnum.INSERVICE.toString() , sessionConfig.getOrgi()) ;
+					for(AgentUserTask task : agentUserTask){		// 超时未回复
+						AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(task.getUserid(), UKDataContext.SYSTEM_ORGI);
+						if(agentUser!=null){
+							AgentStatus agentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentUser.getAgentno(), task.getOrgi()) ;
+							if(agentStatus!=null && task.getWarningtime()!=null && UKTools.getLastTime(sessionConfig.getRetimeout()).after(task.getWarningtime())){	//再次超时未回复
+								/**
+								 * 设置了再次超时 断开
+								 */
+								processMessage(sessionConfig, sessionConfig.getRetimeoutmsg() , agentUser , agentStatus , task);
+								try {
+									ServiceQuene.serviceFinish(agentUser, task.getOrgi());
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
 							}
 						}
 					}

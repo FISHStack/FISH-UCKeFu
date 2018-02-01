@@ -59,6 +59,24 @@ public class ServiceQuene {
 	}
 	
 	/**
+	 * 载入坐席 ACD策略配置
+	 * @param orgi
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<SessionConfig> initSessionConfigList(){
+		List<SessionConfig> sessionConfigList = null;
+		if(UKDataContext.getContext() != null && (sessionConfigList = (List<SessionConfig>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.SYSTEM_CACHE_SESSION_CONFIG_LIST, UKDataContext.SYSTEM_ORGI)) == null){
+			SessionConfigRepository agentUserRepository = UKDataContext.getContext().getBean(SessionConfigRepository.class) ;
+			sessionConfigList = agentUserRepository.findAll();
+			if(sessionConfigList != null && sessionConfigList.size() > 0){
+				CacheHelper.getSystemCacheBean().put(UKDataContext.SYSTEM_CACHE_SESSION_CONFIG_LIST,sessionConfigList, UKDataContext.SYSTEM_ORGI) ;
+			}
+		}
+		return sessionConfigList ;
+	}
+	
+	/**
 	 * 获得 当前服务状态
 	 * @param orgi
 	 * @return
