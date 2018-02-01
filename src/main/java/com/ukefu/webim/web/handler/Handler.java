@@ -155,8 +155,7 @@ public class Handler {
 	}
 	
 	public String getOrgi(HttpServletRequest request){	
-		String orgi = (String) request.getSession(true).getAttribute(UKDataContext.USER_CURRENT_ORGI_SESSION)  ;
-		return StringUtils.isBlank(orgi)?getUser(request).getOrgi():orgi;
+		return getUser(request).getOrgi();
 	}
 	
 	public Tenant getTenant(HttpServletRequest request){

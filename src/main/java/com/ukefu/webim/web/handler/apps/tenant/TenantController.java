@@ -197,7 +197,7 @@ public class TenantController extends Handler{
     	if(agentStatus==null && ServiceQuene.getAgentUsers(super.getUser(request).getId(), super.getOrgi(request))==0) {
     		Tenant temp = tenantRes.findById(tenant.getId()) ;
         	if(temp!=null) {
-        		request.getSession(true).setAttribute(UKDataContext.USER_CURRENT_ORGI_SESSION, temp.getId());
+        		super.getUser(request).setOrgi(temp.getId());
         	}
         	return view;
     	}
