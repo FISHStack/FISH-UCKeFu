@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.es.QuickReplyRepository;
 import com.ukefu.webim.service.repository.AdTypeRepository;
@@ -91,6 +92,10 @@ public class IMAgentController extends Handler{
     	sessionConfigRes.save(tempSessionConfig) ;
     	
     	CacheHelper.getSystemCacheBean().put(UKDataContext.SYSTEM_CACHE_SESSION_CONFIG,tempSessionConfig, super.getOrgi(request)) ;
+    	
+    	CacheHelper.getSystemCacheBean().delete(UKDataContext.SYSTEM_CACHE_SESSION_CONFIG_LIST , UKDataContext.SYSTEM_ORGI) ;
+    	
+    	ServiceQuene.initSessionConfigList() ;
     	
     	map.put("sessionConfig", tempSessionConfig) ;
         return request(super.createAppsTempletResponse("/apps/setting/agent/index"));
