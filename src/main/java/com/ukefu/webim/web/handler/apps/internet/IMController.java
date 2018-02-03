@@ -283,7 +283,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/index")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url,@Valid String mobile , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
+    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url,@Valid String mobile ,@Valid String phone , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) ;
     	if(!StringUtils.isBlank(appid) &&  (black == null || (black.getEndtime()!=null && black.getEndtime().before(new Date()))) ){
@@ -340,9 +340,9 @@ public class IMController extends Handler{
 	    				response.addCookie(name);
 	    				name.setMaxAge(3600);
 	    				if(!StringUtils.isBlank(contacts.getPhone())){
-		    				Cookie phone = new Cookie("phone",UKTools.encryption(URLEncoder.encode(contacts.getPhone(), "UTF-8")));
-		    				phone.setMaxAge(3600);
-		    				response.addCookie(phone);
+		    				Cookie phonecookie = new Cookie("phone",UKTools.encryption(URLEncoder.encode(contacts.getPhone(), "UTF-8")));
+		    				phonecookie.setMaxAge(3600);
+		    				response.addCookie(phonecookie);
 	    				}
 	    				if(!StringUtils.isBlank(contacts.getEmail())){
 		    				Cookie email = new Cookie("email",UKTools.encryption(URLEncoder.encode(contacts.getEmail(), "UTF-8")));
@@ -513,7 +513,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/text/{appid}")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid ,@Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String mobile,@Valid String ai,@Valid String orgi) throws Exception {
+    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid ,@Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String phone,@Valid String ai,@Valid String orgi) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/text")) ; 
     	
     	view.addObject("hostname", request.getServerName()) ;
@@ -542,8 +542,8 @@ public class IMController extends Handler{
 		}
 		
 		view.addObject("name", name) ;
-		view.addObject("emal", email) ;
-		view.addObject("mobile", mobile) ;
+		view.addObject("email", email) ;
+		view.addObject("phone", phone) ;
 		view.addObject("userid", userid) ;
 		if(!StringUtils.isBlank(traceid)){
 			view.addObject("traceid", traceid) ;
