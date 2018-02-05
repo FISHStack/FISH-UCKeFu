@@ -104,7 +104,7 @@ public class ServiceQuene {
 		
 		Long queneUsers = (Long) agentUserMap.aggregate(Supplier.fromKeyPredicate(new AgentUserOrgiFilter(orgi , UKDataContext.AgentUserStatusEnum.INQUENE.toString())), Aggregations.count()) ;
 		report.setInquene(queneUsers.intValue());
-		
+		report.setOrgi(orgi);
 		return report;
 	}
 	

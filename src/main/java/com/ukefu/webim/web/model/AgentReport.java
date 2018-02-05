@@ -11,6 +11,7 @@ public class AgentReport implements java.io.Serializable{
 	private int users ;			//服务中的用户
 	private int inquene ;		//队列中的用户
 	private int busy ;			//队列中忙的坐席
+	private String orgi ;		//
 	private String type = "status";	//坐席状态
 	
 	public int getAgents() {
@@ -42,5 +43,11 @@ public class AgentReport implements java.io.Serializable{
 	}
 	public void setBusy(int busy) {
 		this.busy = busy;
+	}
+	public String getOrgi() {
+		return orgi;
+	}
+	public void setOrgi(String orgi) {
+		this.orgi = orgi;
 	}
 }
