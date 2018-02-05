@@ -22,11 +22,8 @@ import com.ukefu.util.UKTools;
 import com.ukefu.util.bi.ReportData;
 import com.ukefu.util.bi.UKExcelUtil;
 import com.ukefu.util.bi.model.Level;
-import com.ukefu.webim.service.repository.AgentServiceRepository;
 import com.ukefu.webim.service.repository.CubeService;
 import com.ukefu.webim.service.repository.DataSourceService;
-import com.ukefu.webim.service.repository.UserRepository;
-import com.ukefu.webim.service.repository.WeiXinUserRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.SysDic;
@@ -35,14 +32,6 @@ import com.ukefu.webim.web.model.UKeFuDic;
 @Controller
 @RequestMapping("/service")
 public class StatsController extends Handler{
-	@Autowired
-	private AgentServiceRepository agentServiceRes ;
-	
-	@Autowired
-	private UserRepository userRes ;
-	
-	@Autowired
-	private WeiXinUserRepository weiXinUserRes;
 	
 	@Value("${web.upload-path}")
     private String path;
