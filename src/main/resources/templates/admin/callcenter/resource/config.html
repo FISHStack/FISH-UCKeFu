@@ -131,15 +131,15 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">9、语音服务IVR资源文件路径</div>
+									<div class="ukefu-webim-tl" style="clear:both;">9、语音服务分机注册类型</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
-												<p>IVR资源文件存放位置</p>
-												<p style="color:#888888;font-size:13px;margin-top:10px;">FreeSwitch使用的IVR语音文件存放目录，IVR文件默认存放位置是%INSTALLPATH%/sounds/en/us/callie/ivr/8000</p>
+												<p>语音服务分机注册类型</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">SIP话机注册在FreeSwitch上的类型</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
-												<input type="text" name="ivrfile" id="ivrpath" value="${pbxHost.ivrpath!''}" autocomplete="off" class="layui-input">
+												<input type="text" name="ivrpath" id="ivrpath" value="<#if pbxHost.ivrpath?? && pbxHost.ivrpath!=''>${pbxHost.ivrpath!''}<#else>internal</#if>" autocomplete="off" class="layui-input">
 											</div>
 										</div>
 									</div>
