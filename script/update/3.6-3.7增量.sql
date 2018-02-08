@@ -126,3 +126,5 @@ CREATE TABLE `uk_organization` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
+
+ALTER TABLE uk_contacts ADD cusbirthday varchar(50);
