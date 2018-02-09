@@ -127,4 +127,17 @@ CREATE TABLE `uk_organization` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 
-ALTER TABLE uk_contacts ADD cusbirthday varchar(50);
+/* 类似问题关联表*/
+DROP TABLE IF EXISTS `uk_xiaoe_topic_item`;
+CREATE TABLE `uk_xiaoe_topic_item` (
+  `id` varchar(32) NOT NULL DEFAULT '' COMMENT 'ID',
+  `topicid` varchar(255) DEFAULT NULL COMMENT '知识id',
+  `title` varchar(255) DEFAULT NULL COMMENT '问题',
+  `orgi` varchar(255) DEFAULT NULL COMMENT '产品id',
+  `creater` varchar(255) DEFAULT NULL COMMENT '创建人',
+  `createtime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+alter table uk_contacts change  column birthday cusbirthday varchar(50);
+update uk_tableproperties set fieldname='cusbirthday' where name ='出生日期' and tablename='uk_contacts'
