@@ -31,6 +31,7 @@ import com.ukefu.webim.service.repository.OrganRoleRepository;
 import com.ukefu.webim.service.repository.RoleAuthRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
+import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.OrganRole;
 import com.ukefu.webim.web.model.Role;
@@ -95,16 +96,20 @@ public class LoginController extends Handler{
     	if(!StringUtils.isBlank(msg)){
     		view.addObject("msg", msg) ;
     	}
+    	SystemConfig systemConfig = UKTools.getSystemConfig();
+    	if(systemConfig!=null&&systemConfig.isEnableregorgi()) {
+    		view.addObject("show", true);
+    	}
         return view;
     }
     
     @RequestMapping(value = "/login" , method=RequestMethod.POST)
     @Menu(type = "apps" , subtype = "user" , access = true)
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response , @Valid User user ,@Valid String referer ,@Valid String sla) throws NoSuchAlgorithmException {
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response , @Valid User user ,@Valid String referer,@Valid String sla) throws NoSuchAlgorithmException {
     	ModelAndView view = request(super.createRequestPageTempletResponse("redirect:/"));
     	if(request.getSession(true).getAttribute(UKDataContext.USER_SESSION_NAME) ==null){
-	        if(user!=null && user.getUsername()!=null){
-		    	final User loginUser = userRepository.findByUsernameAndPassword(user.getUsername() , UKTools.md5(user.getPassword())) ;
+	        if(user!=null && user.getMobile()!=null){
+		    	final User loginUser = userRepository.findByMobileAndPasswordAndDatastatus(user.getMobile() , UKTools.md5(user.getPassword()),false) ;
 		        if(loginUser!=null && !StringUtils.isBlank(loginUser.getId())){
 		        	view = this.processLogin(request, response, view, loginUser, referer) ;
 		        	if(!StringUtils.isBlank(sla) && sla.equals("1")) {
@@ -121,6 +126,10 @@ public class LoginController extends Handler{
 		        }
 	        }
     	}
+    	SystemConfig systemConfig = UKTools.getSystemConfig();
+    	if(systemConfig!=null&&systemConfig.isEnableregorgi()) {
+    		view.addObject("show", true);
+    	}
     	return view;
     }
     
@@ -134,8 +143,8 @@ public class LoginController extends Handler{
 	    	}
 	    	//登录成功 判断是否进入多租户页面
 	    	SystemConfig systemConfig = UKTools.getSystemConfig();
-	    	if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantconsole()) {
-	    		view = request(super.createRequestPageTempletResponse("redirect:/?vt=orgi"));
+	    	if(systemConfig!=null&&systemConfig.isEnabletneant() && !loginUser.isSuperuser()) {
+	    		view = request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index"));
 	    	}
 	    	List<UserRole> userRoleList = userRoleRes.findByOrgiAndUser(loginUser.getOrgi(), loginUser);
 	    	if(userRoleList!=null && userRoleList.size()>0){
@@ -180,10 +189,14 @@ public class LoginController extends Handler{
 	    		userRepository.save(loginUser) ;
 	    	}
 	    	super.setUser(request, loginUser);
+	    	//当前用户 企业id为空 调到创建企业页面
+        	if(StringUtils.isBlank(loginUser.getOrgid())) {
+        		view = request(super.createRequestPageTempletResponse("redirect:/apps/organization/add.html"));
+        	}
     	}
     	return view ;
     }
-    
+
     @RequestMapping("/logout")  
     public String logout(HttpServletRequest request  , HttpServletResponse response){  
     	request.getSession().removeAttribute(UKDataContext.USER_SESSION_NAME) ;
@@ -200,5 +213,70 @@ public class LoginController extends Handler{
     	}
         return "redirect:/";
     }  
+    
+    @RequestMapping(value = "/register" )
+    @Menu(type = "apps" , subtype = "user" , access = true)
+    public ModelAndView register(HttpServletRequest request, HttpServletResponse response,@Valid String msg) {
+    	ModelAndView view = request(super.createRequestPageTempletResponse("redirect:/"));
+    	if(request.getSession(true).getAttribute(UKDataContext.USER_SESSION_NAME) ==null){
+    		view = request(super.createRequestPageTempletResponse("/register"));
+    	}
+    	if(!StringUtils.isBlank(msg)){
+    		view.addObject("msg", msg) ;
+    	}
+        return view;
+    }
+    
+    @RequestMapping("/addAdmin")
+    @Menu(type = "apps" , subtype = "user",access=true)
+    public ModelAndView addAdmin(HttpServletRequest request ,HttpServletResponse response,@Valid User user) {
+    	String msg = "" ;
+    	msg = validUser(user);
+    	if(!StringUtils.isBlank(msg)){
+    		return request(super.createRequestPageTempletResponse("redirect:/register.html?msg="+msg));
+    	}else{
+    		user.setUname(user.getUsername());
+    		user.setUsertype("0");
+    		if(!StringUtils.isBlank(user.getPassword())){
+    			user.setPassword(UKTools.md5(user.getPassword()));
+    		}
+    		user.setOrgi(super.getOrgiByTenantshare(request));
+    		/*if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
+    			user.setOrgid(super.getUser(request).getOrgid());
+    		}else {
+    			user.setOrgid(UKDataContext.SYSTEM_ORGI);
+    		}*/
+    		userRepository.save(user) ;
+    		OnlineUserUtils.clean(super.getOrgi(request));
+    		
+    	}
+    	ModelAndView view = this.processLogin(request, response, request(super.createRequestPageTempletResponse("redirect:/")), user, "");
+    	//当前用户 企业id为空 调到创建企业页面
+    	if(StringUtils.isBlank(user.getOrgid())) {
+    		view = request(super.createRequestPageTempletResponse("redirect:/apps/organization/add.html"));
+    	}
+    	return view;
+    }
+    
+    private String validUser(User user) {
+    	String msg = "";
+    	User tempUser = userRepository.findByUsernameAndDatastatus(user.getUsername(),false) ;
+    	if(tempUser!=null) {
+    		msg = "username_exist";
+    		return msg;
+    	}
+    	tempUser = userRepository.findByEmailAndDatastatus(user.getEmail(),false) ;
+    	if(tempUser!=null) {
+    		msg = "email_exist";
+    		return msg;
+    	}
+    	tempUser = userRepository.findByMobileAndDatastatus(user.getMobile(),false) ;
+    	if(tempUser!=null) {
+    		msg = "mobile_exist";
+    		return msg;
+    	}
+    	return msg;
+    }
+    
     
 }

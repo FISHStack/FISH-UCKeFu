@@ -162,8 +162,10 @@ public class SystemConfigController extends Handler{
     @RequestMapping("/save")
     @Menu(type = "admin" , subtype = "save" , admin = true)
     public ModelAndView save(ModelMap map , HttpServletRequest request , @Valid SystemConfig config , @RequestParam(value = "keyfile", required = false) MultipartFile keyfile , @Valid Secret secret) throws SQLException, IOException, NoSuchAlgorithmException {
-    	SystemConfig systemConfig = systemConfigRes.findByOrgi(super.getOrgi(request)) ;
-    	config.setOrgi(super.getOrgi(request));
+    	/*SystemConfig systemConfig = systemConfigRes.findByOrgi(super.getOrgi(request)) ;
+    	config.setOrgi(super.getOrgi(request));*/
+    	SystemConfig systemConfig = systemConfigRes.findByOrgi(UKDataContext.SYSTEM_ORGI) ;
+    	config.setOrgi(UKDataContext.SYSTEM_ORGI);
     	String msg = "0" ;
     	if(StringUtils.isBlank(config.getJkspassword())){
     		config.setJkspassword(null);

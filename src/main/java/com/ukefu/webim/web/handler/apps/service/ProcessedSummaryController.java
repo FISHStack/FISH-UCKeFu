@@ -1,6 +1,7 @@
 package com.ukefu.webim.web.handler.apps.service;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,12 +76,14 @@ public class ProcessedSummaryController extends Handler{
 	@RequestMapping(value = "/index")
     @Menu(type = "agent" , subtype = "processed" , access = false)
     public ModelAndView index(ModelMap map , HttpServletRequest request ,@Valid final String ani , @Valid final String called , @Valid final String begin , @Valid final String end , @Valid final String direction) {
+		final String orgi = super.getOrgi(request);
 		Page<AgentServiceSummary> page = serviceSummaryRes.findAll(new Specification<AgentServiceSummary>(){
 			@Override
 			public Predicate toPredicate(Root<AgentServiceSummary> root, CriteriaQuery<?> query,
 					CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<Predicate>();  
 				list.add(cb.equal(root.get("process").as(boolean.class), 1)) ;
+				list.add(cb.equal(root.get("orgi").as(String.class),orgi)) ;
 				list.add(cb.notEqual(root.get("channel").as(String.class), UKDataContext.ChannelTypeEnum.PHONE.toString())) ;
 				if(!StringUtils.isBlank(ani)){
 					list.add(cb.equal(root.get("ani").as(String.class), ani)) ;
@@ -90,10 +93,10 @@ public class ProcessedSummaryController extends Handler{
 				}
 				try {
 					if(!StringUtils.isBlank(begin) && begin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
-						list.add(cb.equal(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(begin))) ;
+						list.add(cb.greaterThanOrEqualTo(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(begin))) ;
 					}
 					if(!StringUtils.isBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
-						list.add(cb.equal(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(end))) ;
+						list.add(cb.lessThanOrEqualTo(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(end))) ;
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -169,7 +172,7 @@ public class ProcessedSummaryController extends Handler{
 	    @RequestMapping("/expall")
 	    @Menu(type = "agent" , subtype = "processed" , access = false)
 	    public void expall(ModelMap map , HttpServletRequest request , HttpServletResponse response) throws IOException {
-	    	Iterable<AgentServiceSummary> statusEventList = serviceSummaryRes.findByChannelAndOrgi(UKDataContext.ChannelTypeEnum.PHONE.toString() , super.getOrgi(request) , new PageRequest(0, 10000));
+	    	Iterable<AgentServiceSummary> statusEventList = serviceSummaryRes.findByChannelNotAndOrgi(UKDataContext.ChannelTypeEnum.PHONE.toString() , super.getOrgi(request) , new PageRequest(0, 10000));
 	    	
 	    	MetadataTable table = metadataRes.findByTablename("uk_servicesummary") ;
 			List<Map<String,Object>> values = new ArrayList<Map<String,Object>>();
@@ -187,13 +190,14 @@ public class ProcessedSummaryController extends Handler{
 	    @RequestMapping("/expsearch")
 	    @Menu(type = "agent" , subtype = "processed" , access = false)
 	    public void expall(ModelMap map , HttpServletRequest request  , HttpServletResponse response,@Valid final String ani , @Valid final String called , @Valid final String begin , @Valid final String end , @Valid final String direction) throws IOException {
-	    	
+	    	final String orgi = super.getOrgi(request);
 	    	Page<AgentServiceSummary> page = serviceSummaryRes.findAll(new Specification<AgentServiceSummary>(){
 				@Override
 				public Predicate toPredicate(Root<AgentServiceSummary> root, CriteriaQuery<?> query,
 						CriteriaBuilder cb) {
 					List<Predicate> list = new ArrayList<Predicate>();  
 					list.add(cb.equal(root.get("process").as(boolean.class), 1)) ;
+					list.add(cb.equal(root.get("orgi").as(String.class),orgi)) ;
 					if(!StringUtils.isBlank(ani)){
 						list.add(cb.equal(root.get("ani").as(String.class), ani)) ;
 					}
@@ -202,10 +206,10 @@ public class ProcessedSummaryController extends Handler{
 					}
 					try {
 						if(!StringUtils.isBlank(begin) && begin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
-							list.add(cb.equal(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(begin))) ;
+							list.add(cb.greaterThanOrEqualTo(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(begin))) ;
 						}
 						if(!StringUtils.isBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
-							list.add(cb.equal(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(end))) ;
+							list.add(cb.lessThanOrEqualTo(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(end))) ;
 						}
 					} catch (Exception e) {
 						e.printStackTrace();

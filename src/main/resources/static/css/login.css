@@ -625,3 +625,100 @@ body .form-group label[class*=" icon-"]+input, body .form-group label[class*=" i
     text-align: center;
     pointer-events: none;
 }
+.btm-text{
+	text-align:center;
+	margin-top:10px;
+}
+
+
+<!-- register  -->
+.login-register {
+    padding-top: 70px;
+    background: #fff url(../images/login_bj.png) no-repeat bottom;
+    background-size: 100% auto;
+    height: 100%
+}
+
+.login-register .logo {
+    width: 103px;
+    margin: 0 auto;
+    margin-bottom: 67px
+}
+
+.login-register .logo img {
+    width: 100%
+}
+
+.login-register ul {
+    width: 360px;
+    margin: 0 auto
+}
+
+.login-register .p-text {
+    margin-bottom: 10px;
+    color: red;
+    display: none
+}
+
+.login-register li {
+    margin-bottom: 28px;
+    position: relative
+}
+
+.login-register li .eye {
+    display: block;
+    width: 50px;
+    height: 50px;
+    background: #fff url(../images/icon_eye_closed.png) no-repeat 50%;
+    position: absolute;
+    top: 1px;
+    right: 1px
+}
+
+.login-register li .eye.m {
+    background: #fff url(../images/icon_eye_open.png) no-repeat 50%
+}
+
+.login-register input {
+    display: block;
+    width: 338px;
+    height: 51px;
+    padding: 0 10px;
+    border: 1px solid #e1e1e1;
+    border-radius: 3px
+}
+
+.login-register select {
+    width: 360px;
+    height: 51px;
+    padding: 0 10px;
+    border: 1px solid #e1e1e1;
+    -webkit-appearance: none;
+    background: #fff url(../img/jt-b.png) no-repeat 98%
+}
+
+.login-register button {
+    width: 360px;
+    height: 51px;
+    display: block;
+    background-color: #53da9d;
+    color: #fff;
+    margin: 0 auto;
+    font-size: 16px;
+    border: none;
+    padding: 0;
+    border-radius: 3px
+}
+
+.login-register p.btm-text {
+    text-align: center;
+    color: #999;
+    margin-top: 22px
+}
+
+.login-register p.btm-text a {
+    color: #24b8fd;
+    font-size: 14px
+}
+
+

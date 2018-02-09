@@ -72,8 +72,8 @@
 								    		<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 											  <ul class="layui-tab-title">
 											    <li class="layui-this">${skill.name!''}</li>
-											    <#if agentList?? && agentList.content??>
-											    <#list agentList.content as agent>
+											    <#if agentList?? >
+											    <#list agentList as agent>
 											    <#if agent.organ?? && agent.organ == skill.id>
 											    <li title="${agent.uname!''}">${agent.username!''}</li>
 											    </#if>
@@ -84,8 +84,8 @@
 											  	<div class="layui-tab-item layui-show">
 											  		<textarea class="ukefu-webim-sdk" readonly="readonly"><#if inviteData??>${schema!''}://${hostname!''}:${import?string('###')}/im/text/${inviteData.snsaccountid!''}.html?skill=${skill.id!''}<#else></#if></textarea>
 											  	</div>
-											  	<#if agentList?? && agentList.content??>
-											    <#list agentList.content as agent>
+											  	<#if agentList?? >
+											    <#list agentList as agent>
 											    <#if agent.organ?? && agent.organ == skill.id>
 											    <div class="layui-tab-item ">
 											  		<textarea class="ukefu-webim-sdk" readonly="readonly"><#if inviteData??>${schema!''}://${hostname!''}:${import?string('###')}/im/text/${inviteData.snsaccountid!''}.html?skill=${skill.id!''}&agent=${agent.id!''}<#else></#if></textarea>

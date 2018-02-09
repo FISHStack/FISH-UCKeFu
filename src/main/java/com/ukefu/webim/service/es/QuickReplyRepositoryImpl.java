@@ -133,8 +133,8 @@ public class QuickReplyRepositoryImpl implements QuickReplyEsCommonRepository{
 
 		Page<QuickReply> pages  = null ;
 		
-		QueryBuilder beginFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("begintime")).should(QueryBuilders.rangeQuery("begintime").to(new Date().getTime())) ;
-		QueryBuilder endFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("endtime")).should(QueryBuilders.rangeQuery("endtime").from(new Date().getTime())) ;
+		QueryBuilder beginFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("begintime")).should(QueryBuilders.rangeQuery("begintime").from(new Date().getTime())) ;
+		QueryBuilder endFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("endtime")).should(QueryBuilders.rangeQuery("endtime").to(new Date().getTime())) ;
 		
 	    NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder).withFilter(QueryBuilders.boolQuery().must(beginFilter).must(endFilter)).withSort(new FieldSortBuilder("createtime").unmappedType("date").order(SortOrder.DESC));
 	    
@@ -145,13 +145,15 @@ public class QuickReplyRepositoryImpl implements QuickReplyEsCommonRepository{
 	    return pages ; 
 	}
 	@Override
-	public Page<QuickReply> getByOrgi(String orgi , String q , Pageable page) {
+	public Page<QuickReply> getByOrgiAndType(String orgi ,String type, String q , Pageable page) {
 		
 		Page<QuickReply> list  = null ;
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.must(termQuery("orgi" , orgi)) ;
-		
+		if(!StringUtils.isBlank(type)) {
+			boolQueryBuilder.must(termQuery("type" , type)) ;
+		}
 		
 	    if(!StringUtils.isBlank(q)){
 	    	boolQueryBuilder.must(new QueryStringQueryBuilder(q).defaultOperator(Operator.AND)) ;
@@ -175,17 +177,19 @@ public class QuickReplyRepositoryImpl implements QuickReplyEsCommonRepository{
 	}
 	
 	@Override
-	public List<QuickReply> getQuickReplyByOrgi(String orgi , String type, String q) {
+	public List<QuickReply> getQuickReplyByOrgi(String orgi , String cate,String type, String q) {
 		
 		List<QuickReply> list  = null ;
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.must(termQuery("orgi" , orgi)) ;
 		
-		if(!StringUtils.isBlank(type)){
-			boolQueryBuilder.must(termQuery("cate" , type)) ;
+		if(!StringUtils.isBlank(cate)){
+			boolQueryBuilder.must(termQuery("cate" , cate)) ;
 		}
-		
+		if(!StringUtils.isBlank(type)){
+			boolQueryBuilder.must(termQuery("type" , type)) ;
+		}
 	    if(!StringUtils.isBlank(q)){
 	    	boolQueryBuilder.must(new QueryStringQueryBuilder(q).defaultOperator(Operator.AND)) ;
 	    }

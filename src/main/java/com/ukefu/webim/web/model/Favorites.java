@@ -29,7 +29,7 @@ public class Favorites implements java.io.Serializable{
 	private static final long serialVersionUID = 8667838872697390231L;
 	private String id = UKTools.getUUID();
 	private String name ;
-	private String code ;
+	private String code = "true";
 	private String title ;
 	private String model ;
 	

@@ -76,19 +76,21 @@ public class AgentSummaryController extends Handler{
 	@RequestMapping(value = "/index")
     @Menu(type = "agent" , subtype = "agentsummary" , access = false)
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid final String begin , @Valid final String end ) {
+		final String orgi = super.getOrgi(request);
 		Page<AgentServiceSummary> page = serviceSummaryRes.findAll(new Specification<AgentServiceSummary>(){
 			@Override
 			public Predicate toPredicate(Root<AgentServiceSummary> root, CriteriaQuery<?> query,
 					CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<Predicate>();  
+				list.add(cb.equal(root.get("orgi").as(String.class),orgi)) ;
 				list.add(cb.equal(root.get("process").as(boolean.class), 0)) ;
 				list.add(cb.notEqual(root.get("channel").as(String.class), UKDataContext.ChannelTypeEnum.PHONE.toString())) ;
 				try {
 					if(!StringUtils.isBlank(begin) && begin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
-						list.add(cb.greaterThan(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(begin))) ;
+						list.add(cb.greaterThanOrEqualTo(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(begin))) ;
 					}
 					if(!StringUtils.isBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
-						list.add(cb.lessThan(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(end))) ;
+						list.add(cb.lessThanOrEqualTo(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(end))) ;
 					}
 				} catch (ParseException e) {
 					e.printStackTrace();
@@ -161,7 +163,7 @@ public class AgentSummaryController extends Handler{
 	    @RequestMapping("/expall")
 	    @Menu(type = "agent" , subtype = "agentsummary" , access = false)
 	    public void expall(ModelMap map , HttpServletRequest request , HttpServletResponse response) throws IOException {
-	    	Iterable<AgentServiceSummary> statusEventList = serviceSummaryRes.findByChannelAndOrgi(UKDataContext.ChannelTypeEnum.PHONE.toString() , super.getOrgi(request) , new PageRequest(0, 10000));
+	    	Iterable<AgentServiceSummary> statusEventList = serviceSummaryRes.findByChannelNotAndOrgi(UKDataContext.ChannelTypeEnum.PHONE.toString() , super.getOrgi(request) , new PageRequest(0, 10000));
 	    	
 	    	MetadataTable table = metadataRes.findByTablename("uk_servicesummary") ;
 			List<Map<String,Object>> values = new ArrayList<Map<String,Object>>();
@@ -179,20 +181,21 @@ public class AgentSummaryController extends Handler{
 	    @RequestMapping("/expsearch")
 	    @Menu(type = "agent" , subtype = "agentsummary" , access = false)
 	    public void expall(ModelMap map , HttpServletRequest request  , HttpServletResponse response ,  @Valid final String begin , @Valid final String end ) throws IOException {
-	    	
+	    	final String orgi = super.getOrgi(request);
 	    	Page<AgentServiceSummary> page = serviceSummaryRes.findAll(new Specification<AgentServiceSummary>(){
 				@Override
 				public Predicate toPredicate(Root<AgentServiceSummary> root, CriteriaQuery<?> query,
 						CriteriaBuilder cb) {
 					List<Predicate> list = new ArrayList<Predicate>();  
 					list.add(cb.and(cb.equal(root.get("process").as(boolean.class), 0))) ;
+					list.add(cb.equal(root.get("orgi").as(String.class),orgi)) ;
 					list.add(cb.and(cb.notEqual(root.get("channel").as(String.class), UKDataContext.ChannelTypeEnum.PHONE.toString()))) ;
 					try {
 						if(!StringUtils.isBlank(begin) && begin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
-							list.add(cb.and(cb.greaterThan(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(begin)))) ;
+							list.add(cb.and(cb.greaterThanOrEqualTo(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(begin)))) ;
 						}
 						if(!StringUtils.isBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
-							list.add(cb.and(cb.lessThan(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(end)))) ;
+							list.add(cb.and(cb.lessThanOrEqualTo(root.get("createtime").as(Date.class), UKTools.dateFormate.parse(end)))) ;
 						}
 					} catch (ParseException e) {
 						e.printStackTrace();

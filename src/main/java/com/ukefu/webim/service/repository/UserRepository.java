@@ -16,11 +16,15 @@ public abstract interface UserRepository extends JpaRepository<User, String>
   
   public abstract User findById(String id);
   
-  public abstract User findByUsername(String paramString);
+  public abstract User findByEmailAndDatastatus(String email,boolean datastatus);
+  
+  public abstract User findByMobileAndDatastatus(String mobile,boolean datastatus);
+  
+  public abstract User findByUsernameAndDatastatus(String username,boolean datastatus);
+  
+  public abstract User findByMobileAndPasswordAndDatastatus(String mobile, String password,boolean datastatus);
   
   public abstract User findByUsernameAndOrgi(String paramString, String orgi);
-  
-  public abstract User findByEmailAndOrgi(String paramString, String orgi);
   
   public abstract User findByUsernameAndPassword(String paramString1, String password);
   
@@ -34,17 +38,63 @@ public abstract interface UserRepository extends JpaRepository<User, String>
   
   public abstract Page<User> findByIdAndOrgi(String id , String orgi,Pageable paramPageable);
   
-  public abstract List<User> findByOrganAndOrgi(String paramString, String orgi);
+  public abstract List<User> findByOrganAndOrgiAndDatastatus(String paramString, String orgi,boolean b);
   
   public abstract List<User> findByOrganAndDatastatusAndOrgi(String paramString , boolean datastatus, String orgi);
   
   public abstract List<User> findByOrgiAndDatastatus(String orgi , boolean datastatus);
   
-  public abstract Page<User> findByOrgiAndAgent(String orgi , boolean agent , Pageable paramPageable);
+  public abstract Page<User> findByOrgiAndAgentAndDatastatus(String orgi , boolean agent ,boolean status, Pageable paramPageable);
   
-  public abstract List<User> findByOrgiAndAgent(String orgi , boolean agent);
+  public abstract List<User> findByOrgiAndAgentAndDatastatus(String orgi , boolean agent,boolean status);
   
   public abstract long countByOrgiAndAgent(String orgi , boolean agent) ;
   
   public abstract List<User> findAll(Specification<User> spec) ;
+
+
+	public abstract Page<User> findByDatastatusAndOrgiAndOrgid(boolean b, String orgi, String orgid,
+			Pageable pageRequest);
+	
+	
+	public abstract List<User> findByOrgiAndDatastatusAndOrgid(String orgi, boolean b, String orgid);
+	
+	
+	public abstract Page<User> findByDatastatusAndOrgiAndOrgidAndUsernameLike(boolean b, String orgi, String orgid,
+			String string, Pageable pageRequest);
+
+
+	public abstract Page<User> findByOrganInAndAgentAndDatastatus(List<String> organIdList, boolean b,boolean status,Pageable pageRequest);
+
+	public abstract List<User> findByOrganInAndAgentAndDatastatus(List<String> organIdList, boolean b,boolean status);
+	
+	public abstract List<User> findByIdInAndOrgiAndDatastatus(List<String> usersids, String orgi,boolean b);
+
+
+	public abstract List<User> findByIdInAndOrganInAndDatastatus(List<String> usersids, List<String> organIdList,boolean status);
+
+
+	public abstract Page<User> findByOrganInAndDatastatus(List<String> organIdList, boolean b, Pageable pageRequest);
+
+	public abstract List<User> findByOrganInAndDatastatus(List<String> organIdList, boolean b);
+	
+	public abstract Page<User> findByOrgiAndDatastatus(String orgi, boolean b, Pageable pageRequest);
+
+
+	public abstract Page<User> findByOrganInAndDatastatusAndUsernameLike(List<String> organIdList, boolean b,
+			String username, Pageable pageRequest);
+
+
+	public abstract Page<User> findByOrganInAndAgentAndDatastatusAndUsertypeIsNull(List<String> organIdList, boolean agent,
+			boolean datastatus, Pageable pageRequest);
+
+
+	public abstract Page<User> findByOrgiAndAgentAndDatastatusAndUsertypeIsNull(String orgi, boolean agent, boolean datastatus,
+			Pageable pageRequest);
+	
+	public abstract Page<User> findByOrgidAndAgentAndDatastatusAndUsertype(String orgid, boolean agent, boolean datastatus,String type,
+			Pageable pageRequest);
+
+
+	public abstract List<User> findByOrgidAndAgentAndDatastatus(String orgid, boolean agent, boolean datastatus);
 }

@@ -47,8 +47,10 @@ import com.ukefu.webim.service.repository.AgentUserTaskRepository;
 import com.ukefu.webim.service.repository.AttachmentRepository;
 import com.ukefu.webim.service.repository.BlackListRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
+import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
 import com.ukefu.webim.service.repository.QuickTypeRepository;
 import com.ukefu.webim.service.repository.SNSAccountRepository;
 import com.ukefu.webim.service.repository.ServiceSummaryRepository;
@@ -71,6 +73,7 @@ import com.ukefu.webim.web.model.BlackEntity;
 import com.ukefu.webim.web.model.MessageOutContent;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.Organ;
+import com.ukefu.webim.web.model.OrgiSkillRel;
 import com.ukefu.webim.web.model.QuickReply;
 import com.ukefu.webim.web.model.QuickType;
 import com.ukefu.webim.web.model.SessionConfig;
@@ -137,6 +140,12 @@ public class AgentController extends Handler {
 	@Autowired
 	private AgentUserContactsRepository agentUserContactsRes; 
 	
+	@Autowired
+	private OrgiSkillRelRepository orgiSkillRelService;
+	
+	@Autowired
+	private ConsultInviteRepository inviteRepository;
+	
 	@Value("${web.upload-path}")
 	private String path;	
 	
@@ -187,7 +196,7 @@ public class AgentController extends Handler {
 			AgentUser agentUser = agentUserList.get(0) ;
 			agentUser = (AgentUser) agentUserList.get(0);
 			view.addObject("curagentuser", agentUser);
-			
+			view.addObject("inviteData",  OnlineUserUtils.cousult(agentUser.getAppid(), agentUser.getOrgi(), inviteRepository));
 			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
 				AgentServiceSummary summary = this.serviceSummaryRes.findByAgentserviceidAndOrgi(agentUser.getAgentserviceid(), super.getOrgi(request)) ;
 				if(summary!=null){
@@ -286,7 +295,7 @@ public class AgentController extends Handler {
 		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(id, super.getOrgi(request));
 		if(agentUser!=null){
 			view.addObject("curagentuser", agentUser) ;
-			
+			view.addObject("inviteData",  OnlineUserUtils.cousult(agentUser.getAppid(), agentUser.getOrgi(), inviteRepository));
 			List<AgentUserTask> agentUserTaskList = agentUserTaskRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
 			if(agentUserTaskList.size() > 0){
 				AgentUserTask agentUserTask = agentUserTaskList.get(0) ;
@@ -382,7 +391,7 @@ public class AgentController extends Handler {
 	    	agentStatus.setLogindate(new Date());
 	    	
 	    	if(!StringUtils.isBlank(user.getOrgan())){
-	    		Organ organ = organRes.findByIdAndOrgi(user.getOrgan(), super.getOrgi(request)) ;
+	    		Organ organ = organRes.findByIdAndOrgi(user.getOrgan(), super.getOrgiByTenantshare(request)) ;
 	    		if(organ!=null && organ.isSkill()){
 	    			agentStatus.setSkill(organ.getId());
 	    			agentStatus.setSkillname(organ.getName());
@@ -482,6 +491,7 @@ public class AgentController extends Handler {
 	@Menu(type = "apps", subtype = "agent")
 	public ModelAndView end(HttpServletRequest request, @Valid String userid)
 			throws Exception {
+		User user = super.getUser(request);
 		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(userid, super.getOrgi(request));
 		if(agentUser!=null && super.getUser(request).getId().equals(agentUser.getAgentno())){
 			ServiceQuene.deleteAgentUser(agentUser, super.getOrgi(request));
@@ -681,9 +691,10 @@ public class AgentController extends Handler {
     	ChatMessage message = chatMessageRepository.findById(id) ;
     	map.addAttribute("chatMessage", message) ;
     	map.addAttribute("agentUser", CacheHelper.getAgentUserCacheBean().getCacheObject(message.getUserid(), message.getOrgi())) ;
-    	if(!StringUtils.isBlank(t)){
+    	/*if(!StringUtils.isBlank(t)){
     		map.addAttribute("t", t) ;
-    	}
+    	}*/
+    	map.addAttribute("t", true) ;
     	return request(super.createRequestPageTempletResponse("/apps/agent/media/messageimage")) ; 
     }
 	
@@ -863,19 +874,26 @@ public class AgentController extends Handler {
 	@Menu(type = "apps", subtype = "transfer")
     public ModelAndView transfer(ModelMap map , HttpServletRequest request , @Valid String userid , @Valid String agentserviceid, @Valid String agentuserid){ 
 		if(!StringUtils.isBlank(userid) && !StringUtils.isBlank(agentuserid)){
-			map.addAttribute("organList", organRes.findByOrgi(super.getOrgi(request))) ;
+			//map.addAttribute("organList", organRes.findByOrgiAndOrgid(super.getOrgi(request),super.getOrgid(request))) ;
 			
-			List<String> usersids = new ArrayList<String>();
-			
-			Collection<?> users =  CacheHelper.getAgentStatusCacheBean().getAllCacheObject(super.getOrgi(request)) ;
-			Iterator<?> iterator = users.iterator() ;
-			while(iterator.hasNext()){
-				String agentno = (String) iterator.next() ;
-				if(agentno!=null && !agentno.equals(super.getUser(request).getId())){
-					usersids.add(agentno) ;
+			List<Organ> skillList = OnlineUserUtils.organ(super.getOrgi(request),true) ;
+			String currentOrgan = super.getUser(request).getOrgan();
+			if(StringUtils.isBlank(currentOrgan)) {
+				if(!skillList.isEmpty()) {
+					currentOrgan = skillList.get(0).getId();
 				}
 			}
-			List<User> userList = userRes.findAll(usersids) ;
+			List<AgentStatus> agentStatusList = ServiceQuene.getAgentStatus(null , super.getOrgi(request));
+			List<String> usersids = new ArrayList<String>();
+			if(!agentStatusList.isEmpty()) {
+				for(AgentStatus agentStatus:agentStatusList) {
+					if(agentStatus!=null && !agentStatus.getAgentno().equals(super.getUser(request).getId())){
+						usersids.add(agentStatus.getAgentno()) ;
+					}
+				}
+				
+			}
+			List<User> userList = userRes.findAll(usersids);
 			for(User user : userList){
 				user.setAgentStatus((AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(user.getId(), super.getOrgi(request)));
 			}
@@ -884,10 +902,10 @@ public class AgentController extends Handler {
 			map.addAttribute("agentserviceid", agentserviceid) ;
 			map.addAttribute("agentuserid", agentuserid) ;
 			
-			map.addAttribute("skillList", OnlineUserUtils.organ(super.getOrgi(request),true)) ;
+			map.addAttribute("skillList", skillList) ;
 			
 			map.addAttribute("agentservice", this.agentServiceRepository.findByIdAndOrgi(agentserviceid, super.getOrgi(request))) ;
-			map.addAttribute("currentorgan", super.getUser(request).getOrgan()) ;
+			map.addAttribute("currentorgan", currentOrgan) ;
 		}
 		
     	return request(super.createRequestPageTempletResponse("/apps/agent/transfer")) ; 
@@ -898,16 +916,16 @@ public class AgentController extends Handler {
     public ModelAndView transferagent(ModelMap map , HttpServletRequest request , @Valid String organ){ 
 		if(!StringUtils.isBlank(organ)){
 			List<String> usersids = new ArrayList<String>();
-			
-			Collection<?> users =  CacheHelper.getAgentStatusCacheBean().getAllCacheObject(super.getOrgi(request)) ;
-			Iterator<?> iterator = users.iterator() ;
-			while(iterator.hasNext()){
-				String agentno = (String) iterator.next() ;
-				if(agentno!=null && !agentno.equals(super.getUser(request).getId())){
-					usersids.add(agentno) ;
+			List<AgentStatus> agentStatusList = ServiceQuene.getAgentStatus(organ , super.getOrgi(request));
+			if(!agentStatusList.isEmpty()) {
+				for(AgentStatus agentStatus:agentStatusList) {
+					if(agentStatus!=null && !agentStatus.getAgentno().equals(super.getUser(request).getId())){
+						usersids.add(agentStatus.getAgentno()) ;
+					}
 				}
+				
 			}
-			List<User> userList = userRes.findAll(usersids) ;
+			List<User> userList = userRes.findAll(usersids);
 			for(User user : userList){
 				user.setAgentStatus((AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(user.getId(), super.getOrgi(request)));
 			}
@@ -1083,6 +1101,9 @@ public class AgentController extends Handler {
     	QuickType tempQuickType = quickTypeRes.findByIdAndOrgi(quickType.getId(), super.getOrgi(request)) ;
     	if(tempQuickType !=null){
     		tempQuickType.setName(quickType.getName());
+    		tempQuickType.setDescription(quickType.getDescription());
+    		tempQuickType.setInx(quickType.getInx());
+    		tempQuickType.setParentid(quickType.getParentid());
     		quickTypeRes.save(tempQuickType) ;
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/agent/quicklist.html?typeid="+quickType.getId()));
@@ -1101,7 +1122,6 @@ public class AgentController extends Handler {
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/agent/quicklist.html"+(tempQuickType!=null ? "?typeid="+tempQuickType.getParentid():"")));
 	}
-    
     @RequestMapping({"/quickreply/content"})
 	@Menu(type="apps", subtype="quickreply")
 	public ModelAndView quickreplycontent(ModelMap map , HttpServletRequest request , @Valid String id){

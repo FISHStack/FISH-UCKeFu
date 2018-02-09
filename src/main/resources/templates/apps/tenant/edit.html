@@ -6,7 +6,7 @@
 				<label class="layui-form-label" style="width:150px;">名称：</label>
 				<div class="layui-input-inline">
 					<input type="text" name="tenantname" required lay-verify="required" autocomplete="off"
-						class="layui-input" value="${tenant.tenantname!''}">
+						class="layui-input" value="${tenant.tenantname!''}" maxlength="10">
 				</div>
 				<div class="layui-form-mid layui-word-aux">
 	            	<font color="red">*</font> 
@@ -45,7 +45,7 @@
 			    <div class="layui-input-block" style="padding-top:0px;">
 			    	<#if skillList??>
 				    	<#list skillList as skill>
-				    	<div><input type="checkbox" name="skills" value="${skill.id!''}" title="${skill.name!''}" lay-skin="primary" <#if orgiSkillRelList??><#list orgiSkillRelList as rel><#if rel.skillid?? && rel.skillid == skill.id>checked="checked"</#if></#list></#if>></div>
+				    	<div style="padding-left:170px;"><input type="checkbox" name="skills" value="${skill.id!''}" title="${skill.name!''}" lay-skin="primary" <#if orgiSkillRelList??><#list orgiSkillRelList as rel><#if rel.skillid?? && rel.skillid == skill.id>checked="checked"</#if></#list></#if>></div>
 				    	</#list>
 			    	<#else>
 			    	<div><i>无技能组信息</i></div>	

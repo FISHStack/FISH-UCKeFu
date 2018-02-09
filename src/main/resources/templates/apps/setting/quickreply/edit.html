@@ -4,7 +4,7 @@
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">标题：</label>
 	    <div class="layui-input-inline" style="width:520px;">
-	      <input type="text" name="title" max-lenght="100" required value="${quickReply.title!''}" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+	      <input type="text" name="title" maxlenght="200" required value="${quickReply.title!''}" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
 	    </div>
 	  </div>
 	  <div class="layui-form-item">
@@ -23,7 +23,7 @@
 	  <div class="layui-form-item" style="margin-top:20px;">
 	    <label class="layui-form-label">内容：</label>
 	    <div class="layui-input-inline" style="width:520px;">
-	     	<textarea name="content" id="content" autocomplete="off" lay-verify="required" required class="layui-input" resize="false" placeholder="请输入内容" style="height:170px;line-height:22px;resize: none;">${quickReply.content!''}</textarea> 	
+	     	<textarea name="content" id="content" maxlength="500" autocomplete="off" lay-verify="required" required class="layui-input" resize="false" placeholder="请输入内容" style="height:170px;line-height:22px;resize: none;">${quickReply.content!''}</textarea> 	
 	    </div>
 	  </div>
 	  <div class="layui-form-button">
@@ -75,7 +75,7 @@ layui.use('form', function(){
 
 
 	var zNodes =[
-	             { id:'0', pId:'0', name:"问答分类", open:true }
+	             { id:'0', pId:'0', name:"", open:true }
 	             <#if quickTypeList??>
 	             <#list quickTypeList as quickType>
 	             ,{ id:'${quickType.id!''}', pId:'${quickType.parentid!''}', name:"${quickType.name!''}", open:false }

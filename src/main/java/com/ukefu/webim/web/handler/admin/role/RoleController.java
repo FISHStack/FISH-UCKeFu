@@ -51,7 +51,7 @@ public class RoleController extends Handler{
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "role")
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String role) {
-    	List<Role> roleList = roleRepository.findByOrgi(super.getOrgiByTenantshare(request));
+    	List<Role> roleList = roleRepository.findByOrgiAndOrgid(super.getOrgiByTenantshare(request),super.getOrgid(request));
     	map.addAttribute("roleList", roleList);
     	if(roleList.size() > 0){
     		Role roleData = null ;
@@ -81,7 +81,7 @@ public class RoleController extends Handler{
     @RequestMapping("/save")
     @Menu(type = "admin" , subtype = "role")
     public ModelAndView save(HttpServletRequest request ,@Valid Role role) {
-    	Role tempRole = roleRepository.findByNameAndOrgi(role.getName(), super.getOrgiByTenantshare(request)) ;
+    	Role tempRole = roleRepository.findByNameAndOrgiAndOrgid(role.getName(), super.getOrgiByTenantshare(request),super.getOrgid(request)) ;
     	String msg = "admin_role_save_success" ;
     	if(tempRole != null){
     		msg =  "admin_role_save_exist";
@@ -105,7 +105,7 @@ public class RoleController extends Handler{
     @RequestMapping("/seluser")
     @Menu(type = "admin" , subtype = "seluser" , admin = true)
     public ModelAndView seluser(ModelMap map , HttpServletRequest request , @Valid String role) {
-    	map.addAttribute("userList", userRepository.findByOrgiAndDatastatus(super.getOrgiByTenantshare(request) , false)) ;
+    	map.addAttribute("userList", userRepository.findByOrgiAndDatastatusAndOrgid(super.getOrgiByTenantshare(request) , false,super.getOrgid(request))) ;
     	Role roleData = roleRepository.findByIdAndOrgi(role, super.getOrgiByTenantshare(request)) ;
     	map.addAttribute("userRoleList", userRoleRes.findByOrgiAndRole(super.getOrgiByTenantshare(request) , roleData)) ;
     	map.addAttribute("role", roleData) ;
@@ -218,7 +218,7 @@ public class RoleController extends Handler{
     			roleAuth.setRoleid(id);
     			roleAuth.setDicid(menu);
     			SysDic sysDic = UKeFuDic.getInstance().getDicItem(menu) ;
-    			if(!"0".equals(sysDic.getParentid())) {
+    			if(sysDic!=null && !"0".equals(sysDic.getParentid())) {
 	    			roleAuth.setCreater(super.getUser(request).getId());
 	    			roleAuth.setOrgi(super.getOrgiByTenantshare(request));
 	    			roleAuth.setCreatetime(new Date());

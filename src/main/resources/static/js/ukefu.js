@@ -37,7 +37,17 @@ $(document).ready(function(){
 	layui.use(['layer'], function(){
 		layer = layui.layer;	 	 
 	});
-
+	//password验证
+	layui.use(['form'], function(){
+		var form = layui.form();
+		form.verify({
+			pass: function(value, item){ //value：表单的值、item：表单的DOM对象
+			    if(value && !(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/.test(value))){
+			      return '密码由6到18位数字和字母组成';
+			    }
+			  }
+			}); 	 
+	});
 	$(document).on('click','[data-toggle="ajax"]', function ( e ) {
 		var url = $(this).attr("href");
 		if(url && url != "javascript:void(0)"){
@@ -136,12 +146,18 @@ $(document).ready(function(){
 	});
 	$(document).on('submit.form.data-api','form', function ( e ) {
 		var formValue = $(e.target) ;
-		var close = $(this).data("close");
-		if(iframe){
-			$(e.target).attr('target' , iframe);
-		}
-		if(layerwin && close == null){
-			layer.close(layerwin);
+		var disabled =  $(e.target).data("disabled") ;
+		if(disabled !=null && disabled == "true"){
+			return false ;
+		}else{
+			 $(e.target).data("disabled","true");
+			var close = $(this).data("close");
+			if(iframe){
+				$(e.target).attr('target' , iframe);
+			}
+			if(layerwin && close == null){
+				layer.close(layerwin);
+			}
 		}
 	});
 	

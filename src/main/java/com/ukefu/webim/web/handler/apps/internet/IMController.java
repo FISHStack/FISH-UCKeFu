@@ -51,6 +51,7 @@ import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.LeaveMsgRepository;
 import com.ukefu.webim.service.repository.SNSAccountRepository;
+import com.ukefu.webim.service.repository.SessionConfigRepository;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
@@ -205,8 +206,8 @@ public class IMController extends Handler{
 			    	UKTools.published(userHistory);
 			    }
 			    
-			    view.addObject("pointAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.POINT.toString())) ;
-			    view.addObject("inviteAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.INVITE.toString())) ;
+			    view.addObject("pointAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.POINT.toString(),orgi)) ;
+			    view.addObject("inviteAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.INVITE.toString(),orgi)) ;
 			}
     	}
 		
@@ -283,7 +284,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/index")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url,@Valid String mobile ,@Valid String phone , @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
+    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url,@Valid String mobile ,@Valid String phone ,  @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) ;
     	if(!StringUtils.isBlank(appid) &&  (black == null || (black.getEndtime()!=null && black.getEndtime().before(new Date()))) ){
@@ -296,7 +297,7 @@ public class IMController extends Handler{
     		}
 			String nickname = "Guest_" + userID;
 			boolean consult = true ;				//是否已收集用户信息
-			SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
+			SessionConfig sessionConfig = ServiceQuene.initSessionConfig(orgi) ;
 			
 			map.addAttribute("sessionConfig", sessionConfig);
     		map.addAttribute("orgi",invite.getOrgi());
@@ -409,24 +410,23 @@ public class IMController extends Handler{
 					nickname = contacts.getName() ;
 				}
 				map.addAttribute("username", nickname) ;
-				
     			if(UKDataContext.model.get("xiaoe")!=null  && invite.isAi() && ((!StringUtils.isBlank(ai) && ai.equals("true")) || (invite.isAifirst() && ai == null))){	//启用 AI ， 并且 AI优先 接待
     				DataExchangeInterface dataInterface = (DataExchangeInterface) UKDataContext.getContext().getBean("aiconfig") ;
-					AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(appid, UKDataContext.SYSTEM_ORGI) ;
-					if(aiConfig!=null){
-						map.addAttribute("aiConfig", aiConfig) ;
-					}
+    				AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(appid, invite.getOrgi()) ;
+    				if(aiConfig!=null){
+    					map.addAttribute("aiConfig", aiConfig) ;
+    				}
     				view = request(super.createRequestPageTempletResponse("/apps/im/ai/index")) ;
     				if(CheckMobile.check(request.getHeader("User-Agent")) || !StringUtils.isBlank(mobile)){
     					view = request(super.createRequestPageTempletResponse("/apps/im/ai/mobile")) ;		//智能机器人 移动端
     				}
     				if(UKDataContext.model.get("xiaoe")!=null){
-    					List<Topic> topicList = OnlineUserUtils.cacheHotTopic((DataExchangeInterface) UKDataContext.getContext().getBean("topic") , super.getUser(request) , super.getOrgi(request))  ;
+    					List<Topic> topicList = OnlineUserUtils.cacheHotTopic((DataExchangeInterface) UKDataContext.getContext().getBean("topic") , super.getUser(request) , orgi)  ;
     					
     					/**
     					 * 初步按照地区匹配分类筛选
     					 */
-    					List<KnowledgeType> topicTypeList = OnlineUserUtils.topicType(super.getOrgi(request),ipdata,OnlineUserUtils.cacheHotTopicType((DataExchangeInterface) UKDataContext.getContext().getBean("topictype") , super.getUser(request) , super.getOrgi(request))) ; 
+    					List<KnowledgeType> topicTypeList = OnlineUserUtils.topicType(orgi,ipdata,OnlineUserUtils.cacheHotTopicType((DataExchangeInterface) UKDataContext.getContext().getBean("topictype") , super.getUser(request) , orgi)) ; 
     					
     					/**
     					 * 第二步按照 有 热点主题的 分类做筛选
@@ -446,8 +446,8 @@ public class IMController extends Handler{
 	    	}
     		view.addObject("commentList" , UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_DIC)) ;
     		view.addObject("commentItemList" , UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_ITEM_DIC)) ;
-    		view.addObject("welcomeAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.WELCOME.toString())) ;
-    		view.addObject("imageAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.IMAGE.toString())) ;
+    		view.addObject("welcomeAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.WELCOME.toString(),orgi)) ;
+    		view.addObject("imageAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.IMAGE.toString(),orgi)) ;
 	//    	OnlineUserUtils.sendWebIMClients(userid , "accept");
     		 
     		if(invite.isTraceuser()){

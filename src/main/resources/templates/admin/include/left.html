@@ -45,16 +45,16 @@
 		</dl>
 	</li>
 	</#if>
-	
-	<li class="layui-nav-item layui-nav-itemed">
-		<a class="layui-nav-title" href="javascript:;">呼叫中心</a>
-		<dl class="layui-nav-child">
-			<dd <#if subtype?? && subtype == 'callcenter'>class="layui-this"</#if>>
-				<a href="/admin/callcenter/index.html">语音平台</a>
-			</dd>
-		</dl>
-	</li>
-	
+	<#if models?? && models["callcenter"]?? && models["callcenter"] == true>
+		<li class="layui-nav-item layui-nav-itemed">
+			<a class="layui-nav-title" href="javascript:;">呼叫中心</a>
+			<dl class="layui-nav-child">
+				<dd <#if subtype?? && subtype == 'callcenter'>class="layui-this"</#if>>
+					<a href="/admin/callcenter/index.html">语音平台</a>
+				</dd>
+			</dl>
+		</li>
+	</#if>
 	<li class="layui-nav-item layui-nav-itemed">
 		<a class="layui-nav-title" href="javascript:;">系统日志</a>
 		<dl class="layui-nav-child">

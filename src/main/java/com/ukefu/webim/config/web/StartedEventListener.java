@@ -75,6 +75,6 @@ public class StartedEventListener implements ApplicationListener<ContextRefreshe
     	
     	UKTools.initSystemArea();
     	
-    	UKTools.initAdv();//初始化广告位
+    	//UKTools.initAdv();//初始化广告位
     }
 }

@@ -23,4 +23,6 @@ public abstract interface AgentUserRepository  extends JpaRepository<AgentUser, 
 	
 	public abstract int countByAgentnoAndStatusAndOrgi(String agentno ,String status , String orgi);
 
+	public abstract AgentUser findOneByAgentnoAndStatusAndOrgi(String id, String status, String orgi);
+
 }

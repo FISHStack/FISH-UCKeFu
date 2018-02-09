@@ -34,12 +34,12 @@
 						</form>
 						<#if user?? && (user.roleAuthMap["A02_A01_A02_B05"]?? || user.usertype == "0") >
 						<div class="layui-btn-group">
-						  <a href="/apps/contacts/add.html" title="新建联系人" data-toggle="ajax" data-width="950" data-height="600" class="layui-btn layui-btn-small" ><i class="layui-icon">&#xe608;</i>新建联系人</a>
+						  <a href="/apps/contacts/add.html<#if ckind??>?ckind=${ckind}</#if>" title="新建联系人" data-toggle="ajax" data-width="950" data-height="600" class="layui-btn layui-btn-small" ><i class="layui-icon">&#xe608;</i>新建联系人</a>
 						</div>
 						</#if>
 						<#if user?? && (user.roleAuthMap["A02_A01_A02_B08"]?? || user.usertype == "0") >
 						<div class="layui-btn-group ukefu-btn-group">
-							<button class="layui-btn layui-btn-small" href="/apps/contacts/imp.html" title="导入联系人" data-toggle="ajax" data-width="950" data-height="600">
+							<button class="layui-btn layui-btn-small" href="/apps/contacts/imp.html<#if ckind??>?ckind=${ckind}</#if>" title="导入联系人" data-toggle="ajax" data-width="950" data-height="600">
 								<i class="kfont">&#xe641;</i> 导入 
 							</button>
 						</div>
@@ -58,13 +58,13 @@
 									</a>
 								</li>
 								<li>
-									<a href="/apps/contacts/expsearch.html?1=1<#if q??>&q=${q!''}</#if><#if ekind??>&kind=${ekind}</#if>&subtype=${subtype}" title="导出联系人" target="_blank">
+									<a href="/apps/contacts/expsearch.html?1=1<#if q??>&q=${q!''}</#if><#if ckind??>&ckind=${ckind}</#if>&subtype=${subtype}" title="导出联系人" target="_blank">
 										<i class="kfont">&#xe672;</i>
 										导出当前搜索结果
 									</a>
 								</li>
 								<li>
-									<a href="/apps/contacts/expall.html" title="导出联系人" target="_blank">
+									<a href="/apps/contacts/expall.html<#if ckind??>?ckind=${ckind}</#if>" title="导出联系人" target="_blank">
 										<i class="kfont">&#xe672;</i>
 										导出全部数据
 									</a>
@@ -114,7 +114,7 @@
 								<#if contacts.gender?? && contacts.gender == '-1'>未知</#if>
 							</td>
 							<td>
-								${contacts.birthday!''}
+								${contacts.cusbirthday!''}
 							</td>
 							<td>
 								${uKeFuDic[contacts.ckind!''].name!''} 

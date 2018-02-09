@@ -254,7 +254,7 @@
 								<div class="chat-left"> 
 									<img class="user-img" src="<#if inviteData?? && inviteData.consult_dialog_headimg??>/res/image.html?id=${inviteData.consult_dialog_headimg?url}<#else>/images/agent.png</#if>" alt="">
 									<div class="chat-message">
-										<label class="user">${chatMessage.username!''}</label> 
+										<label class="user"><#if chatMessage?? && chatMessage.chatype?? && chatMessage.chatype == 'aireply'>${inviteData.ainame!'小E'}<#else>${chatMessage.username!''}</#if></label> 
 										<label class="time">${chatMessage.createtime!''}</label>										
 									</div>
 									<div class="chatting-left">
@@ -338,16 +338,20 @@
             </h2>
             <p class="title">您是否对此次服务满意?</p>
             <!--评价-->
-            <p style="margin-top:20px;">
+           <p style="margin-top:20px;">
                 <span style="float:left;">评价：</span>
                 <span style="position: relative;top: 0px;left: 13px;">
-                <input type="hidden" id="satislevel_input" name="t">
+                <#assign defaultvalue = "">
                 <#if commentList??>
                 <#list commentList as comment>
                 <input type="radio" name="satislevel" value="${comment.code!''}" <#if comment_index == 0>checked="checked"</#if> id="dic_${comment.id!''}" onclick="document.getElementById('satislevel_input').value = this.value">
                 <label for="dic_${comment.id!''}" class="radio">${comment.name!''}</label>
+                <#if defaultvalue == "">
+                <#assign defaultvalue = comment.code>
+                </#if>
                 </#list>
                 </#if>
+                <input type="hidden" id="satislevel_input" name="t" value="${defaultvalue}">
                 </span>
             </p>
             <!--描述-->

@@ -24,7 +24,7 @@ public class Contacts extends ESBean implements java.io.Serializable{
 	private static final long serialVersionUID = -5781401948807231526L;
 	private String id  = UKTools.getUUID();
 	private String gender;
-	private String birthday;
+	private String cusbirthday;
 	private String ctype;
 	private String ckind;
 	private String clevel;
@@ -113,11 +113,11 @@ public class Contacts extends ESBean implements java.io.Serializable{
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public String getBirthday() {
-		return birthday;
+	public String getCusbirthday() {
+		return cusbirthday;
 	}
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
+	public void setCusbirthday(String cusbirthday) {
+		this.cusbirthday = cusbirthday;
 	}
 	public String getCtype() {
 		return ctype;

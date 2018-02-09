@@ -22,7 +22,7 @@
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">密码</label>
 	    <div class="layui-input-inline">
-	      <input type="password" id="password" name="password" required lay-verify="required" placeholder="请输入登录密码" autocomplete="off" class="layui-input">
+	      <input type="password" id="password" name="password" required lay-verify="required|pass" placeholder="请输入登录密码" autocomplete="off" class="layui-input">
 	    </div>
 	    <div class="layui-form-mid layui-word-aux">
 	    	<input type="password" id="repassword" name="repassword" required lay-verify="repass" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
@@ -38,13 +38,13 @@
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">管理员：</label>
 	    <div class="layui-input-block">
-	      <input type="checkbox" name="admin" lay-skin="switch" value="1" lay-text="是|否">
+	      <input type="checkbox" name="admin" lay-skin="switch" lay-filter="admincheckbox" value="1" lay-text="是|否">
 	    </div>
 	  </div>
-	  <div class="layui-form-item">
+	  <div class="layui-form-item"  id="agentDiv">
 	    <label class="layui-form-label">多媒体坐席：</label>
 	    <div class="layui-input-block">
-	      <input type="checkbox" name="agent" lay-skin="switch" value="1" lay-text="开启|关闭">
+	      <input type="checkbox" name="agent" lay-skin="switch" value="1" lay-filter="agent" lay-text="开启|关闭">
 	    </div>
 	  </div>
 	  <#if models?? && models["callcenter"]?? && models["callcenter"] == true>
@@ -75,6 +75,16 @@ layui.use('form', function(){
 	      return '两次输入的密码不一致，请确认';
 	    }
 	  }
-	});      
+	});  
+  form.on('switch(admincheckbox)', function(data){
+		if(data.elem.checked){
+			$("input[name=agent]").prop("checked", false);
+			form.render('checkbox','agent');
+			$('#agentDiv').hide();
+		}else{
+			$('#agentDiv').show();
+			//$("input[name=agent]").prop("checked", true);
+		}
+	});
 });
 </script>

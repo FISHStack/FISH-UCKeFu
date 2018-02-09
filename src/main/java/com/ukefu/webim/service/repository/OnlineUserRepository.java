@@ -23,6 +23,8 @@ public abstract interface OnlineUserRepository extends JpaRepository<OnlineUser,
 	
 	public abstract Page<OnlineUser> findByOrgiAndStatusAndCreatetimeLessThan(String orgi , String status , Date createtime , Pageable paramPageable);
 
+	public abstract Page<OnlineUser> findByStatusAndCreatetimeLessThan(String status , Date createtime , Pageable paramPageable);
+	
 	public abstract Page<OnlineUser> findByOrgiAndStatus(String paramString1,String paramString2, Pageable paramPageable);
 	
 	@Query("select invitestatus , count(id) as users from OnlineUser where orgi = ?1 and status = ?2 group by invitestatus")

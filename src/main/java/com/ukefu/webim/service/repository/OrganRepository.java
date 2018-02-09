@@ -14,10 +14,22 @@ public abstract interface OrganRepository
   public abstract Organ findByIdAndOrgi(String paramString, String orgi);
   
   public abstract Page<Organ> findByOrgi(String orgi , Pageable paramPageable);
+
+  public abstract Page<Organ> findByOrgiAndOrgid(String orgi ,String orgid, Pageable paramPageable);
   
   public abstract Organ findByNameAndOrgi(String paramString, String orgi);
   
+  public abstract Organ findByNameAndOrgiAndOrgid(String paramString, String orgi,String orgid);
+  
+  
   public abstract List<Organ> findByOrgi(String orgi);
   
+  public abstract List<Organ> findByOrgiAndOrgid(String orgi ,String orgid);
+  
   public abstract List<Organ> findByOrgiAndSkill(String orgi , boolean skill);
+  
+  public abstract List<Organ> findByOrgiAndSkillAndOrgid(String orgi , boolean skill,String orgid);
+
+public abstract List<Organ> findByIdInAndSkill(List<String> organIdList, boolean b);
+  
 }

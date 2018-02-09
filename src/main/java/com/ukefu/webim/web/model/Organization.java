@@ -27,6 +27,8 @@ public class Organization implements java.io.Serializable{
 	private String name;
 	private String code;
 	private String orgtype ;	//机构类型
+	private String orgscale;//规模
+	private String orgindustry;//行业
 	private Date createtime  = new Date();//创建时间
 	private String logo ;
 	private String memo ;//
@@ -77,5 +79,17 @@ public class Organization implements java.io.Serializable{
 	}
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+	public String getOrgscale() {
+		return orgscale;
+	}
+	public void setOrgscale(String orgscale) {
+		this.orgscale = orgscale;
+	}
+	public String getOrgindustry() {
+		return orgindustry;
+	}
+	public void setOrgindustry(String orgindustry) {
+		this.orgindustry = orgindustry;
 	}
 }

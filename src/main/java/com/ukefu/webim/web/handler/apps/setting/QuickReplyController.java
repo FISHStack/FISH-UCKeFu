@@ -35,13 +35,9 @@ import com.ukefu.util.task.ExcelImportProecess;
 import com.ukefu.util.task.export.ExcelExporterProcess;
 import com.ukefu.util.task.process.QuickReplyProcess;
 import com.ukefu.webim.service.es.QuickReplyRepository;
-import com.ukefu.webim.service.repository.BlackListRepository;
-import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.MetadataRepository;
 import com.ukefu.webim.service.repository.QuickTypeRepository;
 import com.ukefu.webim.service.repository.ReporterRepository;
-import com.ukefu.webim.service.repository.SessionConfigRepository;
-import com.ukefu.webim.service.repository.TagRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.QuickReply;
@@ -52,22 +48,10 @@ import com.ukefu.webim.web.model.QuickType;
 public class QuickReplyController extends Handler{
 	
 	@Autowired
-	private ConsultInviteRepository invite;
-	
-	@Autowired
-	private SessionConfigRepository sessionConfigRes ;
-	
-	@Autowired
-	private TagRepository tagRes ;
-	
-	@Autowired
 	private QuickReplyRepository quickReplyRes ;
 	
 	@Autowired
 	private QuickTypeRepository quickTypeRes ;
-	
-	@Autowired
-	private BlackListRepository blackListRes;
 	
 	@Autowired
 	private MetadataRepository metadataRes ;
@@ -86,7 +70,7 @@ public class QuickReplyController extends Handler{
         	map.put("quickType", quickTypeRes.findByIdAndOrgi(typeid, super.getOrgi(request))) ;
     		map.put("quickReplyList", quickReplyRes.getByOrgiAndCate(super.getOrgi(request) , typeid , null , new PageRequest(super.getP(request), super.getPs(request)))) ;
     	}else{
-    		map.put("quickReplyList", quickReplyRes.getByOrgi(super.getOrgi(request) , null, new PageRequest(super.getP(request), super.getPs(request)))) ;
+    		map.put("quickReplyList", quickReplyRes.getByOrgiAndType(super.getOrgi(request) ,UKDataContext.QuickTypeEnum.PUB.toString(), null, new PageRequest(super.getP(request), super.getPs(request)))) ;
     	}
     	map.put("pubQuickTypeList", quickTypeList) ;
     	return request(super.createAppsTempletResponse("/apps/setting/quickreply/index"));
@@ -97,7 +81,7 @@ public class QuickReplyController extends Handler{
     	if(!StringUtils.isBlank(typeid) && !typeid.equals("0")){
     		map.put("quickReplyList", quickReplyRes.getByOrgiAndCate(super.getOrgi(request)  , typeid, null, new PageRequest(super.getP(request), super.getPs(request)))) ;
     	}else{
-    		map.put("quickReplyList", quickReplyRes.getByOrgi(super.getOrgi(request) , null , new PageRequest(super.getP(request), super.getPs(request)))) ;
+    		map.put("quickReplyList", quickReplyRes.getByOrgiAndType(super.getOrgi(request),UKDataContext.QuickTypeEnum.PUB.toString() , null , new PageRequest(super.getP(request), super.getPs(request)))) ;
     	}
     	map.put("quickType", quickTypeRes.findByIdAndOrgi(typeid, super.getOrgi(request))) ;
     	return request(super.createRequestPageTempletResponse("/apps/setting/quickreply/replylist"));
@@ -175,13 +159,15 @@ public class QuickReplyController extends Handler{
     @RequestMapping("/type/save")
     @Menu(type = "apps" , subtype = "kbs")
     public ModelAndView typesave(HttpServletRequest request ,@Valid QuickType quickType) {
-    	int count = quickTypeRes.countByOrgiAndNameAndParentid(super.getOrgi(request),quickType.getName(), quickType.getParentid()) ;
-    	if(count == 0){
+    	QuickType qr = quickTypeRes.findByOrgiAndName(super.getOrgi(request),quickType.getName()) ;
+    	if(qr==null){
     		quickType.setOrgi(super.getOrgi(request));
     		quickType.setCreater(super.getUser(request).getId());
     		quickType.setCreatetime(new Date());
     		quickType.setQuicktype(UKDataContext.QuickTypeEnum.PUB.toString());
     		quickTypeRes.save(quickType) ;
+    	}else {
+    		return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html?msg=qr_type_exist"));
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html"));
     }
@@ -199,7 +185,15 @@ public class QuickReplyController extends Handler{
     public ModelAndView typeupdate(HttpServletRequest request ,@Valid QuickType quickType) {
     	QuickType tempQuickType = quickTypeRes.findByIdAndOrgi(quickType.getId(), super.getOrgi(request)) ;
     	if(tempQuickType !=null){
+    		//判断名称是否重复
+    		QuickType qr = quickTypeRes.findByOrgiAndName(super.getOrgi(request),quickType.getName());
+    		if(qr!=null && !qr.getId().equals(quickType.getId())) {
+    			return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html?msg=qr_type_exist&typeid="+quickType.getId()));
+    		}
     		tempQuickType.setName(quickType.getName());
+    		tempQuickType.setDescription(quickType.getDescription());
+    		tempQuickType.setInx(quickType.getInx());
+    		tempQuickType.setParentid(quickType.getParentid());
     		quickTypeRes.save(tempQuickType) ;
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/setting/quickreply/index.html?typeid="+quickType.getId()));
@@ -246,6 +240,7 @@ public class QuickReplyController extends Handler{
 	    	}else{
 	    		event.getValues().put("cate", UKDataContext.DEFAULT_TYPE) ;
 	    	}
+	    	event.getValues().put("type", UKDataContext.QuickTypeEnum.PUB.toString()) ;
 	    	event.getValues().put("creater", super.getUser(request).getId()) ;
 	    	event.getDSData().setProcess(new QuickReplyProcess(quickReplyRes));
 	    	reporterRes.save(event.getDSData().getReport()) ;
@@ -290,7 +285,7 @@ public class QuickReplyController extends Handler{
     @RequestMapping("/expall")
     @Menu(type = "setting" , subtype = "quickreplyexpall")
     public void expall(ModelMap map , HttpServletRequest request , HttpServletResponse response,@Valid String type) throws IOException {
-    	Iterable<QuickReply> topicList = quickReplyRes.getQuickReplyByOrgi(super.getOrgi(request) , !StringUtils.isBlank(type) ? type : null, null) ;
+    	Iterable<QuickReply> topicList = quickReplyRes.getQuickReplyByOrgi(super.getOrgi(request) , !StringUtils.isBlank(type) ? type : null, UKDataContext.QuickTypeEnum.PUB.toString(),null) ;
     	
     	MetadataTable table = metadataRes.findByTablename("uk_quickreply") ;
 		List<Map<String,Object>> values = new ArrayList<Map<String,Object>>();
@@ -311,7 +306,7 @@ public class QuickReplyController extends Handler{
     @Menu(type = "setting" , subtype = "quickreplyexpsearch")
     public void expall(ModelMap map , HttpServletRequest request , HttpServletResponse response , @Valid String q , @Valid String type) throws IOException {
     	
-    	Iterable<QuickReply> topicList = quickReplyRes.getQuickReplyByOrgi(super.getOrgi(request) , type , q) ;
+    	Iterable<QuickReply> topicList = quickReplyRes.getQuickReplyByOrgi(super.getOrgi(request) , type,UKDataContext.QuickTypeEnum.PUB.toString(), q) ;
     	
     	MetadataTable table = metadataRes.findByTablename("uk_quickreply") ;
 		List<Map<String,Object>> values = new ArrayList<Map<String,Object>>();

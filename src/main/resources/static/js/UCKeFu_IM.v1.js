@@ -26,7 +26,9 @@ $(document).ready(function(){
     	}
     	WebIM.audioplayer('audioplane', newuser, false); // 播放
     }).on('status', function(data) {
-    	$('#agents_status').html("服务中的人数："+data.users+"人，当前排队人数："+data.inquene+"人，在线坐席数："+data.agents+"人，坐席忙："+data.busy+"人");	        
+    	if(orgi == data.orgi){
+    		$('#agents_status').html("服务中的人数："+data.users+"人，当前排队人数："+data.inquene+"人，在线坐席数："+data.agents+"人，坐席忙："+data.busy+"人");	        	
+    	}
     }).on('message', function(data) {
     	if($('#multiMediaDialogWin').length > 0 && multiMediaDialogWin != null && multiMediaDialogWin.$ && multiMediaDialogWin.$('#agentusers').length > 0){
     		multiMediaDialogWin.Proxy.newAgentUserMessage(data);

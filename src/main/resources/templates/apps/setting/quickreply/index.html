@@ -54,5 +54,11 @@
 		var node = ztree.getNodeByParam('id', '${quickType.id!''}');//获取id为1的点  
 		ztree.selectNode(node);//选择点  
 		</#if>
+		layui.use('layer', function(){
+			var layer = layui.layer;
+			<#if msg?? && msg == 'qr_type_exist'>
+			layer.alert('分类名称重复，请重新填写', {icon: 2});
+		  </#if>
+		}); 
 	});
 </SCRIPT>

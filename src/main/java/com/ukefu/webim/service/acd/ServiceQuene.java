@@ -46,13 +46,13 @@ public class ServiceQuene {
 	 */
 	public static SessionConfig initSessionConfig(String orgi){
 		SessionConfig sessionConfig = null;
-		if(UKDataContext.getContext() != null && (sessionConfig = (SessionConfig) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.SYSTEM_CACHE_SESSION_CONFIG, orgi)) == null){
+		if(UKDataContext.getContext() != null && (sessionConfig = (SessionConfig) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.SYSTEM_CACHE_SESSION_CONFIG+"_"+orgi, orgi)) == null){
 			SessionConfigRepository agentUserRepository = UKDataContext.getContext().getBean(SessionConfigRepository.class) ;
 			sessionConfig = agentUserRepository.findByOrgi(orgi) ;
 			if(sessionConfig == null){
 				sessionConfig = new SessionConfig() ;
 			}else{
-				CacheHelper.getSystemCacheBean().put(UKDataContext.SYSTEM_CACHE_SESSION_CONFIG,sessionConfig, orgi) ;
+				CacheHelper.getSystemCacheBean().put(UKDataContext.SYSTEM_CACHE_SESSION_CONFIG+"_"+orgi,sessionConfig, orgi) ;
 			}
 		}
 		return sessionConfig ;
@@ -75,7 +75,6 @@ public class ServiceQuene {
 		}
 		return sessionConfigList ;
 	}
-	
 	/**
 	 * 获得 当前服务状态
 	 * @param orgi
@@ -94,6 +93,7 @@ public class ServiceQuene {
 		
 		Long busyAgent = (Long) agentStatusMap.aggregate(Supplier.fromKeyPredicate(new AgentStatusBusyOrgiFilter(orgi)), Aggregations.count()) ;
 		report.setBusy(busyAgent.intValue());
+		report.setOrgi(orgi);
 		
 		/**
 		 * 统计当前服务中的用户数量
@@ -104,7 +104,7 @@ public class ServiceQuene {
 		
 		Long queneUsers = (Long) agentUserMap.aggregate(Supplier.fromKeyPredicate(new AgentUserOrgiFilter(orgi , UKDataContext.AgentUserStatusEnum.INQUENE.toString())), Aggregations.count()) ;
 		report.setInquene(queneUsers.intValue());
-		report.setOrgi(orgi);
+		
 		return report;
 	}
 	
@@ -148,6 +148,19 @@ public class ServiceQuene {
 		agentUserList.addAll(((IMap<String , AgentUser>) CacheHelper.getAgentUserCacheBean().getCache()).values(pagingPredicate)) ;
 		return agentUserList.size();
 	}
+	
+
+	@SuppressWarnings("unchecked")
+	public static List<AgentStatus> getAgentStatus(String skill , String orgi){
+		PagingPredicate<String, AgentStatus> pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( "orgi = '" + orgi +"'") , 100 ) ;
+		
+		if(!StringUtils.isBlank(skill)) {
+			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( "skill = '"+skill+"' AND orgi = '" + orgi +"'") , 100 ) ;
+		}
+		List<AgentStatus> agentList = new ArrayList<AgentStatus>();
+		agentList.addAll(((IMap<String , AgentStatus>) CacheHelper.getAgentStatusCacheBean().getCache()).values(pagingPredicate)) ;
+		return agentList;
+	}
 	/**
 	 * 为坐席批量分配用户
 	 * @param agentStatus
@@ -172,7 +185,7 @@ public class ServiceQuene {
 					AgentService agentService = processAgentService(agentStatus, agentUser, orgi) ;
 
 					MessageOutContent outMessage = new MessageOutContent() ;
-					outMessage.setMessage(ServiceQuene.getSuccessMessage(agentService , agentUser.getChannel()));
+					outMessage.setMessage(ServiceQuene.getSuccessMessage(agentService , agentUser.getChannel(),orgi));
 					outMessage.setMessageType(UKDataContext.MediaTypeEnum.TEXT.toString());
 					outMessage.setCalltype(UKDataContext.CallTypeEnum.IN.toString());
 					outMessage.setNickName(agentStatus.getUsername());
@@ -270,7 +283,7 @@ public class ServiceQuene {
     		router  = (OutMessageRouter) UKDataContext.getContext().getBean(agentUser.getChannel()) ;
     		if(router!=null){
     			MessageOutContent outMessage = new MessageOutContent() ;
-				outMessage.setMessage(ServiceQuene.getServiceFinishMessage(agentUser.getChannel()));
+				outMessage.setMessage(ServiceQuene.getServiceFinishMessage(agentUser.getChannel(),orgi));
 				outMessage.setMessageType(UKDataContext.AgentUserStatusEnum.END.toString());
 				outMessage.setCalltype(UKDataContext.CallTypeEnum.IN.toString());
 				if(agentStatus!=null){
@@ -338,11 +351,11 @@ public class ServiceQuene {
 		 * 处理ACD 的 技能组请求和 坐席请求
 		 */
 		if(!StringUtils.isBlank(agentUser.getAgent())){
-			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND agentno = '" + agentUser.getAgent()+"'") , 1 );
+			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND agentno = '" + agentUser.getAgent()+"' AND orgi = '" + orgi +"'") , 1 );
 		}else if(!StringUtils.isBlank(agentUser.getSkill())){
-			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND skill = '" + agentUser.getSkill()+"'") , 1 );
+			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND skill = '" + agentUser.getSkill()+"' AND orgi = '" + orgi +"'") , 1 );
 		}else{
-			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false") , 1 );
+			pagingPredicate = new PagingPredicate<String, AgentStatus>(  new SqlPredicate( " busy = false AND orgi = '" + orgi +"'") , 1 );
 		}
 		
 		agentStatusList.addAll(((IMap<String , AgentStatus>) CacheHelper.getAgentStatusCacheBean().getCache()).values(pagingPredicate)) ;
@@ -470,7 +483,11 @@ public class ServiceQuene {
 				agentService.setResion(agentUser.getResion());
 			}
 			
-			agentService.setAgentskill(agentUser.getSkill());
+			if(!StringUtils.isBlank(agentUser.getSkill())) {
+				agentService.setAgentskill(agentUser.getSkill());
+			}else {
+				agentService.setAgentskill(agentStatus.getSkill());
+			}
 			
 			agentService.setServicetime(new Date());
 			if(agentUser.getCreatetime()!=null){
@@ -555,12 +572,12 @@ public class ServiceQuene {
 	 * @param agentStatus
 	 * @return
 	 */
-	public static String getSuccessMessage(AgentService agentService ,String channel){
+	public static String getSuccessMessage(AgentService agentService ,String channel,String orgi){
 		String queneTip = "<span id='agentno'>"+agentService.getAgentusername()+"</span>" ;
 		if(!UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(channel)){
 			queneTip = agentService.getAgentusername() ;
 		}
-		SessionConfig sessionConfig = initSessionConfig(UKDataContext.SYSTEM_ORGI) ;
+		SessionConfig sessionConfig = initSessionConfig(orgi) ;
 		String successMsg = "坐席分配成功，"+queneTip+"为您服务。"  ;
 		if(!StringUtils.isBlank(sessionConfig.getNoagentmsg())){
 			successMsg = sessionConfig.getSuccessmsg().replaceAll("\\{agent\\}", queneTip) ;
@@ -573,8 +590,8 @@ public class ServiceQuene {
 	 * @param agentStatus
 	 * @return
 	 */
-	public static String getServiceFinishMessage(String channel){
-		SessionConfig sessionConfig = initSessionConfig(UKDataContext.SYSTEM_ORGI) ;
+	public static String getServiceFinishMessage(String channel,String orgi){
+		SessionConfig sessionConfig = initSessionConfig(orgi) ;
 		String queneTip = "坐席已断开和您的对话" ;
 		if(!StringUtils.isBlank(sessionConfig.getNoagentmsg())){
 			queneTip = sessionConfig.getFinessmsg();
@@ -582,7 +599,7 @@ public class ServiceQuene {
 		return queneTip ;
 	}
 	
-	public static String getNoAgentMessage(int queneIndex , String channel){
+	public static String getNoAgentMessage(int queneIndex , String channel,String orgi){
 		if(queneIndex < 0){
 			queneIndex = 0 ;
 		}
@@ -590,20 +607,20 @@ public class ServiceQuene {
 		if(!UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(channel)){
 			queneTip = String.valueOf(queneIndex) ;
 		}
-		SessionConfig sessionConfig = initSessionConfig(UKDataContext.SYSTEM_ORGI) ;
+		SessionConfig sessionConfig = initSessionConfig(orgi) ;
 		String noAgentTipMsg = "坐席全忙，已进入等待队列，在您之前，还有 "+queneTip+" 位等待用户。"  ;
 		if(!StringUtils.isBlank(sessionConfig.getNoagentmsg())){
 			noAgentTipMsg = sessionConfig.getNoagentmsg().replaceAll("\\{num\\}", queneTip) ;
 		}
 		return noAgentTipMsg;
 	}
-	public static String getQueneMessage(int queneIndex , String channel){
+	public static String getQueneMessage(int queneIndex , String channel,String orgi){
 		
 		String queneTip = "<span id='queneindex'>"+queneIndex+"</span>" ;
 		if(!UKDataContext.ChannelTypeEnum.WEBIM.toString().equals(channel)){
 			queneTip = String.valueOf(queneIndex) ;
 		}
-		SessionConfig sessionConfig = initSessionConfig(UKDataContext.SYSTEM_ORGI) ;
+		SessionConfig sessionConfig = initSessionConfig(orgi) ;
 		String agentBusyTipMsg = "正在排队，请稍候,在您之前，还有  "+queneTip+" 位等待用户。"  ;
 		if(!StringUtils.isBlank(sessionConfig.getAgentbusymsg())){
 			agentBusyTipMsg = sessionConfig.getAgentbusymsg().replaceAll("\\{num\\}", queneTip) ;

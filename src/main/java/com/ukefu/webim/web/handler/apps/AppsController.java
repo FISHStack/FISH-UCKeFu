@@ -26,6 +26,7 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.acd.ServiceQuene;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.es.ContactsRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
@@ -34,6 +35,7 @@ import com.ukefu.webim.service.repository.UserEventRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.Contacts;
 import com.ukefu.webim.web.model.InviteRecord;
 import com.ukefu.webim.web.model.OnlineUser;
@@ -63,9 +65,12 @@ public class AppsController extends Handler{
 	@Autowired
 	private OrgiSkillRelRepository orgiSkillRelRepository ;
 	
+	@Autowired
+	private OrgiSkillRelRepository orgiSkillRelService;
+	
 	@RequestMapping({"/apps/content"})
 	@Menu(type="apps", subtype="content")
-	public ModelAndView content(ModelMap map , HttpServletRequest request){
+	public ModelAndView content(ModelMap map , HttpServletRequest request,@Valid String msg){
 		
 		Page<OnlineUser> onlineUserList = this.onlineUserRes.findByOrgiAndStatus(super.getOrgi(request), UKDataContext.OnlineUserOperatorStatus.ONLINE.toString(), new PageRequest(super.getP(request), super.getPs(request), Sort.Direction.DESC, new String[] { "createtime" })) ;
 		List<String> ids = new ArrayList<String>();
@@ -88,6 +93,7 @@ public class AppsController extends Handler{
 			}
 		}
 		map.put("onlineUserList", onlineUserList);
+		map.put("msg", msg);
 		aggValues(map, request);
 		
 		return request(super.createAppsTempletResponse("/apps/desktop/index"));
@@ -97,7 +103,7 @@ public class AppsController extends Handler{
 		map.put("agentReport", ServiceQuene.getAgentReport(super.getOrgi(request))) ;
 		map.put("webIMReport", UKTools.getWebIMReport(userEventRes.findByOrgiAndCreatetimeRange(super.getOrgi(request), UKTools.getStartTime() , UKTools.getEndTime()))) ;
 		
-		map.put("agents",getAgent(request).size()) ;
+		map.put("agents",getUsers(request).size()) ;
 
 		map.put("webIMInvite", UKTools.getWebIMInviteStatus(onlineUserRes.findByOrgiAndStatus(super.getOrgi(request), UKDataContext.OnlineUserOperatorStatus.ONLINE.toString()))) ;
 		
@@ -109,26 +115,6 @@ public class AppsController extends Handler{
 		
 		map.put("agentServicesAvg", onlineUserRes.countByAgentForAvagTime(super.getOrgi(request), UKDataContext.AgentUserStatusEnum.END.toString(),super.getUser(request).getId() , UKTools.getStartTime() , UKTools.getEndTime())) ;
 		
-	}
-	private List<User> getAgent(HttpServletRequest request){
-		//获取当前租户坐席数
-		final String orgi = super.getOrgi(request);
-		final List<OrgiSkillRel> orgiSkillRelList = orgiSkillRelRepository.findByOrgi(super.getOrgi(request));
-    	List<User> userList = userRes.findAll(new Specification<User>(){
-			@Override
-			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query,
-					CriteriaBuilder cb) {
-				List<Predicate> list = new ArrayList<Predicate>();  
-				if(!orgiSkillRelList.isEmpty()){
-					for(OrgiSkillRel rel : orgiSkillRelList){
-						list.add(cb.equal(root.get("organ").as(String.class), rel.getSkillid())) ;
-					}
-				}
-				Predicate[] p = new Predicate[list.size()];  
-				cb.and(cb.equal(root.get("orgi").as(String.class),orgi)) ;
-			    return cb.or(list.toArray(p));  
-			}}) ;
-    	return userList.isEmpty()?new ArrayList<User>():userList;
 	}
 	@RequestMapping({"/apps/onlineuser"})
 	@Menu(type="apps", subtype="onlineuser")
@@ -181,37 +167,100 @@ public class AppsController extends Handler{
 	
 	@RequestMapping({"/apps/profile"})
 	@Menu(type="apps", subtype="content")
-	public ModelAndView profile(ModelMap map , HttpServletRequest request){
+	public ModelAndView profile(ModelMap map , HttpServletRequest request,@Valid String index){
 		map.addAttribute("userData",super.getUser(request)) ;
+		map.addAttribute("index",index) ;
 		return request(super.createRequestPageTempletResponse("/apps/desktop/profile"));
 	}
 	
 	@RequestMapping({"/apps/profile/save"})
 	@Menu(type="apps", subtype="content")
-	public ModelAndView profile(ModelMap map , HttpServletRequest request , @Valid User user){
+	public ModelAndView profile(ModelMap map , HttpServletRequest request , @Valid User user,@Valid String index){
 		User tempUser = userRes.getOne(user.getId()) ;
-    	User exist = userRes.findByUsernameAndOrgi(user.getUsername(), super.getOrgi(request)) ;
-    	if(exist==null || exist.equals(user.getId())){
-	    	if(tempUser != null){
-	    		tempUser.setUname(user.getUname());
-	    		tempUser.setEmail(user.getEmail());
-	    		tempUser.setMobile(user.getMobile());
-	    		tempUser.setAgent(user.isAgent());
-	    		tempUser.setOrgi(super.getOrgi(request));
-	    		if(!StringUtils.isBlank(user.getPassword())){
-	    			tempUser.setPassword(UKTools.md5(user.getPassword()));
-	    		}
-	    		if(tempUser.getCreatetime() == null){
-	    			tempUser.setCreatetime(new Date());
-	    		}
-	    		tempUser.setUpdatetime(new Date());
-	    		userRes.save(tempUser) ;
-	    		User sessionUser = super.getUser(request) ;
-	    		tempUser.setRoleList(sessionUser.getRoleList()) ;
-	    		super.setUser(request, tempUser);
-	    	}
+    	if(tempUser != null){
+    		String msg = validUserUpdate(user,tempUser);
+    		if(!StringUtils.isBlank(msg)){
+    			if(StringUtils.isBlank(index)) {
+    				return request(super.createRequestPageTempletResponse("redirect:/apps/content.html?msg="+msg));
+    			}
+    			return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index.html?msg="+msg)); 
+    		}
+    		tempUser.setUname(user.getUname());
+    		tempUser.setEmail(user.getEmail());
+    		tempUser.setMobile(user.getMobile());
+    		//切换成非坐席 判断是否坐席 以及 是否有对话
+    		if(!user.isAgent()) {
+    			AgentStatus agentStatus = (AgentStatus)CacheHelper.getAgentStatusCacheBean().getCacheObject((super.getUser(request)).getId(), super.getOrgi(request));
+    	    	if(!(agentStatus==null && ServiceQuene.getAgentUsers(super.getUser(request).getId(), super.getOrgi(request))==0)) {
+    	    		if(StringUtils.isBlank(index)) {
+        				return request(super.createRequestPageTempletResponse("redirect:/apps/content.html?msg=t1"));
+        			}
+        			return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index.html?msg=t1")); 
+    	    	}
+    		}
+    		tempUser.setAgent(user.isAgent());
+    		tempUser.setOrgi(super.getOrgiByTenantshare(request));
+    		if(!StringUtils.isBlank(user.getPassword())){
+    			tempUser.setPassword(UKTools.md5(user.getPassword()));
+    		}
+    		if(tempUser.getCreatetime() == null){
+    			tempUser.setCreatetime(new Date());
+    		}
+    		tempUser.setUpdatetime(new Date());
+    		userRes.save(tempUser) ;
+    		User sessionUser = super.getUser(request) ;
+    		tempUser.setRoleList(sessionUser.getRoleList()) ;
+    		tempUser.setRoleAuthMap(sessionUser.getRoleAuthMap());
+    		User u = tempUser;
+    		u.setOrgi(super.getOrgi(request));
+    		super.setUser(request, u);
     	}
-		return request(super.createRequestPageTempletResponse("redirect:/apps/content.html"));
+    	if(StringUtils.isBlank(index)) {
+			return request(super.createRequestPageTempletResponse("redirect:/apps/content.html"));
+		}
+		return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index.html")); 
 	}
+	
+	private String validUserUpdate(User user,User oldUser) {
+    	String msg = "";
+    	User tempUser = userRes.findByUsernameAndDatastatus(user.getUsername(),false) ;
+    	if(tempUser!=null&&!user.getUsername().equals(oldUser.getUsername())) {
+    		msg = "username_exist";
+    		return msg;
+    	}
+    	tempUser = userRes.findByEmailAndDatastatus(user.getEmail(),false) ;
+    	if(tempUser!=null&&!user.getEmail().equals(oldUser.getEmail())) {
+    		msg = "email_exist";
+    		return msg;
+    	}
+    	tempUser = userRes.findByMobileAndDatastatus(user.getMobile(),false) ;
+    	if(tempUser!=null&&!user.getMobile().equals(oldUser.getMobile())) {
+    		msg = "mobile_exist";
+    		return msg;
+    	}
+    	return msg;
+    }
+	/**
+	 * 获取当前产品下人员信息
+	 * @param request
+	 * @param q
+	 * @return
+	 */
+	private List<User> getUsers(HttpServletRequest request){
+		List<User> userList = null;
+		if(super.isTenantshare()) {
+			List<String> organIdList = new ArrayList<>();
+			List<OrgiSkillRel> orgiSkillRelList = orgiSkillRelService.findByOrgi(super.getOrgi(request)) ;
+			if(!orgiSkillRelList.isEmpty()) {
+				for(OrgiSkillRel rel:orgiSkillRelList) {
+					organIdList.add(rel.getSkillid());
+				}
+			}
+			userList=userRes.findByOrganInAndAgentAndDatastatus(organIdList,true,false);
+		}else {
+			userList=userRes.findByOrgiAndAgentAndDatastatus(super.getOrgi(request), true,false) ;
+		}
+		return userList;
+    }
 	
 }

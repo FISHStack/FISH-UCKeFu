@@ -26,7 +26,7 @@ public class ContactsResourceController extends Handler{
 		if(q==null){
 			q = "" ;
 		}
-    	map.addAttribute("contactsList", contactsRes.findByOrgi(super.getOrgi(request), false , q , new PageRequest(0, 10))) ;
+    	map.addAttribute("contactsList", contactsRes.findByCreaterAndSharesAndOrgi(super.getUser(request).getId(),super.getUser(request).getId(),super.getOrgi(request), false , q , new PageRequest(0, 10))) ;
         return request(super.createRequestPageTempletResponse("/public/contacts"));
     }
 }

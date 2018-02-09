@@ -14,7 +14,7 @@ public interface QuickReplyEsCommonRepository {
 	
 	public Page<QuickReply> getByQuicktype(String quicktype , int p, int ps) ;
 	
-	public Page<QuickReply> getByOrgi(String orgi, String q , Pageable page) ;
+	public Page<QuickReply> getByOrgiAndType(String orgi,String type, String q , Pageable page) ;
 	
 	public List<QuickReply> findByOrgiAndCreater(String orgi , String creater, String q) ;
 	
@@ -24,5 +24,5 @@ public interface QuickReplyEsCommonRepository {
 	
 	public void deleteByCate(String cate , String orgi) ;
 
-	public List<QuickReply> getQuickReplyByOrgi(String orgi, String type, String q);
+	public List<QuickReply> getQuickReplyByOrgi(String orgi, String cate,String type, String q);
 }

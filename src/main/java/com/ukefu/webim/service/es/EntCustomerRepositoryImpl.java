@@ -42,12 +42,15 @@ public class EntCustomerRepositoryImpl implements EntCustomerEsCommonRepository{
     }
 
 	@Override
-	public Page<EntCustomer> findByCreaterAndShares(String creater, String shares , boolean includeDeleteData ,String q , Pageable page) {
+	public Page<EntCustomer> findByCreaterAndSharesAndOrgi(String creater, String shares ,String orgi, boolean includeDeleteData ,String q , Pageable page) {
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		boolQueryBuilder.should(termQuery("creater" , creater)) ;
-		boolQueryBuilder.should(termQuery("shares" , creater)) ;
-		boolQueryBuilder.should(termQuery("shares" , "all")) ;
+		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
+		boolQueryBuilder1.should(termQuery("creater" , creater)) ;
+		boolQueryBuilder1.should(termQuery("shares" , creater)) ;
+		boolQueryBuilder1.should(termQuery("shares" , "all")) ;
+		boolQueryBuilder.must(boolQueryBuilder1) ;
+		boolQueryBuilder.must(termQuery("orgi" , orgi)) ;
 		if(includeDeleteData){
 			boolQueryBuilder.must(termQuery("datastatus" , true)) ;
 		}else{
@@ -60,12 +63,15 @@ public class EntCustomerRepositoryImpl implements EntCustomerEsCommonRepository{
 	}
 	
 	@Override
-	public Page<EntCustomer> findByCreaterAndShares(String creater,
-			String shares, Date begin, Date end, boolean includeDeleteData,
+	public Page<EntCustomer> findByCreaterAndSharesAndOrgi(String creater,
+			String shares,String orgi, Date begin, Date end, boolean includeDeleteData,
 			BoolQueryBuilder boolQueryBuilder , String q, Pageable page) {
-		boolQueryBuilder.should(termQuery("creater" , creater)) ;
-		boolQueryBuilder.should(termQuery("shares" , creater)) ;
-		boolQueryBuilder.should(termQuery("shares" , "all")) ;
+		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
+		boolQueryBuilder1.should(termQuery("creater" , creater)) ;
+		boolQueryBuilder1.should(termQuery("shares" , creater)) ;
+		boolQueryBuilder1.should(termQuery("shares" , "all")) ;
+		boolQueryBuilder.must(boolQueryBuilder1) ;
+		boolQueryBuilder.must(termQuery("orgi" , orgi)) ;
 		if(includeDeleteData){
 			boolQueryBuilder.must(termQuery("datastatus" , true)) ;
 		}else{
@@ -90,11 +96,14 @@ public class EntCustomerRepositoryImpl implements EntCustomerEsCommonRepository{
 	}
 
 	@Override
-	public Page<EntCustomer> findByCreaterAndShares(String creater,String shares, Date begin, Date end, boolean includeDeleteData,String q, Pageable page) {
+	public Page<EntCustomer> findByCreaterAndSharesAndOrgi(String creater,String shares,String orgi, Date begin, Date end, boolean includeDeleteData,String q, Pageable page) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		boolQueryBuilder.should(termQuery("creater" , creater)) ;
-		boolQueryBuilder.should(termQuery("shares" , creater)) ;
-		boolQueryBuilder.should(termQuery("shares" , "all")) ;
+		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
+		boolQueryBuilder1.should(termQuery("creater" , creater)) ;
+		boolQueryBuilder1.should(termQuery("shares" , creater)) ;
+		boolQueryBuilder1.should(termQuery("shares" , "all")) ;
+		boolQueryBuilder.must(boolQueryBuilder1) ;
+		boolQueryBuilder.must(termQuery("orgi" , orgi)) ;
 		if(includeDeleteData){
 			boolQueryBuilder.must(termQuery("datastatus" , true)) ;
 		}else{

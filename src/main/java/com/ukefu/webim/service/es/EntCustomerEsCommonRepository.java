@@ -10,9 +10,9 @@ import com.ukefu.webim.web.model.EntCustomer;
 
 public interface EntCustomerEsCommonRepository {
 	
-	public Page<EntCustomer> findByCreaterAndShares(String creater , String shares , boolean includeDeleteData , String q , Pageable page) ;
+	public Page<EntCustomer> findByCreaterAndSharesAndOrgi(String creater , String shares ,String orgi, boolean includeDeleteData , String q , Pageable page) ;
 	
-	public Page<EntCustomer> findByCreaterAndShares(String creater , String shares  , Date begin , Date end, boolean includeDeleteData , String q , Pageable page) ;
+	public Page<EntCustomer> findByCreaterAndSharesAndOrgi(String creater , String shares,String orgi  , Date begin , Date end, boolean includeDeleteData , String q , Pageable page) ;
 
-	public Page<EntCustomer> findByCreaterAndShares(String creater, String shares,Date begin, Date end, boolean includeDeleteData,BoolQueryBuilder boolQueryBuilder, String q, Pageable page);
+	public Page<EntCustomer> findByCreaterAndSharesAndOrgi(String creater, String shares,String orgi,Date begin, Date end, boolean includeDeleteData,BoolQueryBuilder boolQueryBuilder, String q, Pageable page);
 }

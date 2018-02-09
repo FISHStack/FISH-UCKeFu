@@ -13,6 +13,10 @@ public abstract interface RoleRepository
   
   public abstract List<Role> findByOrgi(String orgi);
   
+  public abstract List<Role> findByOrgiAndOrgid(String orgi,String orgid);
+  
   public abstract Role findByNameAndOrgi(String paramString, String orgi);
+  
+  public abstract Role findByNameAndOrgiAndOrgid(String paramString, String orgi,String orgid);
 }
 

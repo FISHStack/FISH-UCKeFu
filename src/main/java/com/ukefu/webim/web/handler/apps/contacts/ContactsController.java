@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.PinYinTools;
 import com.ukefu.util.UKTools;
@@ -77,7 +78,7 @@ public class ContactsController extends Handler{
     		boolQueryBuilder.must(termQuery("ckind" , ckind)) ;
         	map.put("ckind", ckind) ;
         }
-    	map.addAttribute("contactsList", contactsRes.findByCreaterAndShares(super.getUser(request).getId(), super.getUser(request).getId(), null , null , false, boolQueryBuilder ,q , new PageRequest(super.getP(request) , super.getPs(request)))) ;
+    	map.addAttribute("contactsList", contactsRes.findByCreaterAndSharesAndOrgi(super.getUser(request).getId(), super.getUser(request).getId(),super.getOrgi(request), null , null , false, boolQueryBuilder ,q , new PageRequest(super.getP(request) , super.getPs(request)))) ;
     	
     	return request(super.createAppsTempletResponse("/apps/business/contacts/index"));
     }
@@ -93,7 +94,7 @@ public class ContactsController extends Handler{
     		boolQueryBuilder.must(termQuery("ckind" , ckind)) ;
         	map.put("ckind", ckind) ;
         }
-    	map.addAttribute("contactsList", contactsRes.findByCreaterAndShares(super.getUser(request).getId(), super.getUser(request).getId(), UKTools.getStartTime() , null , false, boolQueryBuilder ,q , new PageRequest(super.getP(request) , super.getPs(request)))) ;
+    	map.addAttribute("contactsList", contactsRes.findByCreaterAndSharesAndOrgi(super.getUser(request).getId(), super.getUser(request).getId(), super.getOrgi(request),UKTools.getStartTime() , null , false, boolQueryBuilder ,q , new PageRequest(super.getP(request) , super.getPs(request)))) ;
     	
     	return request(super.createAppsTempletResponse("/apps/business/contacts/index"));
     }
@@ -110,7 +111,7 @@ public class ContactsController extends Handler{
     		boolQueryBuilder.must(termQuery("ckind" , ckind)) ;
         	map.put("ckind", ckind) ;
         }
-    	map.addAttribute("contactsList", contactsRes.findByCreaterAndShares(super.getUser(request).getId(), super.getUser(request).getId(), UKTools.getWeekStartTime() , null , false, boolQueryBuilder ,q , new PageRequest(super.getP(request) , super.getPs(request)))) ;
+    	map.addAttribute("contactsList", contactsRes.findByCreaterAndSharesAndOrgi(super.getUser(request).getId(), super.getUser(request).getId(),super.getOrgi(request), UKTools.getWeekStartTime() , null , false, boolQueryBuilder ,q , new PageRequest(super.getP(request) , super.getPs(request)))) ;
     	
     	return request(super.createAppsTempletResponse("/apps/business/contacts/index"));
     }
@@ -129,7 +130,7 @@ public class ContactsController extends Handler{
         	map.put("q", q) ;
         }
     	
-    	map.addAttribute("contactsList", contactsRes.findByCreaterAndShares(super.getUser(request).getId(), super.getUser(request).getId(), null , null , false, boolQueryBuilder ,q , new PageRequest(super.getP(request) , super.getPs(request)))) ;
+    	map.addAttribute("contactsList", contactsRes.findByCreaterAndSharesAndOrgi(super.getUser(request).getId(), super.getUser(request).getId(),super.getOrgi(request), null , null , false, boolQueryBuilder ,q , new PageRequest(super.getP(request) , super.getPs(request)))) ;
         return request(super.createAppsTempletResponse("/apps/business/contacts/index"));
     }
     
@@ -141,12 +142,13 @@ public class ContactsController extends Handler{
     		contacts.setDatastatus(true);							//客户和联系人都是 逻辑删除
     		contactsRes.save(contacts) ;
     	}
-    	return request(super.createRequestPageTempletResponse("redirect:/apps/contacts/index.html?p="+p));
+    	return request(super.createRequestPageTempletResponse("redirect:/apps/contacts/index.html?p="+p+"&ckind="+contacts.getCkind()));
     }
     
     @RequestMapping("/add")
     @Menu(type = "contacts" , subtype = "add")
-    public ModelAndView add(ModelMap map , HttpServletRequest request) {
+    public ModelAndView add(ModelMap map , HttpServletRequest request,@Valid String ckind) {
+    	map.addAttribute("ckind",ckind);
         return request(super.createRequestPageTempletResponse("/apps/business/contacts/add"));
     }
     
@@ -157,6 +159,9 @@ public class ContactsController extends Handler{
 		contacts.setOrgi(super.getOrgi(request));
 		contacts.setOrgan(super.getUser(request).getOrgan());
 		contacts.setPinyin(PinYinTools.getInstance().getFirstPinYin(contacts.getName()));
+		if(StringUtils.isBlank(contacts.getCusbirthday())) {
+			contacts.setCusbirthday(null);
+		}
 		contactsRes.save(contacts) ;
 		return request(super.createRequestPageTempletResponse("redirect:/apps/contacts/index.html?ckind="+contacts.getCkind()));
     }
@@ -200,6 +205,9 @@ public class ContactsController extends Handler{
 	    	contacts.setOrgi(super.getOrgi(request));
 	    	contacts.setOrgan(super.getUser(request).getOrgan());
 	    	contacts.setPinyin(PinYinTools.getInstance().getFirstPinYin(contacts.getName()));
+	    	if(StringUtils.isBlank(contacts.getCusbirthday())) {
+				contacts.setCusbirthday(null);
+			}
 	    	contactsRes.save(contacts);
     	}
     	
@@ -208,13 +216,14 @@ public class ContactsController extends Handler{
     
     @RequestMapping("/imp")
     @Menu(type = "contacts" , subtype = "contacts")
-    public ModelAndView imp(ModelMap map , HttpServletRequest request) {
+    public ModelAndView imp(ModelMap map , HttpServletRequest request,@Valid String ckind) {
+    	map.addAttribute("ckind",ckind);
         return request(super.createRequestPageTempletResponse("/apps/business/contacts/imp"));
     }
     
     @RequestMapping("/impsave")
     @Menu(type = "contacts" , subtype = "contacts")
-    public ModelAndView impsave(ModelMap map , HttpServletRequest request , @RequestParam(value = "cusfile", required = false) MultipartFile cusfile) throws IOException {
+    public ModelAndView impsave(ModelMap map , HttpServletRequest request , @RequestParam(value = "cusfile", required = false) MultipartFile cusfile,@Valid String ckind) throws IOException {
     	DSDataEvent event = new DSDataEvent();
     	String fileName = "contacts/"+UKTools.getUUID()+cusfile.getOriginalFilename().substring(cusfile.getOriginalFilename().lastIndexOf(".")) ;
     	File excelFile = new File(path , fileName) ;
@@ -227,6 +236,11 @@ public class ContactsController extends Handler{
 	    	event.setDSData(new DSData(table,excelFile , cusfile.getContentType(), super.getUser(request)));
 	    	event.getDSData().setClazz(Contacts.class);
 	    	event.getDSData().setProcess(new ContactsProcess(contactsRes));
+	    	event.setOrgi(super.getOrgi(request));
+	    	/*if(!StringUtils.isBlank(ckind)){
+	    		event.getValues().put("ckind", ckind) ;
+	    	}*/
+	    	event.getValues().put("creater", super.getUser(request).getId()) ;
 	    	reporterRes.save(event.getDSData().getReport()) ;
 	    	new ExcelImportProecess(event).process() ;		//启动导入任务
     	}
@@ -259,7 +273,7 @@ public class ContactsController extends Handler{
     public void expall(ModelMap map , HttpServletRequest request , HttpServletResponse response) throws IOException {
     	BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
     	boolQueryBuilder.must(termQuery("datastatus" , false)) ;		//只导出 数据删除状态 为 未删除的 数据
-    	Iterable<Contacts> contactsList = contactsRes.findByCreaterAndShares(super.getUser(request).getId(), super.getUser(request).getId(), null , null , false, boolQueryBuilder , null , new PageRequest(super.getP(request) , super.getPs(request)));
+    	Iterable<Contacts> contactsList = contactsRes.findByCreaterAndSharesAndOrgi(super.getUser(request).getId(), super.getUser(request).getId(), super.getOrgi(request),null , null , false, boolQueryBuilder , null , new PageRequest(super.getP(request) , super.getPs(request)));
     	
     	MetadataTable table = metadataRes.findByTablename("uk_contacts") ;
 		List<Map<String,Object>> values = new ArrayList<Map<String,Object>>();
@@ -286,7 +300,7 @@ public class ContactsController extends Handler{
         	map.put("ekind", ekind) ;
         }
     	
-    	Iterable<Contacts> contactsList = contactsRes.findByCreaterAndShares(super.getUser(request).getId(), super.getUser(request).getId(), null , null , false, boolQueryBuilder ,q , new PageRequest(super.getP(request) , super.getPs(request)));
+    	Iterable<Contacts> contactsList = contactsRes.findByCreaterAndSharesAndOrgi(super.getUser(request).getId(), super.getUser(request).getId(),super.getOrgi(request), null , null , false, boolQueryBuilder ,q , new PageRequest(super.getP(request) , super.getPs(request)));
     	MetadataTable table = metadataRes.findByTablename("uk_contacts") ;
     	List<Map<String,Object>> values = new ArrayList<Map<String,Object>>();
     	for(Contacts contacts : contactsList){
@@ -313,7 +327,7 @@ public class ContactsController extends Handler{
     		boolQueryBuilder.must(termQuery("ckind" , ckind)) ;
         	map.put("ckind", ckind) ;
         }
-    	map.addAttribute("contactsList", contactsRes.findByCreaterAndShares(super.getUser(request).getId(), super.getUser(request).getId(), null , null , false, boolQueryBuilder ,q , new PageRequest(super.getP(request) , super.getPs(request)))) ;
+    	map.addAttribute("contactsList", contactsRes.findByCreaterAndSharesAndOrgi(super.getUser(request).getId(), super.getUser(request).getId(), super.getOrgi(request),null , null , false, boolQueryBuilder ,q , new PageRequest(super.getP(request) , super.getPs(request)))) ;
     	
     	return request(super.createRequestPageTempletResponse("/apps/business/contacts/embed/index"));
     }
@@ -331,6 +345,9 @@ public class ContactsController extends Handler{
 		contacts.setOrgi(super.getOrgi(request));
 		contacts.setOrgan(super.getUser(request).getOrgan());
 		contacts.setPinyin(PinYinTools.getInstance().getFirstPinYin(contacts.getName()));
+		if(StringUtils.isBlank(contacts.getCusbirthday())) {
+			contacts.setCusbirthday(null);
+		}
 		contactsRes.save(contacts) ;
         return request(super.createRequestPageTempletResponse("redirect:/apps/contacts/embed/index.html"));
     }
@@ -366,6 +383,9 @@ public class ContactsController extends Handler{
 	    	contacts.setOrgi(super.getOrgi(request));
 	    	contacts.setOrgan(super.getUser(request).getOrgan());
 	    	contacts.setPinyin(PinYinTools.getInstance().getFirstPinYin(contacts.getName()));
+	    	if(StringUtils.isBlank(contacts.getCusbirthday())) {
+				contacts.setCusbirthday(null);
+			}
 	    	contactsRes.save(contacts);
     	}
     	

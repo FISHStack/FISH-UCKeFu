@@ -2,9 +2,11 @@ package com.ukefu.util.task.export;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
@@ -16,6 +18,9 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
+import com.ukefu.core.UKDataContext;
+import com.ukefu.util.bi.model.FirstTitle;
+import com.ukefu.util.extra.DataExchangeInterface;
 import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.TableProperties;
@@ -32,6 +37,7 @@ public class ExcelExporterProcess {
 	private List<Map<String ,Object>> values ;
 	private MetadataTable table ;
 	private OutputStream output ;
+	private Row titleRow ;
 	
 	public ExcelExporterProcess(List<Map<String ,Object>> values , MetadataTable table , OutputStream output) {
 		this.values = values ;
@@ -56,10 +62,10 @@ public class ExcelExporterProcess {
 	 * 构建头部
 	 */
 	private void createHead(){
-		Row row = sheet.createRow(rowNum);
+		titleRow = sheet.createRow(rowNum);
 		if(table!=null && table.getTableproperty()!=null){
 			for(TableProperties tp : table.getTableproperty()){
-				Cell cell2 = row.createCell(table.getTableproperty().indexOf(tp)); 
+				Cell cell2 = titleRow.createCell(table.getTableproperty().indexOf(tp)); 
 				cell2.setCellStyle(firstStyle); 
 				cell2.setCellValue(new HSSFRichTextString(tp.getName()));
 			}
@@ -112,15 +118,57 @@ public class ExcelExporterProcess {
 		if(table!=null && table.getTableproperty()!=null){
 			for(Map<String , Object> value:values){
 				Row row2 = sheet.createRow(rowNum);
+				List<ExportData> tempExportDatas = new ArrayList<ExportData>();
+				int cols = 0 ;
 				for(TableProperties tp : table.getTableproperty()){
-					Cell cell2 = row2.createCell(table.getTableproperty().indexOf(tp)); 
+					Cell cell2 = row2.createCell(cols++); 
 					cell2.setCellStyle(cellStyle); 
 					if(value.get(tp.getFieldname())!=null){
-						if(tp.isSeldata()){
+						if(tp.isModits()) {
+							List<String> list = (List)value.get(tp.getFieldname());
+							if(list.size()>0) {
+								cell2.setCellValue(new HSSFRichTextString(list.remove(0)));
+							}
+							ExportData expData = new ExportData(tp , list) ;
+							if(list.size()>0) {
+								tempExportDatas.add(expData) ;
+								if(list.size() > expData.getMaxcols()) {
+									expData.setMaxcols(list.size());
+								}
+							}
+						}else if(tp.isSeldata()){
 							SysDic sysDic = UKeFuDic.getInstance().getDicItem(String.valueOf(value.get(tp.getFieldname()))) ;
-							cell2.setCellValue(new HSSFRichTextString(sysDic.getName()));
+							if(sysDic!=null) {
+								cell2.setCellValue(new HSSFRichTextString(sysDic.getName()));
+							}
+						}else if(tp.isReffk() && !StringUtils.isBlank(tp.getReftbid())){
+							String key = (String) value.get(tp.getFieldname()) ;
+							String orgi = (String) value.get("orgi") ;
+							if(!StringUtils.isBlank(key) && !StringUtils.isBlank(orgi)) {
+			            		DataExchangeInterface exchange = (DataExchangeInterface) UKDataContext.getContext().getBean(tp.getReftbid()) ;
+			            		Object refvalue = exchange.getDataByIdAndOrgi(key, orgi) ;
+			            		if(refvalue!=null) {
+			            			cell2.setCellValue(new HSSFRichTextString(refvalue.toString()));
+			            		}
+							}
 						}else{
 							cell2.setCellValue(new HSSFRichTextString(String.valueOf(value.get(tp.getFieldname()))));
+						}
+					}
+				}
+				if(tempExportDatas.size() > 0) {
+					for(ExportData expData : tempExportDatas) {
+						for(int i=0 ; i<expData.getMaxcols() ; i++) {
+							if(titleRow.getCell(cols + i) == null) {
+								Cell title = titleRow.createCell(cols + i); 
+								title.setCellStyle(firstStyle); 
+								title.setCellValue(new HSSFRichTextString(expData.getTp().getName()));
+							}
+						}
+						
+						for(String itemValue : expData.getValues()) {
+							Cell cell2 = row2.createCell(cols++);
+							cell2.setCellValue(new HSSFRichTextString(itemValue));
 						}
 					}
 				}

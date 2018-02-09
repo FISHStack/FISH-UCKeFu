@@ -2,6 +2,8 @@ package com.ukefu.webim.web.handler.admin.channel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -9,7 +11,6 @@ import javax.validation.Valid;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
@@ -22,10 +23,14 @@ import com.ukefu.util.Menu;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
 import com.ukefu.webim.service.repository.SNSAccountRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.CousultInvite;
+import com.ukefu.webim.web.model.Organ;
+import com.ukefu.webim.web.model.OrgiSkillRel;
+import com.ukefu.webim.web.model.User;
 
 @Controller
 @RequestMapping("/admin/webim")
@@ -40,6 +45,9 @@ public class WebIMController extends Handler{
 	@Autowired
 	private UserRepository userRes ;
 	
+	@Autowired
+	private OrgiSkillRelRepository orgiSkillRelService;
+	
 	@Value("${web.upload-path}")
     private String path;
 	
@@ -53,8 +61,8 @@ public class WebIMController extends Handler{
     	CousultInvite coultInvite = invite.findBySnsaccountidAndOrgi(snsid, super.getOrgi(request)) ;
     	if(coultInvite!=null){
     		map.addAttribute("inviteData", coultInvite);
-    		map.addAttribute("skillList", organRes.findByOrgiAndSkill(super.getOrgi(request), true)) ;
-        	map.addAttribute("agentList", userRes.findByOrgiAndAgent(super.getOrgi(request), true , new PageRequest(0, super.getPs(request)))) ;
+    		map.addAttribute("skillList", getOrgans(request)) ;
+        	map.addAttribute("agentList",getUsers(request)) ;
         	
         	map.addAttribute("import", request.getServerPort()) ;
         	
@@ -231,5 +239,49 @@ public class WebIMController extends Handler{
     	}
     	CacheHelper.getSystemCacheBean().put(inviteData.getSnsaccountid(), inviteData, inviteData.getOrgi());
         return request(super.createRequestPageTempletResponse("redirect:/admin/webim/invote.html?snsid="+inviteData.getSnsaccountid()));
+    }
+    
+    /**
+	 * 获取当前产品下组织信息
+	 * @param request
+	 * @return
+	 */
+	private List<Organ> getOrgans(HttpServletRequest request){
+    	List<Organ> list = null;
+    	if(super.isTenantshare()) {
+			List<String> organIdList = new ArrayList<>();
+			List<OrgiSkillRel> orgiSkillRelList = orgiSkillRelService.findByOrgi(super.getOrgi(request)) ;
+			if(!orgiSkillRelList.isEmpty()) {
+				for(OrgiSkillRel rel:orgiSkillRelList) {
+					organIdList.add(rel.getSkillid());
+				}
+			}
+			list = organRes.findAll(organIdList);
+		}else {
+			list = organRes.findByOrgiAndOrgid(super.getOrgi(request),super.getOrgid(request)) ;
+		}
+    	return list;
+    }
+	/**
+	 * 获取当前产品下人员信息
+	 * @param request
+	 * @param q
+	 * @return
+	 */
+	private List<User> getUsers(HttpServletRequest request){
+		List<User> userList = null;
+		if(super.isTenantshare()) {
+			List<String> organIdList = new ArrayList<>();
+			List<OrgiSkillRel> orgiSkillRelList = orgiSkillRelService.findByOrgi(super.getOrgi(request)) ;
+			if(!orgiSkillRelList.isEmpty()) {
+				for(OrgiSkillRel rel:orgiSkillRelList) {
+					organIdList.add(rel.getSkillid());
+				}
+			}
+			userList=userRes.findByOrganInAndAgentAndDatastatus(organIdList,true,false);
+		}else {
+			userList=userRes.findByOrgiAndAgentAndDatastatus(super.getOrgi(request), true,false) ;
+		}
+		return userList;
     }
 }

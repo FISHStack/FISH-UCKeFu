@@ -157,6 +157,15 @@ public class Handler {
 	public String getOrgi(HttpServletRequest request){	
 		return getUser(request).getOrgi();
 	}
+	/**
+	 * 机构id
+	 * @param request
+	 * @return
+	 */
+	public String getOrgid(HttpServletRequest request){	
+		User u = getUser(request);
+		return u.getOrgid();
+	}
 	
 	public Tenant getTenant(HttpServletRequest request){
 		return tenantRes.findById(getOrgi(request));
@@ -181,6 +190,18 @@ public class Handler {
 	public boolean isTenantshare(){	
 		SystemConfig systemConfig = UKTools.getSystemConfig();
 		if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantshare()) {
+			return true;
+    	}
+		return false;
+	}
+	
+	/**
+	 * 判断是否多租户
+	 * @return
+	 */
+	public boolean isEnabletneant(){	
+		SystemConfig systemConfig = UKTools.getSystemConfig();
+		if(systemConfig!=null&&systemConfig.isEnabletneant()) {
 			return true;
     	}
 		return false;

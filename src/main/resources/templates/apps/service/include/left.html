@@ -71,10 +71,12 @@
 				</#if>
 			
 			</#if>
-			<#if user?? && (user.roleAuthMap["A08_A03_A04"]?? || user.usertype == "0") >
-			<dd <#if subtype?? && subtype == 'callcenterprocessed'>class="layui-this"</#if>>
-				<a href="/apps/callcenter/processed/index.html">已处理呼叫中心</a>
-			</dd>
+			<#if models?? && models["callcenter"]?? && models["callcenter"] == true>
+				<#if user?? && (user.roleAuthMap["A08_A03_A04"]?? || user.usertype == "0") >
+				<dd <#if subtype?? && subtype == 'callcenterprocessed'>class="layui-this"</#if>>
+					<a href="/apps/callcenter/processed/index.html">已处理呼叫中心</a>
+				</dd>
+				</#if>
 			</#if>
 			
 		</dl>

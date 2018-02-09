@@ -19,11 +19,13 @@
 				<button class="layui-btn layui-btn-small green" href="/setting/quickreply/add.html<#if quickType??>?parentid=${quickType.id!''}</#if>" data-toggle="ajax" data-width="750" data-title="创建新问答">
 					添加问答
 				</button>
-				<div class="layui-btn-group ukefu-btn-group">
-					<button class="layui-btn layui-btn-small" href="/setting/quickreply/imp.html?<#if quickType??>type=${quickType.id}</#if>" title="导入快捷回复" data-toggle="ajax" data-width="950" data-height="600">
-						<i class="kfont">&#xe641;</i> 导入 
-					</button>
-				</div>
+				<#if quickType??>
+					<div class="layui-btn-group ukefu-btn-group">
+						<button class="layui-btn layui-btn-small" href="/setting/quickreply/imp.html?<#if quickType??>type=${quickType.id}</#if>" title="导入快捷回复" data-toggle="ajax" data-width="950" data-height="600">
+							<i class="kfont">&#xe641;</i> 导入 
+						</button>
+					</div>
+				</#if>
 				<div class="layui-btn-group ukefu-btn-group">
 					<button class="layui-btn layui-btn-small dropdown-menu">
 						<i class="kfont">&#xe672;</i> 导出 
@@ -58,8 +60,8 @@
 				  <colgroup>
 				  		<col width="1%">
 						<col width="24%">
-						<col width="45%">
-						<col width="30%">
+						<col width="54%">
+						<col width="20%">
 						<col width="1%">
 					<col>
 				  </colgroup>
@@ -82,9 +84,9 @@
 						<input type="checkbox" class="ids" name="ids" value="${quickReply.id!''}"/>
 					  </td>
 					  <td>
-							${quickReply.title!''}
+							<#if quickReply.title?? && quickReply.title?length gt 100>${quickReply.title[0..100]}...<#else>${quickReply.title!''}</#if>
 					  </td>
-					  <td>${quickReply.content!''}</td>
+					  <td><#if quickReply.content?? && quickReply.content?length gt 100>${quickReply.content[0..100]}...<#else>${quickReply.content!''}</#if></td>
 					  <td>${quickReply.createtime?string("yyyy-MM-dd HH:mm:ss")}</td>
 					  <td style="white-space:nowrap;" nowrap="nowrap">
 							<a href="/setting/quickreply/edit.html?id=${quickReply.id!''}" data-toggle="ajax" data-width="750" data-title="编辑用户信息">

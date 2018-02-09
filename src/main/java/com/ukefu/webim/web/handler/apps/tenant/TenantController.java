@@ -3,6 +3,9 @@ package com.ukefu.webim.web.handler.apps.tenant;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,11 +29,15 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.AgentUserRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.OrganizationRepository;
 import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
 import com.ukefu.webim.service.repository.TenantRepository;
+import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentStatus;
+import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.OrgiSkillRel;
 import com.ukefu.webim.web.model.Tenant;
@@ -48,14 +55,20 @@ public class TenantController extends Handler{
 	@Autowired
 	private OrganRepository organRes;
 	
+	@Autowired
+	private OrganizationRepository organizationRes;
+	
+	@Autowired
+	private AgentUserRepository agentUserRepository;
+	
 	@Value("${web.upload-path}")
     private String path;
     @RequestMapping("/index")
     @Menu(type = "apps" , subtype = "tenant")
-    public ModelAndView index(ModelMap map , HttpServletRequest request,@Valid String msg) throws FileNotFoundException, IOException {
-    	if(super.isTenantshare()) {
+    public ModelAndView index(ModelMap map , HttpServletRequest request,@Valid String msg,@Valid String currentorgi,@Valid String currentname) throws FileNotFoundException, IOException {
+    	if(super.isEnabletneant()) {
     		if("0".equals(super.getUser(request).getUsertype())) {
-    			map.addAttribute("tenantList", tenantRes.findAll());
+    			map.addAttribute("tenantList", tenantRes.findByOrgid(super.getOrgid(request)));
     		}else {
     			List<OrgiSkillRel> orgiSkillRelList = orgiSkillRelRes.findBySkillid((super.getUser(request)).getOrgan());
     			List<Tenant> tenantList = null;
@@ -73,8 +86,13 @@ public class TenantController extends Handler{
     	}else{
     		map.addAttribute("tenantList", tenantRes.findById(super.getOrgi(request)));
     	}
+    	map.addAttribute("organization", organizationRes.findById(super.getUser(request).getOrgid()));
     	map.addAttribute("msg",msg);
-    	return request(super.createAppsTempletResponse("/apps/tenant/index"));
+    	map.addAttribute("currentorgi",currentorgi);
+    	if(currentname!=null) {
+    		map.addAttribute("currentname",URLDecoder.decode(currentname,"UTF-8"));
+    	}
+    	return request(super.createRequestPageTempletResponse("/apps/tenant/index"));
     }
     
     @RequestMapping("/add")
@@ -82,7 +100,7 @@ public class TenantController extends Handler{
     public ModelAndView add(ModelMap map , HttpServletRequest request) {
     	if(super.isTenantshare()) {
     		map.addAttribute("isShowSkillList",true);
-    		List<Organ> organList = organRes.findByOrgiAndSkill(super.getOrgiByTenantshare(request), true);
+    		List<Organ> organList = organRes.findByOrgiAndOrgid(super.getOrgiByTenantshare(request),super.getOrgid(request));
         	map.addAttribute("skillList",organList);
     	}
         return request(super.createRequestPageTempletResponse("/apps/tenant/add"));
@@ -91,6 +109,10 @@ public class TenantController extends Handler{
     @RequestMapping("/save")
     @Menu(type = "apps" , subtype = "tenant")
     public ModelAndView save(HttpServletRequest request ,@Valid Tenant tenant, @RequestParam(value = "tenantpic", required = false) MultipartFile tenantpic,@Valid String skills) throws NoSuchAlgorithmException, IOException {
+    	Tenant tenanttemp = tenantRes.findByOrgidAndTenantname(super.getOrgid(request),tenant.getTenantname());
+    	if(tenanttemp!=null) {
+    		return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index.html?msg=tenantexist"));
+    	}
     	tenantRes.save(tenant) ;
     	if(tenantpic!=null && tenantpic.getOriginalFilename().lastIndexOf(".") > 0){
     		File logoDir = new File(path , "tenantpic");
@@ -115,13 +137,13 @@ public class TenantController extends Handler{
     			orgiSkillRelRes.save(rel) ;
     		}
     	}
-    	
     	if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
     		tenant.setOrgid(super.getUser(request).getOrgid());
 		}else {
 			tenant.setOrgid(UKDataContext.SYSTEM_ORGI);
 		}
     	tenantRes.save(tenant) ;
+    	OnlineUserUtils.clean(tenantid);
     	return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index"));
     }
     
@@ -130,7 +152,7 @@ public class TenantController extends Handler{
     public ModelAndView edit(ModelMap map , HttpServletRequest request , @Valid String id) {
     	if(super.isTenantshare()) {
     		map.addAttribute("isShowSkillList",true);
-    		List<Organ> organList = organRes.findByOrgiAndSkill(super.getOrgiByTenantshare(request), true);
+    		List<Organ> organList = organRes.findByOrgiAndOrgid(super.getOrgiByTenantshare(request),super.getOrgid(request));
         	map.addAttribute("skillList",organList);
         	List<OrgiSkillRel>  orgiSkillRelList = orgiSkillRelRes.findByOrgi(id) ;
         	map.addAttribute("orgiSkillRelList",orgiSkillRelList);
@@ -143,6 +165,10 @@ public class TenantController extends Handler{
     @Menu(type = "apps" , subtype = "tenant" , admin = true)
     public ModelAndView update(HttpServletRequest request ,@Valid Tenant tenant, @RequestParam(value = "tenantpic", required = false) MultipartFile tenantpic,@Valid String skills) throws NoSuchAlgorithmException, IOException {
     	Tenant temp = tenantRes.findById(tenant.getId()) ;
+    	Tenant tenanttemp = tenantRes.findByOrgidAndTenantname(super.getOrgid(request),tenant.getTenantname());
+    	if(temp!=null&&tenanttemp!=null&&!temp.getId().equals(tenanttemp.getId())) {
+    		return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index.html?msg=tenantexist"));
+    	}
     	if(tenant!=null) {
     		tenant.setCreatetime(temp.getCreatetime());
     		if(tenantpic!=null && tenantpic.getOriginalFilename().lastIndexOf(".") > 0){
@@ -175,6 +201,7 @@ public class TenantController extends Handler{
         			orgiSkillRelRes.save(rel) ;
         		}
         	}
+        	OnlineUserUtils.clean(tenant.getId());
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index"));
     }
@@ -189,7 +216,48 @@ public class TenantController extends Handler{
     	return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index"));
     }
     
-    @RequestMapping("/switch")
+    @RequestMapping("/canswitch")
+    @Menu(type = "apps" , subtype = "tenant")
+    public ModelAndView canswitch(HttpServletRequest request ,@Valid Tenant tenant) throws UnsupportedEncodingException {
+    	ModelAndView view = request(super.createRequestPageTempletResponse("redirect:/"));
+    	AgentStatus agentStatus = (AgentStatus)CacheHelper.getAgentStatusCacheBean().getCacheObject((super.getUser(request)).getId(), super.getOrgi(request));
+    	if(agentStatus==null && ServiceQuene.getAgentUsers(super.getUser(request).getId(), super.getOrgi(request))==0) {
+    		Tenant temp = tenantRes.findById(tenant.getId()) ;
+        	if(temp!=null) {
+        		super.getUser(request).setOrgi(temp.getId());
+        	}
+        	return view;
+    	}
+    	if(agentStatus!=null) {
+    		if(tenant.getId().equals(agentStatus.getOrgi())){
+    			Tenant temp = tenantRes.findById(tenant.getId()) ;
+            	if(temp!=null) {
+            		super.getUser(request).setOrgi(temp.getId());
+            	}
+            	return view;
+    		}else {
+    			Tenant temp = tenantRes.findById(agentStatus.getOrgi()) ;
+    			return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index.html?msg=t0"+"&currentorgi="+agentStatus.getOrgi()+"&currentname="+URLEncoder.encode(temp!=null?temp.getTenantname():"","UTF-8")));
+    		}
+    	}
+    	AgentUser agentUser = agentUserRepository.findOneByAgentnoAndStatusAndOrgi(super.getUser(request).getId(), UKDataContext.AgentUserStatusEnum.INSERVICE.toString(), super.getOrgi(request));
+    	if(agentUser!=null) {
+    		if(tenant.getId().equals(agentUser.getOrgi())){
+    			Tenant temp = tenantRes.findById(tenant.getId()) ;
+            	if(temp!=null) {
+            		super.getUser(request).setOrgi(temp.getId());
+            	}
+            	return view;
+    		}else {
+    			Tenant temp = tenantRes.findById(agentUser.getOrgi()) ;
+    			return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index.html?msg=t0"+"&currentorgi="+agentUser.getOrgi()+"&currentname="+URLEncoder.encode(temp!=null?temp.getTenantname():"","UTF-8")));
+    		}
+    		
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index.html?msg=t0"));
+    }
+    
+    /*@RequestMapping("/switch")
     @Menu(type = "apps" , subtype = "tenant")
     public ModelAndView switchTenant(HttpServletRequest request ,@Valid Tenant tenant) {
     	ModelAndView view = request(super.createRequestPageTempletResponse("redirect:/"));
@@ -201,6 +269,21 @@ public class TenantController extends Handler{
         	}
         	return view;
     	}
-    	return request(super.createRequestPageTempletResponse("redirect:/?vt=orgi&msg=t0"));
-    }
+    	if(agentStatus!=null && tenant.getId().equals(agentStatus.getOrgi())) {
+    		Tenant temp = tenantRes.findById(tenant.getId()) ;
+        	if(temp!=null) {
+        		super.getUser(request).setOrgi(temp.getId());
+        	}
+        	return view;
+    	}
+    	AgentUser agentUser = agentUserRepository.findOneByAgentnoAndStatusAndOrgi(super.getUser(request).getId(), UKDataContext.AgentUserStatusEnum.INSERVICE.toString(), super.getOrgi(request));
+    	if(agentUser!=null&&tenant.getId().equals(agentUser.getOrgi())) {
+    		Tenant temp = tenantRes.findById(tenant.getId()) ;
+        	if(temp!=null) {
+        		super.getUser(request).setOrgi(temp.getId());
+        	}
+        	return view;
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index.html?msg=t0"));
+    }*/
 }

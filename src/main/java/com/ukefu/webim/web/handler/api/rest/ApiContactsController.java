@@ -47,7 +47,7 @@ public class ApiContactsController extends Handler{
 		Page<Contacts> contactsList = null ;
 		if(!StringUtils.isBlank(creater)){
 			User user = super.getUser(request) ;
-			contactsList = contactsRepository.findByCreaterAndShares(user.getId(), user.getId(), false, q, new PageRequest(super.getP(request), super.getPs(request))) ;
+			contactsList = contactsRepository.findByCreaterAndSharesAndOrgi(user.getId(), user.getId(),super.getOrgi(request), false, q, new PageRequest(super.getP(request), super.getPs(request))) ;
 		}else{
 			contactsList = contactsRepository.findByOrgi(super.getOrgi(request), false , q , new PageRequest(super.getP(request), super.getPs(request))) ;
 		}

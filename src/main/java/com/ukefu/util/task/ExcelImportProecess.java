@@ -92,7 +92,7 @@ public class ExcelImportProecess extends DataProcess{
             for(TableProperties tp : table.getTableproperty()){
             	if(tp.isReffk() && !StringUtils.isBlank(tp.getReftbid())){
             		DataExchangeInterface exchange = (DataExchangeInterface) UKDataContext.getContext().getBean(tp.getReftbid()) ;
-            		refValues.put(tp.getFieldname(), exchange.getListDataByIdAndOrgi(null, null, UKDataContext.SYSTEM_ORGI)) ;
+            		refValues.put(tp.getFieldname(), exchange.getListDataByIdAndOrgi(null, null, event.getOrgi())) ;
             	}
             }
             
@@ -102,6 +102,7 @@ public class ExcelImportProecess extends DataProcess{
 					Object data = event.getDSData().getClazz().newInstance() ;
 					Map<Object, Object> values = new HashMap<Object , Object>() ;
 					ArrayListMultimap<String, Object> multiValues = ArrayListMultimap.create();
+					boolean skipDataVal = false; //跳过数据校验
 					for(int col=0 ; col<colNum ; col++){
 						Cell value = row.getCell(col) ;
 						Cell title = titleRow.getCell(col) ;
@@ -109,23 +110,37 @@ public class ExcelImportProecess extends DataProcess{
 						TableProperties tableProperties = getTableProperties(event, titleValue);
 						if(tableProperties!=null && value!=null){
 							String valuestr = getValue(value) ;
-							if(tableProperties.isModits()){
-								multiValues.put(tableProperties.getFieldname(), valuestr) ;
-							}else{
-								if(tableProperties.isSeldata()){
-									SysDic sysDic = UKeFuDic.getInstance().getDicItem(valuestr) ;
-									if(sysDic!=null){
-										values.put(tableProperties.getFieldname(), sysDic.getName()) ;
+							if(!StringUtils.isBlank(valuestr)) {
+								if(tableProperties.isModits()){
+									if(!StringUtils.isBlank(valuestr)) {
+										multiValues.put(tableProperties.getFieldname(), valuestr) ;
+									}
+								}else{
+									if(tableProperties.isSeldata()){
+										SysDic sysDic = UKeFuDic.getInstance().getDicItem(valuestr) ;
+										if(sysDic!=null){
+											values.put(tableProperties.getFieldname(), sysDic.getName()) ;
+										}else{
+											List<SysDic> dicItemList = UKeFuDic.getInstance().getSysDic(tableProperties.getSeldatacode());
+											if(dicItemList!=null && dicItemList.size() > 0) {
+												for(SysDic dicItem : dicItemList) {
+													if(dicItem.getName().equals(valuestr)) {
+														values.put(tableProperties.getFieldname(), dicItem.getId()) ; break ;
+													}
+												}
+											}
+										}
+									}else if(tableProperties.isReffk() && refValues.get(tableProperties.getFieldname())!=null){
+										List keys = refValues.get(tableProperties.getFieldname()) ;
+										if(keys != null) {
+											values.put(tableProperties.getFieldname() , getRefid(tableProperties,refValues.get(tableProperties.getFieldname()) , valuestr)) ;
+										}
 									}else{
 										values.put(tableProperties.getFieldname(), valuestr) ;
 									}
-								}else if(tableProperties.isReffk() && refValues.get(tableProperties.getFieldname())!=null){
-									values.put(tableProperties.getFieldname() , getRefid(tableProperties,refValues.get(tableProperties.getFieldname()) , valuestr)) ;
-								}else{
-									values.put(tableProperties.getFieldname(), valuestr) ;
-								}
-								if(tableProperties.isPk() && !tableProperties.getFieldname().equalsIgnoreCase("id")){
-									values.put("id", UKTools.md5(valuestr)) ;
+									if(tableProperties.isPk() && !tableProperties.getFieldname().equalsIgnoreCase("id")){
+										values.put("id", UKTools.md5(valuestr)) ;
+									}
 								}
 							}
 							event.getDSData().getReport().setBytes(event.getDSData().getReport().getBytes() + valuestr.length());
@@ -141,6 +156,47 @@ public class ExcelImportProecess extends DataProcess{
 					}
 					values.putAll(multiValues.asMap());
 					
+					for(TableProperties tp : table.getTableproperty()){
+						if(!StringUtils.isBlank(tp.getDefaultvaluetitle())) {
+							String valuestr = (String) values.get(tp.getFieldname()) ;
+							if(tp.getDefaultvaluetitle().indexOf("required") >= 0 && StringUtils.isBlank(valuestr)) {
+								skipDataVal = true ; break ;
+							}else if(valuestr!=null && (tp.getDefaultvaluetitle().indexOf("numstr") >= 0 && !valuestr.matches("[\\d]{1,}"))) {
+								skipDataVal = true ; break ;
+							}else if(valuestr!=null && (tp.getDefaultvaluetitle().indexOf("datenum") >= 0 || tp.getDefaultvaluetitle().indexOf("datetime") >= 0 )) {
+								if(!valuestr.matches("[\\d]{4,4}-[\\d]{2,2}-[\\d]{2,2}") && !valuestr.matches("[\\d]{4,4}-[\\d]{2,2}-[\\d]{2} [\\d]{2,2}:[\\d]{2,2}:[\\d]{2,2}")) {
+									skipDataVal = true ; break ;
+								}else {
+									if(valuestr.matches("[\\d]{4,4}-[\\d]{2,2}-{1,1}")) {
+										if("date".equals(tp.getDefaultfieldvalue())) {
+											values.put(tp.getFieldname(),UKTools.simpleDateFormat.parse(valuestr));
+										}else {
+											values.put(tp.getFieldname(),UKTools.simpleDateFormat.format(UKTools.simpleDateFormat.parse(valuestr)));
+										}
+									}else if(valuestr.matches("[\\d]{4,4}-[\\d]{2,2}-[\\d]{2,2} [\\d]{2,2}:[\\d]{2,2}:[\\d]{2,2}")) {
+										if("date".equals(tp.getDefaultfieldvalue())) {
+											values.put(tp.getFieldname(),UKTools.dateFormate.parse(valuestr));
+										}else {
+											values.put(tp.getFieldname(),UKTools.simpleDateFormat.format(UKTools.dateFormate.parse(valuestr)));
+										}
+										
+									}
+								}
+							}
+						}
+		            	if(tp.isReffk() && !StringUtils.isBlank(tp.getReftbid()) && refValues.get(tp.getFieldname()) == null){
+		            		DataExchangeInterface exchange = (DataExchangeInterface) UKDataContext.getContext().getBean(tp.getReftbid()) ;
+		            		exchange.process(data, event.getOrgi());
+		            	}
+		            }
+					
+					if(!values.containsKey("orgi")) {
+						skipDataVal = true ;
+					}
+					if(skipDataVal == true) {	//跳过
+						continue ;
+					}
+					values.put("creater", event.getValues().get("creater")) ;
 					UKTools.populate(data, values);
 					event.getDSData().getProcess().process(data);
             	}
@@ -171,6 +227,12 @@ public class ExcelImportProecess extends DataProcess{
 			Object target = null ;
 			if(PropertyUtils.isReadable(data, "name")){
 				target = BeanUtils.getProperty(data, "name") ;
+				if(target!=null && target.equals(value)){
+					id = BeanUtils.getProperty(data, "id") ;
+				}
+			}
+			if(PropertyUtils.isReadable(data, "tag")){
+				target = BeanUtils.getProperty(data, "tag") ;
 				if(target!=null && target.equals(value)){
 					id = BeanUtils.getProperty(data, "id") ;
 				}

@@ -9,14 +9,13 @@
 	content="width=device-width, maximum-scale=1.0, initial-scale=1.0,initial-scale=1.0,user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <title>UCKeFu-全渠道客服系统</title>
-<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?t=1487250759056"/>
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?t=${.now?long}"/>
 <link rel="stylesheet" href="/css/flexboxgrid.min.css">
 <link rel="stylesheet" type="text/css" href="/css/darktooltip.css" />
 <link rel="stylesheet" href="css/layui.css">
 <link rel="stylesheet" href="/js/ztree/zTreeStyle/zTreeStyle.css">
 <link rel="stylesheet" href="/js/select/css/select2.min.css"/>	
 <link rel="stylesheet" href="/res/css.html">
-
 <link rel="stylesheet" type="text/css" href="/js/kindeditor/themes/default/default.css">
 
 <script src="/js/jquery-1.10.2.min.js"></script>
@@ -60,9 +59,11 @@
 		layui.use('layer', function(){
 			layerhelper = layer ;
 			<#if Request["msg"]?? && Request["msg"] == "security">
-			layer.alert("您访问的资源需要安全验证，请确认您有系统管理员权限！", {icon: 2});
-			<#elseif msg?? && msg == 't0'>
-				layer.alert('当前坐席就绪或对话未结束，不能切换${systemConfig.namealias!''}', {icon: 1});
+				layer.alert("您访问的资源需要安全验证，请确认您有系统管理员权限！", {icon: 2});
+				<#elseif msg?? && msg == 't0'>
+					layer.alert('当前坐席就绪或对话未结束，不能切换${systemConfig.namealias!''}', {icon: 2});
+					<#elseif msg?? && msg == 't1'>
+					layer.alert('当前用户坐席就绪或对话未结束，不能切换为非坐席', {icon: 2});
 			</#if>
 			<#if models?? && models["im"]?? && models["im"] == true>
 			var imDialogHelper = {
@@ -123,11 +124,9 @@
 				loadURL("/agent/busy.html") ;
 			}
 		});
-		$(".ukefu-left-menu").darkTooltip({
-    		gravity: "west"
-    	});
-		
-		
+	    $(".ukefu-left-menu").darkTooltip({
+	    		gravity: "west"
+	    	});
 	});
 	function closeentim(){
 		if(layerhelper){
@@ -255,6 +254,13 @@
 								</a>
 							</dd>
 							 -->
+							 <#if models?? && models["xiaoe"]?? && models["xiaoe"] == true>
+								 <#if user?? && (user.roleAuthMap["A09_A02_A01"]?? || user.usertype == "0") >
+								 	<a href="javascript:void(0)" data-title="知识库" data-href="/apps/xiaoe/knowledge.html" class="iframe_btn" data-id="maincontent" data-type="tabChange"> 
+										<i class="kfont" style="position: relative;">&#xe62a;</i>
+									</a>
+								</#if>
+							</#if>
 							<#if user?? &&( user.roleAuthMap["A06"]?? || user.usertype == "0")>
 								<dd class="ukefu-left-menu" data-tooltip="客服设置">
 									<a href="javascript:void(0)" data-title="客服设置" data-href="/setting/agent/index.html" class="iframe_btn" data-id="maincontent" data-type="tabChange"> <i class="layui-icon"

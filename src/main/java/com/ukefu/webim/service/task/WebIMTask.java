@@ -101,30 +101,34 @@ public class WebIMTask {
 	
 	@Scheduled(fixedDelay= 5000) // 每5秒执行一次
     public void agent() {
-		SessionConfig sessionConfig = ServiceQuene.initSessionConfig(UKDataContext.SYSTEM_ORGI) ;
-		if(sessionConfig!=null && UKDataContext.getContext() != null && sessionConfig.isAgentreplaytimeout()){
-			List<AgentUserTask> agentUserTask = agentUserTaskRes.findByLastgetmessageLessThanAndStatusAndOrgi(UKTools.getLastTime(sessionConfig.getAgenttimeout()) , UKDataContext.AgentUserStatusEnum.INSERVICE.toString() , sessionConfig.getOrgi()) ;
-			for(AgentUserTask task : agentUserTask){		// 超时未回复
-				AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(task.getUserid(), UKDataContext.SYSTEM_ORGI);
-				if(agentUser!=null){
-					AgentStatus agentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentUser.getAgentno(), task.getOrgi()) ;
-					if(agentStatus!=null && ( (task.getReptimes()!=null && task.getReptimes().equals("0")) || task.getReptimes() == null  )){
-						task.setReptimes("1");
-						task.setReptime(new Date());
-						
-						//发送提示消息
-						processMessage(sessionConfig, sessionConfig.getAgenttimeoutmsg() ,agentUser , agentStatus , task);
-						agentUserTaskRes.save(task) ;
+		List<SessionConfig> sessionConfigList = ServiceQuene.initSessionConfigList() ;
+		if(sessionConfigList!=null && sessionConfigList.size() > 0 && UKDataContext.getContext() != null){
+			for(SessionConfig sessionConfig : sessionConfigList) {
+				sessionConfig = ServiceQuene.initSessionConfig(sessionConfig.getOrgi()) ;
+				if(sessionConfig!=null && UKDataContext.getContext() != null && sessionConfig.isAgentreplaytimeout()){
+					List<AgentUserTask> agentUserTask = agentUserTaskRes.findByLastgetmessageLessThanAndStatusAndOrgi(UKTools.getLastTime(sessionConfig.getAgenttimeout()) , UKDataContext.AgentUserStatusEnum.INSERVICE.toString() , sessionConfig.getOrgi()) ;
+					for(AgentUserTask task : agentUserTask){		// 超时未回复
+						AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(task.getUserid(), UKDataContext.SYSTEM_ORGI);
+						if(agentUser!=null){
+							AgentStatus agentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentUser.getAgentno(), task.getOrgi()) ;
+							if(agentStatus!=null && ( (task.getReptimes()!=null && task.getReptimes().equals("0")) || task.getReptimes() == null  )){
+								task.setReptimes("1");
+								task.setReptime(new Date());
+								
+								//发送提示消息
+								processMessage(sessionConfig, sessionConfig.getAgenttimeoutmsg() ,agentUser , agentStatus , task);
+								agentUserTaskRes.save(task) ;
+							}
+						}
 					}
 				}
 			}
-				
 		}
 	}
 	
-	@Scheduled(fixedDelay= 10000) // 每分钟执行一次
+	@Scheduled(fixedDelay= 600000) // 每分钟执行一次
     public void onlineuser() {
-		Page<OnlineUser> pages = onlineUserRes.findByOrgiAndStatusAndCreatetimeLessThan(UKDataContext.SYSTEM_ORGI, UKDataContext.OnlineUserOperatorStatus.ONLINE.toString(), UKTools.getLastTime(60), new PageRequest(0,  100)) ;
+		Page<OnlineUser> pages = onlineUserRes.findByStatusAndCreatetimeLessThan(UKDataContext.OnlineUserOperatorStatus.ONLINE.toString(), UKTools.getLastTime(60), new PageRequest(0,  100)) ;
 		if(pages.getContent().size()>0){
 			for(OnlineUser onlineUser : pages.getContent()){
 				try {
@@ -165,7 +169,7 @@ public class WebIMTask {
 						AiUser aiUser = (AiUser)data ;
 						if(UKDataContext.model.get("xiaoe")!=null){
 							DataExchangeInterface dataInterface = (DataExchangeInterface) UKDataContext.getContext().getBean("aiconfig") ;
-							AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(aiUser.getId(), UKDataContext.SYSTEM_ORGI) ;
+							AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(aiUser.getId(), aiUser.getOrgi()) ;
 							if(aiConfig!=null){
 								long leavetime = (System.currentTimeMillis() - aiUser.getTime())/1000 ;
 								if(leavetime > 600 || leavetime > aiConfig.getAsktimes()){//最大空闲时间不能超过540秒 

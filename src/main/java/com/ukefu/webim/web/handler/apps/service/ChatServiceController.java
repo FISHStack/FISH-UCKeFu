@@ -29,13 +29,16 @@ import com.ukefu.webim.service.repository.AgentStatusRepository;
 import com.ukefu.webim.service.repository.AgentUserRepository;
 import com.ukefu.webim.service.repository.LeaveMsgRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
 import com.ukefu.webim.service.repository.UserRepository;
+import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentService;
 import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.LeaveMsg;
 import com.ukefu.webim.web.model.Organ;
+import com.ukefu.webim.web.model.OrgiSkillRel;
 import com.ukefu.webim.web.model.User;
 
 @Controller
@@ -62,6 +65,8 @@ public class ChatServiceController extends Handler{
 	
 	@Autowired
 	private UserRepository userRes ;
+	@Autowired
+	private OrgiSkillRelRepository orgiSkillRelService;
 	
 	@RequestMapping("/history/index")
     @Menu(type = "service" , subtype = "history" , admin= true)
@@ -82,19 +87,24 @@ public class ChatServiceController extends Handler{
     public ModelAndView trans(ModelMap map , HttpServletRequest request , @Valid String id) {
 		if(!StringUtils.isBlank(id)){
 			AgentService agentService = agentServiceRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
-			map.addAttribute("organList", organRes.findByOrgi(super.getOrgi(request))) ;
-			
-			List<String> usersids = new ArrayList<String>();
-			
-			Collection<?> users =  CacheHelper.getAgentStatusCacheBean().getAllCacheObject(super.getOrgi(request)) ;
-			Iterator<?> iterator = users.iterator() ;
-			while(iterator.hasNext()){
-				String agentno = (String) iterator.next() ;
-				if(agentno!=null && !agentno.equals(super.getUser(request).getId())){
-					usersids.add(agentno) ;
+			List<Organ> skillList = OnlineUserUtils.organ(super.getOrgi(request),true) ;
+			String currentOrgan = super.getUser(request).getOrgan();
+			if(StringUtils.isBlank(currentOrgan)) {
+				if(!skillList.isEmpty()) {
+					currentOrgan = skillList.get(0).getId();
 				}
 			}
-			List<User> userList = userRes.findAll(usersids) ;
+			List<AgentStatus> agentStatusList = ServiceQuene.getAgentStatus(null , super.getOrgi(request));
+			List<String> usersids = new ArrayList<String>();
+			if(!agentStatusList.isEmpty()) {
+				for(AgentStatus agentStatus:agentStatusList) {
+					if(agentStatus!=null && !agentStatus.getAgentno().equals(super.getUser(request).getId())){
+						usersids.add(agentStatus.getAgentno()) ;
+					}
+				}
+				
+			}
+			List<User> userList = userRes.findAll(usersids);
 			for(User user : userList){
 				user.setAgentStatus((AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(user.getId(), super.getOrgi(request)));
 			}
@@ -103,6 +113,8 @@ public class ChatServiceController extends Handler{
 			map.addAttribute("agentserviceid", agentService.getId()) ;
 			map.addAttribute("agentuserid", agentService.getAgentuserid()) ;
 			map.addAttribute("agentservice", agentService) ;
+			map.addAttribute("skillList", skillList) ;
+			map.addAttribute("currentorgan", currentOrgan) ;
 		}
 		
 		return request(super.createRequestPageTempletResponse("/apps/service/current/transfer"));
@@ -278,11 +290,28 @@ public class ChatServiceController extends Handler{
 		
         return request(super.createRequestPageTempletResponse("redirect:/service/agent/index.html"));
     }
-	
+	/**
+	 * 非管理员坐席
+	 * @param map
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/user/index")
     @Menu(type = "service" , subtype = "userlist" , admin= true)
     public ModelAndView user(ModelMap map , HttpServletRequest request) {
-		Page<User> userList = userRes.findByOrgiAndAgent(super.getOrgi(request), true,  new PageRequest(super.getP(request), super.getPs(request), Direction.DESC , "createtime")) ;
+		Page<User> userList = null;
+		if(super.isTenantshare()) {
+			List<String> organIdList = new ArrayList<>();
+			List<OrgiSkillRel> orgiSkillRelList = orgiSkillRelService.findByOrgi(super.getOrgi(request)) ;
+			if(!orgiSkillRelList.isEmpty()) {
+				for(OrgiSkillRel rel:orgiSkillRelList) {
+					organIdList.add(rel.getSkillid());
+				}
+			}
+			userList=userRes.findByOrganInAndAgentAndDatastatus(organIdList,true,false,new PageRequest(super.getP(request), super.getPs(request), Direction.DESC , "createtime"));
+		}else {
+			userList=userRes.findByOrgiAndAgentAndDatastatus(super.getOrgi(request), true,false,  new PageRequest(super.getP(request), super.getPs(request), Direction.DESC , "createtime")) ;
+		}
 		for(User user : userList.getContent()){
 			if(CacheHelper.getAgentStatusCacheBean().getCacheObject(user.getId(), super.getOrgi(request))!=null){
 				user.setOnline(true);
@@ -291,7 +320,24 @@ public class ChatServiceController extends Handler{
 		map.put("userList", userList) ;
         return request(super.createAppsTempletResponse("/apps/service/user/index"));
     }
-	
+	/**
+	 * 管理员坐席
+	 * @param map
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/adminagent/index")
+    @Menu(type = "service" , subtype = "adminagentlist" , admin= true)
+    public ModelAndView adminagent(ModelMap map , HttpServletRequest request) {
+		Page<User> userList = userRes.findByOrgidAndAgentAndDatastatusAndUsertype(super.getOrgid(request), true,false,"0",  new PageRequest(super.getP(request), super.getPs(request), Direction.DESC , "createtime")) ;
+		for(User user : userList.getContent()){
+			if(CacheHelper.getAgentStatusCacheBean().getCacheObject(user.getId(), super.getOrgi(request))!=null){
+				user.setOnline(true);
+			}
+		}
+		map.put("userList", userList) ;
+        return request(super.createAppsTempletResponse("/apps/service/adminagent/index"));
+    }
 	@RequestMapping("/leavemsg/index")
     @Menu(type = "service" , subtype = "leavemsg" , admin= true)
     public ModelAndView leavemsg(ModelMap map , HttpServletRequest request) {

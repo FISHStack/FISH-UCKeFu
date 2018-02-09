@@ -34,8 +34,8 @@
 							<label class="layui-form-label">共享联系人：</label>
 							<div class="layui-input-inline" style="width:auto;">
 								<div class="layui-input-block">
-									<input type="radio" name="shares" value="none" title="不共享（仅创建人和直属上级可见）"> 
-									<input type="radio" name="shares" value="all" title="所有人" checked>
+									<input type="radio" name="shares" value="none" title="不共享（仅创建人和直属上级可见）" <#if contacts?? && contacts.shares !='all'>checked</#if>> 
+									<input type="radio" name="shares" value="all" title="所有人" <#if contacts?? && contacts.shares =='all'>checked</#if>>
 									<!-- 
 									<input type="radio" name="shares" value="1" title="指定人员或部门" checked>
 									 -->
@@ -75,7 +75,7 @@
 						<div class="layui-inline uckefu-inline">
 							<label class="layui-form-label">生日：</label>
 							<div class="layui-input-inline">
-								<input type="text" id="birthday" name="birthday" value="${contacts.birthday!''}" autocomplete="off"
+								<input type="text" id="cusbirthday" name="cusbirthday" value="${contacts.cusbirthday!''}" autocomplete="off"
 									class="layui-input">
 								<i class="layui-icon" style="position: absolute;right: 3px;top: 6px;font-size: 25px;">&#xe637;</i>
 							</div>
@@ -186,7 +186,7 @@
 			laydate(date);
 		}
 		
-		document.getElementById('birthday').onclick = function() {
+		document.getElementById('cusbirthday').onclick = function() {
 			date.elem = this;
 			laydate(date);
 		}

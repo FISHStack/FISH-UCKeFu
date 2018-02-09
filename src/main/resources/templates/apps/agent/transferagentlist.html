@@ -16,7 +16,7 @@
 	</tr>
     </thead>
     <tbody>
-	<#if userList??>
+	<#if userList?? && currentorgan??>
 	    <#list userList as agent>
 		<#if agent.organ == currentorgan>
 		<tr class="ukefu-agentstatus">

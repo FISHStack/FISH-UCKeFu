@@ -31,8 +31,8 @@
 							<label class="layui-form-label">共享客户：</label>
 							<div class="layui-input-inline" style="width:auto;">
 								<div class="layui-input-block">
-									<input type="radio" name="entcustomer.shares" value="none" title="不共享（仅创建人和直属上级可见）"> 
-									<input type="radio" name="entcustomer.shares" value="all" title="所有人" checked>
+									<input type="radio" name="entcustomer.shares" value="none" title="不共享（仅创建人和直属上级可见）"  <#if entCustomer?? && entCustomer.shares !='all'>checked</#if>> 
+									<input type="radio" name="entcustomer.shares" value="all" title="所有人" <#if entCustomer?? && entCustomer.shares =='all'>checked</#if>>
 									<!-- 
 									<input type="radio" name="entcustomer.shares" value="1" title="指定人员或部门" checked>
 									 -->

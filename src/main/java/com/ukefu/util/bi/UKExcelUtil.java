@@ -137,7 +137,9 @@ public class UKExcelUtil{
 		cell.setCellValue(new XSSFRichTextString(this.headTitle)); 
 
 		// 指定合并区域 
-		sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum,0,(cellNumber-1))); 
+		if(rowNum>0) {
+			sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum,0,(cellNumber-1))); 
+		}
 
 		CellStyle cellStyle = wb.createCellStyle(); 
 		
@@ -216,9 +218,9 @@ public class UKExcelUtil{
 		cell2.setCellValue(new XSSFRichTextString(strb.toString())); 
 		cell2.setCellStyle(leftStyle);
 		// 指定合并区域 
-		sheet.addMergedRegion(new CellRangeAddress(rowNum,  rowNum, 0, (cellNumber-1)));
-		
- 		
+		if(rowNum>1) {
+			sheet.addMergedRegion(new CellRangeAddress(rowNum,  rowNum, 0, (cellNumber-1)));
+		}
 		
 		for(int i=1;i<this.cellNumber;i++){
 			Cell cell3= row1.createCell(i); 

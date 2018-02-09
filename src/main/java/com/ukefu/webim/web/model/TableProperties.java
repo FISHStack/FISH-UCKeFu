@@ -90,8 +90,8 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	private boolean defaultsort ;		//是否默认排序字段
 	private boolean descorder ;			//默认倒叙排列
 	private String defaultvalue ;
-	private String defaultvaluetitle ;
-	private String defaultfieldvalue ;
+	private String defaultvaluetitle ;	//改变用途，修改为 数据完整性校验
+	private String defaultfieldvalue ;	//改变用处，是否需要转换日期
 	private boolean multpartfile = true;
 	private String uploadtype ;
 	private String cascadetype;//级联删除 none不删除，deleteself删除主数据，deleteall删除关联数据

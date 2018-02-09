@@ -83,12 +83,11 @@ public class IMAgentController extends Handler{
     	tempSessionConfig.setOrgi(super.getOrgi(request));
     	sessionConfigRes.save(tempSessionConfig) ;
     	
-    	CacheHelper.getSystemCacheBean().put(UKDataContext.SYSTEM_CACHE_SESSION_CONFIG,tempSessionConfig, super.getOrgi(request)) ;
+    	CacheHelper.getSystemCacheBean().put(UKDataContext.SYSTEM_CACHE_SESSION_CONFIG+"_"+super.getOrgi(request),tempSessionConfig, super.getOrgi(request)) ;
     	
     	CacheHelper.getSystemCacheBean().delete(UKDataContext.SYSTEM_CACHE_SESSION_CONFIG_LIST , UKDataContext.SYSTEM_ORGI) ;
     	
     	ServiceQuene.initSessionConfigList() ;
-    	
     	map.put("sessionConfig", tempSessionConfig) ;
         return request(super.createAppsTempletResponse("/apps/setting/agent/index"));
     }
@@ -249,7 +248,7 @@ public class IMAgentController extends Handler{
 		}
 		adTypeRes.save(adv) ;
 		
-		UKTools.initAdv();
+		UKTools.initAdv(super.getOrgi(request));
 		
         return request(super.createRequestPageTempletResponse("redirect:/setting/adv.html?adpos="+adv.getAdpos()));
     }
@@ -285,7 +284,7 @@ public class IMAgentController extends Handler{
     			ad.setImgurl(tempad.getImgurl());
     		}
     		adTypeRes.save(ad) ;
-    		UKTools.initAdv();
+    		UKTools.initAdv(super.getOrgi(request));
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/setting/adv.html?adpos="+adpos));
     }
@@ -294,7 +293,7 @@ public class IMAgentController extends Handler{
     @Menu(type = "setting" , subtype = "adv" , admin= false)
     public ModelAndView advdelete(ModelMap map , HttpServletRequest request , @Valid String id , @Valid String adpos) {
     	adTypeRes.delete(id);
-    	UKTools.initAdv();
+    	UKTools.initAdv(super.getOrgi(request));
     	return request(super.createRequestPageTempletResponse("redirect:/setting/adv.html?adpos="+adpos));
     }
 }

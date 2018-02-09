@@ -9,8 +9,9 @@
 						<div class="layui-inline">
 							<label class="layui-form-label" id="cusname">分类名称：</label>
 							<div class="layui-input-inline">
-								<input type="text" name="name" required  lay-verify="required" autocomplete="off" maxlength="100"
+								<input type="text" maxlength="20" name="name" required  lay-verify="required" autocomplete="off" maxlength="100"
 									class="layui-input">
+								
 							</div>
 							<font color="red">*</font>
 						</div>
@@ -35,7 +36,7 @@
 							<label class="layui-form-label">上级分类：</label>
 							<div class="layui-input-inline" style="position: relative;">
 								<input type="hidden" id="parentid" name="parentid" value="<#if quickType??>${quickType.id!''}<#else>0</#if>">
-								<input type="text" name="parentname" id="parentname" required value="<#if quickType??><#if quickTypeList??><#list quickTypeList as qt><#if quickType.id == qt.id>${qt.name!''}</#if></#list></#if><#else>公共目录</#if>" lay-verify="required" autocomplete="off" readOnly="readonly" onClick="showMenu();"
+								<input type="text" name="parentname" id="parentname" required value="<#if quickType??><#if quickTypeList??><#list quickTypeList as qt><#if quickType.id == qt.id>${qt.name!''}</#if></#list></#if><#else>问答分类</#if>" lay-verify="required" autocomplete="off" readOnly="readonly" onClick="showMenu();"
 									class="layui-input">
 								<i class="layui-icon" style="position: absolute;right: 3px;top: 6px;font-size: 25px;${systemConfig.color!'color:#0096C4;'}" onClick="showMenu()">&#xe631;</i>
 								<div id="menuContent" style="display:none; position: absolute;z-index:10000;" class="ukefu-ztree">
@@ -50,7 +51,7 @@
 						<div class="layui-inline">
 							<label class="layui-form-label">分类备注：</label>
 							<div class="layui-input-inline" style="width: 664px;">
-								<textarea name="description" placeholder="请输入内容" class="layui-textarea" style="resize:none;" maxlength="255"></textarea>
+								<textarea maxlength="256" name="description" placeholder="请输入内容" class="layui-textarea" style="resize:none;" maxlength="255"></textarea>
 							</div>
 						</div>
 					</div>

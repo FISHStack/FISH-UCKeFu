@@ -23,4 +23,8 @@ public class ContactsDataExchangeImpl implements DataExchangeInterface{
 	public List<Serializable> getListDataByIdAndOrgi(String id , String creater, String orgi) {
 		return null ;
 	}
+	
+	public void process(Object data , String orgi) {
+		
+	}
 }

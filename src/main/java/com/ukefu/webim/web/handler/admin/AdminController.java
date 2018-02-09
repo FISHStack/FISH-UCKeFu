@@ -100,23 +100,13 @@ public class AdminController extends Handler{
 		map.put("browserConsultReport", UKTools.getWebIMDataAgg(onlineUserRes.findByOrgiAndCreatetimeRangeForBrowser(super.getOrgi(request), UKTools.getLast30Day(), UKTools.getEndTime(), UKDataContext.ChannelTypeEnum.WEBIM.toString()))) ;
 	}
     private List<User> getAgent(HttpServletRequest request){
-		//获取当前租户坐席数
-		final String orgi = super.getOrgi(request);
-		final List<OrgiSkillRel> orgiSkillRelList = orgiSkillRelRepository.findByOrgi(super.getOrgi(request));
-    	List<User> userList = userRes.findAll(new Specification<User>(){
-			@Override
-			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query,
-					CriteriaBuilder cb) {
-				List<Predicate> list = new ArrayList<Predicate>();  
-				if(!orgiSkillRelList.isEmpty()){
-					for(OrgiSkillRel rel : orgiSkillRelList){
-						list.add(cb.equal(root.get("organ").as(String.class), rel.getSkillid())) ;
-					}
-				}
-				Predicate[] p = new Predicate[list.size()];  
-				cb.and(cb.equal(root.get("orgi").as(String.class),orgi)) ;
-			    return cb.or(list.toArray(p));  
-			}}) ;
+		//获取当前产品or租户坐席数
+    	List<User> userList = new ArrayList<>();
+		if(super.isEnabletneant()) {
+			userList = userRes.findByOrgidAndAgentAndDatastatus(super.getOrgid(request), true, false);
+		}else {
+			 userList = userRes.findByOrgiAndAgentAndDatastatus(super.getOrgi(request), true, false);
+		}
     	return userList.isEmpty()?new ArrayList<User>():userList;
 	}
     
@@ -125,6 +115,12 @@ public class AdminController extends Handler{
     public ModelAndView content(ModelMap map , HttpServletRequest request) {
     	aggValues(map, request);
     	return request(super.createAdminTempletResponse("/admin/content"));
+    	/*if(super.getUser(request).isSuperuser()) {
+    		aggValues(map, request);
+        	return request(super.createAdminTempletResponse("/admin/content"));
+    	}else {
+    		return request(super.createAdminTempletResponse("/admin/user/index"));
+    	}*/
     }
 
     @RequestMapping("/admin/auth/infoacq")

@@ -34,7 +34,7 @@
 						</form>
 						<#if user?? && (user.roleAuthMap["A03_A01_A02_B06"]?? || user.usertype == "0") >
 						<div class="layui-btn-group ukefu-btn-group">
-						  	<a href="/apps/customer/add.html" title="新建客户" data-toggle="ajax" data-width="950" data-height="600" class="layui-btn layui-btn-small" >
+						  	<a href="/apps/customer/add.html<#if ekind??>?ekind=${ekind}</#if>" title="新建客户" data-toggle="ajax" data-width="950" data-height="600" class="layui-btn layui-btn-small" >
 							  	<i class="layui-icon">&#xe608;</i>
 							  	新建客户
 						  	</a>
@@ -42,7 +42,7 @@
 						</#if>
 						<#if user?? && (user.roleAuthMap["A03_A01_A02_B09"]?? || user.usertype == "0") >
 						<div class="layui-btn-group ukefu-btn-group">
-							<button class="layui-btn layui-btn-small" href="/apps/customer/imp.html" title="导入客户" data-toggle="ajax" data-width="950" data-height="600">
+							<button class="layui-btn layui-btn-small" href="/apps/customer/imp.html<#if ekind??>?ekind=${ekind}</#if>" title="导入客户" data-toggle="ajax" data-width="950" data-height="600">
 								<i class="kfont">&#xe641;</i> 导入 
 							</button>
 						</div>
@@ -62,13 +62,13 @@
 									</a>
 								</li>
 								<li>
-									<a href="/apps/customer/expsearch.html?1=1<#if q??>&q=${q!''}</#if><#if ekind??>&kind=${ekind}</#if>&subtype=${subtype}" title="导出客户" target="_blank">
+									<a href="/apps/customer/expsearch.html?1=1<#if q??>&q=${q!''}</#if><#if ekind??>&ekind=${ekind}</#if>&subtype=${subtype}" title="导出客户" target="_blank">
 										<i class="kfont">&#xe672;</i>
 										导出当前搜索结果
 									</a>
 								</li>
 								<li>
-									<a href="/apps/customer/expall.html" title="导出客户" target="_blank">
+									<a href="/apps/customer/expall.html<#if ekind??>?ekind=${ekind}</#if>" title="导出客户" target="_blank">
 										<i class="kfont">&#xe672;</i>
 										导出全部数据
 									</a>

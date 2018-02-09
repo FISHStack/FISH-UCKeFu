@@ -3,6 +3,7 @@ package com.ukefu.webim.web.handler.apps.service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +43,9 @@ public class StatsController extends Handler{
 	@RequestMapping("/stats/coment")
     @Menu(type = "service" , subtype = "statcoment" , admin= true)
     public ModelAndView statcoment(ModelMap map , HttpServletRequest request , @Valid String agent , @Valid String skill , @Valid String begin ,@Valid String end) throws Exception {
-		ReportData reportData = new CubeService("coment.xml", path, dataSource , UKTools.getRequestParam(request)).execute("SELECT [comment].[满意度].members on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [满意度]") ;
+		Map<String,Object> mapR =UKTools.getRequestParam(request);
+		mapR.put("orgi",super.getOrgi(request));
+		ReportData reportData = new CubeService("coment.xml", path, dataSource ,mapR ).execute("SELECT [comment].[满意度].members on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [满意度]") ;
 		
 		List<SysDic> dicList = UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_DIC) ;
 		for(Level title : reportData.getCol().getChilderen()){
@@ -66,7 +69,7 @@ public class StatsController extends Handler{
 		if(!StringUtils.isBlank(end)){
 			map.addAttribute("end", end);
 		}
-		
+		map.addAttribute("orgi",super.getOrgi(request));
 		 /***
 	     * 查询 技能组 ， 缓存？ 
 	     */
@@ -82,7 +85,9 @@ public class StatsController extends Handler{
 	@RequestMapping("/stats/coment/exp")
     @Menu(type = "service" , subtype = "statcoment" , admin= true)
     public void statcomentexp(ModelMap map , HttpServletRequest request , HttpServletResponse response , @Valid String agent , @Valid String skill , @Valid String begin ,@Valid String end) throws Exception {
-		ReportData reportData = new CubeService("coment.xml", path, dataSource , UKTools.getRequestParam(request)).execute("SELECT [comment].[满意度].members on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [满意度]") ;
+		Map<String,Object> mapR =UKTools.getRequestParam(request);
+		mapR.put("orgi",super.getOrgi(request));
+		ReportData reportData = new CubeService("coment.xml", path, dataSource , mapR).execute("SELECT [comment].[满意度].members on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [满意度]") ;
 		
 		List<SysDic> dicList = UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_DIC) ;
 		for(Level title : reportData.getCol().getChilderen()){
@@ -102,7 +107,9 @@ public class StatsController extends Handler{
 	@RequestMapping("/stats/agent")
     @Menu(type = "service" , subtype = "statagent" , admin= true)
     public ModelAndView statagent(ModelMap map , HttpServletRequest request , @Valid String agent , @Valid String skill , @Valid String begin ,@Valid String end) throws Exception {
-		ReportData reportData = new CubeService("consult.xml", path, dataSource , UKTools.getRequestParam(request)).execute("SELECT {[Measures].[咨询数量],[Measures].[平均等待时长（秒）],[Measures].[平均咨询时长（秒）]} on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [咨询]") ;
+		Map<String,Object> mapR =UKTools.getRequestParam(request);
+		mapR.put("orgi",super.getOrgi(request));
+		ReportData reportData = new CubeService("consult.xml", path, dataSource , mapR).execute("SELECT {[Measures].[咨询数量],[Measures].[平均等待时长（秒）],[Measures].[平均咨询时长（秒）]} on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [咨询]") ;
 		map.addAttribute("reportData", reportData);
 		
 		if(!StringUtils.isBlank(agent)){
@@ -132,7 +139,9 @@ public class StatsController extends Handler{
 	@RequestMapping("/stats/agent/exp")
     @Menu(type = "service" , subtype = "statagent" , admin= true)
     public void statagentexp(ModelMap map , HttpServletRequest request , HttpServletResponse response ,@Valid String agent , @Valid String skill , @Valid String begin ,@Valid String end) throws Exception {
-		ReportData reportData = new CubeService("consult.xml", path, dataSource , UKTools.getRequestParam(request)).execute("SELECT {[Measures].[咨询数量],[Measures].[平均等待时长（秒）],[Measures].[平均咨询时长（秒）]} on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [咨询]") ;
+		Map<String,Object> mapR =UKTools.getRequestParam(request);
+		mapR.put("orgi",super.getOrgi(request));
+		ReportData reportData = new CubeService("consult.xml", path, dataSource , mapR).execute("SELECT {[Measures].[咨询数量],[Measures].[平均等待时长（秒）],[Measures].[平均咨询时长（秒）]} on columns , NonEmptyCrossJoin([time].[日期].members , NonEmptyCrossJoin([skill].[技能组].members,[agent].[坐席].members)) on rows  FROM [咨询]") ;
 		response.setHeader("content-disposition", "attachment;filename=UCKeFu-Report-"+new SimpleDateFormat("yyyy-MM-dd").format(new Date())+".xlsx");
 		new UKExcelUtil(reportData , response.getOutputStream() , "客服坐席统计").createFile() ;
 		

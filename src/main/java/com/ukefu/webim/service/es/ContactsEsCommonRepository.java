@@ -10,13 +10,13 @@ import com.ukefu.webim.web.model.Contacts;
 
 public interface ContactsEsCommonRepository {
 	
-	public Page<Contacts> findByCreaterAndShares(String creater , String shares , boolean includeDeleteData , String q , Pageable page) ;
+	public Page<Contacts> findByCreaterAndSharesAndOrgi(String creater , String shares , String orgi,boolean includeDeleteData , String q , Pageable page) ;
 
 	public Page<Contacts> findByOrgi(String orgi, boolean includeDeleteData , String q , Pageable page) ;
 	
 	public Page<Contacts> findByDataAndOrgi(String orgi, String q , Pageable page) ;
 	
-	public Page<Contacts> findByCreaterAndShares(String creater , String shares  , Date begin , Date end, boolean includeDeleteData , String q , Pageable page) ;
+	public Page<Contacts> findByCreaterAndSharesAndOrgi(String creater , String shares ,String orgi , Date begin , Date end, boolean includeDeleteData , String q , Pageable page) ;
 
-	public Page<Contacts> findByCreaterAndShares(String creater, String shares,Date begin, Date end, boolean includeDeleteData,BoolQueryBuilder boolQueryBuilder, String q, Pageable page);
+	public Page<Contacts> findByCreaterAndSharesAndOrgi(String creater, String shares,String orgi,Date begin, Date end, boolean includeDeleteData,BoolQueryBuilder boolQueryBuilder, String q, Pageable page);
 }

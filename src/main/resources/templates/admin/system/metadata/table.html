@@ -18,7 +18,7 @@
 					  </th>
 					  <th>标题</th>
 					  <th>字段</th>
-					  <th>类型</th>
+					  <th>校验</th>
 					  <th>长度</th>
 					  <th>关联</th>
 					  <th>生成ID</th>
@@ -39,8 +39,8 @@
 					  <td>
 					  	${prop.name!''}	
 					  </td>
-					  <td>${prop.fieldname!''}	</td>
-					  <td>${prop.datatypename!''}</td>
+					  <td>${prop.fieldname!''}（${prop.datatypename!''}）</td>
+					  <td>${prop.defaultvaluetitle!''}</td>
 					  <td>${prop.length!''}</td>
 					  <td align="center"><#if prop.reffk == true><i class="layui-icon"  class="green">&#xe618;</#if></td>
 					  <td align="center"><#if prop.pk == true><i class="layui-icon" class="green">&#xe618;</#if></td>

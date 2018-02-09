@@ -41,7 +41,7 @@ public class AiIMEventHandler
     {  
     	try {
 			String user = client.getHandshakeData().getSingleUrlParam("userid") ;
-//			String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
+			String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
 //			String session = client.getHandshakeData().getSingleUrlParam("session") ;
 //			String appid = client.getHandshakeData().getSingleUrlParam("appid") ;
 //			String agent = client.getHandshakeData().getSingleUrlParam("agent") ;
@@ -52,7 +52,6 @@ public class AiIMEventHandler
 //				 * 加入到 缓存列表
 //				 */
 				NettyClients.getInstance().putIMEventClient(user, client);
-//				
 				MessageOutContent outMessage = new MessageOutContent() ;
 		    	outMessage.setMessage("欢迎使用优客服小E，我来帮您解答问题");
 		    	outMessage.setMessageType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
@@ -64,8 +63,7 @@ public class AiIMEventHandler
 				
 				InetSocketAddress address = (InetSocketAddress) client.getRemoteAddress()  ;
 				String ip = UKTools.getIpAddr(client.getHandshakeData().getHttpHeaders(), address.getHostString()) ;
-				
-				CacheHelper.getOnlineUserCacheBean().put(client.getSessionId().toString(), new AiUser(client.getSessionId().toString(), user, System.currentTimeMillis() , IPTools.getInstance().findGeography(ip)), UKDataContext.SYSTEM_ORGI);
+				CacheHelper.getOnlineUserCacheBean().put(client.getSessionId().toString(), new AiUser(client.getSessionId().toString(), user, System.currentTimeMillis() , orgi,IPTools.getInstance().findGeography(ip)), UKDataContext.SYSTEM_ORGI);
 				
 			}
 		} catch (Exception e) {

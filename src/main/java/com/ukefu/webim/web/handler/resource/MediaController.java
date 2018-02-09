@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.repository.AttachmentRepository;
+import com.ukefu.webim.service.repository.CubeService;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AttachmentFile;
 import com.ukefu.webim.web.model.UploadStatus;
@@ -35,6 +36,8 @@ public class MediaController extends Handler{
 	
 	@Value("${web.upload-path}")
     private String path;
+	
+	private String TEMPLATE_DATA_PATH = "WEB-INF/data/templates/";
 	
 	@Autowired
 	private AttachmentRepository attachementRes;
@@ -136,6 +139,24 @@ public class MediaController extends Handler{
     	        }
     		}
     	}
+    }
+    @RequestMapping("/template")
+    @Menu(type = "resouce" , subtype = "template" , access = false)
+    public void template(HttpServletResponse response,HttpServletRequest request, @Valid String filename) throws IOException {
+    	if(!StringUtils.isBlank(filename)){
+    		InputStream is = MediaController.class.getClassLoader().getResourceAsStream(TEMPLATE_DATA_PATH+filename);
+    		if(is!=null) {
+    			response.setContentType("text/plain");  
+    	        response.setHeader("Content-Disposition", "attachment;filename="+java.net.URLEncoder.encode(filename, "UTF-8"));  
+    	        int length ;
+    	        byte[] data = new byte[1024] ;
+    	        while((length = is.read(data)) > 0) {
+    	        	response.getOutputStream().write(data , 0 , length);
+    	        }
+    	        is.close();
+    		}
+    	}
+    	return ;
     }
     
 }

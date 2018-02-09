@@ -55,7 +55,7 @@ public class User implements java.io.Serializable{
 	private String secureconf = "5";
 	private String usertype ; // 0 Admin User  : !0  Other User
 	
-	private boolean superuser ;	//是否是超级管理员
+	private boolean superuser = false ;	//是否是超级管理员
 	
 	private String orgi ;
 	private String orgid ;
@@ -458,7 +458,6 @@ public class User implements java.io.Serializable{
 	public void setCallcenter(boolean callcenter) {
 		this.callcenter = callcenter;
 	}
-	@Transient
 	public boolean isSuperuser() {
 		return superuser;
 	}

@@ -32,6 +32,7 @@ import com.ukefu.webim.service.repository.OnlineUserHisRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
+import com.ukefu.webim.service.repository.TenantRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.router.RouterHelper;
 import com.ukefu.webim.util.server.message.NewRequestMessage;
@@ -49,6 +50,7 @@ import com.ukefu.webim.web.model.OrgiSkillRel;
 import com.ukefu.webim.web.model.SceneType;
 import com.ukefu.webim.web.model.SessionConfig;
 import com.ukefu.webim.web.model.SystemConfig;
+import com.ukefu.webim.web.model.Tenant;
 import com.ukefu.webim.web.model.Topic;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserTraceHistory;
@@ -189,6 +191,7 @@ public class OnlineUserUtils {
 			SystemConfig systemConfig = UKTools.getSystemConfig();
 			if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantshare()) {
 				orgi = UKDataContext.SYSTEM_ORGI;
+				isShare =true;
 	    	}
 		}
 		List<Organ> skillList = (List<Organ>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.CACHE_SKILL+origOrig, origOrig) ;
@@ -301,8 +304,8 @@ public class OnlineUserUtils {
 	public static List<KnowledgeType> filterTopicType(List<KnowledgeType> topicTypeList , List<Topic> topicList){
 		List<KnowledgeType> tempTopicTypeList = new ArrayList<KnowledgeType>();
 		if(topicTypeList!=null){
-			boolean hasTopic = false ;
 			for(KnowledgeType knowledgeType : topicTypeList){
+				boolean hasTopic = false ;
 				for(Topic topic : topicList){
 					if(knowledgeType.getId().equals(topic.getCate())){
 						hasTopic = true ; break ;
@@ -343,18 +346,37 @@ public class OnlineUserUtils {
 	@SuppressWarnings("unchecked")
 	public static List<User> agents(String orgi,boolean isJudgeShare){
 		String origOrig = orgi;
+		boolean isShare = false;
 		if(isJudgeShare) {
 			SystemConfig systemConfig = UKTools.getSystemConfig();
 			if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantshare()) {
 				orgi = UKDataContext.SYSTEM_ORGI;
+				isShare = true;
 	    	}
 		}
 		List<User> agentList = (List<User>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.CACHE_AGENT+origOrig, origOrig) ;
+		List<User> agentTempList = null;
 		if(agentList == null){
 			UserRepository service = (UserRepository) UKDataContext.getContext().getBean(UserRepository.class);
-			agentList = service.findByOrgiAndAgent(orgi, true) ;
-			if(agentList.size() > 0){
-				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_AGENT+origOrig, agentList, origOrig);
+			agentList = service.findByOrgiAndAgentAndDatastatus(orgi, true,false) ;
+			agentTempList = new ArrayList<User>();
+			//共享的话 查出绑定的组织
+			if(isShare) {
+				OrgiSkillRelRepository orgiSkillRelService = (OrgiSkillRelRepository) UKDataContext.getContext().getBean(OrgiSkillRelRepository.class);
+				List<OrgiSkillRel> orgiSkillRelList = orgiSkillRelService.findByOrgi(origOrig) ;
+				if(!orgiSkillRelList.isEmpty()) {
+					for(User user:agentList) {
+						for(OrgiSkillRel rel:orgiSkillRelList) {
+							if(user.getOrgan()!=null && user.getOrgan().equals(rel.getSkillid())) {
+								agentTempList.add(user);
+							}
+						}
+					}
+				}
+			}
+			agentList = agentTempList;
+			if(agentTempList.size() > 0){
+				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_AGENT+origOrig, agentTempList, origOrig);
 			}
 		}
 		return agentList;
@@ -362,8 +384,25 @@ public class OnlineUserUtils {
 	
 	
 	public static void clean(String orgi){
-		CacheHelper.getSystemCacheBean().delete(UKDataContext.CACHE_SKILL+orgi, orgi) ;
-		CacheHelper.getSystemCacheBean().delete(UKDataContext.CACHE_AGENT+orgi, orgi) ;
+		//共享 查出机构下所有产品
+		SystemConfig systemConfig = UKTools.getSystemConfig();
+		if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantshare()) {
+			TenantRepository tenantRes = UKDataContext.getContext().getBean(TenantRepository.class) ;
+			Tenant tenant = tenantRes.findById(orgi);
+			if(tenant!=null) {
+				List<Tenant> tenantList = tenantRes.findByOrgid(tenant.getOrgid());
+				if(!tenantList.isEmpty()) {
+					for(Tenant t:tenantList) {
+						String orgiT = t.getId();
+						CacheHelper.getSystemCacheBean().delete(UKDataContext.CACHE_SKILL+orgiT, orgiT) ;
+			    		CacheHelper.getSystemCacheBean().delete(UKDataContext.CACHE_AGENT+orgiT, orgiT) ;
+					}
+				}
+			}
+    	}else {
+    		CacheHelper.getSystemCacheBean().delete(UKDataContext.CACHE_SKILL+orgi, orgi) ;
+    		CacheHelper.getSystemCacheBean().delete(UKDataContext.CACHE_AGENT+orgi, orgi) ;
+    	}
 	}
 	/**
 	 * 
@@ -924,7 +963,7 @@ public class OnlineUserUtils {
 		List<Topic> topicList = null ;
 		if((topicList = (List<Topic>) CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopic", orgi))==null){ 
 			topicList = (List<Topic>) dataExchange.getListDataByIdAndOrgi(null, null,  orgi) ;
-			CacheHelper.getSystemCacheBean().put("xiaoeTopic" , topicList , orgi) ;
+			//CacheHelper.getSystemCacheBean().put("xiaoeTopic" , topicList , orgi) ;
 		}
 		return topicList;
 	}
@@ -940,7 +979,7 @@ public class OnlineUserUtils {
 		List<KnowledgeType> topicTypeList = null ;
 		if((topicTypeList = (List<KnowledgeType>) CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopicType", orgi))==null){ 
 			topicTypeList = (List<KnowledgeType>) dataExchange.getListDataByIdAndOrgi(null, null,  orgi) ;
-			CacheHelper.getSystemCacheBean().put("xiaoeTopicType" , topicTypeList , orgi) ;
+			//CacheHelper.getSystemCacheBean().put("xiaoeTopicType" , topicTypeList , orgi) ;
 		}
 		return topicTypeList;
 	}
@@ -950,7 +989,7 @@ public class OnlineUserUtils {
 		List<SceneType> sceneTypeList = null ;
 		if((sceneTypeList = (List<SceneType>) CacheHelper.getSystemCacheBean().getCacheObject("xiaoeSceneType", orgi))==null){ 
 			sceneTypeList = (List<SceneType>) dataExchange.getListDataByIdAndOrgi(null, null,  orgi) ;
-			CacheHelper.getSystemCacheBean().put("xiaoeSceneType" , sceneTypeList , orgi) ;
+			//CacheHelper.getSystemCacheBean().put("xiaoeSceneType" , sceneTypeList , orgi) ;
 		}
 		return sceneTypeList;
 	}

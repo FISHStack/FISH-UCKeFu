@@ -625,7 +625,9 @@ public class UKTools {
 				{    
 					return null;    
 				}    
-				if(!(arg1 instanceof String)){    
+				if(arg1 instanceof Date){
+					return arg1 ;
+				}else if(!(arg1 instanceof String)){    
 					throw new ConversionException("只支持字符串转换 !");    
 				}    
 				String str = (String)arg1;    
@@ -909,10 +911,10 @@ public class UKTools {
 	 * 缓存 广告位
 	 * @return
 	 */
-	public static void initAdv(){
-		CacheHelper.getSystemCacheBean().delete(UKDataContext.UKEFU_SYSTEM_ADV, UKDataContext.SYSTEM_ORGI) ;
+	public static void initAdv(String orgi){
+		CacheHelper.getSystemCacheBean().delete(UKDataContext.UKEFU_SYSTEM_ADV+"_"+orgi, orgi) ;
 		AdTypeRepository adRes = UKDataContext.getContext().getBean(AdTypeRepository.class) ;
-    	CacheHelper.getSystemCacheBean().put(UKDataContext.UKEFU_SYSTEM_ADV, adRes.findAll(), UKDataContext.SYSTEM_ORGI);
+    	CacheHelper.getSystemCacheBean().put(UKDataContext.UKEFU_SYSTEM_ADV+"_"+orgi, adRes.findByOrgi(orgi),orgi);
 	}
 	
 	public static Template getTemplate(String id){
@@ -925,9 +927,14 @@ public class UKTools {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static AdType getPointAdv(String adpos){
+	public static AdType getPointAdv(String adpos,String orgi){
 		List<AdType> adTypeList = new ArrayList<AdType>();
-		List <AdType> cacheAdTypeList = (List<AdType>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.UKEFU_SYSTEM_ADV, UKDataContext.SYSTEM_ORGI);
+		List <AdType> cacheAdTypeList = (List<AdType>) CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.UKEFU_SYSTEM_ADV+"_"+orgi,orgi);
+		if(cacheAdTypeList == null) {
+			AdTypeRepository adRes = UKDataContext.getContext().getBean(AdTypeRepository.class) ;
+			cacheAdTypeList = adRes.findByOrgi(orgi);
+	    	CacheHelper.getSystemCacheBean().put(UKDataContext.UKEFU_SYSTEM_ADV+"_"+orgi,cacheAdTypeList,orgi);
+		}
 		List<SysDic> sysDicList = UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_ADPOS_DIC) ;
 		SysDic sysDic = null ;
 		if(sysDicList!=null){

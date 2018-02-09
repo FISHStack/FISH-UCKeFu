@@ -17,7 +17,7 @@
 						<#if skill.id == user.organ>
 						<#assign agentNum = 0 >
 						<#if userList??><#list userList as agent><#if agent.organ == skill.id><#assign agentNum = agentNum + 1 ></#if></#list></#if>
-						<li class="uk_role <#if skill.id == user.organ>this</#if>" style="margin:0px;padding:7px;" onclick="$('.uk_role.this').removeClass('this');$(this).addClass('this');"><a
+						<li class="uk_role <#if skill.id == currentorgan>this</#if>" style="margin:0px;padding:7px;" onclick="$('.uk_role.this').removeClass('this');$(this).addClass('this');"><a
 							href="/agent/transfer/agent.html?organ=${skill.id!''}" data-toggle="load" data-target="#skillAgentList">
 								<i class="kfont"></i> ${skill.name!''}（${agentNum!''}）
 						</a></li>
@@ -30,7 +30,7 @@
 						<#if skill.id != user.organ>
 						<#assign agentNum = 0 >
 						<#if userList??><#list userList as agent><#if agent.organ == skill.id><#assign agentNum = agentNum + 1 ></#if></#list></#if>
-						<li class="uk_role <#if skill.id == user.organ>this</#if>" style="margin:0px;padding:7px;"  onclick="$('.uk_role.this').removeClass('this');$(this).addClass('this');"><a
+						<li class="uk_role <#if skill.id == currentorgan>this</#if>" style="margin:0px;padding:7px;"  onclick="$('.uk_role.this').removeClass('this');$(this).addClass('this');"><a
 							href="/agent/transfer/agent.html?organ=${skill.id!''}" data-toggle="load" data-target="#skillAgentList">
 								<i class="kfont"></i> ${skill.name!''}（${agentNum!''}）
 						</a></li>

@@ -2,7 +2,11 @@
 <Schema name='ukefu'>
     <Cube name='满意度'>
 		<View alias="agentservice">
-			<SQL>select * from uk_agentservice where satisfaction = true <#if skill?? && skill!=""> AND agentskill = '${skill!''}'</#if> <#if agent?? && agent!=""> AND agentno = '${agent!''}'</#if> <#if beigin?? && begin!=""> AND createtime &gt; str_to_date('${begin!''}', '%Y-%m-%d')</#if> <#if end?? && end!=""> AND createtime &lt; str_to_date('${end!''}', '%Y-%m-%d')</#if></SQL>
+			<SQL>
+			<![CDATA[
+				select * from uk_agentservice where satisfaction = true <#if skill?? && skill!=""> AND agentskill = '${skill!''}'</#if> <#if agent?? && agent!=""> AND agentno = '${agent!''}'</#if> <#if orgi?? && orgi!=""> AND orgi = '${orgi!''}'</#if> <#if begin?? && begin!=""> AND satistime >= str_to_date('${begin!''}', '%Y-%m-%d %H:%i:%s')</#if> <#if end?? && end!=""> AND satistime <= str_to_date('${end!''} 23:59:59', '%Y-%m-%d %H:%i:%s')</#if>
+				]]>
+			</SQL>
 		</View>
 	
 		<Dimension name='agent' foreignKey="agentno">
@@ -19,7 +23,7 @@
 		</Dimension>        
 		<Dimension name='time'>
 			<Hierarchy hasAll='true' allMemberName='合计' >
-				<Level name='日期'  column='createtime' uniqueMembers='false'>
+				<Level name='日期'  column='satistime' uniqueMembers='false'>
 					<KeyExpression>
 						<SQL dialect="generic">date_format(agentservice.createtime,'%Y-%m-%d')</SQL>
 					</KeyExpression>

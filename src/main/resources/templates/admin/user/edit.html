@@ -23,7 +23,7 @@
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">密码</label>
 	    <div class="layui-input-inline">
-	      <input type="password" id="password" name="password" placeholder="请输入登录密码" autocomplete="off" class="layui-input">
+	      <input type="password" id="password" name="password" placeholder="请输入登录密码" lay-verify="pass" autocomplete="off" class="layui-input">
 	    </div>
 	    <div class="layui-form-mid layui-word-aux">
 	    	<input type="password" id="repassword" name="repassword" lay-verify="repass" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
@@ -38,14 +38,16 @@
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">管理员：</label>
 	    <div class="layui-input-block">
-	      <input type="checkbox" name="admin" lay-skin="switch" value="1" lay-text="是|否" <#if userData.usertype == "0">checked="checked"</#if>>
+	      <input type="checkbox" name="admin" lay-skin="switch" value="1" lay-filter="admincheckbox" lay-text="是|否" <#if userData.usertype == "0">checked="checked"</#if>>
 	    </div>
 	  </div>
-	  <div class="layui-form-item">
-	    <label class="layui-form-label">多媒体坐席：</label>
-	    <div class="layui-input-block">
-	      <input type="checkbox" name="agent" lay-skin="switch" value="1" lay-text="开启|关闭" <#if userData?? && userData.agent == true>checked</#if>>
-	    </div>
+	  <div class="layui-form-item"  id="agentDiv" <#if userData.usertype == "0">style="display:none"</#if>>
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">多媒体坐席：</label>
+		    <div class="layui-input-block">
+		      <input type="checkbox" name="agent" lay-skin="switch" value="1" lay-text="开启|关闭" <#if userData?? && userData.agent == true>checked</#if>>
+		    </div>
+		  </div>
 	  </div>
 	  <#if models?? && models["callcenter"]?? && models["callcenter"] == true>
 	  <div class="layui-form-item">
@@ -75,6 +77,16 @@ layui.use('form', function(){
 	      return '两次输入的密码不一致，请确认';
 	    }
 	  }
-	});      
+	});
+  form.on('switch(admincheckbox)', function(data){
+		if(data.elem.checked){
+			$("input[name=agent]").prop("checked", false);
+			form.render('checkbox','agent');
+			$('#agentDiv').hide();
+		}else{
+			$('#agentDiv').show();
+			//$("input[name=agent]").prop("checked", true);
+		}
+	});
 });
 </script>

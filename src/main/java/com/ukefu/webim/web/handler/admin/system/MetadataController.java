@@ -95,6 +95,9 @@ public class MetadataController extends Handler{
     	tableProperties.setReffk(tp.isReffk());
     	tableProperties.setReftbid(tp.getReftbid());
     	
+    	tableProperties.setDefaultvaluetitle(tp.getDefaultvaluetitle());
+    	tableProperties.setDefaultfieldvalue(tp.getDefaultfieldvalue());
+    	
     	tableProperties.setModits(tp.isModits());
     	tableProperties.setPk(tp.isPk()) ;
     	

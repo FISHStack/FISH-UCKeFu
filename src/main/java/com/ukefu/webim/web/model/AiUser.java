@@ -11,14 +11,24 @@ public class AiUser implements java.io.Serializable{
 	private String userid ;
 	private long time ;
 	private IP ipdata ;
+	private String orgi;
 	
-	public AiUser(String id , String userid, long time , IP ipdata){
+	public AiUser(String id , String userid, long time,String orgi , IP ipdata){
 		this.id = id ;
 		this.userid = userid ;
 		this.time = time ;
 		this.ipdata = ipdata ;
+		this.orgi = orgi;
 	}
 	
+	public String getOrgi() {
+		return orgi;
+	}
+
+	public void setOrgi(String orgi) {
+		this.orgi = orgi;
+	}
+
 	public String getId() {
 		return id;
 	}

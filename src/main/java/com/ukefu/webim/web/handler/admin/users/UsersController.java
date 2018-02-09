@@ -2,6 +2,7 @@ package com.ukefu.webim.web.handler.admin.users;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -20,10 +21,15 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.webim.service.acd.ServiceQuene;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.AgentStatus;
+import com.ukefu.webim.web.model.AgentUser;
+import com.ukefu.webim.web.model.Tenant;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
 
@@ -47,7 +53,7 @@ public class UsersController extends Handler{
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "user")
     public ModelAndView index(ModelMap map , HttpServletRequest request) throws FileNotFoundException, IOException {
-    	map.addAttribute("userList", userRepository.findByDatastatusAndOrgi(false, super.getOrgiByTenantshare(request), new PageRequest(super.getP(request), super.getPs(request), Sort.Direction.ASC, "createtime")));
+    	map.addAttribute("userList", userRepository.findByDatastatusAndOrgiAndOrgid(false, super.getOrgiByTenantshare(request),super.getOrgid(request), new PageRequest(super.getP(request), super.getPs(request), Sort.Direction.ASC, "createtime")));
     	return request(super.createAdminTempletResponse("/admin/user/index"));
     }
     
@@ -60,11 +66,10 @@ public class UsersController extends Handler{
     @RequestMapping("/save")
     @Menu(type = "admin" , subtype = "user")
     public ModelAndView save(HttpServletRequest request ,@Valid User user) {
-    	//User tempUser = userRepository.findByUsernameAndOrgi(user.getUsername(), super.getOrgiByTenantshare(request)) ;
-    	User tempUser = userRepository.findByUsername(user.getUsername()) ;
-    	String msg = "admin_user_save_success" ;
-    	if(tempUser != null){
-    		msg =  "admin_user_save_exist";
+    	String msg = "" ;
+    	msg = validUser(user);
+    	if(!StringUtils.isBlank(msg)){
+    		return request(super.createRequestPageTempletResponse("redirect:/admin/user/index.html?msg="+msg));
     	}else{
     		if(request.getParameter("admin")!=null){
     			user.setUsertype("0");
@@ -82,9 +87,29 @@ public class UsersController extends Handler{
     			user.setOrgid(UKDataContext.SYSTEM_ORGI);
     		}
     		userRepository.save(user) ;
-    		OnlineUserUtils.clean(super.getOrgiByTenantshare(request));
+    		OnlineUserUtils.clean(super.getOrgi(request));
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/user/index.html?msg="+msg));
+    }
+    
+    private String validUser(User user) {
+    	String msg = "";
+    	User tempUser = userRepository.findByUsernameAndDatastatus(user.getUsername(),false) ;
+    	if(tempUser!=null) {
+    		msg = "username_exist";
+    		return msg;
+    	}
+    	tempUser = userRepository.findByEmailAndDatastatus(user.getEmail(),false) ;
+    	if(tempUser!=null) {
+    		msg = "email_exist";
+    		return msg;
+    	}
+    	tempUser = userRepository.findByMobileAndDatastatus(user.getMobile(),false) ;
+    	if(tempUser!=null) {
+    		msg = "mobile_exist";
+    		return msg;
+    	}
+    	return msg;
     }
     
     @RequestMapping("/edit")
@@ -99,43 +124,71 @@ public class UsersController extends Handler{
     @Menu(type = "admin" , subtype = "user" , admin = true)
     public ModelAndView update(HttpServletRequest request ,@Valid User user) {
     	User tempUser = userRepository.getOne(user.getId()) ;
-    	//User exist = userRepository.findByUsernameAndOrgi(user.getUsername(), super.getOrgi(request)) ;
-    	User exist = userRepository.findByUsername(user.getUsername()) ;
-    	if(exist==null || exist.getId().equals(user.getId())){
-	    	if(tempUser != null){
-	    		tempUser.setUname(user.getUname());
-	    		tempUser.setUsername(user.getUsername());
-	    		tempUser.setEmail(user.getEmail());
-	    		tempUser.setMobile(user.getMobile());
-	    		tempUser.setAgent(user.isAgent());
-	    		tempUser.setOrgi(super.getOrgiByTenantshare(request));
-	    		
-	    		if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
-	    			tempUser.setOrgid(super.getUser(request).getOrgid());
-	    		}else {
-	    			tempUser.setOrgid(UKDataContext.SYSTEM_ORGI);
-	    		}
-	    		
-	    		tempUser.setCallcenter(user.isCallcenter());
-	    		if(!StringUtils.isBlank(user.getPassword())){
-	    			tempUser.setPassword(UKTools.md5(user.getPassword()));
-	    		}
-	    		
-	    		if(request.getParameter("admin")!=null){
-	    			tempUser.setUsertype("0");
-	    		}else{
-	    			tempUser.setUsertype(null);
-	    		}
-	    		
-	    		if(tempUser.getCreatetime() == null){
-	    			tempUser.setCreatetime(new Date());
-	    		}
-	    		tempUser.setUpdatetime(new Date());
-	    		userRepository.save(tempUser) ;
-	    		OnlineUserUtils.clean(super.getOrgiByTenantshare(request));
-	    	}
+    	if(tempUser != null){
+    		String msg = validUserUpdate(user,tempUser);
+    		if(!StringUtils.isBlank(msg)){
+    			return request(super.createRequestPageTempletResponse("redirect:/admin/user/index.html?msg="+msg)); 
+    		}
+    		tempUser.setUname(user.getUname());
+    		tempUser.setUsername(user.getUsername());
+    		tempUser.setEmail(user.getEmail());
+    		tempUser.setMobile(user.getMobile());
+    		//切换成非坐席 判断是否坐席 以及 是否有对话
+    		if(!user.isAgent()) {
+    			AgentStatus agentStatus = (AgentStatus)CacheHelper.getAgentStatusCacheBean().getCacheObject((super.getUser(request)).getId(), super.getOrgi(request));
+    	    	if(!(agentStatus==null && ServiceQuene.getAgentUsers(super.getUser(request).getId(), super.getOrgi(request))==0)) {
+    	    		return request(super.createRequestPageTempletResponse("redirect:/admin/user/index.html?msg=t1")); 
+    	    	}
+    		}
+    		tempUser.setAgent(user.isAgent());
+    		
+    		tempUser.setOrgi(super.getOrgiByTenantshare(request));
+    		
+    		if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
+    			tempUser.setOrgid(super.getUser(request).getOrgid());
+    		}else {
+    			tempUser.setOrgid(UKDataContext.SYSTEM_ORGI);
+    		}
+    		
+    		tempUser.setCallcenter(user.isCallcenter());
+    		if(!StringUtils.isBlank(user.getPassword())){
+    			tempUser.setPassword(UKTools.md5(user.getPassword()));
+    		}
+    		
+    		if(request.getParameter("admin")!=null){
+    			tempUser.setUsertype("0");
+    		}else{
+    			tempUser.setUsertype(null);
+    		}
+    		
+    		if(tempUser.getCreatetime() == null){
+    			tempUser.setCreatetime(new Date());
+    		}
+    		tempUser.setUpdatetime(new Date());
+    		userRepository.save(tempUser) ;
+    		OnlineUserUtils.clean(super.getOrgi(request));
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/user/index.html"));
+    }
+    
+    private String validUserUpdate(User user,User oldUser) {
+    	String msg = "";
+    	User tempUser = userRepository.findByUsernameAndDatastatus(user.getUsername(),false) ;
+    	if(tempUser!=null&&!user.getUsername().equals(oldUser.getUsername())) {
+    		msg = "username_exist";
+    		return msg;
+    	}
+    	tempUser = userRepository.findByEmailAndDatastatus(user.getEmail(),false) ;
+    	if(tempUser!=null&&!user.getEmail().equals(oldUser.getEmail())) {
+    		msg = "email_exist";
+    		return msg;
+    	}
+    	tempUser = userRepository.findByMobileAndDatastatus(user.getMobile(),false) ;
+    	if(tempUser!=null&&!user.getMobile().equals(oldUser.getMobile())) {
+    		msg = "mobile_exist";
+    		return msg;
+    	}
+    	return msg;
     }
     
     @RequestMapping("/delete")
@@ -148,10 +201,11 @@ public class UsersController extends Handler{
 	    	user = userRepository.getOne(user.getId()) ;
 	    	user.setDatastatus(true);
 	    	userRepository.save(user) ;
-	    	OnlineUserUtils.clean(super.getOrgiByTenantshare(request));
+	    	OnlineUserUtils.clean(super.getOrgi(request));
     	}else{
     		msg = "admin_user_not_exist" ;
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/user/index.html?msg="+msg));
     }
+    
 }
