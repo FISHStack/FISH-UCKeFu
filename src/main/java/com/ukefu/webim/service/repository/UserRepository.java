@@ -20,7 +20,9 @@ public abstract interface UserRepository extends JpaRepository<User, String>
   
   public abstract User findByMobileAndDatastatus(String mobile,boolean datastatus);
   
-  public abstract User findByUsernameAndDatastatus(String username,boolean datastatus);
+  public abstract User findByUsernameAndDatastatus(String username, boolean datastatus);
+  
+  public abstract User findByUsernameAndPasswordAndDatastatus(String username, String password,boolean datastatus);
   
   public abstract User findByMobileAndPasswordAndDatastatus(String mobile, String password,boolean datastatus);
   

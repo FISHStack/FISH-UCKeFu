@@ -2,7 +2,6 @@ package com.ukefu.webim.web.handler.admin.users;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -28,8 +27,6 @@ import com.ukefu.webim.service.repository.UserRoleRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentStatus;
-import com.ukefu.webim.web.model.AgentUser;
-import com.ukefu.webim.web.model.Tenant;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
 

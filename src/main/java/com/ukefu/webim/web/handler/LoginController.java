@@ -108,8 +108,8 @@ public class LoginController extends Handler{
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response , @Valid User user ,@Valid String referer,@Valid String sla) throws NoSuchAlgorithmException {
     	ModelAndView view = request(super.createRequestPageTempletResponse("redirect:/"));
     	if(request.getSession(true).getAttribute(UKDataContext.USER_SESSION_NAME) ==null){
-	        if(user!=null && user.getMobile()!=null){
-		    	final User loginUser = userRepository.findByMobileAndPasswordAndDatastatus(user.getMobile() , UKTools.md5(user.getPassword()),false) ;
+	        if(user!=null && user.getUsername()!=null){
+		    	final User loginUser = userRepository.findByUsernameAndPasswordAndDatastatus(user.getUsername() , UKTools.md5(user.getPassword()),false) ;
 		        if(loginUser!=null && !StringUtils.isBlank(loginUser.getId())){
 		        	view = this.processLogin(request, response, view, loginUser, referer) ;
 		        	if(!StringUtils.isBlank(sla) && sla.equals("1")) {
