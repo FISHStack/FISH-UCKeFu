@@ -39,7 +39,9 @@ public class TopicRepositoryImpl implements TopicEsCommonRepository{
 		Page<Topic> pages  = null ;
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		boolQueryBuilder.must(termQuery("cate" , cate)) ;
+		if(!StringUtils.isBlank(cate)) {
+			boolQueryBuilder.must(termQuery("cate" , cate)) ;
+		}
 		boolQueryBuilder.must(termQuery("orgi" , orgi)) ;
 	    if(!StringUtils.isBlank(q)){
 	    	boolQueryBuilder.must(new QueryStringQueryBuilder(q).defaultOperator(Operator.AND)) ;
