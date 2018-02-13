@@ -25,7 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.repository.AttachmentRepository;
-import com.ukefu.webim.service.repository.CubeService;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AttachmentFile;
 import com.ukefu.webim.web.model.UploadStatus;

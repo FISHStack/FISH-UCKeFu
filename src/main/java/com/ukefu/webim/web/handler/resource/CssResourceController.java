@@ -21,4 +21,11 @@ public class CssResourceController extends Handler{
     	response.setContentType("text/css ; charset=UTF-8");
     	return request(super.createRequestPageTempletResponse("/resource/css/ukefu"));
     }
+    
+    @RequestMapping("/res/css/system")
+    @Menu(type = "resouce" , subtype = "css" , access = true)
+    public ModelAndView system(HttpServletResponse response, @Valid String id) throws IOException {
+    	response.setContentType("text/css ; charset=UTF-8");
+    	return request(super.createRequestPageTempletResponse("/resource/css/system"));
+    }
 }
