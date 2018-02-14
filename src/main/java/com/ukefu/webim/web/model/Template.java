@@ -28,9 +28,9 @@ public class Template implements java.io.Serializable{
 	private static final long serialVersionUID = 1946579239823440392L;
 	private String id ;
 	private String name ;
-	private String code ;
+	private String code ;		//修改用处，变更为 SysDic 的 code 		
 	private String userid ;					
-	private String groupid ;				
+	private String groupid ;			
 	private String description ;
 	private String templettitle;//邮件头
 	private String templettext ;

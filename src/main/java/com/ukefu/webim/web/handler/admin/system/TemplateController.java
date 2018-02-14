@@ -19,8 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.TemplateRepository;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.Template;
 import com.ukefu.webim.web.model.UKeFuDic;
 
@@ -31,6 +33,9 @@ public class TemplateController extends Handler{
 	
 	@Autowired
 	private TemplateRepository templateRes;
+	
+	@Autowired
+	private SysDicRepository dicRes;
 
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
@@ -73,7 +78,7 @@ public class TemplateController extends Handler{
     @RequestMapping("/list")
     @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView list(ModelMap map , HttpServletRequest request ,@Valid String type) {
-    	map.addAttribute("sysDic", UKeFuDic.getInstance().getDicItem(type));
+    	map.addAttribute("sysDic", dicRes.findById(type));
     	map.addAttribute("templateList", templateRes.findByTemplettypeAndOrgi(type, super.getOrgi(request)));
         return request(super.createAdminTempletResponse("/admin/system/template/list"));
     }
@@ -81,7 +86,7 @@ public class TemplateController extends Handler{
     @RequestMapping("/add")
     @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView add(ModelMap map , HttpServletRequest request ,@Valid String type) {
-    	map.addAttribute("sysDic", UKeFuDic.getInstance().getDicItem(type));
+    	map.addAttribute("sysDic", dicRes.findById(type));
         return request(super.createRequestPageTempletResponse("/admin/system/template/add"));
     }
     
@@ -90,6 +95,12 @@ public class TemplateController extends Handler{
     public ModelAndView save(HttpServletRequest request  , @Valid Template template) {
     	template.setOrgi(super.getOrgi(request));
     	template.setCreatetime(new Date());
+    	
+    	SysDic dic = dicRes.findById(template.getTemplettype());
+		if(dic!=null) {
+			template.setCode(dic.getCode());
+		}
+    	
     	templateRes.save(template) ;
 		return request(super.createRequestPageTempletResponse("redirect:/admin/template/list.html?type="+template.getTemplettype()));
     }
@@ -97,7 +108,7 @@ public class TemplateController extends Handler{
     @RequestMapping("/edit")
     @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView edit(ModelMap map , HttpServletRequest request , @Valid String id, @Valid String type) {
-    	map.addAttribute("sysDic", UKeFuDic.getInstance().getDicItem(type));
+    	map.addAttribute("sysDic", dicRes.findById(type));
     	map.addAttribute("template", templateRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
         return request(super.createRequestPageTempletResponse("/admin/system/template/edit"));
     }
@@ -107,7 +118,12 @@ public class TemplateController extends Handler{
     public ModelAndView update(HttpServletRequest request  , @Valid Template template) {
     	Template oldTemplate = templateRes.findByIdAndOrgi(template.getId(), super.getOrgi(request)) ;
     	if(oldTemplate!=null){
+    		SysDic dic = dicRes.findById(oldTemplate.getTemplettype());
+    		if(dic!=null) {
+    			oldTemplate.setCode(dic.getCode());
+    		}
     		oldTemplate.setName(template.getName());
+    		oldTemplate.setIconstr(template.getIconstr());
     		templateRes.save(oldTemplate) ;
     	}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/template/list.html?type="+template.getTemplettype()));
@@ -116,7 +132,7 @@ public class TemplateController extends Handler{
     @RequestMapping("/code")
     @Menu(type = "admin" , subtype = "template" , access = false , admin = true)
     public ModelAndView code(ModelMap map , HttpServletRequest request , @Valid String id, @Valid String type) {
-    	map.addAttribute("sysDic", UKeFuDic.getInstance().getDicItem(type));
+    	map.addAttribute("sysDic", dicRes.findById(type));
     	map.addAttribute("template", templateRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
         return request(super.createRequestPageTempletResponse("/admin/system/template/code"));
     }
