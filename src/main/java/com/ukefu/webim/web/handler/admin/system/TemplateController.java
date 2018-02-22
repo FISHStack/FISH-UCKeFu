@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.TemplateRepository;
 import com.ukefu.webim.web.handler.Handler;
@@ -102,6 +103,7 @@ public class TemplateController extends Handler{
 		}
     	
     	templateRes.save(template) ;
+    	
 		return request(super.createRequestPageTempletResponse("redirect:/admin/template/list.html?type="+template.getTemplettype()));
     }
     
@@ -126,6 +128,8 @@ public class TemplateController extends Handler{
     		oldTemplate.setLayoutcols(template.getLayoutcols());
     		oldTemplate.setIconstr(template.getIconstr());
     		templateRes.save(oldTemplate) ;
+    		
+    		CacheHelper.getSystemCacheBean().delete(template.getId(), super.getOrgi(request)) ;
     	}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/template/list.html?type="+template.getTemplettype()));
     }
@@ -146,6 +150,8 @@ public class TemplateController extends Handler{
     		oldTemplate.setTemplettext(template.getTemplettext());
     		oldTemplate.setTemplettitle(template.getTemplettitle());
     		templateRes.save(oldTemplate) ;
+    		
+    		CacheHelper.getSystemCacheBean().delete(template.getId(), super.getOrgi(request)) ;
     	}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/template/list.html?type="+template.getTemplettype()));
     }
@@ -155,6 +161,8 @@ public class TemplateController extends Handler{
     public ModelAndView delete(HttpServletRequest request ,@Valid Template template) {
     	if(template!=null){
     		templateRes.delete(template) ;
+    		
+    		CacheHelper.getSystemCacheBean().delete(template.getId(), super.getOrgi(request)) ;
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/template/list.html?type="+template.getTemplettype()));
     }

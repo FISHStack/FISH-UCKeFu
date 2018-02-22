@@ -918,8 +918,13 @@ public class UKTools {
 	}
 	
 	public static Template getTemplate(String id){
-		TemplateRepository templateRes = UKDataContext.getContext().getBean(TemplateRepository.class) ;
-		return templateRes.findByIdAndOrgi(id, UKDataContext.SYSTEM_ORGI);
+		Template templet = null ;
+		if((templet = (Template) CacheHelper.getSystemCacheBean().getCacheObject(id,  UKDataContext.SYSTEM_ORGI)) == null) {
+			TemplateRepository templateRes = UKDataContext.getContext().getBean(TemplateRepository.class) ;
+			templet = templateRes.findByIdAndOrgi(id, UKDataContext.SYSTEM_ORGI);
+			CacheHelper.getSystemCacheBean().put(id, templet, UKDataContext.SYSTEM_ORGI);
+		}
+		return templet;
 	}
 	/**
 	 * 按照权重获取广告
