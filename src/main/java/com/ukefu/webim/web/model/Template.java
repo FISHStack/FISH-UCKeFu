@@ -40,6 +40,7 @@ public class Template implements java.io.Serializable{
 	private String iconstr;	//模板图标
 	private String memo ; 	//模板说明内容
 	private String typeid;//分组id
+	private int layoutcols ;		//列数
 	
 	
 	public String getOrgi() {
@@ -135,5 +136,10 @@ public class Template implements java.io.Serializable{
 	public void setTemplettitle(String templettitle) {
 		this.templettitle = templettitle;
 	}
-	
+	public int getLayoutcols() {
+		return layoutcols;
+	}
+	public void setLayoutcols(int layoutcols) {
+		this.layoutcols = layoutcols;
+	}
 }

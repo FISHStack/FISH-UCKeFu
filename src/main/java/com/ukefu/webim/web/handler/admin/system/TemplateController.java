@@ -123,6 +123,7 @@ public class TemplateController extends Handler{
     			oldTemplate.setCode(dic.getCode());
     		}
     		oldTemplate.setName(template.getName());
+    		oldTemplate.setLayoutcols(template.getLayoutcols());
     		oldTemplate.setIconstr(template.getIconstr());
     		templateRes.save(oldTemplate) ;
     	}

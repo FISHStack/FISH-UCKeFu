@@ -22,6 +22,22 @@
             	模板图标，显示的图标路径
             </div>
         </div>
+        <#if sysDic.ctype?? && sysDic.ctype == "layout">
+        <div class="layui-form-item">
+            <label class="layui-form-label">列数：</label>
+            <div class="layui-input-inline">
+                <select name="layoutcols" lay-verify="">
+                	<#list 1..12 as inx>
+				  		<option value="${inx}">${inx}列</option>
+				  	</#list>
+				</select>   
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+            	<font color="red">*</font> 
+            	布局模板的列数量
+            </div>
+        </div>
+        </#if>
         </#if>
         
         <div class="layui-form-button">

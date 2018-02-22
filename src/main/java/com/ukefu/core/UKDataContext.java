@@ -213,6 +213,13 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum ReportType{
+		REPORT;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	public enum WorkOrdersEventType{
 		ACCEPTUSER,		//审批人变更
 		OTHER;			//其他变更

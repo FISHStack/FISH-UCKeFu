@@ -72,6 +72,19 @@
 			</dd>
 		</dl>
 	</li>
+	<#if models?? && models["report"]?? && models["report"] == true>
+	<li class="layui-nav-item layui-nav-itemed">
+		<a class="layui-nav-title" href="javascript:;">数据报表</a>
+		<dl class="layui-nav-child">
+			<dd <#if subtype?? && subtype == 'report'>class="layui-this"</#if>>
+				<a href="/apps/report/index.html">报表设计</a>
+			</dd>
+			<dd <#if subtype?? && subtype == 'sysdic'>class="layui-this"</#if>>
+				<a href="/apps/report.html">已发布报表</a>
+			</dd>
+		</dl>
+	</li>
+	</#if>
 	
 	<li class="layui-nav-item layui-nav-itemed">
 		<a class="layui-nav-title" href="javascript:;">系统设置</a>

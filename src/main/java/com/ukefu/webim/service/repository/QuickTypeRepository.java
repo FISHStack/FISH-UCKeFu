@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.ukefu.webim.web.model.QuickReply;
 import com.ukefu.webim.web.model.QuickType;
 
 public abstract interface QuickTypeRepository extends JpaRepository<QuickType, String> {
