@@ -94,7 +94,7 @@
 						
 							<div class="product">
 								<a href="/apps/tenant/canswitch.html?id=<#if tenant?? && tenant.id??>${tenant.id!''}</#if>">
-			                        <img class="product-img" src="<#if tenant?? && tenant.tenantlogo??>/res/image.html?id=${tenant.tenantlogo?url}</#if>">  
+			                        <img class="product-img" src="<#if tenant?? && tenant.tenantlogo??>/res/image.html?id=${tenant.tenantlogo?url}</#if>" onerror="javascript:this.src='/images/error.png';">  
 			                     <div class="ukefu-tenant-item-div2" 
 									style="font-weight: 400; position: absolute;">${tenant.tenantname!''}
 										<#if user?? && user.usertype == "0">
