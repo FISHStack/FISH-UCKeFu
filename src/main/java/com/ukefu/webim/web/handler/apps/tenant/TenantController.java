@@ -150,7 +150,7 @@ public class TenantController extends Handler{
     @RequestMapping("/edit")
     @Menu(type = "apps" , subtype = "tenant")
     public ModelAndView edit(ModelMap map , HttpServletRequest request , @Valid String id) {
-    	if(super.isEnabletneant()) {
+    	if(super.isTenantshare()) {
     		map.addAttribute("isShowSkillList",true);
     		List<Organ> organList = organRes.findByOrgiAndOrgid(super.getOrgiByTenantshare(request),super.getOrgid(request));
         	map.addAttribute("skillList",organList);
