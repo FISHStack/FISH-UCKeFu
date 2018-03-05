@@ -39,6 +39,7 @@ public class SystemConfig implements java.io.Serializable{
 	private String jkspassword ;
 	private String mapkey ;
 	private boolean workorders ;	//工单启用三栏布局
+	private String iconstr;			//修改服务器url地址
 	
 	private boolean callout ;		//允许在电话号码上点击呼出
 	private boolean auth ;			//启用权限控制
@@ -441,4 +442,11 @@ public class SystemConfig implements java.io.Serializable{
 		}
 		return color ;
 	}
+	public String getIconstr() {
+		return iconstr;
+	}
+	public void setIconstr(String iconstr) {
+		this.iconstr = iconstr;
+	}
+
 }
