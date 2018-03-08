@@ -158,6 +158,9 @@ public class IMEventHandler
     	if(!StringUtils.isBlank(data.getMessage()) && data.getMessage().length() > 300){
     		data.setMessage(data.getMessage().substring(0 , 300));
     	}
+		if(!StringUtils.isBlank(data.getMessage())) {
+    		data.setMessage(java.net.URLDecoder.decode(data.getMessage() , "UTF-8"));
+    	}
     	/**
 		 * 处理表情
 		 */
