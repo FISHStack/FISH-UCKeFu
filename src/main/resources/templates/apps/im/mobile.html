@@ -379,7 +379,7 @@
 				type : "message",
 				contextid : "${sessionid!''}",
 				orgi : "${orgi!''}",
-				message : message
+				message :  encodeURIComponent(message)
 			});
 		}
 	}
