@@ -462,7 +462,7 @@
 						type:"message" ,
 						session:"${sessionid!''}",
 						orgi:"${orgi!''}",
-						message : message
+						message :  encodeURIComponent(message)
 				});
 			}
 		}else if(service_end == true){
