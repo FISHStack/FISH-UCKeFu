@@ -14,8 +14,6 @@
 #访问地址
 DEMO访问地址：[优客服（UCKeFu-WebIM）](http://uk.ukewo.cn/) ， 访问账号：admin，密码：123456
 
-#一键启动包
-[v2.0.0-M1一键启动包下载](http://pan.baidu.com/s/1nuCjWcL)
 
 一键启动包是独立的Tomat启动，部署的War包，包含WebIM+Contacts模块，使用H2数据库
 
