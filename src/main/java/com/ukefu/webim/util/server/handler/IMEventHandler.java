@@ -150,7 +150,7 @@ public class IMEventHandler
     
     //消息接收入口，收发消息，用户向坐席发送消息和 坐席向用户发送消息  
     @OnEvent(value = "message")  
-    public void onEvent(SocketIOClient client, AckRequest request, ChatMessage data)   
+    public void onEvent(SocketIOClient client, AckRequest request, ChatMessage data) throws UnsupportedEncodingException   
     {
     	if(data.getType() == null){
     		data.setType("message");
