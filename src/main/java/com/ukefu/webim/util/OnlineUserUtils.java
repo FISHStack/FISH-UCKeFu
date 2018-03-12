@@ -433,7 +433,7 @@ public class OnlineUserUtils {
 	 */
 	public static OnlineUser online(User user, String orgi, String sessionid,String optype, HttpServletRequest request , String channel , String appid , Contacts contacts , CousultInvite invite) {
 		OnlineUser onlineUser = null;
-		if (UKDataContext.getContext() != null) {
+		if (UKDataContext.getContext() != null && invite != null) {
 			onlineUser = onlineuser(user.getId(), orgi , invite) ;
 			if (onlineUser == null) {
 				onlineUser = new OnlineUser();
