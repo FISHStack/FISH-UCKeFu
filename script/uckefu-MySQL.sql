@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-02-22 09:23:42
+Date: 2018-03-13 23:24:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1839,7 +1839,7 @@ CREATE TABLE `uk_report` (
   `ORGI` varchar(32) DEFAULT NULL,
   `OBJECTCOUNT` int(11) DEFAULT NULL,
   `DICID` varchar(32) DEFAULT NULL,
-  `CREATETIME` datetime DEFAULT NULL,
+  `CREATETIME` datetime NOT NULL,
   `DESCRIPTION` longtext,
   `HTML` longtext,
   `REPORTPACKAGE` varchar(255) DEFAULT NULL,
@@ -1850,7 +1850,7 @@ CREATE TABLE `uk_report` (
   `blacklist` text,
   `REPORTCONTENT` longtext,
   `reportmodel` varchar(32) DEFAULT NULL,
-  `updatetime` datetime DEFAULT NULL,
+  `updatetime` datetime NOT NULL,
   `creater` varchar(255) DEFAULT NULL,
   `reportversion` int(11) DEFAULT NULL,
   `publishedtype` varchar(32) DEFAULT NULL,
@@ -1869,6 +1869,104 @@ CREATE TABLE `uk_report` (
 
 -- ----------------------------
 -- Records of uk_report
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_reportmodel`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_reportmodel`;
+CREATE TABLE `uk_reportmodel` (
+  `id` varchar(50) NOT NULL,
+  `posx` varchar(50) DEFAULT NULL,
+  `posy` varchar(50) DEFAULT NULL,
+  `poswidth` varchar(50) DEFAULT NULL,
+  `posheight` varchar(50) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `code` varchar(50) DEFAULT NULL,
+  `reportid` varchar(50) DEFAULT NULL,
+  `modeltype` varchar(50) DEFAULT NULL,
+  `sortindex` int(11) DEFAULT NULL,
+  `stylestr` varchar(50) DEFAULT NULL,
+  `labeltext` varchar(50) DEFAULT NULL,
+  `cssclassname` varchar(50) DEFAULT NULL,
+  `mposleft` varchar(50) DEFAULT NULL,
+  `mpostop` varchar(50) DEFAULT NULL,
+  `title` varchar(50) DEFAULT NULL,
+  `exchangerw` tinyint(4) DEFAULT '0',
+  `publishedcubeid` varchar(50) DEFAULT NULL,
+  `rowdimension` text,
+  `coldimension` text,
+  `measure` varchar(50) DEFAULT NULL,
+  `dstype` varchar(50) DEFAULT NULL,
+  `dbtype` varchar(50) DEFAULT NULL,
+  `orgi` varchar(50) DEFAULT NULL,
+  `objectid` varchar(50) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  `filterstr` varchar(50) DEFAULT NULL,
+  `sortstr` varchar(50) DEFAULT NULL,
+  `viewtype` varchar(50) DEFAULT NULL,
+  `chartemplet` varchar(50) DEFAULT NULL,
+  `chartype` varchar(50) DEFAULT NULL,
+  `chartdatatype` varchar(50) DEFAULT NULL,
+  `chart3d` varchar(50) DEFAULT NULL,
+  `xtitle` varchar(50) DEFAULT NULL,
+  `ytitle` varchar(50) DEFAULT NULL,
+  `charttitle` varchar(50) DEFAULT NULL,
+  `displayborder` varchar(50) DEFAULT NULL,
+  `bordercolor` varchar(50) DEFAULT NULL,
+  `displaydesc` varchar(50) DEFAULT NULL,
+  `formdisplay` varchar(50) DEFAULT NULL,
+  `labelstyle` varchar(50) DEFAULT NULL,
+  `formname` varchar(50) DEFAULT NULL,
+  `defaultvalue` varchar(50) DEFAULT NULL,
+  `querytext` varchar(50) DEFAULT NULL,
+  `tempquey` varchar(50) DEFAULT NULL,
+  `displaytitle` tinyint(4) DEFAULT '0',
+  `clearzero` tinyint(4) DEFAULT '0',
+  `titlestr` varchar(50) DEFAULT NULL,
+  `width` varchar(50) DEFAULT NULL,
+  `height` varchar(50) DEFAULT NULL,
+  `widthunit` varchar(50) DEFAULT NULL,
+  `heightunit` varchar(50) DEFAULT NULL,
+  `defheight` varchar(50) DEFAULT NULL,
+  `defwidth` varchar(50) DEFAULT NULL,
+  `neckwidth` varchar(50) DEFAULT NULL,
+  `neckheight` varchar(50) DEFAULT NULL,
+  `extparam` varchar(50) DEFAULT NULL,
+  `marginright` varchar(50) DEFAULT NULL,
+  `colorstr` varchar(50) DEFAULT NULL,
+  `start` varchar(50) DEFAULT NULL,
+  `end` varchar(50) DEFAULT NULL,
+  `rowformatstr` varchar(50) DEFAULT NULL,
+  `colformatstr` varchar(50) DEFAULT NULL,
+  `publishtype` varchar(50) DEFAULT NULL,
+  `editview` varchar(50) DEFAULT NULL,
+  `expandbtm` tinyint(4) DEFAULT '0',
+  `expandrgt` tinyint(4) DEFAULT '0',
+  `curtab` varchar(50) DEFAULT NULL,
+  `hiddencolstr` varchar(50) DEFAULT NULL,
+  `eventstr` varchar(50) DEFAULT NULL,
+  `dsmodel` varchar(50) DEFAULT NULL,
+  `html` text,
+  `sqldialect` varchar(255) DEFAULT NULL,
+  `pagesize` int(11) DEFAULT NULL,
+  `isloadfulldata` varchar(50) DEFAULT NULL,
+  `isexport` tinyint(4) DEFAULT '0',
+  `selectdata` tinyint(4) DEFAULT '0',
+  `exporttitle` varchar(50) DEFAULT NULL,
+  `colsize` int(11) DEFAULT NULL,
+  `sorttype` varchar(50) DEFAULT NULL,
+  `sortname` varchar(50) DEFAULT NULL,
+  `mid` varchar(32) DEFAULT NULL,
+  `parentid` varchar(32) DEFAULT NULL,
+  `templetid` varchar(32) DEFAULT NULL,
+  `colspan` int(11) DEFAULT NULL,
+  `colindex` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_reportmodel
 -- ----------------------------
 
 -- ----------------------------
@@ -5727,6 +5825,8 @@ INSERT INTO `uk_sysdic` VALUES ('4028811b61090502016109293494030e', '工单短�
 INSERT INTO `uk_sysdic` VALUES ('4028811b618d0dca01618d5a5fd10349', '布局组件', 'pub', 'layout', 'ukewo', 'layout', '297e63f05d1da6be015d1dae6de20002', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-13 12:09:25', '2018-02-13 12:09:25', '0', '1', '297e63f05d1da6be015d1dae6de20002', '0', '1', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028811b618d0dca01618d5a5fe6034a', '报表组件', 'pub', 'report', 'ukewo', 'layui-icon', '297e63f05d1da6be015d1dae6de20002', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-13 12:09:25', '2018-02-13 12:09:25', '0', '2', '297e63f05d1da6be015d1dae6de20002', '0', '1', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028811b618d0dca01618d5a5ff6034b', '过滤器组件', 'pub', 'filter', 'ukewo', 'layui-icon', '297e63f05d1da6be015d1dae6de20002', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-13 12:09:25', '2018-02-13 12:09:25', '0', '3', '297e63f05d1da6be015d1dae6de20002', '0', '1', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b621faf9401621fcabd0203c6', '短信网关类型', 'pub', 'com.dic.sms.type', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-03-13 22:36:43', null, '1', '0', null, '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b621faf9401621fcae43003c7', '阿里大鱼', 'pub', 'aliyun', 'ukewo', 'layui-icon', '4028811b621faf9401621fcabd0203c6', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-03-13 22:36:53', '2018-03-13 22:36:53', '0', '1', '4028811b621faf9401621fcabd0203c6', '0', '1', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402881ef612b1f5b01612cc4a491053e', '坐席对话', 'pub', 'A01', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"layui-icon\" style=\"top: 3px;\">&#xe63a;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2018-01-25 18:02:20', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/agent/index.html', 'webim', '1', null, 'left');
 INSERT INTO `uk_sysdic` VALUES ('402881ef612b1f5b01612cc4ffb1053f', '全部联系人', 'pub', 'A02', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"layui-icon\" style=\"position: relative;\">&#xe612;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2018-01-25 18:02:43', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/apps/contacts/index.html', 'webim', '1', null, 'left');
 INSERT INTO `uk_sysdic` VALUES ('402881ef612b1f5b01612cc529b20540', '全部客户', 'pub', 'A03', null, 'auth', '402888815d2fe37f015d2fe75cc80002', null, null, '<i class=\"kfont\" style=\"position: relative;\">&#xe650;</i>', null, null, '297e8c7b455798280145579c73e501c1', '2018-01-25 18:02:54', null, '0', '0', '402888815d2fe37f015d2fe75cc80002', '0', '0', '/apps/customer/index.html', 'webim', '1', null, 'left');
@@ -6088,6 +6188,7 @@ CREATE TABLE `uk_system_message` (
   `TPCODE` varchar(50) DEFAULT NULL,
   `CREATETIME` datetime DEFAULT NULL,
   `NAME` varchar(50) DEFAULT NULL,
+  `moreparam` text,
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -6274,23 +6375,6 @@ CREATE TABLE `uk_templet` (
 -- ----------------------------
 -- Records of uk_templet
 -- ----------------------------
-INSERT INTO `uk_templet` VALUES ('4028811b618d0dca01618f99e056035c', '四列布局', null, 'layout', null, '2018-02-13 22:38:01', null, null, '<div class=\"layui-col-md3 ukefu-col\" data-colspan=\"3\">\r\n</div>\r\n<div class=\"layui-col-md3 ukefu-col\" data-colspan=\"3\">\r\n</div>\r\n<div class=\"layui-col-md3 ukefu-col\" data-colspan=\"3\">\r\n</div>\r\n<div class=\"layui-col-md3 ukefu-col\" data-colspan=\"3\">\r\n</div>', '4028811b618d0dca01618d5a5fd10349', 'ukewo', '/images/design/four.png', null, null, null, null, '4');
-INSERT INTO `uk_templet` VALUES ('4028811b618d0dca01618f99f175035d', '三列布局', null, 'layout', null, '2018-02-13 22:38:06', null, null, '<div class=\"layui-col-md4 ukefu-col\" data-colspan=\"4\">\r\n</div>\r\n<div class=\"layui-col-md4 ukefu-col\" data-colspan=\"4\">\r\n</div>\r\n<div class=\"layui-col-md4 ukefu-col\" data-colspan=\"4\">\r\n</div>', '4028811b618d0dca01618d5a5fd10349', 'ukewo', '/images/design/three.png', null, null, null, null, '3');
-INSERT INTO `uk_templet` VALUES ('4028811b618d0dca01618f9a08c5035e', '两列布局', null, 'layout', null, '2018-02-13 22:38:12', null, null, '<div class=\"layui-col-md6 ukefu-col\" data-colspan=\"6\">\r\n</div>\r\n<div class=\"layui-col-md6 ukefu-col\" data-colspan=\"6\">\r\n</div>', '4028811b618d0dca01618d5a5fd10349', 'ukewo', '/images/design/two.png', null, null, null, null, '2');
-INSERT INTO `uk_templet` VALUES ('4028811b618d0dca01618f9a1aee035f', '一列布局', null, 'layout', null, '2018-02-13 22:38:16', null, null, '<div class=\"layui-col-md12 ukefu-col\" data-colspan=\"12\">\r\n\r\n</div>', '4028811b618d0dca01618d5a5fd10349', 'ukewo', '/images/design/one.png', null, null, null, null, '1');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191e4721c033d', '数据表', null, null, null, '2018-02-14 09:18:43', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/table.png', null, null, null, null, '0');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191e76714033e', '金字塔图', null, null, null, '2018-02-14 09:21:57', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/jzt.png', null, null, null, null, '0');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191e7c554033f', '地图', null, null, null, '2018-02-14 09:22:21', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/map.png', null, null, null, null, '0');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191ea38620340', '漏斗图', null, null, null, '2018-02-14 09:25:01', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/loudou.png', null, null, null, null, '0');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191eba2190341', '折线图', null, null, null, '2018-02-14 09:26:34', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/line.gif', null, null, null, null, '0');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191ebf9ae0342', '柱形图', null, null, null, '2018-02-14 09:26:56', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/bar.gif', null, null, null, null, '0');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191ec3c900343', '饼形图', null, null, null, '2018-02-14 09:27:13', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/bar.gif', null, null, null, null, '0');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191ec901f0344', '面积图', null, null, null, '2018-02-14 09:27:35', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/area.gif', null, null, null, null, '0');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191ed0e160345', '条形图', null, null, null, '2018-02-14 09:28:07', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/flat.gif', null, null, null, null, '0');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191ed46550346', '环形图', null, null, null, '2018-02-14 09:28:21', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/hole.gif', null, null, null, null, '0');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191ed97a80347', '点状图', null, null, null, '2018-02-14 09:28:42', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/point.gif', null, null, null, null, '0');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191edc7b50348', '雷达图', null, null, null, '2018-02-14 09:28:54', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/radar.gif', null, null, null, null, '0');
-INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191ee589c0349', 'KPI图', null, null, null, '2018-02-14 09:29:32', null, null, null, '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/kpi.png', null, null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for `uk_tenant`
@@ -6379,7 +6463,7 @@ CREATE TABLE `uk_user` (
 -- Records of uk_user
 -- ----------------------------
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', '0fbf9965244969fec730d144ed7e9799', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-02-11 16:12:39', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-02-11 16:25:20', null, null, null, '0', '0', '0');
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-02-21 18:17:42', null, null, null, '0', '1', '1');
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-03-13 22:59:21', null, null, null, '0', '1', '1');
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -7116,95 +7200,3 @@ CREATE TABLE `wf_workitem` (
 -- ----------------------------
 -- Records of wf_workitem
 -- ----------------------------
-
-
-CREATE TABLE `uk_reportmodel` (
-  `id` varchar(50) NOT NULL,
-  `posx` varchar(50) DEFAULT NULL,
-  `posy` varchar(50) DEFAULT NULL,
-  `poswidth` varchar(50) DEFAULT NULL,
-  `posheight` varchar(50) DEFAULT NULL,
-  `name` varchar(50) DEFAULT NULL,
-  `code` varchar(50) DEFAULT NULL,
-  `reportid` varchar(50) DEFAULT NULL,
-  `modeltype` varchar(50) DEFAULT NULL,
-  `sortindex` int(11) DEFAULT NULL,
-  `stylestr` varchar(50) DEFAULT NULL,
-  `labeltext` varchar(50) DEFAULT NULL,
-  `cssclassname` varchar(50) DEFAULT NULL,
-  `mposleft` varchar(50) DEFAULT NULL,
-  `mpostop` varchar(50) DEFAULT NULL,
-  `title` varchar(50) DEFAULT NULL,
-  `exchangerw` tinyint(4) DEFAULT '0',
-  `publishedcubeid` varchar(50) DEFAULT NULL,
-  `rowdimension` text,
-  `coldimension` text,
-  `measure` varchar(50) DEFAULT NULL,
-  `dstype` varchar(50) DEFAULT NULL,
-  `dbtype` varchar(50) DEFAULT NULL,
-  `orgi` varchar(50) DEFAULT NULL,
-  `objectid` varchar(50) DEFAULT NULL,
-  `createtime` datetime DEFAULT NULL,
-  `filterstr` varchar(50) DEFAULT NULL,
-  `sortstr` varchar(50) DEFAULT NULL,
-  `viewtype` varchar(50) DEFAULT NULL,
-  `chartemplet` varchar(50) DEFAULT NULL,
-  `chartype` varchar(50) DEFAULT NULL,
-  `chartdatatype` varchar(50) DEFAULT NULL,
-  `chart3d` varchar(50) DEFAULT NULL,
-  `xtitle` varchar(50) DEFAULT NULL,
-  `ytitle` varchar(50) DEFAULT NULL,
-  `charttitle` varchar(50) DEFAULT NULL,
-  `displayborder` varchar(50) DEFAULT NULL,
-  `bordercolor` varchar(50) DEFAULT NULL,
-  `displaydesc` varchar(50) DEFAULT NULL,
-  `formdisplay` varchar(50) DEFAULT NULL,
-  `labelstyle` varchar(50) DEFAULT NULL,
-  `formname` varchar(50) DEFAULT NULL,
-  `defaultvalue` varchar(50) DEFAULT NULL,
-  `querytext` varchar(50) DEFAULT NULL,
-  `tempquey` varchar(50) DEFAULT NULL,
-  `displaytitle` tinyint(4) DEFAULT '0',
-  `clearzero` tinyint(4) DEFAULT '0',
-  `titlestr` varchar(50) DEFAULT NULL,
-  `width` varchar(50) DEFAULT NULL,
-  `height` varchar(50) DEFAULT NULL,
-  `widthunit` varchar(50) DEFAULT NULL,
-  `heightunit` varchar(50) DEFAULT NULL,
-  `defheight` varchar(50) DEFAULT NULL,
-  `defwidth` varchar(50) DEFAULT NULL,
-  `neckwidth` varchar(50) DEFAULT NULL,
-  `neckheight` varchar(50) DEFAULT NULL,
-  `extparam` varchar(50) DEFAULT NULL,
-  `marginright` varchar(50) DEFAULT NULL,
-  `colorstr` varchar(50) DEFAULT NULL,
-  `start` varchar(50) DEFAULT NULL,
-  `end` varchar(50) DEFAULT NULL,
-  `rowformatstr` varchar(50) DEFAULT NULL,
-  `colformatstr` varchar(50) DEFAULT NULL,
-  `publishtype` varchar(50) DEFAULT NULL,
-  `editview` varchar(50) DEFAULT NULL,
-  `expandbtm` tinyint(4) DEFAULT '0',
-  `expandrgt` tinyint(4) DEFAULT '0',
-  `curtab` varchar(50) DEFAULT NULL,
-  `hiddencolstr` varchar(50) DEFAULT NULL,
-  `eventstr` varchar(50) DEFAULT NULL,
-  `dsmodel` varchar(50) DEFAULT NULL,
-  `html` text,
-  `sqldialect` varchar(255) DEFAULT NULL,
-  `pagesize` int(11) DEFAULT NULL,
-  `isloadfulldata` varchar(50) DEFAULT NULL,
-  `isexport` tinyint(4) DEFAULT '0',
-  `selectdata` tinyint(4) DEFAULT '0',
-  `exporttitle` varchar(50) DEFAULT NULL,
-  `colsize` int(11) DEFAULT NULL,
-  `sorttype` varchar(50) DEFAULT NULL,
-  `sortname` varchar(50) DEFAULT NULL,
-  `mid` varchar(32) DEFAULT NULL,
-  `parentid` varchar(32) DEFAULT NULL,
-  `templetid` varchar(32) DEFAULT NULL,
-  `colspan` int(11) DEFAULT NULL,
-  `colindex` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-

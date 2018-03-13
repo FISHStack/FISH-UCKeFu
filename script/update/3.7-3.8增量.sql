@@ -168,3 +168,7 @@ CREATE TABLE `uk_reportmodel` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+
+
+ALTER TABLE uk_system_message ADD moreparam text;
