@@ -46,6 +46,8 @@ public class SystemMessage implements java.io.Serializable {
 	private Date createtime = new Date();	//创建时间
 	
 	private String tpcode ;		//短信网关的模板代码
+	
+	private String moreparam ;	//更多参数
 	/**
 	 * @return the id
 	 */
@@ -157,5 +159,11 @@ public class SystemMessage implements java.io.Serializable {
 	}
 	public void setSslport(String sslport) {
 		this.sslport = sslport;
+	}
+	public String getMoreparam() {
+		return moreparam;
+	}
+	public void setMoreparam(String moreparam) {
+		this.moreparam = moreparam;
 	}
 }

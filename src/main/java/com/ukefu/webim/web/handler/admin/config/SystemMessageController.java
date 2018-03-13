@@ -21,7 +21,7 @@ import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.repository.SystemMessageRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.SystemMessage;
-import com.ukefu.webim.web.model.User;
+import com.ukefu.webim.web.model.UKeFuDic;
 
 @Controller
 @RequestMapping("/admin")
@@ -88,5 +88,69 @@ public class SystemMessageController extends Handler{
     		systemMessageRepository.delete(temp);
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/admin/email/index.html"));
+    }
+    
+    
+    @RequestMapping("/sms/index")
+    @Menu(type = "setting" , subtype = "sms")
+    public ModelAndView smsindex(ModelMap map , HttpServletRequest request) throws FileNotFoundException, IOException {
+    	map.addAttribute("smsList", systemMessageRepository.findByMsgtypeAndOrgi("sms" , super.getOrgi(request) , new PageRequest(super.getP(request), super.getPs(request))));
+    	return request(super.createAdminTempletResponse("/admin/sms/index"));
+    }
+    
+    @RequestMapping("/sms/add")
+    @Menu(type = "admin" , subtype = "sms")
+    public ModelAndView smsadd(ModelMap map , HttpServletRequest request) {
+    	
+    	map.addAttribute("smsType", UKeFuDic.getInstance().getDic("com.dic.sms.type")) ;
+        return request(super.createRequestPageTempletResponse("/admin/sms/add"));
+    }
+    
+    @RequestMapping("/sms/save")
+    @Menu(type = "admin" , subtype = "sms")
+    public ModelAndView smssave(HttpServletRequest request ,@Valid SystemMessage sms) throws NoSuchAlgorithmException {
+    	sms.setOrgi(super.getOrgi(request));
+    	sms.setMsgtype(UKDataContext.SystemMessageType.SMS.toString());
+    	if(!StringUtils.isBlank(sms.getSmtppassword())) {
+    		sms.setSmtppassword(UKTools.encryption(sms.getSmtppassword()));
+		}
+    	systemMessageRepository.save(sms) ;
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/sms/index.html"));
+    }
+    
+    @RequestMapping("/sms/edit")
+    @Menu(type = "admin" , subtype = "sms")
+    public ModelAndView smsedit(ModelMap map , HttpServletRequest request , @Valid String id) {
+    	map.addAttribute("smsType", UKeFuDic.getInstance().getDic("com.dic.sms.type")) ;
+    	map.addAttribute("sms", systemMessageRepository.findByIdAndOrgi(id, super.getOrgi(request))) ;
+        return request(super.createRequestPageTempletResponse("/admin/sms/edit"));
+    }
+    
+    @RequestMapping("/sms/update")
+    @Menu(type = "admin" , subtype = "sms" , admin = true)
+    public ModelAndView smsupdate(HttpServletRequest request ,@Valid SystemMessage sms) throws NoSuchAlgorithmException {
+    	SystemMessage temp = systemMessageRepository.findByIdAndOrgi(sms.getId(), super.getOrgi(request)) ;
+    	if(sms!=null) {
+    		sms.setCreatetime(temp.getCreatetime());
+    		sms.setOrgi(temp.getOrgi());
+    		sms.setMsgtype(UKDataContext.SystemMessageType.SMS.toString());
+    		if(!StringUtils.isBlank(sms.getSmtppassword())) {
+    			sms.setSmtppassword(UKTools.encryption(sms.getSmtppassword()));
+    		}else {
+    			sms.setSmtppassword(temp.getSmtppassword());
+    		}
+    		systemMessageRepository.save(sms) ;
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/sms/index.html"));
+    }
+    
+    @RequestMapping("/sms/delete")
+    @Menu(type = "admin" , subtype = "sms")
+    public ModelAndView smsdelete(HttpServletRequest request ,@Valid SystemMessage sms) {
+    	SystemMessage temp = systemMessageRepository.findByIdAndOrgi(sms.getId(), super.getOrgi(request)) ;
+    	if(sms!=null) {
+    		systemMessageRepository.delete(temp);
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/sms/index.html"));
     }
 }

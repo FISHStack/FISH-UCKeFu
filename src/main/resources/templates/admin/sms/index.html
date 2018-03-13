@@ -1,10 +1,10 @@
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="site-h1" style="background-color:#FFFFFF;">
-			邮件服务器列表<#if emailList??>（${emailList.totalElements!''}）</#if>
+			短信网关列表<#if smsList??>（${smsList.totalElements!''}）</#if>
 			<span style="float:right;">
-				<button class="layui-btn layui-btn-small green" href="/admin/email/add.html" data-toggle="ajax" data-width="550" data-height="450" data-title="创建新网站">
-					创建新邮件服务器
+				<button class="layui-btn layui-btn-small green" href="/admin/sms/add.html" data-toggle="ajax" data-width="550" data-height="450" data-title="创建新网站">
+					创建新短信网关
 				</button>
 			</span>
 		</h1>
@@ -16,36 +16,42 @@
 						<col width="15%">
 						<col width="10%">
 						<col width="15%">
+						<col width="10%">
+						<col width="10%">
 						<col width="20%">
 						<col width="1%">
 				  </colgroup>
 				  <thead>
 					<tr>
 					  <th>名称</th>
-					  <th>邮件服务器地址</th>
-					  <th>账号</th>
-					  <th>发件人</th>
+					  <th>短信网关类型</th>
+					  <th>访问的URL</th>
+					  <th>模板ID</th>
+					  <th>AppKey</th>
+					  <th>参数</th>
 					  <th>创建时间</th>
 					  <th style="white-space:nowrap;" nowrap="nowrap">操作</th>
 					</tr> 
 				  </thead>
 				  <tbody>
-					<#if emailList?? && emailList??>
-					<#list emailList.content as email>
+					<#if smsList?? && smsList??>
+					<#list smsList.content as sms>
 					<tr>
 					  <td>
-							${email.name!''}
+							${sms.name!''}
 					  </td>
-					  <td>${email.smtpserver!''}</td>
-					  <td>${email.smtpuser!''}</td>
-					  <td>${email.mailfrom!''}</td>
-					  <td>${email.createtime?string("yyyy-MM-dd HH:mm:ss")}</td>
+					  <td>${sms.smstype!''}</td>
+					  <td>${sms.url!''}</td>
+					  <td>${sms.tpcode!''}</td>
+					  <td>${sms.appkey!''}</td>
+					  <td>${sms.moreparam!''}</td>
+					  <td>${sms.createtime?string("yyyy-MM-dd HH:mm:ss")}</td>
 					  <td style="white-space:nowrap;" nowrap="nowrap">
-					  		<a href="/admin/email/edit.html?id=${email.id!''}" data-toggle="ajax"  data-width="550" data-height="450" data-title="编辑网站">
+					  		<a href="/admin/sms/edit.html?id=${sms.id!''}" data-toggle="ajax"  data-width="550" data-height="450" data-title="编辑网站">
 					  			<i class="layui-icon">&#xe642;</i>
 					  			编辑
 					  		</a>
-					  		<a href="/admin/email/delete.html?id=${email.id!''}" style="margin-left:10px;" data-toggle="tip"  title="请确认是否删除邮件服务器？" >
+					  		<a href="/admin/sms/delete.html?id=${sms.id!''}" style="margin-left:10px;" data-toggle="tip"  title="请确认是否删除邮件服务器？" >
 					  			<i class="layui-icon" style="color:red;">&#x1006;</i>
 					  			删除
 					  		</a>
@@ -81,12 +87,12 @@
 		  
 		  laypage({
 				cont: 'page'
-				,pages: <#if emailList??>${emailList.totalPages}<#else>0</#if> //总页数
-				,curr:<#if emailList??>${emailList.number+1}<#else>0</#if>
+				,pages: <#if smsList??>${smsList.totalPages}<#else>0</#if> //总页数
+				,curr:<#if smsList??>${smsList.number+1}<#else>0</#if>
 				,groups: 5 //连续显示分页数
 				,jump:function(data , first){
 					if(!first){
-						location.href = "/admin/email/index.html?p="+data.curr ;
+						location.href = "/admin/sms/index.html?p="+data.curr ;
 					}
 				}
 		   });

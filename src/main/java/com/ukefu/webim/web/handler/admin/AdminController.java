@@ -4,16 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,23 +20,17 @@ import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
-import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
-import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
 import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.UserEventRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
-import com.ukefu.webim.web.model.OrgiSkillRel;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.User;
 
 @Controller
 public class AdminController extends Handler{
-	
-	@Autowired
-	private UserRepository userRepository;
 
 	@Autowired
 	private UserRepository userRes;
@@ -55,10 +44,6 @@ public class AdminController extends Handler{
 	@Autowired
 	private SysDicRepository sysDicRes ;
 	
-	@Autowired
-	private InviteRecordRepository inviteRecordRes ;
-	@Autowired
-	private OrgiSkillRelRepository orgiSkillRelRepository ;
     @RequestMapping("/admin")
     public ModelAndView index(ModelMap map ,HttpServletRequest request) {
     	ModelAndView view = request(super.createRequestPageTempletResponse("redirect:/"));
