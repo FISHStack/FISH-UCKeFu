@@ -140,6 +140,22 @@ public class ExcelExporterProcess {
 							SysDic sysDic = UKeFuDic.getInstance().getDicItem(String.valueOf(value.get(tp.getFieldname()))) ;
 							if(sysDic!=null) {
 								cell2.setCellValue(new HSSFRichTextString(sysDic.getName()));
+							}else {
+								List<SysDic> dicItemList = UKeFuDic.getInstance().getSysDic(tp.getSeldatacode());
+								if(dicItemList!=null && dicItemList.size() > 0) {
+									for(SysDic dicItem : dicItemList) {
+										String s = "";
+										Object obj = value.get(tp.getFieldname());
+										if(obj instanceof Boolean) {
+											s = (Boolean)obj?"1":"0";
+										}else {
+											s= String.valueOf(value.get(tp.getFieldname()));
+										}
+										if(dicItem.getCode().equals(s)) {
+											cell2.setCellValue(new HSSFRichTextString(dicItem.getName())); break ;
+										}
+									}
+								}
 							}
 						}else if(tp.isReffk() && !StringUtils.isBlank(tp.getReftbid())){
 							String key = (String) value.get(tp.getFieldname()) ;

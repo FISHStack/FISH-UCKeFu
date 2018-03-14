@@ -66,9 +66,9 @@
 							<label class="layui-form-label">性别：</label>
 							<div class="layui-input-inline">
 								<div class="layui-input-block" style="width:220px;">
-									<input type="radio" name="gender" value="1" title="男">
-      								<input type="radio" name="gender" value="0" title="女">
-      								<input type="radio" name="gender" value="-1" title="未知" checked>
+									<input type="radio" name="gender" value="1" title="男" <#if contacts?? && contacts.gender =='1'>checked</#if>>
+      								<input type="radio" name="gender" value="0" title="女" <#if contacts?? && contacts.gender =='0'>checked</#if>>
+      								<input type="radio" name="gender" value="-1" title="未知" <#if contacts?? && (contacts.gender !='1' && contacts.gender !='0')>checked</#if>>
 								</div>
 							</div>
 						</div>

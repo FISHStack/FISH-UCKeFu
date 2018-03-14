@@ -12,7 +12,7 @@
 	  	<div class="layui-inline">
 				<label class="layui-form-label">上级机构：</label>
 				<div class="layui-input-inline" style="position: relative;">
-					<input type="hidden" id="parent" name="parent" value="<#if organData??>${organData.id}<#else>0</#if>">
+					<input type="hidden" id="parent" name="parent" value="<#if organData??>${organData.parent}<#else>0</#if>">
 					<input type="text" name="parentname" id="parentname" required value="<#if organData??>${organData.name}<#else>组织机构</#if>" lay-verify="required" autocomplete="off" readOnly="readonly" onClick="showMenu();"
 						class="layui-input">
 					<i class="layui-icon" style="position: absolute;right: 3px;top: 6px;font-size: 25px;${systemConfig.color!'color:#0096C4;'}" onClick="showMenu()">&#xe631;</i>
@@ -130,6 +130,7 @@ layui.use('form', function(){
 		<#if organData??>
 		var node = ztree.getNodeByParam('id', '${organData.parent!''}');//获取id为1的点
 		ztree.selectNode(node);//选择点  
+		$("#parentname").attr("value", node.name);
 		<#if organData.area??>
 		<#list organData.area?split(",") as area>
 		var areanode_${area_index} = ztree.getNodeByParam('id', '${area}');//获取id为1的点

@@ -125,7 +125,7 @@ public class ExcelImportProecess extends DataProcess{
 											if(dicItemList!=null && dicItemList.size() > 0) {
 												for(SysDic dicItem : dicItemList) {
 													if(dicItem.getName().equals(valuestr)) {
-														values.put(tableProperties.getFieldname(), dicItem.getId()) ; break ;
+														values.put(tableProperties.getFieldname(), dicItem.isDiscode()?dicItem.getCode():dicItem.getId()) ; break ;
 													}
 												}
 											}
