@@ -169,6 +169,7 @@ CREATE TABLE `uk_reportmodel` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-
-
 ALTER TABLE uk_system_message ADD moreparam text;
+ALTER TABLE uk_templet ADD datatype varchar(32) default null;
+ALTER TABLE uk_templet ADD charttype varchar(32) default null;
+
