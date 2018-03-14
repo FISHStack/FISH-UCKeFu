@@ -18,7 +18,8 @@
 				  		<col width="1%">
 						<col width="35%">
 						<col width="15%">
-						<col width="15%">
+						<col width="10%">
+						<col width="10%">
 						<col width="15%">
 					<col>
 				  </colgroup>
@@ -30,6 +31,7 @@
 					  <th>中文名</th>
 					  <th>表名</th>
 					  <th>类型</th>
+					  <th>ES数据</th>
 					  <th>创建时间</th>
 					  <th style="white-space:nowrap;" nowrap="nowrap">操作</th>
 					</tr> 
@@ -48,9 +50,16 @@
 					  </td>
 					  <td>${table.tablename!''}	</td>
 					  <td><#if table.tabletype?? && table.tabletype == "1">数据表<#else>SQL</#if></td>
+					  <td>
+					  	<#if table.fromdb?? && table.fromdb == true>
+					  		<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
+					  		${uKeFuDic[table.listblocktemplet!''].name!''}
+					  		${uKeFuDic[table.previewtemplet!''].name!''}
+					  	</#if>
+					  </td>
 					  <td><#if table.createtime??>${table.createtime?string("yyyy-MM-dd HH:mm:ss")}</#if></td>
 					  <td style="white-space:nowrap;width:1%;" nowrap="nowrap">
-							<a href="/admin/metadata/edit.html?id=${table.id!''}&p=${metadataList.number+1}" data-width="550" data-height="200" data-toggle="ajax" title="编辑${table.name!''}">
+							<a href="/admin/metadata/edit.html?id=${table.id!''}&p=${metadataList.number+1}" data-width="550" data-height="260" data-toggle="ajax" title="编辑${table.name!''}">
 								<i class="layui-icon">&#xe642;</i>
 								编辑
 							</a>

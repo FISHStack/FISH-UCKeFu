@@ -1,5 +1,7 @@
 package com.ukefu.webim.service.hibernate;
 
+import java.util.List;
+
 import javax.persistence.EntityManagerFactory;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -22,7 +24,7 @@ public class BaseService<T> {
 	}
 	
 	
-	public void save(T t){
+	public void save(Object t){
 		Session session = hibernateFactory.openSession() ; 
 		try{
 			session.save(t) ;
@@ -48,5 +50,20 @@ public class BaseService<T> {
 			session.flush();
 			session.close();	
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object> list(String bean){
+		List<Object> dataList = null ;
+		Session session = hibernateFactory.openSession() ; 
+		try{
+			dataList = session.createQuery("from "+bean).list() ;
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}finally{
+			session.flush();
+			session.close();	
+		}
+		return dataList;
 	}
 }

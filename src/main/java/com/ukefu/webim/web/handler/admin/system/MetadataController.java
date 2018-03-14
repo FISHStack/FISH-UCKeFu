@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,23 +15,28 @@ import javax.validation.Valid;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.metadata.DatabaseMetaDataHandler;
 import com.ukefu.util.metadata.UKColumnMetadata;
 import com.ukefu.util.metadata.UKTableMetaData;
+import com.ukefu.webim.service.hibernate.BaseService;
 import com.ukefu.webim.service.repository.MetadataRepository;
 import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.TablePropertiesRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.MetadataTable;
+import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.TableProperties;
 import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
@@ -41,6 +47,9 @@ public class MetadataController extends Handler{
 	
 	@Autowired
 	private MetadataRepository metadataRes ;
+	
+	@Autowired
+	private BaseService<?> service ;
 	
 	@Autowired
 	private SysDicRepository sysDicRes ;
@@ -71,6 +80,9 @@ public class MetadataController extends Handler{
     public ModelAndView update(ModelMap map , HttpServletRequest request , @Valid MetadataTable metadata) throws SQLException {
     	MetadataTable table = metadataRes.findById(metadata.getId()) ;
     	table.setName(metadata.getName());
+    	table.setFromdb(metadata.isFromdb());
+    	table.setListblocktemplet(metadata.getListblocktemplet());
+    	table.setPreviewtemplet(metadata.getPreviewtemplet());
     	metadataRes.save(table);
     	return request(super.createRequestPageTempletResponse("redirect:/admin/metadata/index.html"));
     }
@@ -81,6 +93,7 @@ public class MetadataController extends Handler{
     	map.addAttribute("tp", tablePropertiesRes.findById(id)) ;
     	map.addAttribute("sysdicList", sysDicRes.findByParentid("0")) ;
     	map.addAttribute("dataImplList", UKeFuDic.getInstance().getDic("com.dic.data.impl")) ;
+    	
     	return request(super.createRequestPageTempletResponse("/admin/system/metadata/tpedit"));
     }
     
@@ -148,6 +161,7 @@ public class MetadataController extends Handler{
     public ModelAndView table(ModelMap map , HttpServletRequest request , @Valid String id) throws SQLException {
     	map.addAttribute("propertiesList", tablePropertiesRes.findByDbtableid(id)) ;
     	map.addAttribute("tbid", id) ;
+    	map.addAttribute("table", metadataRes.findById(id)) ;
         return request(super.createAdminTempletResponse("/admin/system/metadata/table"));
     }
     
@@ -251,6 +265,78 @@ public class MetadataController extends Handler{
     		typeName = "number" ;
     	}
     	return typeName ;
+    }
+    
+    @RequestMapping("/clean")
+    @Menu(type = "admin" , subtype = "metadata" , admin = true)
+    public ModelAndView clean(ModelMap map , HttpServletRequest request,@Valid String id) throws SQLException, BeansException, ClassNotFoundException {
+    	if(!StringUtils.isBlank(id)) {
+    		MetadataTable table = metadataRes.findById(id) ;
+    		if(table.isFromdb() && !StringUtils.isBlank(table.getListblocktemplet())) {
+    			SysDic dic = UKeFuDic.getInstance().getDicItem(table.getListblocktemplet()) ;
+    			if(dic!=null) {
+	    			Object bean = UKDataContext.getContext().getBean(Class.forName(dic.getCode())) ;
+	    			if(bean instanceof ElasticsearchRepository) {
+	    				ElasticsearchRepository<?, ?> jpa = (ElasticsearchRepository<?, ?>)bean ;
+	    				jpa.deleteAll(); 
+	    			}
+    			}
+    		}
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/metadata/index.html"));
+    }
+    
+    @SuppressWarnings({ "rawtypes", "unchecked"})
+	@RequestMapping("/synctoes")
+    @Menu(type = "admin" , subtype = "metadata" , admin = true)
+    public ModelAndView synctoes(ModelMap map , HttpServletRequest request,@Valid String id) throws SQLException, BeansException, ClassNotFoundException {
+    	if(!StringUtils.isBlank(id)) {
+    		MetadataTable table = metadataRes.findById(id) ;
+    		if(table.isFromdb() && !StringUtils.isBlank(table.getListblocktemplet())) {
+    			SysDic dic = UKeFuDic.getInstance().getDicItem(table.getListblocktemplet()) ;
+    			
+    			if(dic!=null) {
+	    			Object bean = UKDataContext.getContext().getBean(Class.forName(dic.getCode())) ;
+	    			if(bean instanceof ElasticsearchRepository) {
+	    				ElasticsearchRepository jpa = (ElasticsearchRepository)bean ;
+	    				if(!StringUtils.isBlank(table.getPreviewtemplet())) {
+	    					SysDic jpaDic = UKeFuDic.getInstance().getDicItem(table.getPreviewtemplet()) ;
+	    					List<Object> dataList = service.list(jpaDic.getCode()) ;
+	    					if(dataList.size() > 0) {
+	    						jpa.save(dataList) ;
+	    					}
+	    				}
+	    			}
+    			}
+    		}
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/metadata/index.html"));
+    }
+    
+    @SuppressWarnings({ "rawtypes"})
+	@RequestMapping("/synctodb")
+    @Menu(type = "admin" , subtype = "metadata" , admin = true)
+    public ModelAndView synctodb(ModelMap map , HttpServletRequest request,@Valid String id) throws SQLException, BeansException, ClassNotFoundException {
+    	if(!StringUtils.isBlank(id)) {
+    		MetadataTable table = metadataRes.findById(id) ;
+    		if(table.isFromdb() && !StringUtils.isBlank(table.getListblocktemplet())) {
+    			SysDic dic = UKeFuDic.getInstance().getDicItem(table.getListblocktemplet()) ;
+    			
+    			if(dic!=null) {
+	    			Object bean = UKDataContext.getContext().getBean(Class.forName(dic.getCode())) ;
+	    			if(bean instanceof ElasticsearchRepository) {
+	    				ElasticsearchRepository jpa = (ElasticsearchRepository)bean ;
+	    				if(!StringUtils.isBlank(table.getPreviewtemplet())) {
+	    					Iterable dataList = jpa.findAll();
+	    					for(Object object : dataList) {
+	    						service.save(object);
+	    					}
+	    				}
+	    			}
+    			}
+    		}
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/metadata/index.html"));
     }
     
 }

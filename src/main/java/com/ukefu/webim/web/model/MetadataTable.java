@@ -60,8 +60,8 @@ public class MetadataTable implements java.io.Serializable{
 	private String secureconf;	//改变用处，改为   链接对象 二
 	private String userid;
 	private String groupid;		//如果为结算过后的表，储存模型名称
-	private String previewtemplet ;	//修改用处，改变为 SQL或 Table 的 参数
-	private String listblocktemplet ;
+	private String previewtemplet ;	//修改用处，改为JAVABean对象名
+	private String listblocktemplet ;//修改用处，改为存储 ES的 JPA
 	private String orgi ;
 	private String creater ;
 	private String creatername ;
