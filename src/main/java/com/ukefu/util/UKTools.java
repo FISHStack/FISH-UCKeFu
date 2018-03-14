@@ -15,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +37,7 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jasypt.util.text.BasicTextEncryptor;
@@ -50,6 +52,11 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.googlecode.aviator.AviatorEvaluator;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.event.AiEvent;
@@ -1041,4 +1048,173 @@ public class UKTools {
 			}
 		}
 	}
+	
+	public static String encode(Object obj) {
+		Base64 base64 = new Base64();
+    	try {
+			return base64.encodeToString(UKTools.toBytes(obj)) ;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return null;
+	}
+	public static <T> T decode(String str,Class<T> clazz) {
+		Base64 base64 = new Base64();
+    	try {
+			return (T)UKTools.toObject(base64.decode(str)) ;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return null;
+	}
+	public static String processContentEncode(String str) throws Exception{
+		return Base64.encodeBase64String(str.getBytes("UTF-8")).replaceAll("\\+", "-");
+	}
+	public static String processContentDecode(String str) throws Exception{
+		return new String(Base64.decodeBase64(str.replaceAll("-", "\\+").getBytes()) , "UTF-8");
+	}
+	
+	/**
+	 * 
+	 * @param defaultFormatValue
+	 * @param text
+	 * @return
+	 */
+	public static String processParam(String defaultFormatValue, String text){
+		String formatValue = "yyyy-MM-dd" ;
+		if(text.matches("[ ]{0,}([Yy]{1,})[ ]{0,}[+-]{0,1}([\\d]{0,})")){
+			formatValue = "yyyy" ;
+		}else if(text.matches("[ ]{0,}([Mm]{1,})[ ]{0,}[+-]{0,1}([\\d]{0,})")){
+			formatValue = "yyyy-MM" ;
+		}
+		
+		return getDays(text, defaultFormatValue!=null && defaultFormatValue.length()>0 ? defaultFormatValue : formatValue) ;
+	}
+	/***
+	 * 计算T+1
+	 * @param text
+	 * @param format
+	 * @return
+	 */
+	public static String getDays(String text , String format){
+		String retDateFormat = text ;
+		Pattern pattern = Pattern.compile("[ ]{0,}([TtMmYy]{1,})[ ]{0,}[+-]{0,1}([\\d]{0,})") ;
+    	Matcher matcher = pattern.matcher(text) ;
+    	if(matcher.find() && matcher.groupCount()>=1){
+    		try {
+    			if(matcher.group(1) .equalsIgnoreCase("T")){
+    				retDateFormat = formatDateValue(format, getDaysParam(text)) ;
+    			}else if(matcher.group(1) .equalsIgnoreCase("M")){
+    				retDateFormat = formatMonthValue(format, getDaysParam(text)) ;
+    			}else if(matcher.group(1) .equalsIgnoreCase("Y")){
+    				retDateFormat = String.valueOf((int)Double.parseDouble(String.valueOf(getDaysParam(text))));
+    			}
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+    	}
+    	return retDateFormat ;
+	}
+	
+	/***
+	 * 计算T+1
+	 * @param text
+	 * @param format
+	 * @return
+	 */
+	public static Object getDaysParam(String text){
+		Map<String,Object>  context = new HashMap<String,Object>();
+		context.put("T", processDays()) ;
+		context.put("t", processDays()) ;
+		context.put("M", processMonth()) ;
+		context.put("m", processMonth()) ;
+		context.put("Y", processYear()) ;
+		context.put("y", processYear()) ;
+		
+    	return AviatorEvaluator.execute(text , context) ;
+	}
+	/**
+	 * 
+	 * @param defaultParam
+	 * @param value
+	 * @return
+	 * @throws ParseException 
+	 * @throws Exception 
+	 */
+	public static String formatDateValue(String format , Object value) throws ParseException{
+		if(value!=null && value.toString().matches("[\\d.]{5,}")){
+			value = new SimpleDateFormat(format).format(new Date((long)(Double.parseDouble(value.toString())*24*60*60*1000))) ;
+		}
+		return value!=null ? value.toString() : "0" ;
+	}
+	/**
+	 * 
+	 * @param defaultParam
+	 * @param value
+	 * @return
+	 * @throws ParseException 
+	 * @throws Exception 
+	 */
+	public static String formatMonthValue(String formatValue , Object value) throws ParseException{
+		if(value!=null && value.toString().matches("[\\d.]{3,}")){
+			int months = (int)Double.parseDouble(String.valueOf(value));
+			int year = 0 ;
+			int month = 0 ;
+			if(months%12==0){
+				year = months/12 - 1 ;
+				month = 12 ;
+			}else{
+				year = months/12 ;
+				month = months % 12 ;
+			}
+			if(month<10){
+				value = String.valueOf(year)+"0"+String.valueOf(month) ;
+			}else{
+				value = String.valueOf(year)+ String.valueOf(month) ;
+			}
+			value = new SimpleDateFormat(formatValue).format(new SimpleDateFormat("yyyyMM").parse(String.valueOf(value)));
+		}
+		return value!=null ? value.toString() : "0" ;
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	public static double processDays(){
+		return System.currentTimeMillis()*1.0f/(1000*60*60*24);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static double processMonth(){
+		Calendar calendar = Calendar.getInstance() ;
+		int month = calendar.get(Calendar.YEAR)*12 + calendar.get(Calendar.MONTH )+1 ;
+		return month;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static double processYear(){
+		return  Calendar.getInstance() .get(Calendar.YEAR);
+	}
+	
+	private static final ObjectMapper JSON = new ObjectMapper();
+    static {
+        JSON.setSerializationInclusion(Include.NON_NULL);
+        JSON.configure(SerializationFeature.INDENT_OUTPUT, Boolean.TRUE);
+    }
+
+    public static String toJson(Object obj) {
+        try {
+            return JSON.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

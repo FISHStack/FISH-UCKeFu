@@ -497,4 +497,59 @@ public class UKDataContext {
 	public static boolean getIMServerStatus(){
 		return imServerRunning;
 	}
+	
+	public enum FilterConType{
+		DIMENSION,
+		MEASURE;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	public enum FilterCompType{
+		NOT,
+		EQUAL;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	public enum FilterValuefilterType{
+		COMPARE,
+		RANGE;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum FilterConValueType{
+		INPUT,
+		AUTO,
+		USERDEF;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum FilterModelType{
+		TEXT,
+		DATE,
+		SIGSEL,
+		SELECT;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum FilteFunType{
+		FILTER,
+		RANK;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
 }

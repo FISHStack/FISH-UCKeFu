@@ -143,7 +143,7 @@ public class LoginController extends Handler{
 	    	}
 	    	//登录成功 判断是否进入多租户页面
 	    	SystemConfig systemConfig = UKTools.getSystemConfig();
-	    	if(systemConfig!=null&&systemConfig.isEnabletneant() && !loginUser.isSuperuser()) {
+	    	if(systemConfig!=null&&systemConfig.isEnabletneant() && systemConfig.isTenantconsole() &&!loginUser.isSuperuser()) {
 	    		view = request(super.createRequestPageTempletResponse("redirect:/apps/tenant/index"));
 	    	}
 	    	List<UserRole> userRoleList = userRoleRes.findByOrgiAndUser(loginUser.getOrgi(), loginUser);

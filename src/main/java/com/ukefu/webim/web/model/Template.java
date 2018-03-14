@@ -41,8 +41,8 @@ public class Template implements java.io.Serializable{
 	private String memo ; 	//模板说明内容
 	private String typeid;//分组id
 	private int layoutcols ;		//列数
-	
-	
+	private String datatype ;		//样例数据
+	private String charttype ;		//报表类型
 	public String getOrgi() {
 		return orgi;
 	}
@@ -142,4 +142,17 @@ public class Template implements java.io.Serializable{
 	public void setLayoutcols(int layoutcols) {
 		this.layoutcols = layoutcols;
 	}
+	public String getDatatype() {
+		return datatype;
+	}
+	public void setDatatype(String datatype) {
+		this.datatype = datatype;
+	}
+	public String getCharttype() {
+		return charttype;
+	}
+	public void setCharttype(String charttype) {
+		this.charttype = charttype;
+	}
+	
 }

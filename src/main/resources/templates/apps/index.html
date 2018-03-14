@@ -162,7 +162,6 @@
 							</a>
 						</li>
 					</#if>
-					<#if (user?? && user.roleAuthMap["B01"]??   || user.usertype == "0")>
 					<#if user?? && user.agent == true>
 					<li class="layui-nav-item " style="position: relative;">
 						<div class="ukefu-last-msg" data-num="0" id="ukefu-last-msg">
@@ -173,7 +172,6 @@
 							坐席
 						</a>
 					</li>
-					</#if>
 					</#if>
 					<#if (user?? && user.roleAuthMap["B02"]??   || user.usertype == "0")>
 					<li class="layui-nav-item ">

@@ -373,10 +373,10 @@ public class OnlineUserUtils {
 						}
 					}
 				}
+				agentList = agentTempList;
 			}
-			agentList = agentTempList;
-			if(agentTempList.size() > 0){
-				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_AGENT+origOrig, agentTempList, origOrig);
+			if(agentList.size() > 0){
+				CacheHelper.getSystemCacheBean().put(UKDataContext.CACHE_AGENT+origOrig, agentList, origOrig);
 			}
 		}
 		return agentList;

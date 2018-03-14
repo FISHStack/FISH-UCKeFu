@@ -206,4 +206,15 @@ public class Handler {
     	}
 		return false;
 	}
+	/**
+	 * 判断是否多租户
+	 * @return
+	 */
+	public boolean isTenantconsole(){	
+		SystemConfig systemConfig = UKTools.getSystemConfig();
+		if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantconsole()) {
+			return true;
+    	}
+		return false;
+	}
 }

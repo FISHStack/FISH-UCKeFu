@@ -9,16 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import mondrian.olap.Axis;
-import mondrian.olap.Cell;
-import mondrian.olap.Connection;
-import mondrian.olap.Member;
-import mondrian.olap.Position;
-import mondrian.olap.Query;
-import mondrian.olap.Result;
-import mondrian.rolap.RolapCubeLevel;
-import mondrian.rolap.RolapLevel;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -30,6 +20,15 @@ import com.ukefu.util.bi.model.Level;
 import com.ukefu.util.bi.model.ValueData;
 
 import freemarker.template.TemplateException;
+import mondrian.olap.Axis;
+import mondrian.olap.Cell;
+import mondrian.olap.Connection;
+import mondrian.olap.Member;
+import mondrian.olap.Position;
+import mondrian.olap.Query;
+import mondrian.olap.Result;
+import mondrian.rolap.RolapCubeLevel;
+import mondrian.rolap.RolapLevel;
 
 public class CubeService {
 	private DataSourceService dataSource ;
@@ -50,6 +49,22 @@ public class CubeService {
 		FileUtils.writeByteArrayToFile(schemaFile,UKTools.getTemplet(writer.toString(), requestValues) .getBytes());	//使用系统默认编码
 	}
 	
+	public CubeService(String xml , String path , DataSourceService dataSource , Map<String,Object> requestValues,boolean isContentStr) throws IOException, TemplateException {
+		this.dataSource = dataSource ;
+		File mdxFileDir = new File(path , "mdx") ;
+		if(!mdxFileDir.exists()){
+			mdxFileDir.mkdirs() ;
+		}
+		schemaFile = new File(mdxFileDir , UKTools.getUUID()+".xml") ;
+		if(isContentStr) {
+			FileUtils.writeByteArrayToFile(schemaFile,UKTools.getTemplet(xml, requestValues) .getBytes());	//使用系统默认编码
+		}else {
+			StringWriter writer = new StringWriter();
+			IOUtils.copy(CubeService.class.getClassLoader().getResourceAsStream(SCHEMA_DATA_PATH+xml), writer, "UTF-8"); 
+			FileUtils.writeByteArrayToFile(schemaFile,UKTools.getTemplet(writer.toString(), requestValues) .getBytes());	//使用系统默认编码
+		}
+	}
+	
 	@SuppressWarnings("deprecation")
 	public CubeReportData execute(String mdx) throws Exception{
 		Connection connection = dataSource.service(schemaFile.getAbsolutePath()) ;
@@ -58,14 +73,13 @@ public class CubeService {
 			Query query = connection.parseQuery(mdx);
 			Result result = connection.execute(query) ;
 			Axis[] axises = result.getAxes();
-			
-			
 			cubeReportData.setData(new ArrayList<List<ValueData>>());
 			for (int i = 0; i < axises.length; i++) {
 				if (i == 0) {
 					cubeReportData.setCol(createTitle(axises[i], i));
 				} else {
 					cubeReportData.setRow(createTitle(axises[i], i));
+					cubeReportData.setTotal(axises[i].getDataSize());
 				}
 			}
 			if(cubeReportData.getRow()==null){

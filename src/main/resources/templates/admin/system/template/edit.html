@@ -1,3 +1,4 @@
+<#include "/public/macro.html">
 <div class="uk-layui-form">
     <form class="layui-form uk-form" action="/admin/template/update.html">
     	<input type="hidden" name="templettype" value="${sysDic.id!''}">
@@ -12,7 +13,12 @@
             	模板名称，请使用字母填写
             </div>
         </div>
-        
+        <div class="layui-form-item">
+            <label class="layui-form-label">模板代码：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="code" placeholder="请输入模板代码" value="${template.code!''}"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
         
         <#if sysDic.discode == true>
         <div class="layui-form-item">
@@ -41,8 +47,25 @@
             </div>
         </div>
         </#if>
+        <#if sysDic.ctype?? && sysDic.ctype == "report">
+        <!-- <div class="layui-form-item">
+            <label class="layui-form-label">样例数据：</label>
+            <div class="layui-input-inline">
+                <@select "com.dic.template.datatype" "datatype" template.datatype!'' "lay-ignore required" "width: 220px;"/>
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+            	<font color="red">*</font> 
+            	报表默认数据
+            </div>
+        </div> -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">报表类型：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="charttype" required lay-verify="required" value="${template.charttype!''}" placeholder="请输入报表类型" autocomplete="off" class="layui-input">
+            </div>
+        </div>
         </#if>
-        
+         </#if>
         
         <div class="layui-form-button">
             <div class="layui-button-block">

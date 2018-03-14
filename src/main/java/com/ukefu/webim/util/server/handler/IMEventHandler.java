@@ -1,5 +1,6 @@
 package com.ukefu.webim.util.server.handler;
 
+import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.util.Date;
 import java.util.List;

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -98,10 +99,9 @@ public class TemplateController extends Handler{
     	template.setCreatetime(new Date());
     	
     	SysDic dic = dicRes.findById(template.getTemplettype());
-		if(dic!=null) {
+		if(dic!=null && StringUtils.isBlank(template.getCode())) {
 			template.setCode(dic.getCode());
 		}
-    	
     	templateRes.save(template) ;
     	
 		return request(super.createRequestPageTempletResponse("redirect:/admin/template/list.html?type="+template.getTemplettype()));
@@ -124,9 +124,14 @@ public class TemplateController extends Handler{
     		if(dic!=null) {
     			oldTemplate.setCode(dic.getCode());
     		}
+    		if(!StringUtils.isBlank(template.getCode())) {
+    			oldTemplate.setCode(template.getCode());
+    		}
     		oldTemplate.setName(template.getName());
     		oldTemplate.setLayoutcols(template.getLayoutcols());
     		oldTemplate.setIconstr(template.getIconstr());
+    		oldTemplate.setDatatype(template.getDatatype());
+    		oldTemplate.setCharttype(template.getCharttype());
     		templateRes.save(oldTemplate) ;
     		
     		CacheHelper.getSystemCacheBean().delete(template.getId(), super.getOrgi(request)) ;
