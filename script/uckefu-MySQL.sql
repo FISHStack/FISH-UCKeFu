@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-03-13 23:24:12
+Date: 2018-03-15 09:27:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -6369,6 +6369,8 @@ CREATE TABLE `uk_templet` (
   `TYPEID` varchar(32) DEFAULT NULL COMMENT '分类ID',
   `SELDATA` tinyint(4) DEFAULT NULL,
   `layoutcols` int(11) DEFAULT '0',
+  `datatype` varchar(32) DEFAULT NULL,
+  `charttype` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
