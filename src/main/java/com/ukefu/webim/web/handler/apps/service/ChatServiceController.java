@@ -98,7 +98,7 @@ public class ChatServiceController extends Handler{
 			List<String> usersids = new ArrayList<String>();
 			if(!agentStatusList.isEmpty()) {
 				for(AgentStatus agentStatus:agentStatusList) {
-					if(agentStatus!=null && !agentStatus.getAgentno().equals(super.getUser(request).getId())){
+					if(agentStatus!=null){
 						usersids.add(agentStatus.getAgentno()) ;
 					}
 				}
