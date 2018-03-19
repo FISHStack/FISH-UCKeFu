@@ -23,7 +23,6 @@ import com.ukefu.webim.service.repository.PbxHostRepository;
 import com.ukefu.webim.service.repository.RouterRulesRepository;
 import com.ukefu.webim.service.repository.SipTrunkRepository;
 import com.ukefu.webim.service.repository.SkillExtentionRepository;
-import com.ukefu.webim.service.repository.TemplateRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Extention;
 import com.ukefu.webim.web.model.PbxHost;
@@ -54,9 +53,6 @@ public class ExtentionController extends Handler{
 	
 	@Autowired
 	private SipTrunkRepository sipTrunkRes ;
-	
-	@Autowired
-	private TemplateRepository templateRes ;
 	
 	@RequestMapping(value = "/extention")
     @Menu(type = "callcenter" , subtype = "extention" , access = true)
