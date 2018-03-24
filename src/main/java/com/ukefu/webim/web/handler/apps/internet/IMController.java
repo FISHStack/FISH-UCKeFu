@@ -51,7 +51,6 @@ import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.InviteRecordRepository;
 import com.ukefu.webim.service.repository.LeaveMsgRepository;
 import com.ukefu.webim.service.repository.SNSAccountRepository;
-import com.ukefu.webim.service.repository.SessionConfigRepository;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.web.handler.Handler;
@@ -300,9 +299,7 @@ public class IMController extends Handler{
 			SessionConfig sessionConfig = ServiceQuene.initSessionConfig(orgi) ;
 			
 			map.addAttribute("sessionConfig", sessionConfig);
-    		map.addAttribute("orgi",invite.getOrgi());
-    		
-    		map.addAttribute("inviteData", invite);
+			
     		map.addAttribute("contacts", contacts) ;
     		map.addAttribute("hostname", request.getServerName()) ;
 			map.addAttribute("port", port) ;
@@ -327,142 +324,150 @@ public class IMController extends Handler{
 			}
 			
 			map.addAttribute("ukefport", request.getServerPort()) ; 
-			AgentReport report = ServiceQuene.getAgentReport(invite.getOrgi()) ;
+			/**
+			 * 先检查 invite不为空
+			 */
+			if(invite!=null) {
+	    		map.addAttribute("orgi",invite.getOrgi());
+	    		map.addAttribute("inviteData", invite);
 			
-			if(report.getAgents() ==0 ||  (sessionConfig.isHourcheck() && !UKTools.isInWorkingHours(sessionConfig.getWorkinghours()) && invite.isLeavemessage())){
-				view = request(super.createRequestPageTempletResponse("/apps/im/leavemsg")) ;
-			}else if(invite.isConsult_info()){	//启用了信息收集 , 从Request获取 ， 或从 Cookies 里去
-    			//验证 OnlineUser 信息
-    			if(contacts!=null && !StringUtils.isBlank(contacts.getName())){	//contacts用于传递信息，并不和 联系人表发生 关联，contacts信息传递给 Socket.IO，然后赋值给 AgentUser，最终赋值给 AgentService永久存储
-    				consult = true ;
-    				//存入 Cookies
-    				if(invite.isConsult_info_cookies()){
-	    				Cookie name = new Cookie("name",UKTools.encryption(URLEncoder.encode(contacts.getName(), "UTF-8")));
-	    				response.addCookie(name);
-	    				name.setMaxAge(3600);
-	    				if(!StringUtils.isBlank(contacts.getPhone())){
-		    				Cookie phonecookie = new Cookie("phone",UKTools.encryption(URLEncoder.encode(contacts.getPhone(), "UTF-8")));
-		    				phonecookie.setMaxAge(3600);
-		    				response.addCookie(phonecookie);
-	    				}
-	    				if(!StringUtils.isBlank(contacts.getEmail())){
-		    				Cookie email = new Cookie("email",UKTools.encryption(URLEncoder.encode(contacts.getEmail(), "UTF-8")));
-		    				email.setMaxAge(3600);
-		    				response.addCookie(email);
-	    				}
-	    				if(!StringUtils.isBlank(contacts.getMemo())){
-		    				Cookie memo = new Cookie("memo",UKTools.encryption(URLEncoder.encode(contacts.getName(), "UTF-8")));
-		    				memo.setMaxAge(3600);
-		    				response.addCookie(memo);
-	    				}
-    				}
-    			}else{
-    				//从 Cookies里尝试读取 
-    				if(invite.isConsult_info_cookies()){
-	    				Cookie[] cookies = request.getCookies();//这样便可以获取一个cookie数组
-	    				contacts = new Contacts();
-	    				if(cookies!=null){
-		    				for(Cookie cookie : cookies){
-		    					if(cookie!=null && !StringUtils.isBlank(cookie.getName()) && !StringUtils.isBlank(cookie.getValue())){
-		    						if(cookie.getName().equals("name")){
-		    							contacts.setName(URLDecoder.decode(UKTools.decryption(cookie.getValue()) , "UTF-8"));
-		    						}
-		    						if(cookie.getName().equals("phone")){
-		    							contacts.setPhone(URLDecoder.decode(UKTools.decryption(cookie.getValue()) , "UTF-8"));
-		    						}
-		    						if(cookie.getName().equals("email")){
-		    							contacts.setEmail(URLDecoder.decode(UKTools.decryption(cookie.getValue()) , "UTF-8"));
-		    						}
-		    						if(cookie.getName().equals("memo")){
-		    							contacts.setMemo(URLDecoder.decode(UKTools.decryption(cookie.getValue()) , "UTF-8"));
-		    						}
-		    					}
+	    		AgentReport report = ServiceQuene.getAgentReport(invite.getOrgi()) ;
+			
+				if(report.getAgents() ==0 ||  (sessionConfig.isHourcheck() && !UKTools.isInWorkingHours(sessionConfig.getWorkinghours()) && invite.isLeavemessage())){
+					view = request(super.createRequestPageTempletResponse("/apps/im/leavemsg")) ;
+				}else if(invite.isConsult_info()){	//启用了信息收集 , 从Request获取 ， 或从 Cookies 里去
+	    			//验证 OnlineUser 信息
+	    			if(contacts!=null && !StringUtils.isBlank(contacts.getName())){	//contacts用于传递信息，并不和 联系人表发生 关联，contacts信息传递给 Socket.IO，然后赋值给 AgentUser，最终赋值给 AgentService永久存储
+	    				consult = true ;
+	    				//存入 Cookies
+	    				if(invite.isConsult_info_cookies()){
+		    				Cookie name = new Cookie("name",UKTools.encryption(URLEncoder.encode(contacts.getName(), "UTF-8")));
+		    				response.addCookie(name);
+		    				name.setMaxAge(3600);
+		    				if(!StringUtils.isBlank(contacts.getPhone())){
+			    				Cookie phonecookie = new Cookie("phone",UKTools.encryption(URLEncoder.encode(contacts.getPhone(), "UTF-8")));
+			    				phonecookie.setMaxAge(3600);
+			    				response.addCookie(phonecookie);
+		    				}
+		    				if(!StringUtils.isBlank(contacts.getEmail())){
+			    				Cookie email = new Cookie("email",UKTools.encryption(URLEncoder.encode(contacts.getEmail(), "UTF-8")));
+			    				email.setMaxAge(3600);
+			    				response.addCookie(email);
+		    				}
+		    				if(!StringUtils.isBlank(contacts.getMemo())){
+			    				Cookie memo = new Cookie("memo",UKTools.encryption(URLEncoder.encode(contacts.getName(), "UTF-8")));
+			    				memo.setMaxAge(3600);
+			    				response.addCookie(memo);
 		    				}
 	    				}
-    				}
-    				if(StringUtils.isBlank(contacts.getName())){
-    					consult = false ;
-	    				view = request(super.createRequestPageTempletResponse("/apps/im/collecting")) ;
-    				}
-    			}
-    		}else{
-    			contacts = processContacts(invite.getOrgi(), contacts, appid, userid);
-    		}
-			
-			if(!StringUtils.isBlank(client)){
-				map.addAttribute("client", client) ;
-			}
-			if(!StringUtils.isBlank(skill)){
-				map.addAttribute("skill", skill) ;
-			}
-			if(!StringUtils.isBlank(agent)){
-				map.addAttribute("agent", agent) ;
-			}
-			
-			if(!StringUtils.isBlank(type)){
-				map.addAttribute("type", type) ;
-			}
-			IP ipdata = IPTools.getInstance().findGeography(UKTools.getIpAddr(request));
-			map.addAttribute("skillList", OnlineUserUtils.organ(invite.getOrgi() , ipdata , invite,true))  ;
-			
-    		if(invite!=null && consult){
-				if(contacts!=null && !StringUtils.isBlank(contacts.getName())){
-					nickname = contacts.getName() ;
+	    			}else{
+	    				//从 Cookies里尝试读取 
+	    				if(invite.isConsult_info_cookies()){
+		    				Cookie[] cookies = request.getCookies();//这样便可以获取一个cookie数组
+		    				contacts = new Contacts();
+		    				if(cookies!=null){
+			    				for(Cookie cookie : cookies){
+			    					if(cookie!=null && !StringUtils.isBlank(cookie.getName()) && !StringUtils.isBlank(cookie.getValue())){
+			    						if(cookie.getName().equals("name")){
+			    							contacts.setName(URLDecoder.decode(UKTools.decryption(cookie.getValue()) , "UTF-8"));
+			    						}
+			    						if(cookie.getName().equals("phone")){
+			    							contacts.setPhone(URLDecoder.decode(UKTools.decryption(cookie.getValue()) , "UTF-8"));
+			    						}
+			    						if(cookie.getName().equals("email")){
+			    							contacts.setEmail(URLDecoder.decode(UKTools.decryption(cookie.getValue()) , "UTF-8"));
+			    						}
+			    						if(cookie.getName().equals("memo")){
+			    							contacts.setMemo(URLDecoder.decode(UKTools.decryption(cookie.getValue()) , "UTF-8"));
+			    						}
+			    					}
+			    				}
+		    				}
+	    				}
+	    				if(StringUtils.isBlank(contacts.getName())){
+	    					consult = false ;
+		    				view = request(super.createRequestPageTempletResponse("/apps/im/collecting")) ;
+	    				}
+	    			}
+	    		}else{
+	    			contacts = processContacts(invite.getOrgi(), contacts, appid, userid);
+	    		}
+				
+				if(!StringUtils.isBlank(client)){
+					map.addAttribute("client", client) ;
 				}
-				map.addAttribute("username", nickname) ;
-    			if(UKDataContext.model.get("xiaoe")!=null  && invite.isAi() && ((!StringUtils.isBlank(ai) && ai.equals("true")) || (invite.isAifirst() && ai == null))){	//启用 AI ， 并且 AI优先 接待
-    				DataExchangeInterface dataInterface = (DataExchangeInterface) UKDataContext.getContext().getBean("aiconfig") ;
-    				AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(appid, invite.getOrgi()) ;
-    				if(aiConfig!=null){
-    					map.addAttribute("aiConfig", aiConfig) ;
-    				}
-    				view = request(super.createRequestPageTempletResponse("/apps/im/ai/index")) ;
-    				if(CheckMobile.check(request.getHeader("User-Agent")) || !StringUtils.isBlank(mobile)){
-    					view = request(super.createRequestPageTempletResponse("/apps/im/ai/mobile")) ;		//智能机器人 移动端
-    				}
-    				if(UKDataContext.model.get("xiaoe")!=null){
-    					List<Topic> topicList = OnlineUserUtils.cacheHotTopic((DataExchangeInterface) UKDataContext.getContext().getBean("topic") , super.getUser(request) , orgi)  ;
-    					
-    					/**
-    					 * 初步按照地区匹配分类筛选
-    					 */
-    					List<KnowledgeType> topicTypeList = OnlineUserUtils.topicType(orgi,ipdata,OnlineUserUtils.cacheHotTopicType((DataExchangeInterface) UKDataContext.getContext().getBean("topictype") , super.getUser(request) , orgi)) ; 
-    					
-    					/**
-    					 * 第二步按照 有 热点主题的 分类做筛选
-    					 */
-    					map.addAttribute("topicList", OnlineUserUtils.topic(orgi, topicTypeList, topicList)) ;
-    					/**
-    					 * 第三步筛选 分类，如果无热点知识，则不显示分类
-    					 */
-    					map.addAttribute("topicTypeList",OnlineUserUtils.filterTopicType(topicTypeList, topicList)) ;
-    				}
-    			}else{
-    				if(CheckMobile.check(request.getHeader("User-Agent")) || !StringUtils.isBlank(mobile)){
-    					view = request(super.createRequestPageTempletResponse("/apps/im/mobile")) ;	//WebIM移动端。再次点选技能组？
-    				}
-    			}
-    			map.addAttribute("chatMessageList", chatMessageRes.findByUsessionAndOrgi(userid , orgi, new PageRequest(0, 20, Direction.DESC , "updatetime"))) ;
-	    	}
-    		view.addObject("commentList" , UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_DIC)) ;
-    		view.addObject("commentItemList" , UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_ITEM_DIC)) ;
-    		view.addObject("welcomeAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.WELCOME.toString(),orgi)) ;
-    		view.addObject("imageAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.IMAGE.toString(),orgi)) ;
-	//    	OnlineUserUtils.sendWebIMClients(userid , "accept");
-    		 
-    		if(invite.isTraceuser()){
-		    	Page<InviteRecord> inviteRecordList = inviteRecordRes.findByUseridAndOrgi(userid, orgi , new PageRequest(0, 1, Direction.DESC, "createtime")) ;
-		    	if(inviteRecordList.getContent()!=null && inviteRecordList.getContent().size()>0){
-		    		InviteRecord record = inviteRecordList.getContent().get(0) ;
-		    		record.setUpdatetime(new Date());
-		    		record.setTraceid(traceid);
-		    		record.setTitle(title);
-		    		record.setUrl(url);
-		    		record.setResponsetime((int) (System.currentTimeMillis() - record.getCreatetime().getTime()));
-		    		record.setResult(UKDataContext.OnlineUserInviteStatus.ACCEPT.toString());
-		    		inviteRecordRes.save(record) ;
+				if(!StringUtils.isBlank(skill)){
+					map.addAttribute("skill", skill) ;
+				}
+				if(!StringUtils.isBlank(agent)){
+					map.addAttribute("agent", agent) ;
+				}
+				
+				if(!StringUtils.isBlank(type)){
+					map.addAttribute("type", type) ;
+				}
+				IP ipdata = IPTools.getInstance().findGeography(UKTools.getIpAddr(request));
+				map.addAttribute("skillList", OnlineUserUtils.organ(invite.getOrgi() , ipdata , invite,true))  ;
+				
+	    		if(invite!=null && consult){
+					if(contacts!=null && !StringUtils.isBlank(contacts.getName())){
+						nickname = contacts.getName() ;
+					}
+					map.addAttribute("username", nickname) ;
+	    			if(UKDataContext.model.get("xiaoe")!=null  && invite.isAi() && ((!StringUtils.isBlank(ai) && ai.equals("true")) || (invite.isAifirst() && ai == null))){	//启用 AI ， 并且 AI优先 接待
+	    				DataExchangeInterface dataInterface = (DataExchangeInterface) UKDataContext.getContext().getBean("aiconfig") ;
+	    				AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(appid, invite.getOrgi()) ;
+	    				if(aiConfig!=null){
+	    					map.addAttribute("aiConfig", aiConfig) ;
+	    				}
+	    				view = request(super.createRequestPageTempletResponse("/apps/im/ai/index")) ;
+	    				if(CheckMobile.check(request.getHeader("User-Agent")) || !StringUtils.isBlank(mobile)){
+	    					view = request(super.createRequestPageTempletResponse("/apps/im/ai/mobile")) ;		//智能机器人 移动端
+	    				}
+	    				if(UKDataContext.model.get("xiaoe")!=null){
+	    					List<Topic> topicList = OnlineUserUtils.cacheHotTopic((DataExchangeInterface) UKDataContext.getContext().getBean("topic") , super.getUser(request) , orgi)  ;
+	    					
+	    					/**
+	    					 * 初步按照地区匹配分类筛选
+	    					 */
+	    					List<KnowledgeType> topicTypeList = OnlineUserUtils.topicType(orgi,ipdata,OnlineUserUtils.cacheHotTopicType((DataExchangeInterface) UKDataContext.getContext().getBean("topictype") , super.getUser(request) , orgi)) ; 
+	    					
+	    					/**
+	    					 * 第二步按照 有 热点主题的 分类做筛选
+	    					 */
+	    					map.addAttribute("topicList", OnlineUserUtils.topic(orgi, topicTypeList, topicList)) ;
+	    					/**
+	    					 * 第三步筛选 分类，如果无热点知识，则不显示分类
+	    					 */
+	    					map.addAttribute("topicTypeList",OnlineUserUtils.filterTopicType(topicTypeList, topicList)) ;
+	    				}
+	    			}else{
+	    				if(CheckMobile.check(request.getHeader("User-Agent")) || !StringUtils.isBlank(mobile)){
+	    					view = request(super.createRequestPageTempletResponse("/apps/im/mobile")) ;	//WebIM移动端。再次点选技能组？
+	    				}
+	    			}
+	    			map.addAttribute("chatMessageList", chatMessageRes.findByUsessionAndOrgi(userid , orgi, new PageRequest(0, 20, Direction.DESC , "updatetime"))) ;
 		    	}
-    		}
+	    		view.addObject("commentList" , UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_DIC)) ;
+	    		view.addObject("commentItemList" , UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_ITEM_DIC)) ;
+	    		view.addObject("welcomeAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.WELCOME.toString(),orgi)) ;
+	    		view.addObject("imageAd", UKTools.getPointAdv(UKDataContext.AdPosEnum.IMAGE.toString(),orgi)) ;
+		//    	OnlineUserUtils.sendWebIMClients(userid , "accept");
+	    		 
+	    		if(invite.isTraceuser()){
+			    	Page<InviteRecord> inviteRecordList = inviteRecordRes.findByUseridAndOrgi(userid, orgi , new PageRequest(0, 1, Direction.DESC, "createtime")) ;
+			    	if(inviteRecordList.getContent()!=null && inviteRecordList.getContent().size()>0){
+			    		InviteRecord record = inviteRecordList.getContent().get(0) ;
+			    		record.setUpdatetime(new Date());
+			    		record.setTraceid(traceid);
+			    		record.setTitle(title);
+			    		record.setUrl(url);
+			    		record.setResponsetime((int) (System.currentTimeMillis() - record.getCreatetime().getTime()));
+			    		record.setResult(UKDataContext.OnlineUserInviteStatus.ACCEPT.toString());
+			    		inviteRecordRes.save(record) ;
+			    	}
+	    		}
+			}
     	}
         return view;
     }
