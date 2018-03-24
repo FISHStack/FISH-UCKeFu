@@ -165,9 +165,11 @@ public class OnlineUserUtils {
 		}
 		List<Organ> regOrganList = new ArrayList<Organ>()  ;
 		for(Organ organ : skillList){
-			if(!StringUtils.isBlank(organ.getArea()) && (organ.getArea().indexOf(ipdata.getProvince()) >= 0 || organ.getArea().indexOf(ipdata.getCity()) >= 0 )){
-				regOrganList.add(organ) ;
-			}else if(StringUtils.isBlank(organ.getArea())){
+			if(StringUtils.isNotBlank(organ.getArea())) {
+				if(organ.getArea().indexOf(ipdata.getProvince()) >= 0 || organ.getArea().indexOf(ipdata.getCity()) >= 0 ){
+					regOrganList.add(organ) ;
+				}
+			}else{
 				regOrganList.add(organ) ;
 			}
 		}
