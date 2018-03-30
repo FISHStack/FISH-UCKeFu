@@ -30,13 +30,7 @@
 			<div class="layui-inline">
 				<label class="layui-form-label" style="width:150px;">短信网关类型：</label>
 				<div class="layui-input-inline">
-					<select name="smstype" lay-verify="required">	
-						<#if smsType??>
-						<#list smsType as smstp>
-						<option value="${smstp.code!''}" <#if smstp.code == sms.smstype>selected="selected"</#if>>${smstp.name!''}</option>
-						</#list>
-						</#if>
-				    </select>
+					<@select "com.dic.sms.type" "smstype" sms.smstype "lay-verify=required" ""/>
 				</div>
 				<div class="layui-form-mid layui-word-aux">
 	            	<font color="red">*</font> 

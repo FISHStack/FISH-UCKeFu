@@ -33,7 +33,7 @@ DEMO访问地址：[优客服（UCKeFu-WebIM）](http://uk.ukewo.cn/) ， 访问
 ### 1.  将代码拉取下来
 
 ### 1. 编译pom.xml文件，下载好jar包
-本项目有三个依赖包，IP2REGION 、 jave 和Mondrian，通过以下指令加入到本地Mavenue仓库：
+本项目有三个依赖包，IP2REGION 、 jave 和Mondrian，aliyun-java-sdk-core、aliyun-java-sdk-dysmsapi通过以下指令加入到本地Mavenue仓库：
 
 1、mvn install:install-file  -Dfile=src/main/resources/WEB-INF/lib/ip2region-1.2.4.jar -DgroupId=org.lionsoul.ip2region -DartifactId=ip2region -Dversion=1.2.4 -Dpackaging=jar
 
@@ -42,6 +42,11 @@ DEMO访问地址：[优客服（UCKeFu-WebIM）](http://uk.ukewo.cn/) ， 访问
 
 3、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/mondrian-3.7.0.jar -DgroupId=mondrian -DartifactId=mondrian -Dversion=3.7.0 -Dpackaging=jar
 
+4、执行添加 阿里云jar 
+mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/aliyun-java-sdk-core-3.3.1.jar -DgroupId=com.aliyun -DartifactId=aliyun-java-sdk-core -Dversion=3.3.1 -Dpackaging=jar
+
+5、阿里大于jar
+mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/aliyun-java-sdk-dysmsapi-1.0.0.jar -DgroupId=com.aliyun -DartifactId=aliyun-java-sdk-dysmsapi -Dversion=1.0.0 -Dpackaging=jar
  **确保两个依赖都安装成功** 
 
 ### 1. 将项目按照maven格式配置好

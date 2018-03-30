@@ -6,7 +6,7 @@
 				<label class="layui-form-label" style="width:150px;">短信网关名称：</label>
 				<div class="layui-input-inline">
 					<input type="text" name="name" required lay-verify="required" autocomplete="off"
-						class="layui-input">
+						class="layui-input" >
 				</div>
 				<div class="layui-form-mid layui-word-aux">
 	            	<font color="red">*</font> 
@@ -29,13 +29,7 @@
 			<div class="layui-inline">
 				<label class="layui-form-label" style="width:150px;">短信网关类型：</label>
 				<div class="layui-input-inline">
-					<select name="smstype" lay-verify="required">	
-						<#if smsType??>
-						<#list smsType as sms>
-						<option value="${sms.code!''}">${sms.name!''}</option>
-						</#list>
-						</#if>
-				    </select>
+					<@select "com.dic.sms.type" "smstype" "" "lay-verify=required" ""/>
 				</div>
 				<div class="layui-form-mid layui-word-aux">
 	            	<font color="red">*</font> 
