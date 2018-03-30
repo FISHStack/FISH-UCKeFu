@@ -105,7 +105,7 @@ mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/aliyun-java-sdk-d
 集成企业内部客户数据，分析客户价值，创建客户标签
 
  **微信接入渠道演示微信公众号** 
-![输入图片说明](http://git.oschina.net/uploads/images/2017/0406/124616_6d33dc77_1200081.png "在这里输入图片标题")
+![输入图片说明](https://gitee.com/uploads/images/2018/0330/155011_a68bba9e_1200081.jpeg "qrcode_for_gh_b21c83fa3ff9_258.jpg")
 
 优客服部分产品组件截图
 
