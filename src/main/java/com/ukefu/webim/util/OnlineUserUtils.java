@@ -85,8 +85,9 @@ public class OnlineUserUtils {
 	public static CousultInvite cousult(String id ,String orgi, ConsultInviteRepository consultRes){
 		CousultInvite consultInvite = (CousultInvite) CacheHelper.getSystemCacheBean().getCacheObject(id, orgi) ;
 		if(consultInvite == null){
-			consultInvite = consultRes.findBySnsaccountidAndOrgi(id,orgi) ;
-			if(consultInvite!=null){
+			List<CousultInvite> consultInviteList = consultRes.findBySnsaccountid(id) ;
+			if(consultInviteList.size() > 0){
+				consultInvite = consultInviteList.get(0) ;
 				CacheHelper.getSystemCacheBean().put(id ,consultInvite , orgi) ;
 			}
 		}

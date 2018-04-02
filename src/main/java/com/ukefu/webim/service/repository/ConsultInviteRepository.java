@@ -11,6 +11,8 @@ public abstract interface ConsultInviteRepository
 {
   public abstract CousultInvite findBySnsaccountidAndOrgi(String paramsnsaccountid , String orgi);
   
+  public abstract List<CousultInvite> findBySnsaccountid(String paramsnsaccountid);
+  
   public abstract List<CousultInvite> findByOrgi(String orgi);
 }
 
