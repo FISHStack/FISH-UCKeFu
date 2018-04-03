@@ -20,6 +20,9 @@
     <script src="/im/js/socket.io.js"></script>
     <script type="text/javascript">
 		var editor , words;
+		var newmessage = [] , ring = [];
+		newmessage['mp3'] = '/images/message.mp3';
+		ring['mp3'] = '/images/ring.mp3';
         KindEditor.ready(function (K) {
             editor = K.create('textarea[name="content"]', {
                 autoHeightMode: false,
@@ -150,6 +153,39 @@
 				}else{
 					return json;
 				}
+			},
+			audioplayer:function(id, file, loop) {
+			    var audioplayer = document.getElementById(id);
+			    if (audioplayer != null) {
+			        document.body.removeChild(audioplayer);
+			    }
+
+			    if (typeof(file) != 'undefined') {
+			        if (navigator.userAgent.indexOf("MSIE") > 0) { // IE 
+			            var player = document.createElement('bgsound');
+			            player.id = id;
+			            player.src = file['mp3'];
+			            player.setAttribute('autostart', 'true');
+			            if (loop) {
+			                player.setAttribute('loop', 'infinite');
+			            }
+			            document.body.appendChild(player);
+
+			        } else { // Other FF Chome Safari Opera 
+			            var player = document.createElement('audio');
+			            player.id = id;
+			            player.setAttribute('autoplay', 'autoplay');
+			            if (loop) {
+			                player.setAttribute('loop', 'loop');
+			            }
+			            document.body.appendChild(player);
+
+			            var mp3 = document.createElement('source');
+			            mp3.src = file['mp3'];
+			            mp3.type = 'audio/mpeg';
+			            player.appendChild(mp3);
+			        }
+			    }
 			}
 		};
 		Date.prototype.format = function(fmt) { 
@@ -442,6 +478,8 @@
 		}else if(data.calltype == "out"){
 			output('<div class="chat-left"> <img class="user-img" src="<#if inviteData?? && inviteData.consult_dialog_headimg??>/res/image.html?id=${inviteData.consult_dialog_headimg?url}<#else>/images/agent.png</#if>" alt=""><div class="chat-message"><label  class="user">'+data.nickName+'</label><label class="time">'+data.createtime+'</label> </div><div class="chatting-left"><i class="arrow"></i><div class="chat-content">'+chat+'</div></div>' , "chat-block");	
 		}
+		
+		R3Ajax.audioplayer('audioplane', newmessage, false); // 播放
     });
     
     socket.on('disconnect',function() {
