@@ -135,4 +135,10 @@ public class CallCenterMediaController extends Handler{
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/media.html?hostid="+hostid));
     }
+	@RequestMapping(value = "/play")
+    @Menu(type = "callcenter" , subtype = "play" , access = false)
+    public ModelAndView play(ModelMap map , HttpServletRequest request ,@Valid final String id ,@Valid final String hostid) {
+		map.addAttribute("media", mediaRes.findByIdAndOrgi(id, super.getOrgi(request))) ;
+    	return request(super.createRequestPageTempletResponse("/admin/callcenter/media/play"));
+    }
 }
