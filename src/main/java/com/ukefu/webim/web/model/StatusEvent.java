@@ -29,92 +29,96 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	
 	private boolean inside ;		//是否内线
 	
-	private String source ;
-	private String answer ;
+	private String source ;	//来源
+	private String answer ;//应答时间
 	
 	private boolean callback ;	//是否是回呼
 	private String ccquene ;	//队列
 	
 	private String calltype ;	//呼叫方向类型 | 计费类型
 	
-	private String voicecalled ;
+	private String voicecalled ;//
 	
 	private String servicestatus ;	//通话状态
 	
 	private String channelstatus ;	//通道状态
 	
-	private Date answertime ;
-	private int ringduration ;
+	private Date answertime ;//应答时间
+	private int ringduration ;//振铃时长
 	
-	private boolean current ;
-	private boolean init ;
+	private boolean current ;//
+	private boolean init ;//
 	
-	private String caller ;
+	private String caller ;//呼叫发起号码
 	
-	private String calling ;
-	private String called ;
+	private String calling ;//呼叫对象
+	private String called ;//被叫号码
 	
-	private String discaller;
-	private String discalled;
+	private String discaller;//
+	private String discalled;//
 	
 	private String agentype ;	//callback
 	private String quene ;		//呼入队列
 	
-	private String ani ;
+	private String ani ;//主叫号码
 	
-	private String touser ;
-	private String direction ;
+	private String touser ;//目标用户
+	private String direction ;//呼叫方向
 	
 	private String calldir ;	//呼叫方向
 	private String otherdir;	//对边呼叫方向
 	
 	private String otherlegdest ;	//对边呼叫号码
 	
-	private long time ;
-	private String localdatetime ;
+	private long time ;///
+	private String localdatetime ;//时间发起时间
 	
-	private Date starttime ;
-	private Date endtime ;
+	private Date starttime ;//通话开始时间
+	private Date endtime ;//通话结束时间
 	
-	private int duration ;
+	private int duration ;//通话时长
 	
-	private String status ;
-	private String state ;
-	private String agent ;
-	private String action ;
-	private String name;
-	private String host ;
-	private String ipaddr ;
+	private String status ;//
+	private String state ;//
+	private String agent ;//坐席工号
+	private String action ;//
+	private String name;//
+	private String host ;//时间主机
+	private String ipaddr ;//主机IP	
 	
-	private String extention ;
-	private String hostid ;
+	private String extention ;//联系人ID
+	private String hostid ;//服务器ID
 	
-	private boolean record ;
-	private Date startrecord ;
-	private Date endrecord ;
-	private int recordtime ;
-	private String recordfile ;
-	private String recordfilename ;
+	private boolean record ;//是否录音
+	private Date startrecord ;//开始录音时间
+	private Date endrecord ;//结束录音时间
+	private int recordtime ;//录音时长
+	private String recordfile ;//开始录音时间
+	private String recordfilename ;//结束录音时间
 	
-	private String contactsid ;
+	private String contactsid ;//
 	
 	private String bridgeid ;			//桥接对方ID
 	private boolean bridge ;			//是否桥接
 	
-	private boolean misscall = true;
+	private boolean misscall = true;	//是否漏话
 	
 	private boolean servicesummary ;	//是否记录服务小结
 	private String serviceid 	;		//服务小结ID
 	
-	private int calls ;
+	private int calls ;//
 	
-	private String orgi ;
+	private String orgi ;//
 	
 	private String country ;	//国家
 	private String province ;	//省份
 	private String city ;		//城市
 	private String isp ;		//运营商
+	private boolean satisf ;	//是否记录满意度调查
+	private String satisfaction 	;		//满意度评价
+	private Date satisfdate ;				//满意度调查提交时间
 	
+
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -490,5 +494,23 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setDiscalled(String discalled) {
 		this.discalled = discalled;
+	}
+	public boolean isSatisf() {
+		return satisf;
+	}
+	public void setSatisf(boolean satisf) {
+		this.satisf = satisf;
+	}
+	public String getSatisfaction() {
+		return satisfaction;
+	}
+	public void setSatisfaction(String satisfaction) {
+		this.satisfaction = satisfaction;
+	}
+	public Date getSatisfdate() {
+		return satisfdate;
+	}
+	public void setSatisfdate(Date satisfdate) {
+		this.satisfdate = satisfdate;
 	}
 }
