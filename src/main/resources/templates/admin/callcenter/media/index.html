@@ -37,7 +37,7 @@
 							<#list mediaList as media>
 							<tr>
 							  <td>
-								  <a href="/admin/callcenter/media.html?id=${media.id!''}&hostid=${pbxHost.id!''}">${media.name!''}</a>
+								 <a href="/apps/callcenter/comment/play.html?id=${media.id!''}&hostid=${pbxHost.id!''}" data-toggle="ajax" data-width="750" data-height="450" data-title="播放录音">${media.name!''}</a>
 							  </td>
 							  <td>${media.content!''}</td>
 							  <td>${media.filename!''}</td>
@@ -45,7 +45,7 @@
 							  
 							  <td>${media.createtime?string("yyyy-MM-dd HH:mm:ss")}</td>
 							  <td style="white-space:nowrap;" nowrap="nowrap">
-							  		<a href="/admin/callcenter/media/edit.html?hostid=${pbxHost.id!''}" data-toggle="ajax" data-width="750" data-title="编辑服务器信息">
+							  		<a href="/admin/callcenter/media/edit.html?id=${media.id!''}&hostid=${pbxHost.id!''}" data-toggle="ajax" data-width="750" data-title="编辑服务器信息">
 							  			<i class="layui-icon">&#xe642;</i>
 							  			编辑
 							  		</a>
