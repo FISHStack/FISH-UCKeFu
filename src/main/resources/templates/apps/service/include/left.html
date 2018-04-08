@@ -23,11 +23,6 @@
 					<a href="/service/leavemsg/index.html">访客留言</a>
 				</dd>
 			</#if>
-			<#if user?? && (user.roleAuthMap["A08_A01_A05"]?? || user.usertype == "0") >
-				<dd <#if subtype?? && subtype == 'comment'>class="layui-this"</#if>>
-					<a href="/service/comment/index.html">满意度评价</a>
-				</dd>
-			</#if>
 		</dl>
 		
 	</li>
@@ -79,6 +74,21 @@
 				</#if>
 			</#if>
 			
+		</dl>
+	</li>
+</#if>
+<#if user?? && (user.roleAuthMap["A08_A01_A05"]?? || user.usertype == "0") >
+	<li class="layui-nav-item layui-nav-itemed">
+		<a class="layui-nav-title" href="javascript:;">满意度评价</a>
+		<dl class="layui-nav-child">
+				<dd <#if subtype?? && subtype == 'comment'>class="layui-this"</#if>>
+					<a href="/service/comment/index.html">在线客服</a>
+				</dd>
+			<#if models?? && models["callcenter"]?? && models["callcenter"] == true>
+				<dd <#if subtype?? && subtype == 'callentercomment'>class="layui-this"</#if>>
+					<a href="/apps/callcenter/comment/index.html">语音通话</a>
+				</dd>
+			</#if>
 		</dl>
 	</li>
 </#if>
