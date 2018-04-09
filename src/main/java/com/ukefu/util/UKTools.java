@@ -1065,6 +1065,7 @@ public class UKTools {
 		}
     	return null;
 	}
+	@SuppressWarnings("unchecked")
 	public static <T> T decode(String str,Class<T> clazz) {
 		Base64 base64 = new Base64();
     	try {
