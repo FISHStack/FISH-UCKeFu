@@ -45,7 +45,7 @@ DEMO访问地址：[优客服（UCKeFu-WebIM）](http://uk.ukewo.cn/) ， 访问
 4、执行添加 阿里云jar 
 mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/aliyun-java-sdk-core-3.3.1.jar -DgroupId=com.aliyun -DartifactId=aliyun-java-sdk-core -Dversion=3.3.1 -Dpackaging=jar
 
-5、阿里大于jar
+5、阿里大鱼jar
 mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/aliyun-java-sdk-dysmsapi-1.0.0.jar -DgroupId=com.aliyun -DartifactId=aliyun-java-sdk-dysmsapi -Dversion=1.0.0 -Dpackaging=jar
  **确保两个依赖都安装成功** 
 
