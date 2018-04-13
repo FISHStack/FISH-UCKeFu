@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.ImportResource;
@@ -55,8 +56,10 @@ public class StartedEventListener implements ApplicationListener<ContextRefreshe
 		}
     	List<BlackEntity> blackList = blackListRes.findByOrgi(UKDataContext.SYSTEM_ORGI) ;
     	for(BlackEntity black : blackList){
-    		if(black.getEndtime()==null || black.getEndtime().after(new Date())){
-    			CacheHelper.getSystemCacheBean().put(black.getUserid(), black, black.getOrgi());
+    		if(!StringUtils.isBlank(black.getUserid())) {
+	    		if(black.getEndtime()==null || black.getEndtime().after(new Date())){
+	    			CacheHelper.getSystemCacheBean().put(black.getUserid(), black, black.getOrgi());
+	    		}
     		}
     	}
     	/**
