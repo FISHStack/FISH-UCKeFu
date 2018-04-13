@@ -46,7 +46,7 @@ public class CubeService {
 		schemaFile = new File(mdxFileDir , UKTools.getUUID()+".xml") ;
 		StringWriter writer = new StringWriter();
 		IOUtils.copy(CubeService.class.getClassLoader().getResourceAsStream(SCHEMA_DATA_PATH+xml), writer, "UTF-8"); 
-		FileUtils.writeByteArrayToFile(schemaFile,UKTools.getTemplet(writer.toString(), requestValues) .getBytes());	//使用系统默认编码
+		FileUtils.writeByteArrayToFile(schemaFile,UKTools.getTemplet(writer.toString(), requestValues) .getBytes("UTF-8"));	//使用系统默认编码
 	}
 	
 	public CubeService(String xml , String path , DataSourceService dataSource , Map<String,Object> requestValues,boolean isContentStr) throws IOException, TemplateException {
@@ -61,7 +61,7 @@ public class CubeService {
 		}else {
 			StringWriter writer = new StringWriter();
 			IOUtils.copy(CubeService.class.getClassLoader().getResourceAsStream(SCHEMA_DATA_PATH+xml), writer, "UTF-8"); 
-			FileUtils.writeByteArrayToFile(schemaFile,UKTools.getTemplet(writer.toString(), requestValues) .getBytes());	//使用系统默认编码
+			FileUtils.writeByteArrayToFile(schemaFile,UKTools.getTemplet(writer.toString(), requestValues) .getBytes("UTF-8"));	//使用系统默认编码
 		}
 	}
 	

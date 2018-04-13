@@ -10,9 +10,11 @@ import com.ukefu.util.UKTools;
 import com.ukefu.util.event.UserDataEvent;
 import com.ukefu.util.mail.Mail;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
+import com.ukefu.webim.service.repository.RequestLogRepository;
 import com.ukefu.webim.service.repository.UserEventRepository;
 import com.ukefu.webim.service.repository.UserTraceRepository;
 import com.ukefu.webim.web.model.OnlineUser;
+import com.ukefu.webim.web.model.RequestLog;
 import com.ukefu.webim.web.model.UserHistory;
 import com.ukefu.webim.web.model.UserTraceHistory;
 
@@ -28,6 +30,9 @@ public class UserEventHandler implements EventHandler<UserDataEvent>{
 		}else if(arg0.getEvent() instanceof UserTraceHistory){
 			UserTraceRepository userTraceRes = UKDataContext.getContext().getBean(UserTraceRepository.class) ;
 			userTraceRes.save((UserTraceHistory)arg0.getEvent()) ;
+		}else if(arg0.getEvent() instanceof RequestLog){
+			RequestLogRepository requestLogRes = UKDataContext.getContext().getBean(RequestLogRepository.class) ;
+			requestLogRes.save((RequestLog)arg0.getEvent()) ;
 		}else if(arg0.getEvent() instanceof OnlineUser){
 			OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
 			OnlineUser onlineUser = (OnlineUser)arg0.getEvent() ;

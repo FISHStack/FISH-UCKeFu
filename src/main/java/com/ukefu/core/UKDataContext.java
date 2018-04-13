@@ -102,8 +102,23 @@ public class UKDataContext {
 	}
 	
 	
-	
-	
+	public enum LogTypeEnum{
+		REQUEST,
+		CREATE ,
+		READ , 
+		UPDATE,
+		DELETE,
+		OTHER,
+		INFO,
+		WARN,
+		ERROR
+		;
+
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+
 	public enum SalesNamesStatus{
 		DIST,			//已分配
 		NOTDIST;		//未分配

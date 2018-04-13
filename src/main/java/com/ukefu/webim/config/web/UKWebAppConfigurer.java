@@ -5,6 +5,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.ukefu.webim.web.interceptor.CrossInterceptorHandler;
+import com.ukefu.webim.web.interceptor.LogIntercreptorHandler;
 import com.ukefu.webim.web.interceptor.UserInterceptorHandler;
 
 @Configuration
@@ -18,6 +19,7 @@ public class UKWebAppConfigurer
         // excludePathPatterns 用户排除拦截
         registry.addInterceptor(new UserInterceptorHandler()).addPathPatterns("/**").excludePathPatterns(new String[] {"/login.html","/im/**","/res/image*","/res/file*","/cs/**"});
         registry.addInterceptor(new CrossInterceptorHandler()).addPathPatterns(new String[] {"/**"});
+        registry.addInterceptor(new LogIntercreptorHandler()).addPathPatterns(new String[] {"/**"});
         super.addInterceptors(registry);
     }
 }
