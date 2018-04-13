@@ -66,7 +66,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for uk_columnproperties
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_columnproperties`;
 CREATE TABLE `uk_columnproperties` (
   `id` varchar(32) NOT NULL,
   `format` varchar(255) DEFAULT NULL,
@@ -97,7 +96,6 @@ CREATE TABLE `uk_columnproperties` (
 -- ----------------------------
 -- Table structure for uk_cube
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_cube`;
 CREATE TABLE `uk_cube` (
   `ID` varchar(255) NOT NULL,
   `NAME` varchar(255) DEFAULT NULL,
@@ -124,7 +122,6 @@ CREATE TABLE `uk_cube` (
 -- ----------------------------
 -- Table structure for uk_cube_type
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_cube_type`;
 CREATE TABLE `uk_cube_type` (
   `id` varchar(32) NOT NULL,
   `name` varchar(255) DEFAULT NULL COMMENT '维度名称',
@@ -141,7 +138,6 @@ CREATE TABLE `uk_cube_type` (
 -- ----------------------------
 -- Table structure for uk_cubelevel
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_cubelevel`;
 CREATE TABLE `uk_cubelevel` (
   `ID` varchar(32) NOT NULL,
   `NAME` varchar(255) DEFAULT NULL,
@@ -169,7 +165,6 @@ CREATE TABLE `uk_cubelevel` (
 -- ----------------------------
 -- Table structure for uk_cubemeasure
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_cubemeasure`;
 CREATE TABLE `uk_cubemeasure` (
   `ID` varchar(32) NOT NULL,
   `NAME` varchar(255) DEFAULT NULL,
@@ -199,7 +194,6 @@ CREATE TABLE `uk_cubemeasure` (
 -- ----------------------------
 -- Table structure for uk_cubemetadata
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_cubemetadata`;
 CREATE TABLE `uk_cubemetadata` (
   `ID` varchar(32) NOT NULL,
   `TITLE` varchar(255) DEFAULT NULL,
@@ -222,7 +216,6 @@ CREATE TABLE `uk_cubemetadata` (
 -- ----------------------------
 -- Table structure for uk_dimension
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_dimension`;
 CREATE TABLE `uk_dimension` (
   `ID` varchar(32) NOT NULL,
   `NAME` varchar(255) DEFAULT NULL,
@@ -250,7 +243,6 @@ CREATE TABLE `uk_dimension` (
 -- ----------------------------
 -- Table structure for uk_drilldown
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_drilldown`;
 CREATE TABLE `uk_drilldown` (
   `id` varchar(32) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -274,7 +266,6 @@ CREATE TABLE `uk_drilldown` (
 -- ----------------------------
 -- Table structure for uk_publishedcube
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_publishedcube`;
 CREATE TABLE `uk_publishedcube` (
   `ID` varchar(32) NOT NULL,
   `NAME` varchar(255) DEFAULT NULL,
@@ -306,7 +297,6 @@ CREATE TABLE `uk_publishedcube` (
 -- ----------------------------
 -- Table structure for uk_publishedreport
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_publishedreport`;
 CREATE TABLE `uk_publishedreport` (
   `ID` varchar(32) NOT NULL,
   `NAME` varchar(255) DEFAULT NULL,
@@ -328,7 +318,6 @@ CREATE TABLE `uk_publishedreport` (
 -- ----------------------------
 -- Table structure for uk_report
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_report`;
 CREATE TABLE `uk_report` (
   `ID` varchar(32) NOT NULL,
   `NAME` varchar(255) DEFAULT NULL,
@@ -368,7 +357,6 @@ CREATE TABLE `uk_report` (
 -- ----------------------------
 -- Table structure for uk_reportfilter
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_reportfilter`;
 CREATE TABLE `uk_reportfilter` (
   `id` varchar(32) NOT NULL DEFAULT '',
   `dataid` varchar(32) DEFAULT NULL,
@@ -423,7 +411,6 @@ CREATE TABLE `uk_reportfilter` (
 -- ----------------------------
 -- Table structure for uk_reportmodel
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_reportmodel`;
 CREATE TABLE `uk_reportmodel` (
   `id` varchar(50) NOT NULL,
   `posx` varchar(50) DEFAULT NULL,
@@ -515,4 +502,44 @@ CREATE TABLE `uk_reportmodel` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+
+
+CREATE TABLE `uk_log_request` (
+  `id` varchar(32) NOT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `parameters` longtext,
+  `throwable` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `usermail` varchar(255) DEFAULT NULL,
+  `filename` varchar(255) DEFAULT NULL,
+  `orgi` varchar(255) DEFAULT NULL,
+  `error` text,
+  `classname` varchar(255) DEFAULT NULL,
+  `starttime` datetime DEFAULT NULL,
+  `endtime` datetime DEFAULT NULL,
+  `detailtype` varchar(255) DEFAULT NULL,
+  `url` text,
+  `reportdic` varchar(255) DEFAULT NULL,
+  `reportname` varchar(255) DEFAULT NULL,
+  `ip` varchar(255) DEFAULT NULL,
+  `hostname` varchar(255) DEFAULT NULL,
+  `statues` varchar(255) DEFAULT NULL,
+  `methodname` text,
+  `linenumber` varchar(255) DEFAULT NULL,
+  `querytime` int(255) DEFAULT NULL,
+  `optext` varchar(255) DEFAULT NULL,
+  `field6` varchar(255) DEFAULT NULL,
+  `field7` varchar(255) DEFAULT NULL,
+  `field8` varchar(255) DEFAULT NULL,
+  `flowid` varchar(32) DEFAULT NULL,
+  `userid` varchar(255) DEFAULT NULL,
+  `name` varchar(32) DEFAULT NULL,
+  `funtype` varchar(32) DEFAULT NULL,
+  `fundesc` varchar(255) DEFAULT NULL,
+  `triggerwarning` varchar(32) DEFAULT NULL,
+  `triggertime` varchar(32) DEFAULT NULL,
+  `createdate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
