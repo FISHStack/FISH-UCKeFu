@@ -39,7 +39,7 @@ CREATE TABLE `uk_datadic` (
 
 ALTER TABLE uk_templet ADD layoutcols int default 0;
 
-
+ALTER TABLE uk_agentstatus ADD workstatus varchar(50);
 ALTER TABLE uk_system_message ADD moreparam text;
 ALTER TABLE uk_templet ADD datatype varchar(32) default null;
 ALTER TABLE uk_templet ADD charttype varchar(32) default null;
@@ -542,4 +542,6 @@ CREATE TABLE `uk_log_request` (
   `createdate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
