@@ -15,7 +15,7 @@
 				login:function(username , password){
 					$.post("http://127.0.0.1/tokens" , "username=admin&password=123456" , function(data){
 						authorization = data ;
-					})
+					}).error(function() { alert("error"); });
 				},
 				ajax:function(url , callback){
 					$.ajax({
@@ -35,6 +35,11 @@
 						type: "PUT",
 						url:"http://127.0.0.1/api/workorders" , 
 						data: param,
+						beforeSend: function(xhr) {
+							//headers:{"authorization":authorization},
+							 xhr.setRequestHeader("authorization", authorization);
+
+						 },
 						success: function (data) {
 							console.log(data);
 							alert("token:"+data);
@@ -47,6 +52,11 @@
 						type: "PUT",
 						url:"http://127.0.0.1/api/contacts" , 
 						data: param,
+						beforeSend: function(xhr) {
+							//headers:{"authorization":authorization},
+							 xhr.setRequestHeader("authorization", authorization);
+
+						 },
 						success: function (data) {
 							console.log(data);
 							alert("token:"+data);
@@ -55,6 +65,7 @@
 				},
 				getUser:function(current){
 					demo.ajax("http://127.0.0.1/api/user?username="+current,function(data){
+						$("#temp").html(data);
 						console.log(data);
 						alert(data);
 					});
@@ -72,6 +83,7 @@
 		<a href="javascript:void(0)" onclick="demo.createWorkOrder()">创建工单</a>
 
 		<a href="javascript:void(0)" onclick="demo.createContacts()">创建联系人</a>
+		<div id="temp"></div>
 	</body>
 
 </html>
