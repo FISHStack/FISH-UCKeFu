@@ -45,7 +45,7 @@ public class LogIntercreptorHandler implements org.springframework.web.servlet.H
 			log.setName(obj.name());
 			log.setMethodname(handlerMethod.toString()) ;
 			log.setIp(request.getRemoteAddr()) ;
-			if(hander instanceof Handler) {
+			if(hander instanceof Handler && ((Handler)hander).getStarttime() != 0) {
 		    	log.setQuerytime(System.currentTimeMillis() - ((Handler)hander).getStarttime());
 		    }
 			log.setUrl(request.getRequestURI());
