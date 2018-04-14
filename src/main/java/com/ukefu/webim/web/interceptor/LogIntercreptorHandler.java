@@ -36,26 +36,23 @@ public class LogIntercreptorHandler implements org.springframework.web.servlet.H
 			Object arg2, ModelAndView arg3) throws Exception {
 		HandlerMethod  handlerMethod = (HandlerMethod ) arg2 ;
 	    Object hander = handlerMethod.getBean() ;
-	    if(hander instanceof Handler) {
-	    	((Handler)hander).setStarttime(System.currentTimeMillis());
-	    }
 	    RequestMapping obj = handlerMethod.getMethod().getAnnotation(RequestMapping.class) ;
-	    if(!StringUtils.isBlank(request.getRequestURI()) && !(request.getRequestURI().startsWith("/message/ping") || request.getRequestURI().startsWith("/res/css"))){
+	    if(!StringUtils.isBlank(request.getRequestURI()) && !(request.getRequestURI().startsWith("/message/ping") || request.getRequestURI().startsWith("/res/css") || request.getRequestURI().startsWith("/error"))){
 	    	RequestLog log = new RequestLog();
-		    log.setStarttime(new Date()) ;
+		    log.setEndtime(new Date()) ;
 		    
 			log.setClassname(hander.getClass().toString()) ;
 			log.setName(obj.name());
 			log.setMethodname(handlerMethod.toString()) ;
 			log.setIp(request.getRemoteAddr()) ;
-			
-			log.setQuerytime(System.currentTimeMillis() - ((Handler)hander).getStarttime());
+			if(hander instanceof Handler) {
+		    	log.setQuerytime(System.currentTimeMillis() - ((Handler)hander).getStarttime());
+		    }
 			log.setUrl(request.getRequestURI());
 			
 			log.setHostname(request.getRemoteHost()) ;
 			log.setEndtime(new Date());
 			log.setType(UKDataContext.LogTypeEnum.REQUEST.toString()) ;
-			log.setQuerytime(log.getEndtime().getTime()-log.getStarttime().getTime()) ;
 			User user = (User) request.getSession(true).getAttribute(UKDataContext.USER_SESSION_NAME) ;
 			if(user!=null){
 				log.setUserid(user.getId()) ;
