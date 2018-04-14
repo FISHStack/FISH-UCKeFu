@@ -6,6 +6,7 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.RequestLog;
 import com.ukefu.webim.web.model.User;
 
@@ -30,18 +32,15 @@ public class LogIntercreptorHandler implements org.springframework.web.servlet.H
 	}
 
 	@Override
-	public void postHandle(HttpServletRequest arg0, HttpServletResponse arg1,
+	public void postHandle(HttpServletRequest request, HttpServletResponse response,
 			Object arg2, ModelAndView arg3) throws Exception {
-		
-	}
-
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-			Object arg2) throws Exception {
 		HandlerMethod  handlerMethod = (HandlerMethod ) arg2 ;
 	    Object hander = handlerMethod.getBean() ;
+	    if(hander instanceof Handler) {
+	    	((Handler)hander).setStarttime(System.currentTimeMillis());
+	    }
 	    RequestMapping obj = handlerMethod.getMethod().getAnnotation(RequestMapping.class) ;
-	    if(true){
+	    if(!StringUtils.isBlank(request.getRequestURI()) && !(request.getRequestURI().startsWith("/message/ping") || request.getRequestURI().startsWith("/res/css"))){
 	    	RequestLog log = new RequestLog();
 		    log.setStarttime(new Date()) ;
 		    
@@ -50,6 +49,7 @@ public class LogIntercreptorHandler implements org.springframework.web.servlet.H
 			log.setMethodname(handlerMethod.toString()) ;
 			log.setIp(request.getRemoteAddr()) ;
 			
+			log.setQuerytime(System.currentTimeMillis() - ((Handler)hander).getStarttime());
 			log.setUrl(request.getRequestURI());
 			
 			log.setHostname(request.getRemoteHost()) ;
@@ -79,6 +79,16 @@ public class LogIntercreptorHandler implements org.springframework.web.servlet.H
 			
 			log.setParameters(str.toString());
 			UKTools.published(log);
+	    }
+	}
+
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+			Object arg2) throws Exception {
+		HandlerMethod  handlerMethod = (HandlerMethod ) arg2 ;
+	    Object hander = handlerMethod.getBean() ;
+	    if(hander instanceof Handler) {
+	    	((Handler)hander).setStarttime(System.currentTimeMillis());
 	    }
 		return true;
 	}

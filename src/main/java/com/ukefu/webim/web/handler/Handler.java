@@ -30,6 +30,8 @@ public class Handler {
 	public final static int PAGE_SIZE_FV = 50 ;
 	public final static int PAGE_SIZE_HA = 100 ;
 	
+	private long starttime = System.currentTimeMillis();
+	
 	public User getUser(HttpServletRequest request){
 		User user = (User) request.getSession(true).getAttribute(UKDataContext.USER_SESSION_NAME)  ;
 		if(user==null){
@@ -216,5 +218,13 @@ public class Handler {
 			return true;
     	}
 		return false;
+	}
+
+	public long getStarttime() {
+		return starttime;
+	}
+
+	public void setStarttime(long starttime) {
+		this.starttime = starttime;
 	}
 }
