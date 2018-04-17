@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
+import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 
 @Entity
@@ -82,7 +83,7 @@ public class AgentService implements Serializable {
 	
 	private String solvestatus ;		//问题解决状态
 	private boolean leavemsg ;	//是否留言
-	private String leavemsgstatus ;	//已处理、未处理
+	private String leavemsgstatus = UKDataContext.LeaveMsgStatus.NOTPROCESS.toString();	//已处理、未处理
 	
 	
 	private String qualitystatus ;//质检状态  ， 已分配/未分配
