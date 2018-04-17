@@ -57,7 +57,7 @@ public class ApiLeavemsgController extends Handler{
 				List<Predicate> list = new ArrayList<Predicate>();  
 				list.add((cb.equal(root.get("leavemsg").as(Boolean.class), true))) ;
 				
-				list.add((cb.equal(root.get("leavemsgstatus").as(String.class), UKDataContext.LeaveMsgStatus.NOTPROCESS.toString()))) ;
+				list.add((cb.notEqual(root.get("leavemsgstatus").as(String.class), UKDataContext.LeaveMsgStatus.PROCESSED.toString()))) ;
 				
 				Predicate[] p = new Predicate[list.size()];  
 			    return cb.and(list.toArray(p));   
