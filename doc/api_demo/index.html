@@ -69,6 +69,21 @@
 						console.log(data);
 						alert(data);
 					});
+				},
+				qualityList:function(){
+					demo.ajax("http://127.0.0.1/api/quality",function(data){
+						console.log(data);
+					});
+				},
+				leavemsgList:function(){
+					demo.ajax("http://127.0.0.1/api/leavemsg",function(data){
+						console.log(data);
+					});
+				},
+				chatMsgList:function(){
+					demo.ajax("http://127.0.0.1/api/chatmessage?serviceid=4028b46f62d309c10162d30e7fcd0366",function(data){
+						console.log(data);
+					});
 				}
 			}
 			$(document).ready(function(){
@@ -83,6 +98,13 @@
 		<a href="javascript:void(0)" onclick="demo.createWorkOrder()">创建工单</a>
 
 		<a href="javascript:void(0)" onclick="demo.createContacts()">创建联系人</a>
+
+		<a href="javascript:void(0)" onclick="demo.qualityList()">获取质检列表</a>
+
+
+		<a href="javascript:void(0)" onclick="demo.leavemsgList()">获取留言列表</a>
+
+		<a href="javascript:void(0)" onclick="demo.chatMsgList()">获取对话内容列表</a>
 		<div id="temp"></div>
 	</body>
 
