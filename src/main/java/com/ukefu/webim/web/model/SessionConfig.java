@@ -54,6 +54,9 @@ public class SessionConfig implements java.io.Serializable{
 	private String workinghours ;	//工作时间段，格式   9:00-12:00,13:30-15:30
 	private String notinwhmsg ;		//非工作时间段 访客咨询的提示消息
 	
+	private boolean quality ;		//启用质检功能
+	private String qualityscore ;	//质检方式
+	
 	
 	@Id
 	@Column(length = 32)
@@ -226,5 +229,17 @@ public class SessionConfig implements java.io.Serializable{
 	}
 	public void setFinessmsg(String finessmsg) {
 		this.finessmsg = finessmsg;
+	}
+	public boolean isQuality() {
+		return quality;
+	}
+	public void setQuality(boolean quality) {
+		this.quality = quality;
+	}
+	public String getQualityscore() {
+		return qualityscore;
+	}
+	public void setQualityscore(String qualityscore) {
+		this.qualityscore = qualityscore;
 	}
 }

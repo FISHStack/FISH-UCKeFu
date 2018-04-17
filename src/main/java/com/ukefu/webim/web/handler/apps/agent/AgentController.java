@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -50,7 +48,6 @@ import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
-import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
 import com.ukefu.webim.service.repository.QuickTypeRepository;
 import com.ukefu.webim.service.repository.SNSAccountRepository;
 import com.ukefu.webim.service.repository.ServiceSummaryRepository;
@@ -73,7 +70,6 @@ import com.ukefu.webim.web.model.BlackEntity;
 import com.ukefu.webim.web.model.MessageOutContent;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.Organ;
-import com.ukefu.webim.web.model.OrgiSkillRel;
 import com.ukefu.webim.web.model.QuickReply;
 import com.ukefu.webim.web.model.QuickType;
 import com.ukefu.webim.web.model.SessionConfig;
@@ -140,8 +136,6 @@ public class AgentController extends Handler {
 	@Autowired
 	private AgentUserContactsRepository agentUserContactsRes; 
 	
-	@Autowired
-	private OrgiSkillRelRepository orgiSkillRelService;
 	
 	@Autowired
 	private ConsultInviteRepository inviteRepository;
@@ -491,7 +485,6 @@ public class AgentController extends Handler {
 	@Menu(type = "apps", subtype = "agent")
 	public ModelAndView end(HttpServletRequest request, @Valid String userid)
 			throws Exception {
-		User user = super.getUser(request);
 		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(userid, super.getOrgi(request));
 		if(agentUser!=null && super.getUser(request).getId().equals(agentUser.getAgentno())){
 			ServiceQuene.deleteAgentUser(agentUser, super.getOrgi(request));

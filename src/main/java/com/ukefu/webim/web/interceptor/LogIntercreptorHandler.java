@@ -37,7 +37,7 @@ public class LogIntercreptorHandler implements org.springframework.web.servlet.H
 		HandlerMethod  handlerMethod = (HandlerMethod ) arg2 ;
 	    Object hander = handlerMethod.getBean() ;
 	    RequestMapping obj = handlerMethod.getMethod().getAnnotation(RequestMapping.class) ;
-	    if(!StringUtils.isBlank(request.getRequestURI()) && !(request.getRequestURI().startsWith("/message/ping") || request.getRequestURI().startsWith("/res/css") || request.getRequestURI().startsWith("/error"))){
+	    if(!StringUtils.isBlank(request.getRequestURI()) && !(request.getRequestURI().startsWith("/message/ping") || request.getRequestURI().startsWith("/res/css") || request.getRequestURI().startsWith("/error")  || request.getRequestURI().startsWith("/im/"))){
 	    	RequestLog log = new RequestLog();
 		    log.setEndtime(new Date()) ;
 		    
@@ -64,7 +64,11 @@ public class LogIntercreptorHandler implements org.springframework.web.servlet.H
 			Enumeration<String> names = request.getParameterNames();
 			while(names.hasMoreElements()){
 				String paraName=(String)names.nextElement();
-				str.append(paraName).append("=").append(request.getParameter(paraName)).append(",");
+				if(paraName.indexOf("password") >= 0) {
+					str.append(paraName).append("=").append(UKTools.encryption(request.getParameter(paraName))).append(",");
+				}else {
+					str.append(paraName).append("=").append(request.getParameter(paraName)).append(",");
+				}
 			}
 			
 			Menu menu = handlerMethod.getMethod().getAnnotation(Menu.class) ;

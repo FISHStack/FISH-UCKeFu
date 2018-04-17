@@ -14,6 +14,8 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
+import com.ukefu.util.UKTools;
+
 @Entity
 @Table(name = "uk_agentservice")
 @Proxy(lazy = false)
@@ -25,7 +27,7 @@ public class AgentService implements Serializable {
 	private long times;
 	private Date servicetime;
 	private String orgi;
-	private String id;
+	private String id = UKTools.getUUID();
 	private String username;
 	private String userid;
 	private String channel;
@@ -75,6 +77,26 @@ public class AgentService implements Serializable {
 	private boolean trans ;	//是否转接
 	private String transmemo ;	//转接附言
 	private Date transtime ;	//转件时间
+	
+	private String initiator ;	//对话发起方
+	
+	private String solvestatus ;		//问题解决状态
+	private boolean leavemsg ;	//是否留言
+	private String leavemsgstatus ;	//已处理、未处理
+	
+	
+	private String qualitystatus ;//质检状态  ， 已分配/未分配
+	private String qualitydisorgan ;	//分配的质检部门
+	private String qualitydisuser;		//分配的质检人
+	
+	private String qualityorgan ;		//实际的质检部门
+	private String qualityuser;			//实际的质检人
+	private int qualityscore ;			//质检评分
+	private Date qualitytime ;			//质检时间
+	private Date qualitytype ;			//质检类型
+	
+	
+	
 	
 	
 	private String name ;
@@ -174,7 +196,7 @@ public class AgentService implements Serializable {
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")
 	public String getId() {
 		return this.id;
 	}
@@ -665,5 +687,100 @@ public class AgentService implements Serializable {
 	public void setQueneindex(int queneindex) {
 		this.queneindex = queneindex;
 	}
-	
+
+	public String getQualitystatus() {
+		return qualitystatus;
+	}
+
+	public void setQualitystatus(String qualitystatus) {
+		this.qualitystatus = qualitystatus;
+	}
+
+	public String getQualitydisorgan() {
+		return qualitydisorgan;
+	}
+
+	public void setQualitydisorgan(String qualitydisorgan) {
+		this.qualitydisorgan = qualitydisorgan;
+	}
+
+	public String getQualitydisuser() {
+		return qualitydisuser;
+	}
+
+	public void setQualitydisuser(String qualitydisuser) {
+		this.qualitydisuser = qualitydisuser;
+	}
+
+	public String getQualityorgan() {
+		return qualityorgan;
+	}
+
+	public void setQualityorgan(String qualityorgan) {
+		this.qualityorgan = qualityorgan;
+	}
+
+	public String getQualityuser() {
+		return qualityuser;
+	}
+
+	public void setQualityuser(String qualityuser) {
+		this.qualityuser = qualityuser;
+	}
+
+	public int getQualityscore() {
+		return qualityscore;
+	}
+
+	public void setQualityscore(int qualityscore) {
+		this.qualityscore = qualityscore;
+	}
+
+	public Date getQualitytime() {
+		return qualitytime;
+	}
+
+	public void setQualitytime(Date qualitytime) {
+		this.qualitytime = qualitytime;
+	}
+
+	public Date getQualitytype() {
+		return qualitytype;
+	}
+
+	public void setQualitytype(Date qualitytype) {
+		this.qualitytype = qualitytype;
+	}
+
+	public String getSolvestatus() {
+		return solvestatus;
+	}
+
+	public void setSolvestatus(String solvestatus) {
+		this.solvestatus = solvestatus;
+	}
+
+	public boolean isLeavemsg() {
+		return leavemsg;
+	}
+
+	public void setLeavemsg(boolean leavemsg) {
+		this.leavemsg = leavemsg;
+	}
+
+	public String getInitiator() {
+		return initiator;
+	}
+
+	public void setInitiator(String initiator) {
+		this.initiator = initiator;
+	}
+
+	public String getLeavemsgstatus() {
+		return leavemsgstatus;
+	}
+
+	public void setLeavemsgstatus(String leavemsgstatus) {
+		this.leavemsgstatus = leavemsgstatus;
+	}
 }

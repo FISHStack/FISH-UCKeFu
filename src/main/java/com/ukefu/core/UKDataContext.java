@@ -102,6 +102,14 @@ public class UKDataContext {
 	}
 	
 	
+	public enum TagTypeEnum{
+		QUALITY;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	
 	public enum LogTypeEnum{
 		REQUEST,
 		CREATE ,
@@ -127,11 +135,39 @@ public class UKDataContext {
 		}
 	}
 	
+
+	public enum LeaveMsgStatus{
+		PROCESSED,		//已处理
+		NOTPROCESS;		//未处理
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	
 	public enum AdPosEnum{
 		POINT,			
 		IMAGE,
 		WELCOME,
 		INVITE;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum QualityType{
+		CHAT,			
+		VOICE;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum QualityStatus{
+		NO,		//未开启质检
+		DIS,		//已分配			
+		NODIS;		//未分配
+		
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}
@@ -183,6 +219,18 @@ public class UKDataContext {
 	public enum AgentInterType{
 		SKILL , 
 		AGENT ;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	/**
+	 * 会话发起方
+	 * @author iceworld
+	 *
+	 */
+	public enum ChatInitiatorType{
+		AGENT , 
+		USER ;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}

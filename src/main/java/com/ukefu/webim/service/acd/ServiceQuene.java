@@ -226,7 +226,7 @@ public class ServiceQuene {
 			AgentUserRepository agentUserRepository = UKDataContext.getContext().getBean(AgentUserRepository.class) ;
 			
 			AgentUser agentUseDataBean = agentUserRepository.findByIdAndOrgi(agentUser.getId() , agentUser.getOrgi()) ;
-			
+			SessionConfig sessionConfig = ServiceQuene.initSessionConfig(orgi) ;
 			if(agentUseDataBean!=null){
 				agentUseDataBean.setStatus(UKDataContext.AgentUserStatusEnum.END.toString()) ;
 				if(agentUser.getServicetime()!=null){
@@ -252,6 +252,9 @@ public class ServiceQuene {
 			AgentServiceRepository agentServiceRes = UKDataContext.getContext().getBean(AgentServiceRepository.class) ;
 			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
 				AgentService service = 	agentServiceRes.findByIdAndOrgi(agentUser.getAgentserviceid() , agentUser.getOrgi()) ;
+				if(service == null) {//当做留言处理
+					service = processAgentService(agentStatus, agentUser, orgi , true) ;
+				}
 				if(service!=null){
 					service.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
 					service.setEndtime(new Date());
@@ -271,6 +274,15 @@ public class ServiceQuene {
 		    			service.setAgentreplys(agentUserTask.getAgentreplys());
 		    		}
 					
+
+		    		/**
+		    		 * 启用了质检任务，开启质检
+		    		 */
+		    		if(sessionConfig.isQuality() && service.getUserasks() > 0) {	//开启了质检，并且是有效对话
+		    			service.setQualitystatus(UKDataContext.QualityStatus.NODIS.toString());	//未分配质检任务
+		    		}else {
+		    			service.setQualitystatus(UKDataContext.QualityStatus.NO.toString());	//未开启质检 或无效对话无需质检
+		    		}
 					agentServiceRes.save(service) ;
 				}
 			}
@@ -299,13 +311,12 @@ public class ServiceQuene {
 			
     		if(agentStatus!=null){
 				updateAgentStatus(agentStatus  , agentUser , orgi , false) ;
-				SessionConfig sessionConfig = ServiceQuene.initSessionConfig(agentStatus.getOrgi()) ;
+				
 				long maxusers = sessionConfig!=null ? sessionConfig.getMaxuser() : UKDataContext.AGENT_STATUS_MAX_USER ;
 				if(agentStatus.getUsers() < maxusers){
 					allotAgent(agentStatus.getAgentno(), orgi);
 				}
 			}
-    		
 			publishMessage(orgi);
 		}
 	}
@@ -415,7 +426,22 @@ public class ServiceQuene {
 	 * @throws Exception
 	 */
 	private static AgentService processAgentService(AgentStatus agentStatus , AgentUser agentUser , String orgi) throws Exception{
+		return processAgentService(agentStatus, agentUser, orgi , false) ;
+	}
+	
+	/**
+	 * 为访客 分配坐席， ACD策略，此处 AgentStatus 是建议 的 坐席，  如果启用了  历史服务坐席 优先策略， 则会默认检查历史坐席是否空闲，如果空闲，则分配，如果不空闲，则 分配当前建议的坐席
+	 * @param agentStatus
+	 * @param agentUser
+	 * @param orgi
+	 * @return
+	 * @throws Exception
+	 */
+	private static AgentService processAgentService(AgentStatus agentStatus , AgentUser agentUser , String orgi , boolean finished) throws Exception{
 		AgentService agentService = new AgentService();	//放入缓存的对象
+		if(!StringUtils.isBlank(agentUser.getAgentserviceid())) {
+			agentService.setId(agentUser.getAgentserviceid());
+		}
 		agentService.setOrgi(orgi);
 		agentService.setSessionid(agentUser.getSessionid());
 		OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
@@ -446,13 +472,32 @@ public class ServiceQuene {
 				}
 			}
 			
-			UKTools.copyProperties(agentUser, agentService); //复制属性
-//			agentService.setId(null);
+			agentUser.setStatus(UKDataContext.AgentUserStatusEnum.INSERVICE.toString());
+			agentService.setStatus(UKDataContext.AgentUserStatusEnum.INSERVICE.toString());
+
 			agentService.setAgentno(agentStatus.getUserid());
 			agentService.setAgentusername(agentStatus.getUsername());	//agent
-			
+		}else{
+			if(finished == true) {
+				agentUser.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
+				agentService.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
+				if(agentStatus==null) {
+					agentService.setLeavemsg(true); //是留言
+					agentService.setLeavemsgstatus(UKDataContext.LeaveMsgStatus.NOTPROCESS.toString()); //未处理的留言
+				}
+			}else {
+				agentUser.setStatus(UKDataContext.AgentUserStatusEnum.INQUENE.toString());
+				agentService.setStatus(UKDataContext.AgentUserStatusEnum.INQUENE.toString());
+			}
+		}
+		if(finished || agentStatus!=null) {
+			UKTools.copyProperties(agentUser, agentService); //复制属性
+			//			agentService.setId(null);
+	
 			agentService.setAgentuserid(agentUser.getId());
 			
+			agentService.setInitiator(UKDataContext.ChatInitiatorType.USER.toString());
+	
 			long waittingtime = 0  ;
 			if(agentUser.getWaittingtimestart()!=null){
 				waittingtime = System.currentTimeMillis() - agentUser.getWaittingtimestart().getTime() ;
@@ -460,16 +505,15 @@ public class ServiceQuene {
 				waittingtime = System.currentTimeMillis() - agentUser.getCreatetime().getTime() ;
 			}
 			agentUser.setWaittingtime((int)waittingtime);
-			
+	
 			agentUser.setServicetime(new Date());
-			
-			agentUser.setStatus(UKDataContext.AgentUserStatusEnum.INSERVICE.toString());
-			agentService.setStatus(UKDataContext.AgentUserStatusEnum.INSERVICE.toString());
+	
+	
 			agentService.setTimes(0);
 			agentUser.setAgentno(agentService.getAgentno());
-			
+	
 			AgentServiceRepository agentServiceRes = UKDataContext.getContext().getBean(AgentServiceRepository.class) ;
-			
+	
 			if(!StringUtils.isBlank(agentUser.getName())){
 				agentService.setName(agentUser.getName());
 			}
@@ -482,13 +526,13 @@ public class ServiceQuene {
 			if(!StringUtils.isBlank(agentUser.getResion())){
 				agentService.setResion(agentUser.getResion());
 			}
-			
+	
 			if(!StringUtils.isBlank(agentUser.getSkill())) {
 				agentService.setAgentskill(agentUser.getSkill());
-			}else {
+			}else if(agentStatus!=null) {
 				agentService.setAgentskill(agentStatus.getSkill());
 			}
-			
+	
 			agentService.setServicetime(new Date());
 			if(agentUser.getCreatetime()!=null){
 				agentService.setWaittingtime((int) (System.currentTimeMillis() - agentUser.getCreatetime().getTime()));
@@ -504,11 +548,8 @@ public class ServiceQuene {
 			agentUser.setAgentserviceid(agentService.getId());
 			agentUser.setLastgetmessage(new Date());
 			agentUser.setLastmessage(new Date());
-			
-		}else{
-			agentUser.setStatus(UKDataContext.AgentUserStatusEnum.INQUENE.toString());
-			agentService.setStatus(UKDataContext.AgentUserStatusEnum.INQUENE.toString());
 		}
+		
 		agentService.setDataid(agentUser.getId());
 		/**
 		 * 分配成功以后， 将用户 和坐席的对应关系放入到 缓存

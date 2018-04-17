@@ -380,6 +380,32 @@
 													</div>
 												</div>
 											</div>
+											
+											<div class="ukefu-webim-prop">
+												<div class="ukefu-webim-tl" style="clear:both;">15、启用对话质检功能</div>
+												<div class="box-item">
+													<div class="row">
+														<div class="col-lg-8">
+															<p>启用此功能后，客户在结束对话的时候，会生成对话质检任务</p>
+															<p style="color:#888888;font-size:13px;margin-top:10px;">对话质检功能，所有文本对话渠道适用（WebIM，微信）</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="checkbox" title="启用" name="quality" lay-filter="quality" <#if sessionConfig?? && sessionConfig.quality == true>checked="checked"</#if>>
+														</div>
+													</div>
+												</div>
+												<div class="box-item" id="quality" style="<#if sessionConfig?? && sessionConfig.quality == false>display:none;</#if>">	
+													<div class="row">
+														<div class="col-lg-8">
+															<p>质检方式</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="radio" name="qualityscore" value="score" title="评分制" <#if !(sessionConfig??) || !(sessionConfig.qualityscore??) || (sessionConfig?? && sessionConfig.qualityscore?? && sessionConfig.qualityscore == 'score')>checked="checked"</#if>>
+															<input type="radio" name="qualityscore" value="points" title="扣分制" <#if sessionConfig?? && sessionConfig.qualityscore?? && sessionConfig.qualityscore == 'points'>checked="checked"</#if>>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -436,6 +462,14 @@
 				$('#agentreplay').hide();
 			}
 		});
+		form.on("checkbox(quality)" , function(data){
+			if(data.elem.checked == true){
+				$('#quality').show();		
+			}else{
+				$('#quality').hide();
+			}
+		});
+		
 	});
 	$('#wh_time_range').on("click" , function(){
 		var timerange = $("#wh_start_h").val()+":"+$("#wh_start_m").val()+"~"+$("#wh_end_h").val()+":"+$("#wh_end_m").val() ;

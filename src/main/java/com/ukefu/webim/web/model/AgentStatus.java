@@ -48,6 +48,8 @@ public class AgentStatus implements java.io.Serializable ,  Comparable<AgentStat
 	
 	private Date updatetime ;				//最后一次状态更新时间，通常是 坐席 接入新客户的时候更新
 	
+	private String workstatus ;			//工作状态 ， 坐席的工作状态，计算绩效用 ， 示忙、示闲对应的更详细的 工作状态
+	
 	private String userid ;
 	@Id
 	@Column(length = 32)
@@ -174,5 +176,11 @@ public class AgentStatus implements java.io.Serializable ,  Comparable<AgentStat
 	}
 	public void setBusy(boolean busy) {
 		this.busy = busy;
+	}
+	public String getWorkstatus() {
+		return workstatus;
+	}
+	public void setWorkstatus(String workstatus) {
+		this.workstatus = workstatus;
 	}
 }

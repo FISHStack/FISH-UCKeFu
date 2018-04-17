@@ -1,8 +1,5 @@
 package com.ukefu.webim.web.handler.api.rest;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -19,11 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.repository.UserRepository;
-import com.ukefu.webim.service.repository.UserRoleRepository;
 import com.ukefu.webim.util.RestResult;
 import com.ukefu.webim.util.RestResultType;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.User;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/user")
@@ -32,9 +31,6 @@ public class ApiUserController extends Handler{
 
 	@Autowired
 	private UserRepository userRepository;
-	
-	@Autowired
-	private UserRoleRepository userRoleRes ;
 
 	/**
 	 * 返回用户列表，支持分页，分页参数为 p=1&ps=50，默认分页尺寸为 20条每页
