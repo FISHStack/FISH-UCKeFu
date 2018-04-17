@@ -69,7 +69,7 @@ ALTER TABLE uk_agentservice ADD solvestatus varchar(20);
 
 ALTER TABLE uk_agentservice ADD leavemsg tinyint DEFAULT 0;
 
-ALTER TABLE uk_agentservice ADD leavemsgstatus varchar(20);
+ALTER TABLE uk_agentservice ADD leavemsgstatus varchar(20) DEFAULT "notprocess";
 
 ALTER TABLE uk_agentservice ADD initiator varchar(32);
 
