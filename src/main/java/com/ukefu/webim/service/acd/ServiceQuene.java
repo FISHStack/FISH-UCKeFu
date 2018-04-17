@@ -250,42 +250,44 @@ public class ServiceQuene {
 			}
 			
 			AgentServiceRepository agentServiceRes = UKDataContext.getContext().getBean(AgentServiceRepository.class) ;
+			AgentService service = 	null ;
 			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
-				AgentService service = 	agentServiceRes.findByIdAndOrgi(agentUser.getAgentserviceid() , agentUser.getOrgi()) ;
-				if(service == null) {//当做留言处理
-					service = processAgentService(agentStatus, agentUser, orgi , true) ;
-				}
-				if(service!=null){
-					service.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
-					service.setEndtime(new Date());
-					if(service.getServicetime()!=null){
-						service.setSessiontimes(System.currentTimeMillis() - service.getServicetime().getTime());
-					}
-					
-					AgentUserTaskRepository agentUserTaskRes = UKDataContext.getContext().getBean(AgentUserTaskRepository.class) ;
-		    		AgentUserTask agentUserTask = agentUserTaskRes.getOne(agentUser.getId()) ;
-		    		if(agentUserTask!=null){
-		    			service.setAgentreplyinterval(agentUserTask.getAgentreplyinterval());
-		    			service.setAgentreplytime(agentUserTask.getAgentreplytime());
-		    			service.setAvgreplyinterval(agentUserTask.getAvgreplyinterval());
-		    			service.setAvgreplytime(agentUserTask.getAvgreplytime());
-		    			
-		    			service.setUserasks(agentUserTask.getUserasks());
-		    			service.setAgentreplys(agentUserTask.getAgentreplys());
-		    		}
-					
-
-		    		/**
-		    		 * 启用了质检任务，开启质检
-		    		 */
-		    		if(sessionConfig.isQuality() && service.getUserasks() > 0) {	//开启了质检，并且是有效对话
-		    			service.setQualitystatus(UKDataContext.QualityStatus.NODIS.toString());	//未分配质检任务
-		    		}else {
-		    			service.setQualitystatus(UKDataContext.QualityStatus.NO.toString());	//未开启质检 或无效对话无需质检
-		    		}
-					agentServiceRes.save(service) ;
-				}
+				service = 	agentServiceRes.findByIdAndOrgi(agentUser.getAgentserviceid() , agentUser.getOrgi()) ;
 			}
+			if(service == null) {//当做留言处理
+				service = processAgentService(agentStatus, agentUser, orgi , true) ;
+			}
+			if(service!=null){
+				service.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
+				service.setEndtime(new Date());
+				if(service.getServicetime()!=null){
+					service.setSessiontimes(System.currentTimeMillis() - service.getServicetime().getTime());
+				}
+
+				AgentUserTaskRepository agentUserTaskRes = UKDataContext.getContext().getBean(AgentUserTaskRepository.class) ;
+				AgentUserTask agentUserTask = agentUserTaskRes.getOne(agentUser.getId()) ;
+				if(agentUserTask!=null){
+					service.setAgentreplyinterval(agentUserTask.getAgentreplyinterval());
+					service.setAgentreplytime(agentUserTask.getAgentreplytime());
+					service.setAvgreplyinterval(agentUserTask.getAvgreplyinterval());
+					service.setAvgreplytime(agentUserTask.getAvgreplytime());
+
+					service.setUserasks(agentUserTask.getUserasks());
+					service.setAgentreplys(agentUserTask.getAgentreplys());
+				}
+
+
+				/**
+				 * 启用了质检任务，开启质检
+				 */
+				 if(sessionConfig.isQuality() && service.getUserasks() > 0) {	//开启了质检，并且是有效对话
+					 service.setQualitystatus(UKDataContext.QualityStatus.NODIS.toString());	//未分配质检任务
+				 }else {
+					 service.setQualitystatus(UKDataContext.QualityStatus.NO.toString());	//未开启质检 或无效对话无需质检
+				 }
+				 agentServiceRes.save(service) ;
+			}
+			
 			
 			if(agentStatus!=null){
 				NettyClients.getInstance().sendAgentEventMessage(agentUser.getAgentno(), UKDataContext.MessageTypeEnum.END.toString(), agentUser);
