@@ -73,6 +73,33 @@ ALTER TABLE uk_agentservice ADD leavemsgstatus varchar(20);
 
 ALTER TABLE uk_agentservice ADD initiator varchar(32);
 
+ALTER TABLE uk_agentservice ADD agenttimeout int default 0;
+ALTER TABLE uk_agentservice ADD agenttimeouttimes int default 0;
+ALTER TABLE uk_agentservice ADD servicetimeout tinyint default 0;
+ALTER TABLE uk_agentservice ADD agentservicetimeout int default 0;
+
+
+ALTER TABLE uk_agentuser ADD agenttimeout int default 0;
+ALTER TABLE uk_agentuser ADD agenttimeouttimes int default 0;
+ALTER TABLE uk_agentuser ADD servicetimeout tinyint default 0;
+ALTER TABLE uk_agentuser ADD agentservicetimeout int default 0;
+
+ALTER TABLE uk_sessionconfig ADD servicetimeoutlimit tinyint default 0;
+ALTER TABLE uk_sessionconfig ADD servicetimeout int default 0;
+
+ALTER TABLE uk_sessionconfig ADD servicetimeoutmsg varchar(50) default 0;
+
+ALTER TABLE uk_agentservice ADD agentfrewords int default 0;
+ALTER TABLE uk_agentservice ADD servicefrewords int default 0;
+
+ALTER TABLE uk_agentuser ADD agentfrewords int default 0;
+ALTER TABLE uk_agentuser ADD servicefrewords int default 0;
+
+ALTER TABLE uk_agentuser ADD satisfaction tinyint default 0;
+ALTER TABLE uk_agentuser ADD satistime datetime default 0;
+ALTER TABLE uk_agentuser ADD satislevel varchar(50) default 0;
+ALTER TABLE uk_agentuser ADD satiscomment varchar(255) default 0;
+
 
 /*
 Navicat MySQL Data Transfer
