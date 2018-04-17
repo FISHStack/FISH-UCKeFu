@@ -46,6 +46,34 @@ ALTER TABLE uk_templet ADD charttype varchar(32) default null;
 
 alter table uk_system_message modify column smstype varchar(32);
 
+
+ALTER TABLE uk_sessionconfig ADD quality tinyint default 0;
+ALTER TABLE uk_sessionconfig ADD qualityscore varchar(20);
+
+
+/*
+质检相关
+*/
+ALTER TABLE uk_agentservice ADD qualitystatus varchar(20);
+ALTER TABLE uk_agentservice ADD qualitydisorgan varchar(32);
+ALTER TABLE uk_agentservice ADD qualitydisuser varchar(32);
+
+ALTER TABLE uk_agentservice ADD qualityorgan varchar(32);
+ALTER TABLE uk_agentservice ADD qualityuser varchar(32);
+
+ALTER TABLE uk_agentservice ADD qualityscore int DEFAULT 0;
+ALTER TABLE uk_agentservice ADD qualitytime datetime;
+ALTER TABLE uk_agentservice ADD qualitytype varchar(20);
+
+ALTER TABLE uk_agentservice ADD solvestatus varchar(20);
+
+ALTER TABLE uk_agentservice ADD leavemsg tinyint DEFAULT 0;
+
+ALTER TABLE uk_agentservice ADD leavemsgstatus varchar(20);
+
+ALTER TABLE uk_agentservice ADD initiator varchar(32);
+
+
 /*
 Navicat MySQL Data Transfer
 
@@ -544,4 +572,24 @@ CREATE TABLE `uk_log_request` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+
+
+CREATE TABLE `uk_quality` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '上级ID',
+  `STARTDATE` datetime DEFAULT NULL COMMENT '有效期开始时间',
+  `ENDDATE` datetime DEFAULT NULL COMMENT '有效期结束时间',
+  `ENABLE` tinyint(4) DEFAULT NULL COMMENT '分类状态',
+  `SCORE` int(11) DEFAULT '0' COMMENT '分值',
+  `DESCRIPTION` varchar(255) DEFAULT NULL COMMENT '分类描述',
+  `QUALITYTYPE` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
