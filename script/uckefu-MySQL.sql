@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-04-17 18:46:16
+Date: 2018-04-17 22:33:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -134,6 +134,12 @@ CREATE TABLE `uk_agentservice` (
   `leavemsg` tinyint(4) DEFAULT '0',
   `initiator` varchar(32) DEFAULT NULL,
   `leavemsgstatus` varchar(20) DEFAULT NULL,
+  `agenttimeout` int(11) DEFAULT '0',
+  `agenttimeouttimes` int(11) DEFAULT '0',
+  `servicetimeout` tinyint(4) DEFAULT '0',
+  `agentservicetimeout` int(11) DEFAULT '0',
+  `agentfrewords` int(11) DEFAULT '0',
+  `servicefrewords` int(11) DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -252,6 +258,16 @@ CREATE TABLE `uk_agentuser` (
   `title` varchar(255) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
   `traceid` varchar(32) DEFAULT NULL,
+  `agenttimeout` int(11) DEFAULT '0',
+  `agenttimeouttimes` int(11) DEFAULT '0',
+  `servicetimeout` tinyint(4) DEFAULT '0',
+  `agentservicetimeout` int(11) DEFAULT '0',
+  `agentfrewords` int(11) DEFAULT '0',
+  `servicefrewords` int(11) DEFAULT '0',
+  `satisfaction` tinyint(4) DEFAULT '0',
+  `satistime` datetime DEFAULT '0000-00-00 00:00:00',
+  `satislevel` varchar(50) DEFAULT '0',
+  `satiscomment` varchar(255) DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `agentuser_userid` (`userid`) USING BTREE,
   KEY `agentuser_orgi` (`orgi`) USING BTREE
@@ -2606,6 +2622,9 @@ CREATE TABLE `uk_sessionconfig` (
   `finessmsg` varchar(255) DEFAULT NULL,
   `quality` tinyint(4) DEFAULT '0',
   `qualityscore` varchar(20) DEFAULT NULL,
+  `servicetimeoutlimit` tinyint(4) DEFAULT '0',
+  `servicetimeout` int(11) DEFAULT '0',
+  `servicetimeoutmsg` varchar(50) DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
