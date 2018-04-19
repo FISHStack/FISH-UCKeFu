@@ -14,6 +14,7 @@ import com.ukefu.util.UKTools;
 import com.ukefu.util.UKView;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.TenantRepository;
+import com.ukefu.webim.web.handler.api.rest.QueryParams;
 import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.Tenant;
 import com.ukefu.webim.web.model.User;
@@ -146,6 +147,26 @@ public class Handler {
 		}
 		return pagesize;
 	}
+	
+	public int getP(QueryParams params) {
+		int page = 0;
+		if(params!=null && !StringUtils.isBlank(params.getP()) && params.getP().matches("[\\d]*")){
+			page = Integer.parseInt(params.getP()) ;
+			if(page > 0){
+				page = page - 1 ;
+			}
+		}
+		return page;
+	}
+	
+	public int getPs(QueryParams params) {
+		int pagesize = PAGE_SIZE_TW;
+		if(params != null && !StringUtils.isBlank(params.getPs()) && params.getPs().matches("[\\d]*")){
+			pagesize = Integer.parseInt(params.getPs()) ;
+		}
+		return pagesize;
+	}
+	
 	
 	public int get50Ps(HttpServletRequest request) {
 		int pagesize = PAGE_SIZE_FV;

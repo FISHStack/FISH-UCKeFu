@@ -8,7 +8,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,8 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ukefu.core.UKDataContext;
@@ -46,10 +45,10 @@ public class ApiLeavemsgController extends Handler{
 	 * @param username	搜索用户名，精确搜索
 	 * @return
 	 */
-	@RequestMapping( method = RequestMethod.GET)
+	@RequestMapping("/list")
 	@Menu(type = "apps" , subtype = "webim" , access = true)
 	@ApiOperation("获取留言列表")
-    public ResponseEntity<RestResult> list(HttpServletRequest request , @Valid AgentService agentService ,@Valid String begin ,@Valid String end) {
+    public ResponseEntity<RestResult> list(HttpServletRequest request , @RequestBody RequestValues<AgentService> values) {
 		Page<AgentService> page = agentServiceRepository.findAll(new Specification<AgentService>(){
 			@Override
 			public Predicate toPredicate(Root<AgentService> root, CriteriaQuery<?> query,
@@ -61,7 +60,7 @@ public class ApiLeavemsgController extends Handler{
 				
 				Predicate[] p = new Predicate[list.size()];  
 			    return cb.and(list.toArray(p));   
-			}}, new PageRequest(super.getP(request), super.getPs(request) , Sort.Direction.DESC, "createtime")) ;
+			}}, new PageRequest(super.getP(values.getQuery()), super.getPs(values.getQuery()), Sort.Direction.DESC, "createtime")) ;
         return new ResponseEntity<>(new RestResult(RestResultType.OK,page), HttpStatus.OK);
     }
 }
