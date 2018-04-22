@@ -92,9 +92,12 @@ public class ApiServiceQueneController extends Handler{
 		    	
 		    	agentStatus.setUsers(agentUserRepository.countByAgentnoAndStatusAndOrgi(user.getId(), UKDataContext.AgentUserStatusEnum.INSERVICE.toString(), super.getOrgi(request)));
 		    	
+		    	agentStatus.setUpdatetime(new Date());
+		    	
 		    	agentStatus.setOrgi(super.getOrgi(request));
 		    	agentStatus.setMaxusers(sessionConfig.getMaxuser());
 		    	agentStatusRepository.save(agentStatus) ;
+		    	
 	    	}
 	    	if(agentStatus!=null){
 		    	/**
@@ -103,6 +106,7 @@ public class ApiServiceQueneController extends Handler{
 		    	agentStatus.setUsers(ServiceQuene.getAgentUsers(agentStatus.getAgentno(), super.getOrgi(request)));
 		    	agentStatus.setStatus(UKDataContext.AgentStatusEnum.READY.toString());
 		    	CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, super.getOrgi(request));
+		    	ServiceQuene.recordAgentStatus(agentStatus.getAgentno(),agentStatus.getAgentno(), agentStatus.getSkill(),"0".equals(super.getUser(request).getUsertype()), agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.LEAVE.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , null);
 		    	
 		    	ServiceQuene.allotAgent(agentStatus.getAgentno(), super.getOrgi(request));
 	    	}
@@ -110,6 +114,7 @@ public class ApiServiceQueneController extends Handler{
 			if(status.equals(UKDataContext.AgentStatusEnum.NOTREADY.toString())) {
 				List<AgentStatus> agentStatusList = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
 				for(AgentStatus temp : agentStatusList){
+					ServiceQuene.recordAgentStatus(temp.getAgentno(),temp.getAgentno(), temp.getSkill(),"0".equals(super.getUser(request).getUsertype()), temp.getAgentno(), temp.isBusy() ? UKDataContext.AgentStatusEnum.BUSY.toString():UKDataContext.AgentStatusEnum.READY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , temp.getOrgi() , temp.getUpdatetime());
 					agentStatusRepository.delete(temp);
 				}
 		    	CacheHelper.getAgentStatusCacheBean().delete(super.getUser(request).getId(),super.getOrgi(request));
@@ -118,9 +123,24 @@ public class ApiServiceQueneController extends Handler{
 		    	if(agentStatusList.size() > 0){
 		    		agentStatus = agentStatusList.get(0) ;
 					agentStatus.setBusy(true);
+					ServiceQuene.recordAgentStatus(agentStatus.getAgentno(), agentStatus.getAgentno(),agentStatus.getSkill(), "0".equals(super.getUser(request).getUsertype()),agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.READY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
+					agentStatus.setUpdatetime(new Date());
+					
 					agentStatusRepository.save(agentStatus);
 					CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, super.getOrgi(request));
 				}
+			}else if(!StringUtils.isBlank(status) && status.equals(UKDataContext.AgentStatusEnum.NOTREADY.toString())) {
+				List<AgentStatus> agentStatusList = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
+		    	if(agentStatusList.size() > 0){
+		    		agentStatus = agentStatusList.get(0) ;
+					agentStatus.setBusy(false);
+					ServiceQuene.recordAgentStatus(agentStatus.getAgentno(), agentStatus.getAgentno(),agentStatus.getSkill(), "0".equals(super.getUser(request).getUsertype()),agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.BUSY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
+					
+					agentStatus.setUpdatetime(new Date());
+					agentStatusRepository.save(agentStatus);
+					CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus,super.getOrgi(request));
+				}
+				ServiceQuene.allotAgent(agentStatus.getAgentno(), super.getOrgi(request));
 			}
 			ServiceQuene.publishMessage(super.getOrgi(request));
 		}
