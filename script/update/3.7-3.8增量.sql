@@ -78,6 +78,9 @@ ALTER TABLE uk_agentservice ADD agenttimeouttimes int default 0;
 ALTER TABLE uk_agentservice ADD servicetimeout tinyint default 0;
 ALTER TABLE uk_agentservice ADD agentservicetimeout int default 0;
 
+ALTER TABLE uk_agentservice ADD agent varchar(32);
+ALTER TABLE uk_agentservice ADD skill varchar(32);
+
 
 ALTER TABLE uk_agentuser ADD agenttimeout int default 0;
 ALTER TABLE uk_agentuser ADD agenttimeouttimes int default 0;
@@ -657,4 +660,44 @@ CREATE TABLE `uk_quality` (
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
+
+
+CREATE TABLE `uk_work_monitor` (
+  `ID` varchar(50) NOT NULL COMMENT 'ID',
+  `USERID` varchar(50) DEFAULT NULL COMMENT '登录人ID',
+  `AGENT` varchar(50) DEFAULT NULL COMMENT '坐席工号',
+  `USERNAME` varchar(50) DEFAULT NULL COMMENT '坐席用户名（登录名）',
+  `AGENTNO` varchar(50) DEFAULT NULL COMMENT '分机号（坐席登录的分机号码）',
+  `NAME` varchar(50) DEFAULT NULL COMMENT '坐席姓名',
+  `CODE` varchar(50) DEFAULT NULL COMMENT '坐席状态code（对应字典表里的CODE）',
+  `STATUS` varchar(50) DEFAULT NULL COMMENT '坐席当前状',
+  `BUSY` tinyint(4) DEFAULT '0' COMMENT '坐席是否忙',
+  `WORKSTATUS` varchar(50) DEFAULT NULL COMMENT '坐席工作状态',
+  `ORGI` varchar(50) DEFAULT NULL COMMENT '租户ID',
+  `AGENTSERVICEID` varchar(50) DEFAULT NULL COMMENT '会话ID',
+  `SKILL` varchar(50) DEFAULT NULL COMMENT '接入的技能组ID',
+  `SKILLNAME` varchar(50) DEFAULT NULL COMMENT '接入的技能组名称',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '记录创建时间',
+  `ANI` varchar(50) DEFAULT NULL COMMENT '主叫号码',
+  `CALLED` varchar(50) DEFAULT NULL COMMENT '被叫号码',
+  `SOURCE` varchar(50) DEFAULT NULL COMMENT '来源',
+  `SERVICEID` varchar(32) DEFAULT NULL COMMENT '服务记录ID',
+  `SERVICESTATUS` varchar(50) DEFAULT NULL COMMENT '当前呼叫状态',
+  `DISCALLER` varchar(50) DEFAULT NULL COMMENT '主叫分机号',
+  `DISCALLED` varchar(50) DEFAULT NULL COMMENT '被叫分机号',
+  `ORGAN` varchar(50) DEFAULT NULL COMMENT '所属组织机构ID',
+  `BEGINTIME` datetime DEFAULT NULL COMMENT '状态开始时间',
+  `ENDTIME` datetime DEFAULT NULL COMMENT '状态结束时间',
+  `FIRSTSTATUS` tinyint(4) DEFAULT '0' COMMENT '当天首次时间',
+  `DATESTR` varchar(20) DEFAULT NULL COMMENT '日期字符串',
+  `DURATION` int(11) DEFAULT NULL COMMENT '通话时长',
+  `EVENTID` varchar(50) DEFAULT NULL,
+  `WORKTYPE` varchar(32) DEFAULT NULL,
+  `CALLENDTIME` datetime DEFAULT NULL,
+  `CALLSTARTTIME` datetime DEFAULT NULL,
+  `DIRECTION` varchar(50) DEFAULT NULL,
+  `EXTNO` varchar(32) DEFAULT NULL,
+  `ADMIN` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='坐席状态表';
 

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-04-17 22:33:52
+Date: 2018-04-22 21:13:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -133,13 +133,13 @@ CREATE TABLE `uk_agentservice` (
   `solvestatus` varchar(20) DEFAULT NULL,
   `leavemsg` tinyint(4) DEFAULT '0',
   `initiator` varchar(32) DEFAULT NULL,
-  `leavemsgstatus` varchar(20) DEFAULT NULL,
   `agenttimeout` int(11) DEFAULT '0',
   `agenttimeouttimes` int(11) DEFAULT '0',
   `servicetimeout` tinyint(4) DEFAULT '0',
   `agentservicetimeout` int(11) DEFAULT '0',
   `agentfrewords` int(11) DEFAULT '0',
   `servicefrewords` int(11) DEFAULT '0',
+  `leavemsgstatus` varchar(20) DEFAULT 'notprocess',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -785,6 +785,7 @@ CREATE TABLE `uk_chat_message` (
   `agentreplyinterval` int(11) DEFAULT NULL,
   `sessionid` varchar(50) DEFAULT NULL,
   `cooperation` tinyint(4) DEFAULT NULL,
+  `datastatus` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `sessionid` (`usession`) USING BTREE,
   KEY `orgi` (`orgi`) USING BTREE
@@ -7356,14 +7357,16 @@ CREATE TABLE `uk_user` (
   `DATASTATUS` tinyint(4) DEFAULT NULL COMMENT '数据状态',
   `callcenter` tinyint(4) DEFAULT NULL COMMENT '启用呼叫中心坐席',
   `SUPERUSER` tinyint(4) DEFAULT NULL COMMENT '是否超级管理员',
+  `maxuser` int(11) DEFAULT '0',
+  `ordertype` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', '0fbf9965244969fec730d144ed7e9799', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-02-11 16:12:39', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-02-11 16:25:20', null, null, null, '0', '0', '0');
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-04-17 18:36:30', null, null, null, '0', '1', '1');
+INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', '0fbf9965244969fec730d144ed7e9799', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-04-21 01:00:23', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-02-11 16:25:20', null, null, null, '0', '0', '0', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-04-22 19:14:18', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -7570,6 +7573,53 @@ CREATE TABLE `uk_worktime` (
 
 -- ----------------------------
 -- Records of uk_worktime
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_work_monitor`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_work_monitor`;
+CREATE TABLE `uk_work_monitor` (
+  `ID` varchar(50) NOT NULL COMMENT 'ID',
+  `USERID` varchar(50) DEFAULT NULL COMMENT '登录人ID',
+  `AGENT` varchar(50) DEFAULT NULL COMMENT '坐席工号',
+  `USERNAME` varchar(50) DEFAULT NULL COMMENT '坐席用户名（登录名）',
+  `AGENTNO` varchar(50) DEFAULT NULL COMMENT '分机号（坐席登录的分机号码）',
+  `NAME` varchar(50) DEFAULT NULL COMMENT '坐席姓名',
+  `CODE` varchar(50) DEFAULT NULL COMMENT '坐席状态code（对应字典表里的CODE）',
+  `STATUS` varchar(50) DEFAULT NULL COMMENT '坐席当前状',
+  `BUSY` tinyint(4) DEFAULT '0' COMMENT '坐席是否忙',
+  `WORKSTATUS` varchar(50) DEFAULT NULL COMMENT '坐席工作状态',
+  `ORGI` varchar(50) DEFAULT NULL COMMENT '租户ID',
+  `AGENTSERVICEID` varchar(50) DEFAULT NULL COMMENT '会话ID',
+  `SKILL` varchar(50) DEFAULT NULL COMMENT '接入的技能组ID',
+  `SKILLNAME` varchar(50) DEFAULT NULL COMMENT '接入的技能组名称',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '记录创建时间',
+  `ANI` varchar(50) DEFAULT NULL COMMENT '主叫号码',
+  `CALLED` varchar(50) DEFAULT NULL COMMENT '被叫号码',
+  `SOURCE` varchar(50) DEFAULT NULL COMMENT '来源',
+  `SERVICEID` varchar(32) DEFAULT NULL COMMENT '服务记录ID',
+  `SERVICESTATUS` varchar(50) DEFAULT NULL COMMENT '当前呼叫状态',
+  `DISCALLER` varchar(50) DEFAULT NULL COMMENT '主叫分机号',
+  `DISCALLED` varchar(50) DEFAULT NULL COMMENT '被叫分机号',
+  `ORGAN` varchar(50) DEFAULT NULL COMMENT '所属组织机构ID',
+  `BEGINTIME` datetime DEFAULT NULL COMMENT '状态开始时间',
+  `ENDTIME` datetime DEFAULT NULL COMMENT '状态结束时间',
+  `FIRSTSTATUS` tinyint(4) DEFAULT '0' COMMENT '当天首次时间',
+  `DATESTR` varchar(20) DEFAULT NULL COMMENT '日期字符串',
+  `DURATION` int(11) DEFAULT NULL COMMENT '通话时长',
+  `EVENTID` varchar(50) DEFAULT NULL,
+  `WORKTYPE` varchar(32) DEFAULT NULL,
+  `CALLENDTIME` datetime DEFAULT NULL,
+  `CALLSTARTTIME` datetime DEFAULT NULL,
+  `DIRECTION` varchar(50) DEFAULT NULL,
+  `EXTNO` varchar(32) DEFAULT NULL,
+  `ADMIN` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='坐席状态表';
+
+-- ----------------------------
+-- Records of uk_work_monitor
 -- ----------------------------
 
 -- ----------------------------
