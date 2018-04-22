@@ -79,6 +79,14 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum AgentWorkType{
+		MEIDIACHAT,
+		CALLCENTER;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	public enum SystemMessageType{
 		EMAIL,SMS;
 		public String toString(){
