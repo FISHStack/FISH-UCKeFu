@@ -100,6 +100,11 @@ ALTER TABLE uk_agentuser ADD satistime datetime default 0;
 ALTER TABLE uk_agentuser ADD satislevel varchar(50) default 0;
 ALTER TABLE uk_agentuser ADD satiscomment varchar(255) default 0;
 
+ALTER TABLE uk_chat_message ADD datastatus tinyint default 0;
+
+ALTER TABLE uk_user ADD maxuser int default 0;
+ALTER TABLE uk_user ADD ordertype varchar(20);
+
 
 /*
 Navicat MySQL Data Transfer
