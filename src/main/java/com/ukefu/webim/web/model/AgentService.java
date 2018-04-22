@@ -54,6 +54,9 @@ public class AgentService implements Serializable {
 	private int tokenum;
 	private Date createtime = new Date();
 	
+	private String agent ;
+	private String skill ;
+	
 	private String agentuserid ;
 	
 	private String createdate = new SimpleDateFormat("yyyy-MM-dd").format(new Date()) ;
@@ -783,5 +786,21 @@ public class AgentService implements Serializable {
 
 	public void setLeavemsgstatus(String leavemsgstatus) {
 		this.leavemsgstatus = leavemsgstatus;
+	}
+
+	public String getAgent() {
+		return agent;
+	}
+
+	public void setAgent(String agent) {
+		this.agent = agent;
+	}
+
+	public String getSkill() {
+		return skill;
+	}
+
+	public void setSkill(String skill) {
+		this.skill = skill;
 	}
 }

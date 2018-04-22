@@ -76,6 +76,9 @@ public class User implements java.io.Serializable{
 	private String status ;		//
 	private boolean datastatus ;//数据状态，是否已删除	
 	
+	private int maxuser ;		//排队队列最大数值 ， 开启坐席功能后启用
+	private String ordertype ;		//坐席的工作队列排序方式
+	
 	
 	private Date lastlogintime = new Date();	//最后登录时间
 	
@@ -476,5 +479,17 @@ public class User implements java.io.Serializable{
 	}
 	public void setOrgid(String orgid) {
 		this.orgid = orgid;
+	}
+	public int getMaxuser() {
+		return maxuser;
+	}
+	public void setMaxuser(int maxuser) {
+		this.maxuser = maxuser;
+	}
+	public String getOrdertype() {
+		return ordertype;
+	}
+	public void setOrdertype(String ordertype) {
+		this.ordertype = ordertype;
 	}
 }

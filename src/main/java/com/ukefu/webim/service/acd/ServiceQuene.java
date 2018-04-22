@@ -26,6 +26,7 @@ import com.ukefu.webim.service.repository.AgentUserRepository;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.SessionConfigRepository;
+import com.ukefu.webim.service.repository.WorkMonitorRepository;
 import com.ukefu.webim.util.router.OutMessageRouter;
 import com.ukefu.webim.web.model.AgentReport;
 import com.ukefu.webim.web.model.AgentService;
@@ -35,6 +36,7 @@ import com.ukefu.webim.web.model.AgentUserTask;
 import com.ukefu.webim.web.model.MessageOutContent;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.SessionConfig;
+import com.ukefu.webim.web.model.WorkMonitor;
 
 @SuppressWarnings("deprecation")
 public class ServiceQuene {
@@ -349,6 +351,41 @@ public class ServiceQuene {
 		UKDataContext.getContext().getBean("agentNamespace" , SocketIONamespace.class) .getBroadcastOperations().sendEvent("status", ServiceQuene.getAgentReport(orgi));
 	}
 	/**
+	 * 
+	 * @param agent  坐席
+	 * @param skill	 技能组
+	 * @param userid 用户ID  
+	 * @param status	工作状态
+	 * @param worktype  类型 ： 语音OR 文本
+	 * @param orgi
+	 * @param lasttime
+	 */
+	public static void recordAgentStatus(String agent,String extno,String skill,boolean admin,String userid, String status ,String worktype ,String orgi , Date lasttime){
+		WorkMonitorRepository workMonitorRes = UKDataContext.getContext().getBean(WorkMonitorRepository.class) ;
+		WorkMonitor workMonitor = new WorkMonitor() ;
+		if(!StringUtils.isBlank(agent) && !StringUtils.isBlank(status)) {
+			workMonitor.setAgent(agent);
+			workMonitor.setAgentno(agent);
+			workMonitor.setStatus(status);
+			workMonitor.setAdmin(admin);
+			workMonitor.setExtno(extno);
+			if(status.equals(UKDataContext.AgentStatusEnum.BUSY.toString())) {
+				workMonitor.setBusy(true);
+			}
+			workMonitor.setCreatetime(new Date());
+			workMonitor.setDatestr(UKTools.simpleDateFormat.format(new Date()));
+			if(lasttime!=null) {
+				workMonitor.setDuration((int) (System.currentTimeMillis() - lasttime.getTime()));
+			}
+			workMonitor.setName(agent);
+			workMonitor.setOrgi(orgi);
+			workMonitor.setSkill(skill);
+			workMonitor.setUserid(userid);
+			
+			workMonitorRes.save(workMonitor) ;
+		}
+	}
+	/**
 	 * 为用户分配坐席
 	 * @param agentUser
 	 */
@@ -445,6 +482,8 @@ public class ServiceQuene {
 			agentService.setId(agentUser.getAgentserviceid());
 		}
 		agentService.setOrgi(orgi);
+		
+		
 		agentService.setSessionid(agentUser.getSessionid());
 		OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
 		agentUser.setLogindate(new Date());
@@ -456,6 +495,10 @@ public class ServiceQuene {
 		
 		if(agentStatus!=null){	
 			SessionConfig sessionConfig = initSessionConfig(orgi) ;
+			
+			agentService.setAgent(agentStatus.getAgentno());
+			agentService.setSkill(agentUser.getSkill());
+			
 			if(sessionConfig.isLastagent()){	//启用了历史坐席优先 ， 查找 历史服务坐席
 				List<WebIMReport> webIMaggList = UKTools.getWebIMDataAgg(onlineUserRes.findByOrgiForDistinctAgent(orgi, agentUser.getUserid())) ;
 				if(webIMaggList.size()>0){

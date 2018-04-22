@@ -391,7 +391,7 @@ public class AgentController extends Handler {
 	    			agentStatus.setSkillname(organ.getName());
 	    		}
 	    	}
-	    	
+	    	agentStatus.setUpdatetime(new Date());
 	    	SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
 	    	
 	    	agentStatus.setUsers(agentUserRepository.countByAgentnoAndStatusAndOrgi(user.getId(), UKDataContext.AgentUserStatusEnum.INSERVICE.toString(), super.getOrgi(request)));
@@ -409,6 +409,8 @@ public class AgentController extends Handler {
 	    	CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, super.getOrgi(request));
 	    	
 	    	ServiceQuene.allotAgent(agentStatus.getAgentno(), super.getOrgi(request));
+	    	
+	    	ServiceQuene.recordAgentStatus(agentStatus.getAgentno(), agentStatus.getAgentno(), agentStatus.getSkill(), "0".equals(super.getUser(request).getUsertype()) ,agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.LEAVE.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , null);
     	}
     	
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 
@@ -420,6 +422,7 @@ public class AgentController extends Handler {
 		User user = super.getUser(request) ;
 		List<AgentStatus> agentStatusList = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
 		for(AgentStatus agentStatus : agentStatusList){
+			ServiceQuene.recordAgentStatus(agentStatus.getAgentno(), agentStatus.getAgentno(), agentStatus.getSkill(),"0".equals(super.getUser(request).getUsertype()), agentStatus.getAgentno(), agentStatus.isBusy() ? UKDataContext.AgentStatusEnum.BUSY.toString():UKDataContext.AgentStatusEnum.READY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
 			agentStatusRepository.delete(agentStatus);
 		}
     	CacheHelper.getAgentStatusCacheBean().delete(super.getUser(request).getId(),super.getOrgi(request));
@@ -437,10 +440,13 @@ public class AgentController extends Handler {
     	if(agentStatusList.size() > 0){
     		agentStatus = agentStatusList.get(0) ;
 			agentStatus.setBusy(true);
+			ServiceQuene.recordAgentStatus(agentStatus.getAgentno(), agentStatus.getAgentno(), agentStatus.getSkill(), "0".equals(super.getUser(request).getUsertype()),agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.READY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
+			agentStatus.setUpdatetime(new Date());
 			agentStatusRepository.save(agentStatus);
 			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, super.getOrgi(request));
 		}
     	ServiceQuene.publishMessage(super.getOrgi(request));
+    	
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 
     }
 	
@@ -453,6 +459,9 @@ public class AgentController extends Handler {
     	if(agentStatusList.size() > 0){
     		agentStatus = agentStatusList.get(0) ;
 			agentStatus.setBusy(false);
+			ServiceQuene.recordAgentStatus(agentStatus.getAgentno(), agentStatus.getAgentno(), agentStatus.getSkill(),"0".equals(super.getUser(request).getUsertype()), agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.BUSY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
+			
+			agentStatus.setUpdatetime(new Date());
 			agentStatusRepository.save(agentStatus);
 			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus,super.getOrgi(request));
 		}

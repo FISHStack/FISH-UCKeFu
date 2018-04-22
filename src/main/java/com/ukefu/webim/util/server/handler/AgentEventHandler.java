@@ -1,6 +1,7 @@
 package com.ukefu.webim.util.server.handler;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.AgentStatusRepository;
 import com.ukefu.webim.service.repository.AgentUserRepository;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
@@ -43,8 +45,19 @@ public class AgentEventHandler
     public void onConnect(SocketIOClient client)  
     {  
     	String user = client.getHandshakeData().getSingleUrlParam("userid") ;
-		if(!StringUtils.isBlank(user)){
+    	String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
+		if(!StringUtils.isBlank(user) && !StringUtils.isBlank(user)){
 			client.set("agentno", user);
+			AgentStatusRepository agentStatusRepository = UKDataContext.getContext().getBean(AgentStatusRepository.class) ;
+			List<AgentStatus> agentStatusList = agentStatusRepository.findByAgentnoAndOrgi(user , orgi);
+	    	if(agentStatusList.size() > 0){
+	    		AgentStatus agentStatus = agentStatusList.get(0) ;
+				agentStatus.setUpdatetime(new Date());
+				agentStatusRepository.save(agentStatus);
+				if(CacheHelper.getAgentStatusCacheBean().getCacheObject(user, orgi)!=null) {
+					CacheHelper.getAgentStatusCacheBean().put(user, agentStatus , orgi);
+				}
+			}
 			NettyClients.getInstance().putAgentEventClient(user, client);
 		}
     }  

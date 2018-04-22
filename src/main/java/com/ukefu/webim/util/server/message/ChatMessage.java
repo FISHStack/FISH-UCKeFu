@@ -60,6 +60,8 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	private int filesize ;			//文件尺寸
 	private String attachmentid ;	//附件ID
 	
+	private boolean datastatus ;	//数据状态，是否已撤回消息	
+	
 	private String mediaid ;
 	private String locx ;	//location x
 	private String locy ;	//location y
@@ -329,5 +331,11 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	}
 	public void setCooperation(boolean cooperation) {
 		this.cooperation = cooperation;
+	}
+	public boolean isDatastatus() {
+		return datastatus;
+	}
+	public void setDatastatus(boolean datastatus) {
+		this.datastatus = datastatus;
 	}
 }
