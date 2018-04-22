@@ -376,7 +376,7 @@ public class ServiceQuene {
 			workMonitor.setCreatetime(new Date());
 			workMonitor.setDatestr(UKTools.simpleDateFormat.format(new Date()));
 			if(lasttime!=null) {
-				workMonitor.setDuration((int) (System.currentTimeMillis() - lasttime.getTime()));
+				workMonitor.setDuration((int) (System.currentTimeMillis() - lasttime.getTime()) / 1000);
 			}
 			workMonitor.setName(agent);
 			workMonitor.setOrgi(orgi);
