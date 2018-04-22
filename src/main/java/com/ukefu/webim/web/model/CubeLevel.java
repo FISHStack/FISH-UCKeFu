@@ -15,8 +15,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
-
-import com.ukefu.util.UKTools;
 @Entity
 @Table(name = "uk_cubelevel")
 @org.hibernate.annotations.Proxy(lazy = false)

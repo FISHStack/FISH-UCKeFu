@@ -13,8 +13,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-
-import com.ukefu.util.UKTools;
 @Entity
 @Table(name = "uk_cubemeasure")
 @org.hibernate.annotations.Proxy(lazy = false)
