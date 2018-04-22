@@ -369,6 +369,7 @@ public class ServiceQuene {
 			workMonitor.setStatus(status);
 			workMonitor.setAdmin(admin);
 			workMonitor.setExtno(extno);
+			workMonitor.setWorktype(worktype);
 			if(status.equals(UKDataContext.AgentStatusEnum.BUSY.toString())) {
 				workMonitor.setBusy(true);
 			}

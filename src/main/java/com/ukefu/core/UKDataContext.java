@@ -401,7 +401,7 @@ public class UKDataContext {
 		NOTREADY,
 		BUSY,
 		IDLE,
-		LEAVE,
+		OFFLINE,
 		SERVICES;
 		public String toString(){
 			return super.toString().toLowerCase() ;

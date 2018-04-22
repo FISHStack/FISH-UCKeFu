@@ -67,9 +67,10 @@ public class CubeService {
 	
 	@SuppressWarnings("deprecation")
 	public CubeReportData execute(String mdx) throws Exception{
-		Connection connection = dataSource.service(schemaFile.getAbsolutePath()) ;
+		Connection connection = null ;
 		CubeReportData cubeReportData = new CubeReportData();
 		try{
+			connection = dataSource.service(schemaFile.getAbsolutePath()) ;
 			Query query = connection.parseQuery(mdx);
 			Result result = connection.execute(query) ;
 			Axis[] axises = result.getAxes();
@@ -79,7 +80,7 @@ public class CubeService {
 					cubeReportData.setCol(createTitle(axises[i], i));
 				} else {
 					cubeReportData.setRow(createTitle(axises[i], i));
-					cubeReportData.setTotal(axises[i].getDataSize());
+//					cubeReportData.setTotal(axises[i].getDataSize());
 				}
 			}
 			if(cubeReportData.getRow()==null){

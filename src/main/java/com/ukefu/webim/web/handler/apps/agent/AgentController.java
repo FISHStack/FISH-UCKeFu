@@ -410,7 +410,7 @@ public class AgentController extends Handler {
 	    	
 	    	ServiceQuene.allotAgent(agentStatus.getAgentno(), super.getOrgi(request));
 	    	
-	    	ServiceQuene.recordAgentStatus(agentStatus.getAgentno(), agentStatus.getAgentno(), agentStatus.getSkill(), "0".equals(super.getUser(request).getUsertype()) ,agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.LEAVE.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , null);
+	    	ServiceQuene.recordAgentStatus(agentStatus.getAgentno(), agentStatus.getAgentno(), agentStatus.getSkill(), "0".equals(super.getUser(request).getUsertype()) ,agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.OFFLINE.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , null);
     	}
     	
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 

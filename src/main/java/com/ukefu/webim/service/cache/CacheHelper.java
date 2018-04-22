@@ -32,7 +32,9 @@ public class CacheHelper {
 	public static CacheBean getCallCenterCacheBean() {
 		return cacheInstance!=null ? cacheInstance.getCallCenterCacheBean() : null ;
 	}
-	
+	public static CacheBean getCallCenterAgentCacheBean() {
+		return cacheInstance!=null ? cacheInstance.getCallCenterAgentCacheBean() : null ;
+	}
 	public static CacheBean getApiUserCacheBean() {
 		return cacheInstance!=null ? cacheInstance.getApiUserCacheBean() : null ;
 	}
