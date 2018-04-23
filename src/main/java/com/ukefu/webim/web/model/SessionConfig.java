@@ -53,9 +53,15 @@ public class SessionConfig implements java.io.Serializable{
 	private boolean hourcheck ;		//启用工作时间段检查
 	private String workinghours ;	//工作时间段，格式   9:00-12:00,13:30-15:30
 	private String notinwhmsg ;		//非工作时间段 访客咨询的提示消息
-	
+    
+	private boolean servicetimeoutlimit;//坐席与访客的会话是否超时
+	private int servicetimeout;//会话超时时长	
+
 	private boolean quality ;		//启用质检功能
 	private String qualityscore ;	//质检方式
+	
+	private int quenetimeout = 600;	//访客排队超时时长
+	private String quenetimeoutmsg ;	//访客排队超时提示消息
 	
 	
 	@Id
@@ -230,6 +236,20 @@ public class SessionConfig implements java.io.Serializable{
 	public void setFinessmsg(String finessmsg) {
 		this.finessmsg = finessmsg;
 	}
+   
+    public boolean isServicetimeoutlimit() {
+		return servicetimeoutlimit;
+	}
+	public void setServicetimeoutlimit(boolean servicetimeoutlimit) {
+		this.servicetimeoutlimit = servicetimeoutlimit;
+	}
+	public int getServicetimeout() {
+		return servicetimeout;
+	}
+	public void setServicetimeout(int servicetimeout) {
+		this.servicetimeout = servicetimeout;
+	}
+
 	public boolean isQuality() {
 		return quality;
 	}
@@ -241,5 +261,17 @@ public class SessionConfig implements java.io.Serializable{
 	}
 	public void setQualityscore(String qualityscore) {
 		this.qualityscore = qualityscore;
+	}
+	public int getQuenetimeout() {
+		return quenetimeout;
+	}
+	public void setQuenetimeout(int quenetimeout) {
+		this.quenetimeout = quenetimeout;
+	}
+	public String getQuenetimeoutmsg() {
+		return quenetimeoutmsg;
+	}
+	public void setQuenetimeoutmsg(String quenetimeoutmsg) {
+		this.quenetimeoutmsg = quenetimeoutmsg;
 	}
 }
