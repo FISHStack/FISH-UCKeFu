@@ -18,6 +18,8 @@ public abstract interface PublishedReportRepository extends JpaRepository<Publis
 	public Page<PublishedReport> findByOrgi(String orgi, Pageable pageRequest);
 
 	public PublishedReport findByIdAndOrgi(String id, String orgi);
+	
+	public List<PublishedReport> findByCodeAndOrgi(String code, String orgi);
 
 	
 }

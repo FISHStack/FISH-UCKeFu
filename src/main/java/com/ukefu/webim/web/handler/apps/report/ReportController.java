@@ -103,6 +103,7 @@ public class ReportController extends Handler{
 		    	report.setOrgi(super.getOrgi(request));
 				report.setCreater(super.getUser(request).getId());
 				report.setReporttype(UKDataContext.ReportType.REPORT.toString());
+				report.setCode(UKTools.genID());
 				reportRes.save(report) ;
     		}else {
     			view = request(super.createRequestPageTempletResponse("redirect:/apps/report/index.html?msg=rt_name_exist&dicid="+report.getDicid()));
@@ -137,13 +138,14 @@ public class ReportController extends Handler{
     public ModelAndView quickreplyupdate(ModelMap map , HttpServletRequest request , @Valid Report report) {
     	if(!StringUtils.isBlank(report.getId())){
     		Report temp = reportRes.findOne(report.getId()) ;
-    		report.setOrgi(super.getOrgi(request));
-    		report.setCreater(super.getUser(request).getId());
-    		if(temp!=null){
-    			report.setCreatetime(temp.getCreatetime());
+    		if(temp!=null) {
+	    		temp.setName(report.getName());
+	    		temp.setCode(report.getCode());
+	    		temp.setDicid(report.getDicid());
+	    		temp.setUpdatetime(new Date());
+	    		temp.setDescription(report.getDescription());
+	    		reportRes.save(temp) ;
     		}
-    		report.setTabtype(UKDataContext.QuickTypeEnum.PUB.toString());
-    		reportRes.save(report) ;
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/apps/report/index.html?dicid="+report.getDicid()));
     }
