@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-04-22 21:13:36
+Date: 2018-04-25 00:31:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -140,6 +140,8 @@ CREATE TABLE `uk_agentservice` (
   `agentfrewords` int(11) DEFAULT '0',
   `servicefrewords` int(11) DEFAULT '0',
   `leavemsgstatus` varchar(20) DEFAULT 'notprocess',
+  `agent` varchar(32) DEFAULT NULL,
+  `skill` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -2626,6 +2628,8 @@ CREATE TABLE `uk_sessionconfig` (
   `servicetimeoutlimit` tinyint(4) DEFAULT '0',
   `servicetimeout` int(11) DEFAULT '0',
   `servicetimeoutmsg` varchar(50) DEFAULT '0',
+  `quenetimeout` int(11) DEFAULT '600' COMMENT '允许访客排队的最大时长',
+  `quenetimeoutmsg` varchar(255) DEFAULT NULL COMMENT '访客排队超市提示消息',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -7366,7 +7370,7 @@ CREATE TABLE `uk_user` (
 -- Records of uk_user
 -- ----------------------------
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', '0fbf9965244969fec730d144ed7e9799', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-04-21 01:00:23', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-02-11 16:25:20', null, null, null, '0', '0', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-04-22 19:14:18', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-04-25 00:25:58', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
