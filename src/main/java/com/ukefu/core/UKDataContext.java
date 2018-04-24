@@ -70,6 +70,7 @@ public class UKDataContext {
 	
 	static{
 		ConvertUtils.register(new DateConverter(), java.util.Date.class); 
+		model.put("report", true) ;
 	}
 	
 	public enum AskSectionType{

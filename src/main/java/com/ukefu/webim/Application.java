@@ -26,7 +26,6 @@ public class Application {
 	
 	static{
     	UKDataContext.model.put("contacts", true) ;
-    	UKDataContext.model.put("report", true) ;
     }
 	
     @Bean   
