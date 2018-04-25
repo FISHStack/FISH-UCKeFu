@@ -26,14 +26,18 @@ public class UserInterceptorHandler extends HandlerInterceptorAdapter {
             throws Exception {
     	boolean filter = false; 
         User user = (User) request.getSession(true).getAttribute(UKDataContext.USER_SESSION_NAME) ;
-        HandlerMethod  handlerMethod = (HandlerMethod ) handler ;
-        Menu menu = handlerMethod.getMethod().getAnnotation(Menu.class) ;
-        if(user != null || (menu!=null && menu.access()) || handlerMethod.getBean() instanceof BasicErrorController){
-        	filter = true;
-        }
-        
-        if(!filter){
-        	response.sendRedirect("/login.html");
+        if(handler instanceof HandlerMethod) {
+	        HandlerMethod  handlerMethod = (HandlerMethod ) handler ;
+	        Menu menu = handlerMethod.getMethod().getAnnotation(Menu.class) ;
+	        if(user != null || (menu!=null && menu.access()) || handlerMethod.getBean() instanceof BasicErrorController){
+	        	filter = true;
+	        }
+	        
+	        if(!filter){
+	        	response.sendRedirect("/login.html");
+	        }
+        }else {
+        	filter =true ;
         }
         return filter ; 
     }
