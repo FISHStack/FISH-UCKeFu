@@ -701,3 +701,23 @@ CREATE TABLE `uk_work_monitor` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='坐席状态表';
 
+
+CREATE TABLE `uk_webim_monitor` (
+  `ID` varchar(50) NOT NULL COMMENT 'ID',
+  `ORGI` varchar(50) DEFAULT NULL COMMENT '租户ID',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '记录创建时间',
+  `AGENTS` int(11) DEFAULT NULL COMMENT '在线坐席数量',
+  `USERS` int(11) DEFAULT NULL COMMENT '咨询中访客数量',
+  `INQUENE` int(11) DEFAULT NULL COMMENT '排队访客数量',
+  `BUSY` int(11) DEFAULT NULL COMMENT '示忙坐席数量',
+  `TYPE` varchar(32) DEFAULT NULL,
+  `DATESTR` varchar(32) DEFAULT NULL,
+  `HOURSTR` varchar(32) DEFAULT NULL,
+  `DATEHOURSTR` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='坐席状态表';
+
+
+
+ALTER TABLE uk_work_monitor ADD firtsttime tinyint default 0  COMMENT '是否首次就绪';
+ALTER TABLE uk_work_monitor ADD firsttimes int default 0 COMMENT '首次就绪时长';
