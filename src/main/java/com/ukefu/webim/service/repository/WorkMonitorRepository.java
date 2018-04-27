@@ -17,6 +17,10 @@ public abstract interface WorkMonitorRepository extends JpaRepository<WorkMonito
 
 	public abstract List<WorkMonitor> findByOrgi(String orgi) ;
 	
+	public abstract int countByAgentAndDatestrAndStatusAndOrgi(String agent , String datestr , String status,String orgi) ;
+
+	public abstract List<WorkMonitor> findByOrgiAndAgentAndDatestrAndFirsttime(String orgi ,String agent,String datestr,boolean firsttime) ;
+	
 	public Page<WorkMonitor> findAll(Specification<WorkMonitor> spec, Pageable pageable);  //分页按条件查询
 	
 	

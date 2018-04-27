@@ -30,6 +30,9 @@ public class WorkMonitor implements java.io.Serializable {
 	
 	private boolean admin ;	//管理员账号
 	
+	private boolean firsttime ;		//是否首次在线
+	private int firsttimes ;			//首次在线时长
+	
 	private String name;
 	private String status;//实时坐席状态
 	private String code;//对应字典管理CODE
@@ -224,5 +227,17 @@ public class WorkMonitor implements java.io.Serializable {
 	}
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+	public boolean isFirsttime() {
+		return firsttime;
+	}
+	public void setFirsttime(boolean firsttime) {
+		this.firsttime = firsttime;
+	}
+	public int getFirsttimes() {
+		return firsttimes;
+	}
+	public void setFirsttimes(int firsttimes) {
+		this.firsttimes = firsttimes;
 	}
 }

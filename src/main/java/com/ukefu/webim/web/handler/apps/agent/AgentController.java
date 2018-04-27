@@ -410,7 +410,7 @@ public class AgentController extends Handler {
 	    	
 	    	ServiceQuene.allotAgent(agentStatus.getAgentno(), super.getOrgi(request));
 	    	
-	    	ServiceQuene.recordAgentStatus(agentStatus.getAgentno(), agentStatus.getAgentno(), agentStatus.getSkill(), "0".equals(super.getUser(request).getUsertype()) ,agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.OFFLINE.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , null);
+	    	ServiceQuene.recordAgentStatus(agentStatus.getAgentno(),agentStatus.getUsername(), agentStatus.getAgentno(), agentStatus.getSkill(), "0".equals(super.getUser(request).getUsertype()) ,agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.OFFLINE.toString(), UKDataContext.AgentStatusEnum.READY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , null);
     	}
     	
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 
@@ -422,7 +422,7 @@ public class AgentController extends Handler {
 		User user = super.getUser(request) ;
 		List<AgentStatus> agentStatusList = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
 		for(AgentStatus agentStatus : agentStatusList){
-			ServiceQuene.recordAgentStatus(agentStatus.getAgentno(), agentStatus.getAgentno(), agentStatus.getSkill(),"0".equals(super.getUser(request).getUsertype()), agentStatus.getAgentno(), agentStatus.isBusy() ? UKDataContext.AgentStatusEnum.BUSY.toString():UKDataContext.AgentStatusEnum.READY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
+			ServiceQuene.recordAgentStatus(agentStatus.getAgentno(),agentStatus.getUsername() , agentStatus.getAgentno(), agentStatus.getSkill(),"0".equals(super.getUser(request).getUsertype()), agentStatus.getAgentno(), agentStatus.isBusy() ? UKDataContext.AgentStatusEnum.BUSY.toString():UKDataContext.AgentStatusEnum.NOTREADY.toString(), UKDataContext.AgentStatusEnum.NOTREADY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
 			agentStatusRepository.delete(agentStatus);
 		}
     	CacheHelper.getAgentStatusCacheBean().delete(super.getUser(request).getId(),super.getOrgi(request));
@@ -440,7 +440,7 @@ public class AgentController extends Handler {
     	if(agentStatusList.size() > 0){
     		agentStatus = agentStatusList.get(0) ;
 			agentStatus.setBusy(true);
-			ServiceQuene.recordAgentStatus(agentStatus.getAgentno(), agentStatus.getAgentno(), agentStatus.getSkill(), "0".equals(super.getUser(request).getUsertype()),agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.READY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
+			ServiceQuene.recordAgentStatus(agentStatus.getAgentno(),agentStatus.getUsername(), agentStatus.getAgentno(), agentStatus.getSkill(), "0".equals(super.getUser(request).getUsertype()),agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.READY.toString(), UKDataContext.AgentStatusEnum.BUSY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
 			agentStatus.setUpdatetime(new Date());
 			agentStatusRepository.save(agentStatus);
 			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, super.getOrgi(request));
@@ -459,7 +459,7 @@ public class AgentController extends Handler {
     	if(agentStatusList.size() > 0){
     		agentStatus = agentStatusList.get(0) ;
 			agentStatus.setBusy(false);
-			ServiceQuene.recordAgentStatus(agentStatus.getAgentno(), agentStatus.getAgentno(), agentStatus.getSkill(),"0".equals(super.getUser(request).getUsertype()), agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.BUSY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
+			ServiceQuene.recordAgentStatus(agentStatus.getAgentno(),agentStatus.getUsername(), agentStatus.getAgentno(), agentStatus.getSkill(),"0".equals(super.getUser(request).getUsertype()), agentStatus.getAgentno(), UKDataContext.AgentStatusEnum.BUSY.toString(), UKDataContext.AgentStatusEnum.READY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
 			
 			agentStatus.setUpdatetime(new Date());
 			agentStatusRepository.save(agentStatus);

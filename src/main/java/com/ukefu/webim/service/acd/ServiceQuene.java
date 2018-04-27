@@ -21,6 +21,7 @@ import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.quene.AgentStatusBusyOrgiFilter;
 import com.ukefu.webim.service.quene.AgentStatusOrgiFilter;
 import com.ukefu.webim.service.quene.AgentUserOrgiFilter;
+import com.ukefu.webim.service.repository.AgentReportRepository;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
 import com.ukefu.webim.service.repository.AgentUserRepository;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
@@ -348,7 +349,13 @@ public class ServiceQuene {
 		/**
 		 * 坐席状态改变，通知监测服务
 		 */
-		UKDataContext.getContext().getBean("agentNamespace" , SocketIONamespace.class) .getBroadcastOperations().sendEvent("status", ServiceQuene.getAgentReport(orgi));
+		AgentReport agentReport = ServiceQuene.getAgentReport(orgi) ;
+		AgentReportRepository agentReportRes = UKDataContext.getContext().getBean(AgentReportRepository.class) ;
+		if(agentReportRes!=null) {
+			agentReport.setOrgi(orgi);
+			agentReportRes.save(agentReport) ;
+		}
+		UKDataContext.getContext().getBean("agentNamespace" , SocketIONamespace.class) .getBroadcastOperations().sendEvent("status", agentReport);
 	}
 	/**
 	 * 
@@ -360,7 +367,7 @@ public class ServiceQuene {
 	 * @param orgi
 	 * @param lasttime
 	 */
-	public static void recordAgentStatus(String agent,String extno,String skill,boolean admin,String userid, String status ,String worktype ,String orgi , Date lasttime){
+	public static void recordAgentStatus(String agent,String username,String extno,String skill,boolean admin,String userid, String status ,String current ,String worktype ,String orgi , Date lasttime){
 		WorkMonitorRepository workMonitorRes = UKDataContext.getContext().getBean(WorkMonitorRepository.class) ;
 		WorkMonitor workMonitor = new WorkMonitor() ;
 		if(!StringUtils.isBlank(agent) && !StringUtils.isBlank(status)) {
@@ -368,16 +375,34 @@ public class ServiceQuene {
 			workMonitor.setAgentno(agent);
 			workMonitor.setStatus(status);
 			workMonitor.setAdmin(admin);
+			workMonitor.setUsername(username);
 			workMonitor.setExtno(extno);
 			workMonitor.setWorktype(worktype);
+			if(lasttime!=null) {
+				workMonitor.setDuration((int) (System.currentTimeMillis() - lasttime.getTime())/1000);
+			}
 			if(status.equals(UKDataContext.AgentStatusEnum.BUSY.toString())) {
 				workMonitor.setBusy(true);
 			}
+			if(status.equals(UKDataContext.AgentStatusEnum.READY.toString())) {
+				int count = workMonitorRes.countByAgentAndDatestrAndStatusAndOrgi(agent,UKTools.simpleDateFormat.format(new Date()), UKDataContext.AgentStatusEnum.READY.toString(), orgi) ;
+				if(count == 0) {
+					workMonitor.setFirsttime(true);
+				}
+			}
+			if(current.equals(UKDataContext.AgentStatusEnum.NOTREADY.toString())) {
+				List<WorkMonitor> workMonitorList = workMonitorRes.findByOrgiAndAgentAndDatestrAndFirsttime(orgi , agent , UKTools.simpleDateFormat.format(new Date()) , true);
+				if(workMonitorList.size() > 0) {
+					WorkMonitor firstWorkMonitor = workMonitorList.get(0) ;
+					if(firstWorkMonitor.getFirsttimes() == 0) {
+						firstWorkMonitor.setFirsttimes((int) (System.currentTimeMillis() - firstWorkMonitor.getCreatetime().getTime()));
+						workMonitorRes.save(firstWorkMonitor) ;
+					}
+				}
+			}
 			workMonitor.setCreatetime(new Date());
 			workMonitor.setDatestr(UKTools.simpleDateFormat.format(new Date()));
-			if(lasttime!=null) {
-				workMonitor.setDuration((int) (System.currentTimeMillis() - lasttime.getTime()) / 1000);
-			}
+			
 			workMonitor.setName(agent);
 			workMonitor.setOrgi(orgi);
 			workMonitor.setSkill(skill);

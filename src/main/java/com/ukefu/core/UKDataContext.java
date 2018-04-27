@@ -401,6 +401,7 @@ public class UKDataContext {
 		READY,
 		NOTREADY,
 		BUSY,
+		NOTBUSY,
 		IDLE,
 		OFFLINE,
 		SERVICES;
