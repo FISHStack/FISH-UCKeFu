@@ -719,5 +719,10 @@ CREATE TABLE `uk_webim_monitor` (
 
 
 
-ALTER TABLE uk_work_monitor ADD firtsttime tinyint default 0  COMMENT '是否首次就绪';
+ALTER TABLE uk_work_monitor ADD firsttime tinyint default 0  COMMENT '是否首次就绪';
 ALTER TABLE uk_work_monitor ADD firsttimes int default 0 COMMENT '首次就绪时长';
+ALTER TABLE uk_chat_message ADD topic tinyint default 0 COMMENT '是否命中知识库';
+ALTER TABLE uk_chat_message ADD topicid varchar(32) COMMENT '命中知识库ID';
+ALTER TABLE uk_chat_message ADD topicatid varchar(32) COMMENT '命中知识库分类ID';
+ALTER TABLE uk_agentservice ADD foragent tinyint default 0 COMMENT '直接转人工';
+ALTER TABLE uk_chat_message ADD aichat tinyint default 0 COMMENT '是否在和AI对话';
