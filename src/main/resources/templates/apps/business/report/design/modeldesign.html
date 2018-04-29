@@ -8,7 +8,7 @@
 			content="width=device-width, maximum-scale=1.0, initial-scale=1.0,initial-scale=1.0,user-scalable=no" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<title>${reportModel.name!''}-UCKeFu-全渠道客服系统</title>
-		<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?t=1487250759056"/>
+		
 		<link rel="stylesheet" href="/layui/css/layui.css">
 		<link rel="stylesheet" href="/res/css/system.html">
 		<link rel="stylesheet" href="/css/ukefu-design.css">
@@ -53,7 +53,7 @@
 			</div>
 			<#include "/apps/business/report/design/modeldesign/left.html"/>
 			<div class="layui-body" style="left:260px;border-left:2px solid #f0f2f5;">
-				<div class="layui-row" style="height:calc(100%);">
+				<div class="layui-row" style="height:calc(100% - 15px);">
 					<div class="layui-col-md9" style="height:calc(100%);">
 						<div class="ukefu-design-container" id="${reportModel.id!''}">
 							<#if element??>
@@ -61,7 +61,7 @@
 							</#if>
 						</div>
 					</div>
-					<div class="layui-col-md3" style="height:calc(100%);">
+					<div class="layui-col-md3" style="height:calc(100%-15px);">
 					  	<div class="ukefu-design-righter">
 							<#include "/apps/business/report/design/modeldesign/right.html"/>
 						</div>
@@ -72,6 +72,11 @@
 		<script>
 			layui.use('element', function(){
 			  var element = layui.element;
+			});
+			layui.use('layer', function(){
+				<#if msg??>
+					layer.alert("${(msg!'')?no_esc}");
+				</#if>				
 			});
 			layui.use('form', function(){
 				  var form = layui.form;

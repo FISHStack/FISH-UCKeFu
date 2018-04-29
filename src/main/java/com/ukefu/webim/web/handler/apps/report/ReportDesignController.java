@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.util.bi.ReportData;
 import com.ukefu.webim.service.repository.ColumnPropertiesRepository;
 import com.ukefu.webim.service.repository.MetadataRepository;
 import com.ukefu.webim.service.repository.PublishedCubeRepository;
@@ -326,7 +327,13 @@ public class ReportDesignController extends Handler {
 			PublishedCube cube = publishedCubeRepository.findOne(model.getPublishedcubeid());
 			map.addAttribute("cube", cube);
 			if (canGetReportData(model, cube.getCube())) {
-				map.addAttribute("reportData", reportCubeService.getReportData(model, cube.getCube(), request, true));
+				ReportData reportData = null ;
+				try {
+					reportData = reportCubeService.getReportData(model, cube.getCube(), request, true) ;
+					map.addAttribute("reportData",reportData);
+				}catch(Exception ex) {
+					map.addAttribute("msg",ex.getMessage());
+				}
 			}
 		}
 		map.addAttribute("eltemplet", templateRes.findByIdAndOrgi(model.getTempletid(), super.getOrgi(request)));
@@ -334,38 +341,7 @@ public class ReportDesignController extends Handler {
 		return request(super.createRequestPageTempletResponse("/apps/business/report/design/modeldesign"));
 	}
 	private boolean canGetReportData(ReportModel model,Cube cube) {
-		boolean flag = false;
-		if(!model.getProperties().isEmpty() ) {
-			all:for(ColumnProperties property:model.getProperties()) {
-				for(Dimension dimension:cube.getDimension()) {
-					for(CubeLevel cubeLevel:dimension.getCubeLevel()) {
-						if(property.getDataid().equals(cubeLevel.getId())) {
-							flag = true;
-							break all;
-						}
-					}
-				}
-			}
-		}
-		if(!model.getColproperties().isEmpty() ) {
-			all:for(ColumnProperties property:model.getColproperties()) {
-				for(Dimension dimension:cube.getDimension()) {
-					for(CubeLevel cubeLevel:dimension.getCubeLevel()) {
-						if(property.getDataid().equals(cubeLevel.getId())) {
-							flag = true;
-							break all;
-						}
-					}
-				}
-			}
-		}
-		if(model.getMeasures().isEmpty()) {
-			flag = false;
-		}
-		if(model.getProperties().isEmpty() && model.getColproperties().isEmpty() ) {
-			flag = false;
-		}
-		return flag;
+		return !model.getProperties().isEmpty() || !model.getColproperties().isEmpty() || !model.getMeasures().isEmpty();
 	}
 	private ReportModel getModel(String id,String orgi) {
 		ReportModel model = reportModelRes.findByIdAndOrgi(id, orgi);
@@ -684,7 +660,9 @@ public class ReportDesignController extends Handler {
 	public ModelAndView getelement(ModelMap map, HttpServletRequest request, @Valid String id,@Valid String publishedid) throws Exception {
 		if (!StringUtils.isBlank(id)) {
 			ReportModel model = this.getModel(id, super.getOrgi(request),publishedid);
-			map.addAttribute("eltemplet", UKTools.getTemplate(model.getTempletid()));
+			if(model!=null) {
+				map.addAttribute("eltemplet", UKTools.getTemplate(model.getTempletid()));
+			}
 			map.addAttribute("element", model);
 			map.addAttribute("reportModel", model);
 			
@@ -694,8 +672,13 @@ public class ReportDesignController extends Handler {
 					PublishedCube cube = cubeList.get(0) ;
 					map.addAttribute("cube", cube);
 					if (canGetReportData(model, cube.getCube())) {
-						map.addAttribute("reportData",
-								reportCubeService.getReportData(model, cube.getCube(), request, true));
+						ReportData reportData = null ;
+						try {
+							reportData = reportCubeService.getReportData(model, cube.getCube(), request, true) ;
+							map.addAttribute("reportData",reportData);
+						}catch(Exception ex) {
+							map.addAttribute("msg",ex.getMessage());
+						}
 					}
 				}
 			}
@@ -1057,6 +1040,46 @@ public class ReportDesignController extends Handler {
 		}
 		return request(super.createRequestPageTempletResponse(
 				"redirect:/apps/report/design/modeldesign.html?id=" + modelId + "&tabid=data"));
+	}
+	
+	/**
+	 * 修改指标
+	 * 
+	 * @param map
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/columnedit")
+	@Menu(type = "report", subtype = "reportdesign")
+	public ModelAndView columnedit(ModelMap map, HttpServletRequest request, @Valid String id) {
+		if (!StringUtils.isBlank(id)) {
+			ColumnProperties col = columnPropertiesRepository.findByIdAndOrgi(id, super.getOrgi(request));
+			if (col != null) {
+				map.put("col", col) ;
+			}
+		}
+		return request(super.createRequestPageTempletResponse("/apps/business/report/design/modeldesign/measureedit"));
+	}
+	
+	/**
+	 * 保存指标
+	 * 
+	 * @param map
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/columnupdate")
+	@Menu(type = "report", subtype = "reportdesign")
+	public ModelAndView columnupdte(ModelMap map, HttpServletRequest request, @Valid String id,@Valid String title, @Valid String mid) {
+		if (!StringUtils.isBlank(id) && !StringUtils.isBlank(title)) {
+			ColumnProperties col = columnPropertiesRepository.findByIdAndOrgi(id, super.getOrgi(request));
+			if (col != null) {
+				col.setTitle(title);
+				columnPropertiesRepository.save(col) ;
+			}
+		}
+		return request(super.createRequestPageTempletResponse(
+				"redirect:/apps/report/design/modeldesign.html?id=" + mid + "&tabid=data"));
 	}
 
 	@RequestMapping("/changetpl")
