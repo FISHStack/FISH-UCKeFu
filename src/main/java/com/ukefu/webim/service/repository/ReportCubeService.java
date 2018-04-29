@@ -34,9 +34,6 @@ import freemarker.template.TemplateException;
 
 @Service("reportCubeService")
 public class ReportCubeService{
-		
-	@Autowired
-	private TablePropertiesRepository  tablePropertiesRes;
 	
 	@Autowired
 	private TemplateRepository templateRes;
@@ -147,30 +144,7 @@ public class ReportCubeService{
 			tableObjMap.put(cm.getTb().getId(),cm.getTb());
 			index++;
 		}
-		//要查询的列名
-		Map<String,String> exist = new HashMap<String,String>();
-		StringBuffer columns = new StringBuffer() ;
-		for(Dimension d:cube.getDimension()) {
-			for(CubeLevel cl : d.getCubeLevel()) {
-				if(!exist.containsKey(cl.getColumname())) {
-					columns.append(tableMap.get(cl.getTableproperty().getDbtableid())).append(".").append(cl.getTableproperty().getFieldname()).append(" ").append("'"+cl.getColumname()+"'");
-					columns.append(",");
-					exist.put(cl.getColumname(), cl.getColumname()) ;
-				}
-			}
-		}
-		for(CubeMeasure cm:cube.getMeasure()) {
-			if(!exist.containsKey(cm.getColumname())) {
-				TableProperties t = tablePropertiesRes.findByTablenameAndFieldname(cm.getTablename(),cm.getColumname());
-				columns.append(tableMap.get(t.getDbtableid())).append(".").append(t.getFieldname()).append(" ").append("'"+cm.getColumname()+"'");
-				columns.append(",");
-				
-				exist.put(cm.getColumname(), cm.getColumname()) ;
-			}
-		}
-		if(columns.length()>1) {
-			columns.deleteCharAt(columns.length()-1);
-		}
+		
 		//要查询的表名以及左连接
 		for(CubeMetadata cm:cube.getMetadata()) {
 			if(!"0".equals(cm.getMtype())) {
@@ -187,7 +161,7 @@ public class ReportCubeService{
 				}
 			}
 		}
-		strb.append(columns).append(mainTable).append(tables);
+		strb.append(" * ").append(mainTable).append(tables);
 		//过滤关联的表名以及左连接
 		StringBuffer filtertables = new StringBuffer() ;
 		StringBuffer wherecon = new StringBuffer();
