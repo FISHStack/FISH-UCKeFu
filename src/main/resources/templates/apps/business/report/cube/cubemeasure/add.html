@@ -132,7 +132,7 @@
 </script>
 <script type="text/html" id="attributetext"><MeasureExpression>
     <SQL>
-        (case when workstatus = 'ready' then 0 else id end)
+        (case when status = 'ready' then 1 else 0 end)
 	</SQL>
 </MeasureExpression>
 </script>
