@@ -726,3 +726,7 @@ ALTER TABLE uk_chat_message ADD topicid varchar(32) COMMENT '命中知识库ID';
 ALTER TABLE uk_chat_message ADD topicatid varchar(32) COMMENT '命中知识库分类ID';
 ALTER TABLE uk_agentservice ADD foragent tinyint default 0 COMMENT '直接转人工';
 ALTER TABLE uk_chat_message ADD aichat tinyint default 0 COMMENT '是否在和AI对话';
+
+
+ALTER TABLE uk_sessionconfig ADD quene tinyint default 0 COMMENT '坐席姓名';
+ALTER TABLE uk_sessionconfig ADD servicename varchar(50) COMMENT '无坐席的时候回复昵称';
