@@ -42,6 +42,11 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	
 	private String sessionid ;	//增加记录 AI 的 Client Session ID
 	
+	private String topicid ;	//命中的 知识库 ID
+	private String topicatid ;	//命中的知识库分类ID
+	private boolean topic ;		//是否命中知识库
+	private boolean aichat ;	//是否和AI提问
+	
 	private String message ;
 	private String orgi ;
 	private String channel ;
@@ -338,4 +343,29 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	public void setDatastatus(boolean datastatus) {
 		this.datastatus = datastatus;
 	}
+	public String getTopicid() {
+		return topicid;
+	}
+	public void setTopicid(String topicid) {
+		this.topicid = topicid;
+	}
+	public String getTopicatid() {
+		return topicatid;
+	}
+	public void setTopicatid(String topicatid) {
+		this.topicatid = topicatid;
+	}
+	public boolean isTopic() {
+		return topic;
+	}
+	public void setTopic(boolean topic) {
+		this.topic = topic;
+	}
+	public boolean isAichat() {
+		return aichat;
+	}
+	public void setAichat(boolean aichat) {
+		this.aichat = aichat;
+	}
+	
 }

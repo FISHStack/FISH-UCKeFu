@@ -83,6 +83,13 @@
 			维度成员
 			<#if cubeLevelList??>（${cubeLevelList?size}）</#if>
 			<div style="float:right;" class="ukefu-bt-text-content">
+				<button class="layui-btn layui-btn-small" href="/apps/report/cube/cubepublish.html?cubeid=${cubeid!''}" data-toggle="ajax" data-width="600" data-height="300" data-title="发布模型">
+					<i class="layui-icon">&#xe609;</i> 
+					发布
+				</button>
+				<a class="layui-btn layui-btn-small" href="/apps/report/cube/index.html">
+					返回
+				</a>
 				<button class="layui-btn layui-btn-small" href="/apps/report/dimension/edit.html?id=${dimensionId!''}" data-toggle="ajax" data-width="950" data-height="550" data-title="编辑维度">
 					编辑维度
 				</button>
@@ -162,6 +169,13 @@
 			指标
 			<#if cubeMeasureList??>（${cubeMeasureList?size}）</#if>
 			<div style="float:right;" class="ukefu-bt-text-content">
+				<button class="layui-btn layui-btn-small" href="/apps/report/cube/cubepublish.html?cubeid=${cubeid!''}" data-toggle="ajax" data-width="600" data-height="300" data-title="发布模型">
+					<i class="layui-icon">&#xe609;</i> 
+					发布
+				</button>
+				<a class="layui-btn layui-btn-small" href="/apps/report/cube/index.html">
+					返回
+				</a>
 				<button class="layui-btn layui-btn-small green" href="/apps/report/cubemeasure/add.html?cubeid=${cubeid!''}" data-toggle="ajax" data-width="750" data-height="450" data-title="新建指标">
 					添加指标
 				</button>
@@ -173,7 +187,9 @@
 				  <colgroup>
 				  		<col width="1%">
 						<col width="50%">
-						<col width="20%">
+				  		<col width="15%">
+				  		<col width="30%">
+						<col width="10%">
 					<col>
 				  </colgroup>
 				  <thead>
@@ -182,6 +198,7 @@
 					  	<input type="checkbox" id="checkall" />
 					  </th>
 					  <th>名称</th>
+					  <th>计算指标</th>
 					  <th>创建时间</th>
 					  <th style="white-space:nowrap;" nowrap="nowrap">操作</th>
 					</tr> 
@@ -195,6 +212,11 @@
 					  </td>
 					  <td>
 					  	${cubeMeasure.name}
+					  </td>
+					  <td>
+					  	<#if cubeMeasure.calculatedmember>
+					  		<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
+					  	</#if>
 					  </td>
 					  <td>${cubeMeasure.createtime?string("yyyy-MM-dd HH:mm:ss")}</td>
 					  <td style="white-space:nowrap;" nowrap="nowrap">
