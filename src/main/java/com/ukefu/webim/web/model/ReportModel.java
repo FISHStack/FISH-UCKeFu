@@ -13,7 +13,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.ukefu.util.UKTools;
@@ -28,7 +27,7 @@ public class ReportModel implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String id ;
+	private String id = UKTools.getUUID();
 	private String posx ;
 	private String posy ;
 	private String poswidth;
@@ -149,7 +148,7 @@ public class ReportModel implements java.io.Serializable {
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")	
 	public String getId() {
 		return id;
 	}
