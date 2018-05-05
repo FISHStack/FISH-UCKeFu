@@ -60,8 +60,11 @@ public class SessionConfig implements java.io.Serializable{
 	private boolean quality ;		//启用质检功能
 	private String qualityscore ;	//质检方式
 	
+	private boolean quene; 			//启用排队自动断开
 	private int quenetimeout = 600;	//访客排队超时时长
 	private String quenetimeoutmsg ;	//访客排队超时提示消息
+	
+	private String servicename ;		//无坐席的时候 回复消息的 昵称
 	
 	
 	@Id
@@ -273,5 +276,17 @@ public class SessionConfig implements java.io.Serializable{
 	}
 	public void setQuenetimeoutmsg(String quenetimeoutmsg) {
 		this.quenetimeoutmsg = quenetimeoutmsg;
+	}
+	public boolean isQuene() {
+		return quene;
+	}
+	public void setQuene(boolean quene) {
+		this.quene = quene;
+	}
+	public String getServicename() {
+		return servicename;
+	}
+	public void setServicename(String servicename) {
+		this.servicename = servicename;
 	}
 }

@@ -382,26 +382,78 @@
 											</div>
 											
 											<div class="ukefu-webim-prop">
-												<div class="ukefu-webim-tl" style="clear:both;">15、启用对话质检功能</div>
+												<div class="ukefu-webim-tl" style="clear:both;">15、会话超时提醒</div>
 												<div class="box-item">
 													<div class="row">
 														<div class="col-lg-8">
-															<p>启用此功能后，客户在结束对话的时候，会生成对话质检任务</p>
-															<p style="color:#888888;font-size:13px;margin-top:10px;">对话质检功能，所有文本对话渠道适用（WebIM，微信）</p>
+															<p>客户与坐席对话的会话超时提醒功能</p>
+															<p style="color:#888888;font-size:13px;margin-top:10px;">开启后，用户和客服会话超时的时候会提醒</p>
 														</div>
 														<div class="col-lg-4" style="text-align:right;">
-															<input type="checkbox" title="启用" name="quality" lay-filter="quality" <#if sessionConfig?? && sessionConfig.quality == true>checked="checked"</#if>>
+															<input type="checkbox" title="启用" name="servicetimeoutlimit" id="servicetimeoutlimit" lay-filter="servicetimeoutlimit" <#if sessionConfig?? && sessionConfig.servicetimeoutlimit == true>checked="checked"</#if>>
 														</div>
 													</div>
 												</div>
-												<div class="box-item" id="quality" style="<#if sessionConfig?? && sessionConfig.quality == false>display:none;</#if>">	
+												<div class="box-item" id="timeout_limit" style="<#if sessionConfig?? && sessionConfig.servicetimeoutlimit == false>display:none;</#if>">	
 													<div class="row">
 														<div class="col-lg-8">
-															<p>质检方式</p>
+															<p>超时时长（秒）</p>
 														</div>
 														<div class="col-lg-4" style="text-align:right;">
-															<input type="radio" name="qualityscore" value="score" title="评分制" <#if !(sessionConfig??) || !(sessionConfig.qualityscore??) || (sessionConfig?? && sessionConfig.qualityscore?? && sessionConfig.qualityscore == 'score')>checked="checked"</#if>>
-															<input type="radio" name="qualityscore" value="points" title="扣分制" <#if sessionConfig?? && sessionConfig.qualityscore?? && sessionConfig.qualityscore == 'points'>checked="checked"</#if>>
+															<input type="text" name="servicetimeout" id="servicetimeout" lay-verify="number" value="<#if sessionConfig?? && sessionConfig.servicetimeout gt 0>${sessionConfig.servicetimeout}<#else>120</#if>" autocomplete="off" class="layui-input" style="width:80px;display:inline;">
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-lg-8">
+															<p>超时提示消息</p>
+														</div>
+													</div>
+													<div class="row" style="margin-top:10px;">
+														<div class="col-lg-12">
+															<textarea name="servicetimeoutmsg" id="servicetimeoutmsg" autocomplete="off" class="layui-input" resize="false" style="height:90px;line-height:22px;resize: none;"><#if sessionConfig?? && sessionConfig.servicetimeoutmsg??>${sessionConfig.servicetimeoutmsg}<#else>您好，您的当前会话已超时！</#if></textarea>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											<div class="ukefu-webim-prop">
+												<div class="ukefu-webim-tl" style="clear:both;">16、排队超时设置</div>
+												<div class="box-item">
+													<div class="row">
+														<div class="col-lg-8">
+															<p>访客的最大排队等待时长</p>
+															<p style="color:#888888;font-size:13px;margin-top:10px;">排队时间超过设置的时间后，自动断开访客链接</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="checkbox" title="启用" name="quene" id="quene" lay-filter="quene" <#if sessionConfig?? && sessionConfig.quene == true>checked="checked"</#if>>
+														</div>
+													</div>
+												</div>
+												<div class="box-item" id="quene_tip" style="<#if sessionConfig?? && sessionConfig.quene == false>display:none;</#if>">	
+													<div class="row">
+														<div class="col-lg-8">
+															<p>超时时长（秒）</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="text" name="quenetimeout" id="quenetimeout" lay-verify="number" value="<#if sessionConfig?? && sessionConfig.quenetimeout gt 0>${sessionConfig.quenetimeout}<#else>120</#if>" autocomplete="off" class="layui-input" style="width:80px;display:inline;">
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-lg-8">
+															<p>超时时长（秒）</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="text" name="servicename" id="servicename" value="<#if sessionConfig?? && sessionConfig.servicename??>${sessionConfig.servicename}<#else>系统客服</#if>" autocomplete="off" class="layui-input" style="width:80px;display:inline;">
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-lg-8">
+															<p>超时提示消息</p>
+														</div>
+													</div>
+													<div class="row" style="margin-top:10px;">
+														<div class="col-lg-12">
+															<textarea name="quenetimeoutmsg" id="quenetimeoutmsg" autocomplete="off" class="layui-input" resize="false" style="height:90px;line-height:22px;resize: none;"><#if sessionConfig?? && sessionConfig.quenetimeoutmsg??>${sessionConfig.quenetimeoutmsg}<#else>感谢您的咨询，再见！</#if></textarea>
 														</div>
 													</div>
 												</div>
@@ -462,14 +514,23 @@
 				$('#agentreplay').hide();
 			}
 		});
-		form.on("checkbox(quality)" , function(data){
+		form.on("checkbox(servicetimeoutlimit)" , function(data){
 			if(data.elem.checked == true){
-				$('#quality').show();		
+				
+				$('#timeout_limit').show();		
 			}else{
-				$('#quality').hide();
+				
+				$('#timeout_limit').hide();
 			}
 		});
-		
+		form.on("checkbox(quene)" , function(data){
+			if(data.elem.checked == true){
+				$('#quene_tip').show();		
+			}else{
+				
+				$('#quene_tip').hide();
+			}
+		});
 	});
 	$('#wh_time_range').on("click" , function(){
 		var timerange = $("#wh_start_h").val()+":"+$("#wh_start_m").val()+"~"+$("#wh_end_h").val()+":"+$("#wh_end_m").val() ;

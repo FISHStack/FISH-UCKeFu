@@ -26,10 +26,18 @@ public class AgentUserTask {
 	private String warnings ;
 	private Date warningtime ;
 	
-	private int agentreplyinterval;
+	private int agentreplyinterval;//回复时间间隔
 	private int agentreplytime;
 	private int avgreplyinterval;
 	private int avgreplytime;
+	
+	private int agenttimeout;//坐席回复超时时长
+	private int agenttimeouttimes;//坐席超时回复次数
+	private boolean servicetimeout;//坐席与访客的会话是否超时
+	private int agentservicetimeout;//会话超时时长
+	private int agentfrewords;//客服提起敏感词次数
+	private int servicefrewords;//客户提起敏感词次数
+	private int firstreplytime ;//首次消息回复时间
 	
 	private int agentreplys;
 	private int userasks;
@@ -201,5 +209,60 @@ public class AgentUserTask {
 	public void setUserasks(int userasks) {
 		this.userasks = userasks;
 	}
-	
+
+	public int getAgenttimeout() {
+		return agenttimeout;
+	}
+
+	public void setAgenttimeout(int agenttimeout) {
+		this.agenttimeout = agenttimeout;
+	}
+
+	public int getAgenttimeouttimes() {
+		return agenttimeouttimes;
+	}
+
+	public void setAgenttimeouttimes(int agenttimeouttimes) {
+		this.agenttimeouttimes = agenttimeouttimes;
+	}
+
+	public boolean isServicetimeout() {
+		return servicetimeout;
+	}
+
+	public void setServicetimeout(boolean servicetimeout) {
+		this.servicetimeout = servicetimeout;
+	}
+
+	public int getAgentservicetimeout() {
+		return agentservicetimeout;
+	}
+
+	public void setAgentservicetimeout(int agentservicetimeout) {
+		this.agentservicetimeout = agentservicetimeout;
+	}
+
+	public int getAgentfrewords() {
+		return agentfrewords;
+	}
+
+	public void setAgentfrewords(int agentfrewords) {
+		this.agentfrewords = agentfrewords;
+	}
+
+	public int getServicefrewords() {
+		return servicefrewords;
+	}
+
+	public void setServicefrewords(int servicefrewords) {
+		this.servicefrewords = servicefrewords;
+	}
+
+	public int getFirstreplytime() {
+		return firstreplytime;
+	}
+
+	public void setFirstreplytime(int firstreplytime) {
+		this.firstreplytime = firstreplytime;
+	}
 }

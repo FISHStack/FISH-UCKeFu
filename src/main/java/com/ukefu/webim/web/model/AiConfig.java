@@ -24,6 +24,7 @@ public class AiConfig implements java.io.Serializable{
 	private String creater ;
 	private String username ;
 	private String name ;
+	private String aiid;
 	
 	private boolean enableask = false;
 	private boolean askfirst = false;
@@ -182,5 +183,11 @@ public class AiConfig implements java.io.Serializable{
 	}
 	public void setSelectskillmsg(String selectskillmsg) {
 		this.selectskillmsg = selectskillmsg;
+	}
+	public String getAiid() {
+		return aiid;
+	}
+	public void setAiid(String aiid) {
+		this.aiid = aiid;
 	}
 }

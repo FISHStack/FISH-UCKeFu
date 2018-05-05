@@ -1,5 +1,6 @@
 package com.ukefu.webim.service.task;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -56,17 +57,19 @@ public class WebIMTask {
 						AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(task.getUserid(), UKDataContext.SYSTEM_ORGI);
 						if(agentUser!=null && agentUser.getAgentno()!=null){
 							AgentStatus agentStatus = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(agentUser.getAgentno(), task.getOrgi()) ;
+							task.setAgenttimeouttimes(task.getAgenttimeouttimes()+1);
 							if(agentStatus!=null && (task.getWarnings()==null || task.getWarnings().equals("0"))){
 								task.setWarnings("1");
 								task.setWarningtime(new Date());
+								
 								//发送提示消息
-								processMessage(sessionConfig, sessionConfig.getTimeoutmsg() ,agentUser , agentStatus , task);
+								processMessage(sessionConfig, sessionConfig.getTimeoutmsg() , agentStatus.getUsername(),agentUser , agentStatus , task);
 								agentUserTaskRes.save(task) ;
 							}else if(sessionConfig.isResessiontimeout() && agentStatus!=null && task.getWarningtime()!=null && UKTools.getLastTime(sessionConfig.getRetimeout()).after(task.getWarningtime())){	//再次超时未回复
 								/**
 								 * 设置了再次超时 断开
 								 */
-								processMessage(sessionConfig, sessionConfig.getRetimeoutmsg() , agentUser , agentStatus , task);
+								processMessage(sessionConfig, sessionConfig.getRetimeoutmsg() , sessionConfig.getServicename() , agentUser , agentStatus , task);
 								try {
 									ServiceQuene.serviceFinish(agentUser, task.getOrgi());
 								} catch (Exception e) {
@@ -85,12 +88,28 @@ public class WebIMTask {
 								/**
 								 * 设置了再次超时 断开
 								 */
-								processMessage(sessionConfig, sessionConfig.getRetimeoutmsg() , agentUser , agentStatus , task);
+								processMessage(sessionConfig, sessionConfig.getRetimeoutmsg() , agentStatus.getUsername(), agentUser , agentStatus , task);
 								try {
 									ServiceQuene.serviceFinish(agentUser, task.getOrgi());
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
+							}
+						}
+					}
+				}else if(sessionConfig.isQuene()){	//启用排队超时功能，超时断开
+					List<AgentUserTask> agentUserTask = agentUserTaskRes.findByLastmessageLessThanAndStatusAndOrgi(UKTools.getLastTime(sessionConfig.getQuenetimeout()) , UKDataContext.AgentUserStatusEnum.INQUENE.toString() , sessionConfig.getOrgi()) ;
+					for(AgentUserTask task : agentUserTask){		// 超时未回复
+						AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(task.getUserid(), UKDataContext.SYSTEM_ORGI);
+						if(agentUser!=null){
+							/**
+							 * 设置了超时 断开
+							 */
+							processMessage(sessionConfig, sessionConfig.getQuenetimeoutmsg() , sessionConfig.getServicename(), agentUser , null , task);
+							try {
+								ServiceQuene.serviceFinish(agentUser, task.getOrgi());
+							} catch (Exception e) {
+								e.printStackTrace();
 							}
 						}
 					}
@@ -116,7 +135,7 @@ public class WebIMTask {
 								task.setReptime(new Date());
 								
 								//发送提示消息
-								processMessage(sessionConfig, sessionConfig.getAgenttimeoutmsg() ,agentUser , agentStatus , task);
+								processMessage(sessionConfig, sessionConfig.getAgenttimeoutmsg() , sessionConfig.getServicename(),agentUser , agentStatus , task);
 								agentUserTaskRes.save(task) ;
 							}
 						}
@@ -199,7 +218,7 @@ public class WebIMTask {
 	 * @param task
 	 */
 	
-	private void processMessage(SessionConfig sessionConfig , String message, AgentUser agentUser , AgentStatus agentStatus , AgentUserTask task){
+	private void processMessage(SessionConfig sessionConfig , String message, String servicename, AgentUser agentUser , AgentStatus agentStatus , AgentUserTask task){
 
 		MessageOutContent outMessage = new MessageOutContent() ;
 		if(!StringUtils.isBlank(message)){
@@ -210,14 +229,14 @@ public class WebIMTask {
 	    	outMessage.setSnsAccount(null);
 	    	
 	    	ChatMessage data = new ChatMessage();
-	    	if(agentUser!=null && agentStatus!=null){
+	    	if(agentUser!=null){
 	    		data.setAppid(agentUser.getAppid());
 	    		
-	    		data.setUserid(agentStatus.getAgentno());
+	    		data.setUserid(agentUser.getUserid());
 	    		data.setUsession(agentUser.getUserid());
 	    		data.setTouser(agentUser.getUserid());
 	    		data.setOrgi(agentUser.getOrgi());
-	    		data.setUsername(agentStatus.getUsername());
+	    		data.setUsername(agentUser.getUsername());
 	    		data.setMessage(message);
 	    		
 	    		data.setId(UKTools.getUUID());
@@ -240,8 +259,11 @@ public class WebIMTask {
 	    		if(agentStatus!=null){
 	        		data.setUsername(agentStatus.getUsername());
 	        		outMessage.setNickName(agentStatus.getUsername());
+	        	}else {
+	        		data.setUsername(servicename);
+	        		outMessage.setNickName(servicename);
 	        	}
-	    		outMessage.setCreatetime(data.getCreatetime());
+	    		outMessage.setCreatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(data.getCreatetime()));
 	    		
 	    		/**
 	    		 * 保存消息

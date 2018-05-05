@@ -801,11 +801,17 @@ public class UKTools {
 
 	public static String processEmoti(String message) {
 		Pattern pattern = Pattern.compile("\\[([\\d]*?)\\]");
+		SystemConfig systemConfig = (SystemConfig) CacheHelper.getSystemCacheBean().getCacheObject("systemConfig", UKDataContext.SYSTEM_ORGI) ; 
 	    Matcher matcher = pattern.matcher(message);
 	    StringBuffer strb = new StringBuffer();
 	    while(matcher.find()) {
-	        matcher.appendReplacement(strb,"<img src='/im/js/kindeditor/plugins/emoticons/images/"+matcher.group(1)+".png'>");
+	    	if(systemConfig!=null && !StringUtils.isBlank(systemConfig.getIconstr())) {
+	    		matcher.appendReplacement(strb,"<img src='"+systemConfig.getIconstr()+"/im/js/kindeditor/plugins/emoticons/images/"+matcher.group(1)+".png'>");
+	    	}else {
+	    		matcher.appendReplacement(strb,"<img src='/im/js/kindeditor/plugins/emoticons/images/"+matcher.group(1)+".png'>");
+	    	}
 	    }
+	    matcher.appendTail(strb) ;
 	    if(strb.length() == 0){
 	    	strb.append(message) ;
 	    }
