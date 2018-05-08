@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-04-25 00:31:38
+Date: 2018-05-08 08:35:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -142,6 +142,10 @@ CREATE TABLE `uk_agentservice` (
   `leavemsgstatus` varchar(20) DEFAULT 'notprocess',
   `agent` varchar(32) DEFAULT NULL,
   `skill` varchar(32) DEFAULT NULL,
+  `endby` varchar(20) DEFAULT NULL COMMENT '终止方',
+  `aiid` varchar(32) DEFAULT NULL COMMENT 'AIID',
+  `aiservice` tinyint(4) DEFAULT '0' COMMENT '是否AI服务',
+  `foragent` tinyint(4) DEFAULT '0' COMMENT '直接转人工',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -270,6 +274,13 @@ CREATE TABLE `uk_agentuser` (
   `satistime` datetime DEFAULT '0000-00-00 00:00:00',
   `satislevel` varchar(50) DEFAULT '0',
   `satiscomment` varchar(255) DEFAULT '0',
+  `topflag` tinyint(4) DEFAULT NULL COMMENT '是否置顶',
+  `toptimes` int(20) DEFAULT NULL COMMENT '置顶时长',
+  `toptime` datetime DEFAULT NULL COMMENT '置顶时间',
+  `firstreplytime` int(20) DEFAULT '0' COMMENT '首次响应时间',
+  `agentusername` varchar(32) DEFAULT NULL COMMENT '坐席姓名',
+  `alarm` int(10) DEFAULT '0',
+  `initiator` varchar(32) DEFAULT NULL COMMENT '会话发起方',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `agentuser_userid` (`userid`) USING BTREE,
   KEY `agentuser_orgi` (`orgi`) USING BTREE
@@ -298,6 +309,45 @@ CREATE TABLE `uk_agentuser_contacts` (
 
 -- ----------------------------
 -- Records of uk_agentuser_contacts
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ai`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ai`;
+CREATE TABLE `uk_ai` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(255) DEFAULT NULL COMMENT '维度名称',
+  `createtime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户id',
+  `inx` int(11) DEFAULT NULL COMMENT '分类排序序号',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `description` varchar(255) DEFAULT NULL COMMENT '分类描述',
+  `code` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uk_ai
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ai_snsaccount`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ai_snsaccount`;
+CREATE TABLE `uk_ai_snsaccount` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `aiid` varchar(32) DEFAULT NULL COMMENT '用户ID',
+  `snsid` varchar(32) DEFAULT NULL COMMENT '角色ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_ai_snsaccount
 -- ----------------------------
 
 -- ----------------------------
@@ -788,6 +838,11 @@ CREATE TABLE `uk_chat_message` (
   `sessionid` varchar(50) DEFAULT NULL,
   `cooperation` tinyint(4) DEFAULT NULL,
   `datastatus` tinyint(4) DEFAULT '0',
+  `aiid` varchar(32) DEFAULT '0' COMMENT '机器人ID',
+  `topic` tinyint(4) DEFAULT '0' COMMENT '是否命中知识库',
+  `topicid` varchar(32) DEFAULT NULL COMMENT '命中知识库ID',
+  `topicatid` varchar(32) DEFAULT NULL COMMENT '命中知识库分类ID',
+  `aichat` tinyint(4) DEFAULT '0' COMMENT '是否在和AI对话',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `sessionid` (`usession`) USING BTREE,
   KEY `orgi` (`orgi`) USING BTREE
@@ -930,6 +985,7 @@ CREATE TABLE `uk_consult_invite` (
   `onlyareaskill` tinyint(4) DEFAULT '0',
   `uk_consult_invite` text,
   `areaskilltipmsg` text,
+  `aiid` varchar(32) DEFAULT NULL COMMENT '默认的AI',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -2630,6 +2686,8 @@ CREATE TABLE `uk_sessionconfig` (
   `servicetimeoutmsg` varchar(50) DEFAULT '0',
   `quenetimeout` int(11) DEFAULT '600' COMMENT '允许访客排队的最大时长',
   `quenetimeoutmsg` varchar(255) DEFAULT NULL COMMENT '访客排队超市提示消息',
+  `quene` tinyint(4) DEFAULT '0' COMMENT '坐席姓名',
+  `servicename` varchar(50) DEFAULT NULL COMMENT '无坐席的时候回复昵称',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -6952,6 +7010,8 @@ INSERT INTO `uk_sysdic` VALUES ('8a7f5f826222b5c5016222bdb0dc0352', 'ES数据资
 INSERT INTO `uk_sysdic` VALUES ('8a7f5f826222b5c5016222be3e110354', '联系人对象', 'pub', 'com.ukefu.webim.service.es.ContactsRepository', 'ukewo', 'layui-icon', '8a7f5f826222b5c5016222bdb0dc0352', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-03-14 12:21:55', '2018-03-14 12:21:55', '0', '1', '8a7f5f826222b5c5016222bdb0dc0352', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('8a7f5f826222d164016222d97921035a', 'DB数据资源', 'pub', 'com.dic.db.type', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-03-14 12:51:40', null, '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('8a7f5f826222d164016222e64a000377', '联系人', 'pub', 'com.ukefu.webim.web.model.Contacts', 'ukewo', null, '8a7f5f826222d164016222d97921035a', null, null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-03-14 13:05:40', '2018-03-14 13:05:40', '0', '1', '8a7f5f826222d164016222d97921035a', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('8a7f5f83632021be016320246f5d0407', '知识库', 'pub', 'com.ukefu.webim.web.model.Topic', 'ukewo', 'layui-icon', '8a7f5f826222d164016222d97921035a', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-02 17:17:28', null, '1', '0', '8a7f5f826222d164016222d97921035a', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('8a7f5f83632021be01632025644a040f', '知识库对象', 'pub', 'com.ukefu.webim.service.es.TopicRepository', 'ukewo', 'layui-icon', '8a7f5f826222b5c5016222bdb0dc0352', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-02 17:18:31', null, '1', '0', '8a7f5f826222b5c5016222bdb0dc0352', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('8a7f82825e241666015e241d2b3b0002', '在线客服满意度', 'pub', 'com.dic.webim.comment', null, 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-27 22:34:04', null, '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('8a7f82825e241666015e241da9660003', '非常满意', 'pub', '1', 'ukewo', null, '8a7f82825e241666015e241d2b3b0002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-27 22:34:37', '2017-08-27 22:34:37', '0', '1', '8a7f82825e241666015e241d2b3b0002', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('8a7f82825e241666015e241da97b0004', '满意', 'pub', '2', 'ukewo', null, '8a7f82825e241666015e241d2b3b0002', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2017-08-27 22:34:37', '2017-08-27 22:34:37', '0', '2', '8a7f82825e241666015e241d2b3b0002', '0', '0', null, null, null, null, null);
@@ -7370,7 +7430,7 @@ CREATE TABLE `uk_user` (
 -- Records of uk_user
 -- ----------------------------
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', '0fbf9965244969fec730d144ed7e9799', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-04-21 01:00:23', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-02-11 16:25:20', null, null, null, '0', '0', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-04-25 00:25:58', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-05-07 23:00:38', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -7430,6 +7490,29 @@ CREATE TABLE `uk_userrole` (
 
 -- ----------------------------
 -- Records of uk_userrole
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_webim_monitor`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_webim_monitor`;
+CREATE TABLE `uk_webim_monitor` (
+  `ID` varchar(50) NOT NULL COMMENT 'ID',
+  `ORGI` varchar(50) DEFAULT NULL COMMENT '租户ID',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '记录创建时间',
+  `AGENTS` int(11) DEFAULT NULL COMMENT '在线坐席数量',
+  `USERS` int(11) DEFAULT NULL COMMENT '咨询中访客数量',
+  `INQUENE` int(11) DEFAULT NULL COMMENT '排队访客数量',
+  `BUSY` int(11) DEFAULT NULL COMMENT '示忙坐席数量',
+  `TYPE` varchar(32) DEFAULT NULL,
+  `DATESTR` varchar(32) DEFAULT NULL,
+  `HOURSTR` varchar(32) DEFAULT NULL,
+  `DATEHOURSTR` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='坐席状态表';
+
+-- ----------------------------
+-- Records of uk_webim_monitor
 -- ----------------------------
 
 -- ----------------------------
@@ -7619,6 +7702,8 @@ CREATE TABLE `uk_work_monitor` (
   `DIRECTION` varchar(50) DEFAULT NULL,
   `EXTNO` varchar(32) DEFAULT NULL,
   `ADMIN` tinyint(4) DEFAULT '0',
+  `firsttime` tinyint(4) DEFAULT '0' COMMENT '是否首次就绪',
+  `firsttimes` int(11) DEFAULT '0' COMMENT '首次就绪时长',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='坐席状态表';
 
@@ -7679,6 +7764,7 @@ CREATE TABLE `uk_xiaoe_config` (
   `asktimes` int(11) DEFAULT NULL COMMENT '最长多久开始询问',
   `selectskill` int(11) DEFAULT NULL,
   `selectskillmsg` varchar(255) DEFAULT NULL,
+  `aiid` text COMMENT '机器人ID',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -7844,6 +7930,7 @@ CREATE TABLE `uk_xiaoe_topic` (
   `email` text COMMENT '邮件模板',
   `weixin` text COMMENT '微信回复模板',
   `silimar` text COMMENT '类似问题',
+  `aiid` varchar(32) DEFAULT NULL COMMENT '机器人ID',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
