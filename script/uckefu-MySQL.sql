@@ -271,7 +271,7 @@ CREATE TABLE `uk_agentuser` (
   `agentfrewords` int(11) DEFAULT '0',
   `servicefrewords` int(11) DEFAULT '0',
   `satisfaction` tinyint(4) DEFAULT '0',
-  `satistime` datetime DEFAULT '0000-00-00 00:00:00',
+  `satistime` datetime ,
   `satislevel` varchar(50) DEFAULT '0',
   `satiscomment` varchar(255) DEFAULT '0',
   `topflag` tinyint(4) DEFAULT NULL COMMENT '是否置顶',
