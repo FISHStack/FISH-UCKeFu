@@ -242,7 +242,7 @@
 				<input type="file" name="imgFile" id="imgFile" accept="image/*" onChange="$('#imgForm').submit();$(this).val('');">
 			</a>
 		</form>
-		<textarea id="message" name="content" maxlength="300"></textarea>
+		<textarea id="message" name="content" maxlength="<#if inviteData.maxwordsnum gt 0>${inviteData.maxwordsnum}<#else>300</#if>"></textarea>
 		<div class="btn-push clearfix" class="tools">
 			<img id="facedialog" onclick="return openFaceDialog()" src="/im/img/face.png" style="width:32px;height:32px;"></a>
 			<a href="javascript:void(0)" onClick="sendMessage();return false;"><img src="/im/img/send.png" style="width:32px;height:32px;"></a>

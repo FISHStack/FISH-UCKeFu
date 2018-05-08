@@ -40,7 +40,7 @@
 				htmlTags: {img : ['src', 'width', 'height', 'border', 'alt', 'title', 'align', '.width', '.height', '.border'] , br:[]}  ,
 				afterChange : function() {
 					var count = this.count() ;
-					var limitNum = 300;  //设定限制字数
+					var limitNum = <#if inviteData.maxwordsnum gt 0>${inviteData.maxwordsnum}<#else>300</#if>;  //设定限制字数
 					var pattern = '还可以输入' + limitNum + '字'; 
 					var strValue = this.html();
 					if(count > limitNum) {

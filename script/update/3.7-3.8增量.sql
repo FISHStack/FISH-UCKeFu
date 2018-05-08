@@ -756,4 +756,4 @@ ALTER TABLE uk_agentservice ADD aiservice tinyint default 0 COMMENT '是否AI服
 ALTER TABLE uk_agentservice ADD foragent tinyint default 0 COMMENT '直接转人工';
 
 ALTER TABLE uk_consult_invite ADD aiid varchar(32) COMMENT '默认的AI';
-
+ALTER TABLE uk_consult_invite ADD maxwordsnum int DEFAULT 300 COMMENT '访客端允许输入的最大字数';

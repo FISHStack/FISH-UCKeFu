@@ -343,6 +343,7 @@ input,textarea{
     float: left;
     min-width: 25px;
     line-height:25px;
+    word-break: break-all;
 }
 .chatting-left div.chat-content *:not(img){
 	background-color: #EDEDED !important;
@@ -371,6 +372,7 @@ input,textarea{
 	border: 1px solid #b2e5f9;
     float: right;
     min-width: 45px;
+    word-break:break-all;
     line-height:25px;
 }
 .chatting-right div.chat-content a{

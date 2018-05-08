@@ -21,6 +21,7 @@ import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.impl.AgentUserService;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
+import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.util.server.message.AgentStatusMessage;
@@ -29,6 +30,7 @@ import com.ukefu.webim.util.server.message.NewRequestMessage;
 import com.ukefu.webim.web.model.AgentService;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.Contacts;
+import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.MessageOutContent;
 
 public class IMEventHandler     
@@ -156,8 +158,13 @@ public class IMEventHandler
     	if(data.getType() == null){
     		data.setType("message");
     	}
-    	if(!StringUtils.isBlank(data.getMessage()) && data.getMessage().length() > 300){
-    		data.setMessage(data.getMessage().substring(0 , 300));
+    	/**
+    	 * 以下代码主要用于检查 访客端的字数限制
+    	 */
+    	CousultInvite invite = OnlineUserUtils.cousult(data.getAppid(),data.getOrgi(), UKDataContext.getContext().getBean(ConsultInviteRepository.class));
+    	
+    	if(!StringUtils.isBlank(data.getMessage()) && data.getMessage().length() > invite.getMaxwordsnum()){
+    		data.setMessage(data.getMessage().substring(0 , invite.getMaxwordsnum()));
     	}
 		if(!StringUtils.isBlank(data.getMessage())) {
     		data.setMessage(java.net.URLDecoder.decode(data.getMessage() , "UTF-8"));

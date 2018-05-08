@@ -78,6 +78,8 @@ public class CousultInvite implements java.io.Serializable{
 	private boolean recordhis ;			//记录访客的网页访问记录
 	private boolean traceuser;			//实时追踪访客
 	
+	private int maxwordsnum ; 			//允许访客端输入的最大文本字数
+	
 	
 	private String consult_dialog_color;
 	private String consult_dialog_logo;
@@ -676,4 +678,11 @@ public class CousultInvite implements java.io.Serializable{
 	public void setAiid(String aiid) {
 		this.aiid = aiid;
 	}
+	public int getMaxwordsnum() {
+		return maxwordsnum;
+	}
+	public void setMaxwordsnum(int maxwordsnum) {
+		this.maxwordsnum = maxwordsnum;
+	}
+	
 }
