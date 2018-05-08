@@ -39,10 +39,11 @@ public class ValueData implements java.io.Serializable,Cloneable{
 		this.canbedrill = canbedrill ;
 		this.name = name ;
 		this.formatStr = formatStr ;
-		
-		for(ColumnProperties col : cols) {
-			if(col.getDataname().equals(name)) {
-				this.name = col.getTitle();
+		if(cols!=null) {
+			for(ColumnProperties col : cols) {
+				if(col.getDataname().equals(name)) {
+					this.name = col.getTitle();
+				}
 			}
 		}
 	}
