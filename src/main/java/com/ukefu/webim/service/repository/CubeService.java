@@ -227,10 +227,12 @@ public class CubeService {
 				}
 				strb.append(member.getUniqueName().substring(member.getUniqueName().indexOf(".")+1).replaceAll("\\.\\[\\]", "______R3_SPACE").replaceAll("\\]\\.\\[", "l__HHHH-A-HHHH__l").replaceAll("[\\]\\[]", ""));
 			}
-			for(ColumnProperties col : cols) {
-				if(strb.toString().equals(col.getDataname())) {
-					strb = new StringBuffer() ;
-					strb.append(col.getTitle()) ;
+			if(cols!=null) {
+				for(ColumnProperties col : cols) {
+					if(strb.toString().equals(col.getDataname())) {
+						strb = new StringBuffer() ;
+						strb.append(col.getTitle()) ;
+					}
 				}
 			}
 			valueStr.add(strb.toString().replace("#null", " "));//替换掉所有的#null为空字符串
