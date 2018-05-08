@@ -98,11 +98,6 @@ ALTER TABLE uk_agentservice ADD servicefrewords int default 0;
 ALTER TABLE uk_agentuser ADD agentfrewords int default 0;
 ALTER TABLE uk_agentuser ADD servicefrewords int default 0;
 
-ALTER TABLE uk_agentuser ADD satisfaction tinyint default 0;
-ALTER TABLE uk_agentuser ADD satistime datetime default 0;
-ALTER TABLE uk_agentuser ADD satislevel varchar(50) default 0;
-ALTER TABLE uk_agentuser ADD satiscomment varchar(255) default 0;
-
 ALTER TABLE uk_chat_message ADD datastatus tinyint default 0;
 
 ALTER TABLE uk_user ADD maxuser int default 0;

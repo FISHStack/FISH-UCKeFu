@@ -432,23 +432,23 @@
 												<div class="box-item" id="quene_tip" style="<#if sessionConfig?? && sessionConfig.quene == false>display:none;</#if>">	
 													<div class="row">
 														<div class="col-lg-8">
-															<p>超时时长（秒）</p>
+															<p>排队超时时长（秒）</p>
 														</div>
 														<div class="col-lg-4" style="text-align:right;">
-															<input type="text" name="quenetimeout" id="quenetimeout" lay-verify="number" value="<#if sessionConfig?? && sessionConfig.quenetimeout gt 0>${sessionConfig.quenetimeout}<#else>120</#if>" autocomplete="off" class="layui-input" style="width:80px;display:inline;">
+															<input type="text" name="quenetimeout" id="quenetimeout" lay-verify="number" value="<#if sessionConfig?? && sessionConfig.quenetimeout gt 0>${sessionConfig.quenetimeout}<#else>120</#if>" autocomplete="off" class="layui-input" style="display:inline;">
+														</div>
+													</div>
+													<div class="row" style="margin-top:10px;">
+														<div class="col-lg-8">
+															<p>发送超时提醒消息的系统昵称</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="text" name="servicename" id="servicename" value="<#if sessionConfig?? && sessionConfig.servicename??>${sessionConfig.servicename}<#else>系统客服</#if>" autocomplete="off" class="layui-input" style="display:inline;">
 														</div>
 													</div>
 													<div class="row">
 														<div class="col-lg-8">
-															<p>超时时长（秒）</p>
-														</div>
-														<div class="col-lg-4" style="text-align:right;">
-															<input type="text" name="servicename" id="servicename" value="<#if sessionConfig?? && sessionConfig.servicename??>${sessionConfig.servicename}<#else>系统客服</#if>" autocomplete="off" class="layui-input" style="width:80px;display:inline;">
-														</div>
-													</div>
-													<div class="row">
-														<div class="col-lg-8">
-															<p>超时提示消息</p>
+															<p>排队超时后断开访客服务请求的提示消息</p>
 														</div>
 													</div>
 													<div class="row" style="margin-top:10px;">
