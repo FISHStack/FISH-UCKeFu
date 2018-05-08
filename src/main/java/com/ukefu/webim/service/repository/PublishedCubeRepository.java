@@ -16,6 +16,8 @@ public abstract interface PublishedCubeRepository extends JpaRepository<Publishe
 
 	public List<PublishedCube> findByIdAndOrgi(String id, String orgi);
 	
+	public List<PublishedCube> findById(String id);
+	
 	public Page<PublishedCube> getByOrgi(String orgi, Pageable pageRequest);
 	
 }

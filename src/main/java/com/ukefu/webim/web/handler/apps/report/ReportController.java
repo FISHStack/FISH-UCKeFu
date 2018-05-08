@@ -360,7 +360,7 @@ public class ReportController extends Handler{
 	@Menu(type = "report", subtype = "report")
 	public ModelAndView view(ModelMap map, HttpServletRequest request, @Valid String id) throws Exception {
 		if (!StringUtils.isBlank(id)) {
-			PublishedReport publishedReport = publishedReportRes.findByIdAndOrgi(id, super.getOrgi(request));
+			PublishedReport publishedReport = publishedReportRes.findById(id);
 			if(publishedReport!=null) {
 				map.addAttribute("publishedReport", publishedReport);
 				map.addAttribute("report", publishedReport.getReport());

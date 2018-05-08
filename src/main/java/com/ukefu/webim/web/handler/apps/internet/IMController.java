@@ -117,15 +117,18 @@ public class IMController extends Handler{
 	
     @RequestMapping("/{id}")
     @Menu(type = "im" , subtype = "point" , access = true)
-    public ModelAndView point(HttpServletRequest request , HttpServletResponse response, @PathVariable String id , @Valid String orgi , @Valid String userid , @Valid String title) {
+    public ModelAndView point(HttpServletRequest request , HttpServletResponse response, @PathVariable String id , @Valid String orgi , @Valid String userid , @Valid String title, @Valid String aiid) {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/point")) ; 
+    	String sessionid = request.getSession().getId() ;
     	if(!StringUtils.isBlank(id)){
 	    	view.addObject("hostname", request.getServerName()) ;
 			view.addObject("port", request.getServerPort()) ;
 			view.addObject("schema", request.getScheme()) ;
 			view.addObject("appid", id) ;
+			
+			
 			view.addObject("client", UKTools.getUUID()) ;
-			view.addObject("sessionid", request.getSession().getId()) ;
+			view.addObject("sessionid", sessionid) ;
 			
 			view.addObject("ip", UKTools.md5(request.getRemoteAddr())) ;
 			
@@ -140,6 +143,12 @@ public class IMController extends Handler{
 	    		view.addObject("inviteData", invite);
 	    		view.addObject("orgi",orgi);
 	    		view.addObject("appid",id);
+	    		
+	    		if(!StringUtils.isBlank(aiid)) {
+					view.addObject("aiid", aiid) ;
+				}else if(!StringUtils.isBlank(invite.getAiid())){
+					view.addObject("aiid", invite.getAiid()) ;
+				}
 	    	//记录用户行为日志
 				UserHistory userHistory = new UserHistory() ;
 				String url = request.getHeader("referer");
@@ -174,7 +183,7 @@ public class IMController extends Handler{
 				}
 				userHistory.setOrgi(invite.getOrgi());
 				userHistory.setAppid(id);
-				userHistory.setSessionid(request.getSession().getId());
+				userHistory.setSessionid(sessionid);
 				
 				String ip = UKTools.getIpAddr(request);
 				userHistory.setHostname(ip);
@@ -235,7 +244,7 @@ public class IMController extends Handler{
      */
     @RequestMapping("/online")
     @Menu(type = "im" , subtype = "online" , access = true)
-    public SseEmitter callable(HttpServletRequest request , HttpServletResponse response , @Valid Contacts contacts, final @Valid String orgi , @Valid String appid, final @Valid String userid , @Valid String sign , final @Valid String client, final @Valid String title, final @Valid String traceid) {
+    public SseEmitter callable(HttpServletRequest request , HttpServletResponse response , @Valid Contacts contacts, final @Valid String orgi , final @Valid String sessionid, @Valid String appid, final @Valid String userid , @Valid String sign , final @Valid String client, final @Valid String title, final @Valid String traceid) {
     	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid,  orgi) ;
     	SseEmitter retSseEmitter = null ;
     	if((black == null || (black.getEndtime()!=null && black.getEndtime().before(new Date()))) ){
@@ -270,7 +279,7 @@ public class IMController extends Handler{
 						contacts = processContacts(orgi, contacts, appid, userid);
 					}
 			    	if(!StringUtils.isBlank(sign)){
-			    		OnlineUserUtils.online(super.getIMUser(request , sign , contacts!=null ? contacts.getName() : null) , orgi , request.getSession().getId() , UKDataContext.OnlineUserTypeStatus.WEBIM.toString(), request , UKDataContext.ChannelTypeEnum.WEBIM.toString() , appid , contacts , invite);
+			    		OnlineUserUtils.online(super.getIMUser(request , sign , contacts!=null ? contacts.getName() : null) , orgi , sessionid , UKDataContext.OnlineUserTypeStatus.WEBIM.toString(), request , UKDataContext.ChannelTypeEnum.WEBIM.toString() , appid , contacts , invite);
 			    	}
 			    	
 			    	OnlineUserUtils.webIMClients.putClient(userid, new WebIMClient(userid  , client , emitter)) ;
@@ -283,7 +292,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/index")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url,@Valid String mobile ,@Valid String phone ,  @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
+    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String aiid, @Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url,@Valid String mobile ,@Valid String phone ,  @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) ;
     	if(!StringUtils.isBlank(appid) &&  (black == null || (black.getEndtime()!=null && black.getEndtime().before(new Date()))) ){
@@ -301,6 +310,7 @@ public class IMController extends Handler{
 			map.addAttribute("sessionConfig", sessionConfig);
 			
     		map.addAttribute("contacts", contacts) ;
+    		
     		map.addAttribute("hostname", request.getServerName()) ;
 			map.addAttribute("port", port) ;
 			map.addAttribute("appid", appid) ;
@@ -330,6 +340,12 @@ public class IMController extends Handler{
 			if(invite!=null) {
 	    		map.addAttribute("orgi",invite.getOrgi());
 	    		map.addAttribute("inviteData", invite);
+	    		
+	    		if(!StringUtils.isBlank(aiid)) {
+	    			map.addAttribute("aiid", aiid) ;
+				}else if(!StringUtils.isBlank(invite.getAiid())){
+					map.addAttribute("aiid", invite.getAiid()) ;
+				}
 			
 	    		AgentReport report = ServiceQuene.getAgentReport(invite.getOrgi()) ;
 			
@@ -416,7 +432,7 @@ public class IMController extends Handler{
 					map.addAttribute("username", nickname) ;
 	    			if(UKDataContext.model.get("xiaoe")!=null  && invite.isAi() && ((!StringUtils.isBlank(ai) && ai.equals("true")) || (invite.isAifirst() && ai == null))){	//启用 AI ， 并且 AI优先 接待
 	    				DataExchangeInterface dataInterface = (DataExchangeInterface) UKDataContext.getContext().getBean("aiconfig") ;
-	    				AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(appid, invite.getOrgi()) ;
+	    				AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(aiid, invite.getOrgi()) ;
 	    				if(aiConfig!=null){
 	    					map.addAttribute("aiConfig", aiConfig) ;
 	    				}
@@ -425,12 +441,12 @@ public class IMController extends Handler{
 	    					view = request(super.createRequestPageTempletResponse("/apps/im/ai/mobile")) ;		//智能机器人 移动端
 	    				}
 	    				if(UKDataContext.model.get("xiaoe")!=null){
-	    					List<Topic> topicList = OnlineUserUtils.cacheHotTopic((DataExchangeInterface) UKDataContext.getContext().getBean("topic") , super.getUser(request) , orgi)  ;
+	    					List<Topic> topicList = OnlineUserUtils.cacheHotTopic((DataExchangeInterface) UKDataContext.getContext().getBean("topic") , super.getUser(request) , orgi , aiid)  ;
 	    					
 	    					/**
 	    					 * 初步按照地区匹配分类筛选
 	    					 */
-	    					List<KnowledgeType> topicTypeList = OnlineUserUtils.topicType(orgi,ipdata,OnlineUserUtils.cacheHotTopicType((DataExchangeInterface) UKDataContext.getContext().getBean("topictype") , super.getUser(request) , orgi)) ; 
+	    					List<KnowledgeType> topicTypeList = OnlineUserUtils.topicType(orgi,ipdata,OnlineUserUtils.cacheHotTopicType((DataExchangeInterface) UKDataContext.getContext().getBean("topictype") , super.getUser(request) , orgi , aiid)) ; 
 	    					
 	    					/**
 	    					 * 第二步按照 有 热点主题的 分类做筛选
@@ -518,13 +534,14 @@ public class IMController extends Handler{
     
     @RequestMapping("/text/{appid}")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid ,@Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String phone,@Valid String ai,@Valid String orgi) throws Exception {
+    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid ,@Valid String traceid,@Valid String aiid ,@Valid String exchange, @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String phone,@Valid String ai,@Valid String orgi) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/text")) ; 
     	
     	view.addObject("hostname", request.getServerName()) ;
 		view.addObject("port", request.getServerPort()) ;
 		view.addObject("schema", request.getScheme()) ;
 		view.addObject("appid", appid) ;
+		
 		
 		view.addObject("ip", UKTools.md5(request.getRemoteAddr())) ;
 		
@@ -562,8 +579,14 @@ public class IMController extends Handler{
 		CousultInvite invite = OnlineUserUtils.cousult(appid, orgi, inviteRepository);
     	if(invite!=null){
     		view.addObject("inviteData", invite);
-    		view.addObject("orgi",orgi);
+    		view.addObject("orgi",invite.getOrgi());
     		view.addObject("appid",appid);
+    		
+    		if(!StringUtils.isBlank(aiid)) {
+				view.addObject("aiid", aiid) ;
+			}else if(!StringUtils.isBlank(invite.getAiid())){
+				view.addObject("aiid", invite.getAiid()) ;
+			}
     	}
     	
 		return view;
@@ -577,7 +600,7 @@ public class IMController extends Handler{
     		SNSAccount snsAccount = snsAccountRepository.findBySnsid(appid);
 			String orgi = snsAccount.getOrgi();
     		CousultInvite invite = inviteRepository.findBySnsaccountidAndOrgi(appid, orgi) ; ;
-	    	List<LeaveMsg> msgList = leaveMsgRes.findByOrgiAndMobile(invite.getOrgi(), msg.getMobile()) ;
+	    	List<LeaveMsg> msgList = leaveMsgRes.findByOrgiAndUserid(invite.getOrgi(), msg.getUserid()) ;
 	    	if(msg!=null && msgList.size() == 0){
 	    		msg.setOrgi(invite.getOrgi());
 	    		leaveMsgRes.save(msg) ;

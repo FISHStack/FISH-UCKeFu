@@ -730,3 +730,30 @@ ALTER TABLE uk_chat_message ADD aichat tinyint default 0 COMMENT '是否在和AI
 
 ALTER TABLE uk_sessionconfig ADD quene tinyint default 0 COMMENT '坐席姓名';
 ALTER TABLE uk_sessionconfig ADD servicename varchar(50) COMMENT '无坐席的时候回复昵称';
+
+
+
+ALTER TABLE uk_xiaoe_topic ADD  aiid varchar(32)  COMMENT '机器人ID';
+ALTER TABLE uk_chat_message ADD aiid varchar(32) default 0 COMMENT '机器人ID';
+
+
+CREATE TABLE `uk_ai_snsaccount` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `aiid` varchar(32) DEFAULT NULL COMMENT '用户ID',
+  `snsid` varchar(32) DEFAULT NULL COMMENT '角色ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+
+
+
+ALTER TABLE uk_agentservice ADD endby varchar(20)  COMMENT '终止方';
+ALTER TABLE uk_agentservice ADD aiid varchar(32)  COMMENT 'AIID';
+ALTER TABLE uk_agentservice ADD aiservice tinyint default 0 COMMENT '是否AI服务';
+ALTER TABLE uk_agentservice ADD foragent tinyint default 0 COMMENT '直接转人工';
+
+ALTER TABLE uk_consult_invite ADD aiid varchar(32) COMMENT '默认的AI';
+

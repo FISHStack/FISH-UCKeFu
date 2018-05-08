@@ -3,7 +3,6 @@ package com.ukefu.webim.service.repository;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -17,9 +16,9 @@ public abstract interface PublishedReportRepository extends JpaRepository<Publis
 
 	public Page<PublishedReport> findByOrgi(String orgi, Pageable pageRequest);
 
-	public PublishedReport findByIdAndOrgi(String id, String orgi);
+	public PublishedReport findById(String id);
 	
-	public List<PublishedReport> findByCodeAndOrgi(String code, String orgi);
+	public List<PublishedReport> findByCode(String code);
 
 	
 }

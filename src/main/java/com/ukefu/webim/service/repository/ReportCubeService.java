@@ -55,14 +55,14 @@ public class ReportCubeService{
 	 * @return
 	 * @throws Exception 
 	 */
-	public ReportData getReportData(ReportModel model , Cube cube,HttpServletRequest request , boolean parseParam) throws Exception {
+	public ReportData getReportData(ReportModel model , Cube cube,HttpServletRequest request , boolean parseParam, HashMap<String,String> semap) throws Exception {
 		
 		processFilter(model, cube, request);
 		
 		Template modeltp =  templateRes.findByIdAndOrgi(model.getTempletid(), model.getOrgi());
 		boolean isTable = modeltp!=null&&"数据表".equals(modeltp.getName());
 		
-		cube.setSql(createCubeSQL(model, cube, request , true)) ;
+		cube.setSql(createCubeSQL(model, cube, request , true,semap)) ;
 		
 		Template tp = null;
 		
@@ -85,7 +85,7 @@ public class ReportCubeService{
 		tplValuesMap.put("istable", isTable);
 		CubeService cubeService= new CubeService(tp.getTemplettext(), path, dataSource , tplValuesMap,true);
 		String mdx = this.genMdx(model, cube,isTable,request);
-		ReportData reportData = cubeService.execute(mdx) ;
+		ReportData reportData = cubeService.execute(mdx , model.getMeasures()) ;
 		if("true".equals(model.getIsloadfulldata())) {
 			int p = Integer
 					.parseInt(request.getParameter("p") != null
@@ -121,7 +121,7 @@ public class ReportCubeService{
 	 * @throws Exception 
 	 */
 	public String createCubeSQL(ReportModel model, Cube cube,
-			HttpServletRequest request  , boolean useStaticFilter) throws Exception{
+			HttpServletRequest request  , boolean useStaticFilter, HashMap<String,String> semap) throws Exception{
 		StringBuffer strb = new StringBuffer() ;
 		strb.append("select ");
 		//要查询的表名以及左连接
@@ -132,9 +132,11 @@ public class ReportCubeService{
 		int index = 1;
 		Map<String,TableProperties> tableppyMap = new HashMap<>();
 		Map<String,MetadataTable> tableObjMap = new HashMap<>();
+		CubeMetadata mainMetaData = null ;
 		for(CubeMetadata cm:cube.getMetadata()) {
 			tableMap.put(cm.getTb().getId(), "a"+index);
 			if("0".equals(cm.getMtype())) {
+				mainMetaData = cm ;
 				mainTable.append(cm.getTb().getTablename()).append(" as ").append(tableMap.get(cm.getTb().getId())).append(" ");
 				mainTableStr = cm.getTb().getId();
 			}
@@ -143,6 +145,20 @@ public class ReportCubeService{
 			}
 			tableObjMap.put(cm.getTb().getId(),cm.getTb());
 			index++;
+		}
+		//要查询的列名
+		Map<String,String> exist = new HashMap<String,String>();
+		StringBuffer columns = new StringBuffer() ;
+		for(Dimension d:cube.getDimension()) {
+			for(CubeLevel cl : d.getCubeLevel()) {
+				if(!exist.containsKey(cl.getColumname()) && !mainMetaData.getTb().getTablename().equals(cl.getTablename())) {
+					if(columns.length() > 0) {
+						columns.append(",");
+					}
+					columns.append(tableMap.get(cl.getTableproperty().getDbtableid())).append(".").append(cl.getTableproperty().getFieldname()).append(" ");
+					exist.put(cl.getColumname(), cl.getColumname()) ;
+				}
+			}
 		}
 		
 		//要查询的表名以及左连接
@@ -159,9 +175,15 @@ public class ReportCubeService{
 					}
 					
 				}
+			}else {
+				
 			}
 		}
-		strb.append(" * ").append(mainTable).append(tables);
+		if(mainMetaData!=null) {
+			strb.append(" ").append(tableMap.get(mainMetaData.getTb().getId())).append(".* ").append(",").append(columns.toString()).append(" ").append(mainTable).append(tables);
+		}else {
+			strb.append(" * ").append(mainTable).append(tables);
+		}
 		//过滤关联的表名以及左连接
 		StringBuffer filtertables = new StringBuffer() ;
 		StringBuffer wherecon = new StringBuffer();
@@ -230,6 +252,16 @@ public class ReportCubeService{
 		}
 		return strb.length()>0 ? strb.toString() : null ;
 	}
+	public boolean checkSemap(String fieldename,CubeMetadata mainMetaData){
+		List<TableProperties> mainlist = mainMetaData.getTb().getTableproperty();
+		for(TableProperties tableProperties : mainlist){
+			if(tableProperties.getFieldname().equals(fieldename)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public String genMdx(ReportModel model, Cube cube,boolean isTable,HttpServletRequest request ) {
 		StringBuffer rowstrb = new StringBuffer(), colstrb = new StringBuffer();
 		StringBuffer dimstrb= new StringBuffer();

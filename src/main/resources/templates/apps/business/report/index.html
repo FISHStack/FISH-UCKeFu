@@ -105,7 +105,7 @@
 							<input type="checkbox" class="ids" name="ids" value="${report.id!''}"/>
 						  </td>
 						  <td>
-								<#if report.name?? && report.name?length gt 100>${report.name[0..100]}...<#else>${report.name!''}</#if>
+								<#if report.name?? && report.name?length gt 100>${report.name[0..100]}...<#else>${report.name!''}</#if>(${report.code!''})
 						  </td>
 						  <td>${report.createtime?string("yyyy-MM-dd HH:mm:ss")}</td>
 						  <td style="white-space:nowrap;" nowrap="nowrap">

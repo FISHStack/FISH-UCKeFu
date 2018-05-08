@@ -38,7 +38,7 @@
 							<input type="checkbox" class="ids" name="ids" value="${report.id!''}"/>
 						  </td>
 						  <td><a href="/apps/report/view.html?id=${report.id!''}" target="_blank"> 
-								<#if report.name?? && report.name?length gt 100>${report.name[0..100]}...<#else>${report.name!''}</#if>
+								<#if report.name?? && report.name?length gt 100>${report.name[0..100]}...<#else>${report.name!''}</#if>(${report.code!''})
 						  		</a>
 						  </td>
 						  <td>

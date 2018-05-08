@@ -119,6 +119,8 @@ public class CousultInvite implements java.io.Serializable{
 	private String aisuccesstip ;//AI服务连接成功的消息提示
 	private String ainame ;		//AI服务 昵称
 	
+	private String aiid;		//默认的机器人
+	
 	private String datadept;
 	private String agent_online;
 
@@ -667,5 +669,11 @@ public class CousultInvite implements java.io.Serializable{
 	}
 	public void setAreaskilltipmsg(String areaskilltipmsg) {
 		this.areaskilltipmsg = areaskilltipmsg;
+	}
+	public String getAiid() {
+		return aiid;
+	}
+	public void setAiid(String aiid) {
+		this.aiid = aiid;
 	}
 }

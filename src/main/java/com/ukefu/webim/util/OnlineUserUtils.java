@@ -709,7 +709,7 @@ public class OnlineUserUtils {
 
 	private static NewRequestMessage newRequestMessage(String user , String nickname, String orgi,
 			String session, String appid, String ip, String osname,
-			String browser , String headimg , IP ipdata , String channel , String skill , String agent, String title, String url , String traceid) throws Exception {
+			String browser , String headimg , IP ipdata , String channel , String skill , String agent, String title, String url , String traceid, String initiator) throws Exception {
 		// 坐席服务请求，分配 坐席
 		NewRequestMessage data = new NewRequestMessage();
 		data.setAppid(appid);
@@ -821,7 +821,7 @@ public class OnlineUserUtils {
 	
 	public static NewRequestMessage newRequestMessage(String userid, String orgi,
 			String session, String appid, String ip, String osname,
-			String browser , String channel , String skill , String agent , String nickname, String title, String url , String traceid) throws Exception {
+			String browser , String channel , String skill , String agent , String nickname, String title, String url , String traceid, String initiator) throws Exception {
 		IP ipdata = null ;
 		if(!StringUtils.isBlank(ip)){
 			ipdata = IPTools.getInstance().findGeography(ip);
@@ -830,16 +830,16 @@ public class OnlineUserUtils {
 			nickname = "Guest_" + userid;
 		}
 		
-		return newRequestMessage(userid , nickname, orgi, session, appid, ip, osname, browser , "" , ipdata , channel , skill , agent , title ,url , traceid) ;
+		return newRequestMessage(userid , nickname, orgi, session, appid, ip, osname, browser , "" , ipdata , channel , skill , agent , title ,url , traceid , initiator) ;
 	}
 	
 	public static NewRequestMessage newRequestMessage(String openid , String nickname, String orgi,
-			String session, String appid , String headimg , String country , String province , String city , String channel , String skill , String agent) throws Exception {
+			String session, String appid , String headimg , String country , String province , String city , String channel , String skill , String agent, String initiator) throws Exception {
 		IP ipdata = new IP() ;
 		ipdata.setCountry(country);
 		ipdata.setProvince(province);
 		ipdata.setCity(city);
-		return newRequestMessage(openid , nickname , orgi, session, appid, null , null , null , headimg , ipdata , channel , skill , agent , null , null , null) ;
+		return newRequestMessage(openid , nickname , orgi, session, appid, null , null , null , headimg , ipdata , channel , skill , agent , null , null , null , initiator) ;
 	}
 
 	public static void parseParameters(Map<String, String[]> map, String data,
@@ -954,34 +954,34 @@ public class OnlineUserUtils {
 			}
 		}
 	}
-	public static void resetHotTopic(DataExchangeInterface dataExchange,User user , String orgi) {
+	public static void resetHotTopic(DataExchangeInterface dataExchange,User user , String orgi , String aiid) {
 		if(CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopic", orgi)!=null){
 			CacheHelper.getSystemCacheBean().delete("xiaoeTopic", orgi) ;
 		}
-		cacheHotTopic(dataExchange,user , orgi) ;
+		cacheHotTopic(dataExchange,user , orgi , aiid) ;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Topic> cacheHotTopic(DataExchangeInterface dataExchange,User user , String orgi) {
+	public static List<Topic> cacheHotTopic(DataExchangeInterface dataExchange,User user , String orgi , String aiid) {
 		List<Topic> topicList = null ;
 		if((topicList = (List<Topic>) CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopic", orgi))==null){ 
-			topicList = (List<Topic>) dataExchange.getListDataByIdAndOrgi(null, null,  orgi) ;
+			topicList = (List<Topic>) dataExchange.getListDataByIdAndOrgi(aiid, null,  orgi) ;
 			//CacheHelper.getSystemCacheBean().put("xiaoeTopic" , topicList , orgi) ;
 		}
 		return topicList;
 	}
 	
-	public static void resetHotTopicType(DataExchangeInterface dataExchange,User user , String orgi) {
+	public static void resetHotTopicType(DataExchangeInterface dataExchange,User user , String orgi, String aiid) {
 		if(CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopicType"+"."+orgi, orgi)!=null){
 			CacheHelper.getSystemCacheBean().delete("xiaoeTopicType"+"."+orgi, orgi) ;
 		}
-		cacheHotTopicType(dataExchange,user , orgi) ;
+		cacheHotTopicType(dataExchange,user , orgi , aiid) ;
 	}
 	@SuppressWarnings("unchecked")
-	public static List<KnowledgeType> cacheHotTopicType(DataExchangeInterface dataExchange,User user , String orgi) {
+	public static List<KnowledgeType> cacheHotTopicType(DataExchangeInterface dataExchange,User user , String orgi , String aiid) {
 		List<KnowledgeType> topicTypeList = null ;
 		if((topicTypeList = (List<KnowledgeType>) CacheHelper.getSystemCacheBean().getCacheObject("xiaoeTopicType"+"."+orgi, orgi))==null){ 
-			topicTypeList = (List<KnowledgeType>) dataExchange.getListDataByIdAndOrgi(null, null,  orgi) ;
+			topicTypeList = (List<KnowledgeType>) dataExchange.getListDataByIdAndOrgi(aiid, null,  orgi) ;
 			CacheHelper.getSystemCacheBean().put("xiaoeTopicType"+"."+orgi , topicTypeList , orgi) ;
 		}
 		return topicTypeList;

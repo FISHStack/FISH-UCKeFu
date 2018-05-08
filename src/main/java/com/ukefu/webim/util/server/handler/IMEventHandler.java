@@ -64,7 +64,7 @@ public class IMEventHandler
 				 */
 				InetSocketAddress address = (InetSocketAddress) client.getRemoteAddress()  ;
 				String ip = UKTools.getIpAddr(client.getHandshakeData().getHttpHeaders(), address.getHostString()) ;
-				NewRequestMessage newRequestMessage = OnlineUserUtils.newRequestMessage(user, orgi , session , appid , ip , client.getHandshakeData().getSingleUrlParam("osname") , client.getHandshakeData().getSingleUrlParam("browser") , UKDataContext.ChannelTypeEnum.WEBIM.toString() , skill , agent , nickname , title , url , traceid) ;
+				NewRequestMessage newRequestMessage = OnlineUserUtils.newRequestMessage(user, orgi , session , appid , ip , client.getHandshakeData().getSingleUrlParam("osname") , client.getHandshakeData().getSingleUrlParam("browser") , UKDataContext.ChannelTypeEnum.WEBIM.toString() , skill , agent , nickname , title , url , traceid , UKDataContext.ChatInitiatorType.USER.toString()) ;
 //				/**
 //				 * 加入到 缓存列表
 //				 */

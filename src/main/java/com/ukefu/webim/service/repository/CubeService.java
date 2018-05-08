@@ -18,6 +18,7 @@ import com.ukefu.util.bi.CubeReportData;
 import com.ukefu.util.bi.model.FirstTitle;
 import com.ukefu.util.bi.model.Level;
 import com.ukefu.util.bi.model.ValueData;
+import com.ukefu.webim.web.model.ColumnProperties;
 
 import freemarker.template.TemplateException;
 import mondrian.olap.Axis;
@@ -65,8 +66,12 @@ public class CubeService {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public CubeReportData execute(String mdx) throws Exception{
+		return execute(mdx , null) ;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public CubeReportData execute(String mdx,List<ColumnProperties> cols) throws Exception{
 		Connection connection = null ;
 		CubeReportData cubeReportData = new CubeReportData();
 		try{
@@ -77,9 +82,9 @@ public class CubeService {
 			cubeReportData.setData(new ArrayList<List<ValueData>>());
 			for (int i = 0; i < axises.length; i++) {
 				if (i == 0) {
-					cubeReportData.setCol(createTitle(axises[i], i));
+					cubeReportData.setCol(createTitle(axises[i], i , cols));
 				} else {
-					cubeReportData.setRow(createTitle(axises[i], i));
+					cubeReportData.setRow(createTitle(axises[i], i , cols));
 //					cubeReportData.setTotal(axises[i].getDataSize());
 				}
 			}
@@ -92,7 +97,7 @@ public class CubeService {
 					cubeReportData.getRow().getTitle().add(rowList) ;
 				}
 			}
-			getRowData(result.getAxes(), result.getAxes().length - 1, new int[result.getAxes().length], result, cubeReportData.getData(), 0 , null , cubeReportData);
+			getRowData(result.getAxes(), result.getAxes().length - 1, new int[result.getAxes().length], result, cubeReportData.getData(), 0 , null , cubeReportData , cols);
 			processSum(cubeReportData.getRow(), cubeReportData.getData() , cubeReportData.getRow()) ;
 			processSum(cubeReportData.getCol(), cubeReportData.getData() , cubeReportData.getCol()) ;
 			cubeReportData.getRow().setTitle(new ArrayList<List<Level>>()) ;
@@ -112,7 +117,7 @@ public class CubeService {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public Level createTitle(Axis axis, int index) {
+	public Level createTitle(Axis axis, int index,List<ColumnProperties> cols) {
 		Level level = new Level("root", index == 0 ? "col" : "row" , null , 0);
 		Map<String, Map> valueMap = new HashMap<String, Map>();
 		List<Position> posList = axis.getPositions();
@@ -222,6 +227,12 @@ public class CubeService {
 				}
 				strb.append(member.getUniqueName().substring(member.getUniqueName().indexOf(".")+1).replaceAll("\\.\\[\\]", "______R3_SPACE").replaceAll("\\]\\.\\[", "l__HHHH-A-HHHH__l").replaceAll("[\\]\\[]", ""));
 			}
+			for(ColumnProperties col : cols) {
+				if(strb.toString().equals(col.getDataname())) {
+					strb = new StringBuffer() ;
+					strb.append(col.getTitle()) ;
+				}
+			}
 			valueStr.add(strb.toString().replace("#null", " "));//替换掉所有的#null为空字符串
 		}
 		int depth = 0 ;
@@ -323,13 +334,13 @@ public class CubeService {
 	 * @param dataList
 	 * @param rowno
 	 */
-	private void getRowData(Axis[] axes, int axis, int[] pos, Result result, List<List<ValueData>> dataList, int rowno , Position position , CubeReportData cubeData) {
+	private void getRowData(Axis[] axes, int axis, int[] pos, Result result, List<List<ValueData>> dataList, int rowno , Position position , CubeReportData cubeData , List<ColumnProperties> cols) {
 		if (axis < 0) {
 			if (dataList.size() <= rowno || dataList.get(rowno) == null) {
 				dataList.add(new ArrayList<ValueData>());
 			}
 			Cell cell = result.getCell(pos) ;
-			ValueData valueData  = new ValueData(cell.getValue(), cell.getFormattedValue(), null  , cell.canDrillThrough(), cell.getDrillThroughSQL(true) , position!=null && position.size()>0 ? position.get(position.size()-1).getName():"" , cell.getCachedFormatString()) ;
+			ValueData valueData  = new ValueData(cell.getValue(), cell.getFormattedValue(), null  , cell.canDrillThrough(), cell.getDrillThroughSQL(true) , position!=null && position.size()>0 ? position.get(position.size()-1).getName():"" , cell.getCachedFormatString() , cols) ;
 			int rows = 0 ;
 			valueData.setRow(getParentLevel(cubeData.getRow() , rowno, rows)) ;
 			dataList.get(rowno).add(valueData);
@@ -343,7 +354,7 @@ public class CubeService {
 					int row = axis + 1 < pos.length ? pos[axis + 1] : 0;
 					rowno = row;
 				}
-				getRowData(axes, axis - 1, pos, result, dataList, rowno , posit , cubeData);
+				getRowData(axes, axis - 1, pos, result, dataList, rowno , posit , cubeData , cols);
 			}
 		}
 	}

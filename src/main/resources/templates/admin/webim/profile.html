@@ -424,6 +424,25 @@
 												</div>
 												<div class="row" style="margin-bottom:20px;">
 													<div class="col-lg-8">
+														<p>b、默认接入的机器人</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">默认使用的机器人</p>
+													</div>
+													<div class="col-lg-4">
+														<div class="layui-input-block">
+														    <select name="aiid">
+														    	<option value="">请选择默认的机器人</option>
+														    	<#if serviceAiList??>
+														    	<#list serviceAiList as serviceAi>
+														    	<option value="${serviceAi.id!''}" <#if inviteData.aiid?? && inviteData.aiid == serviceAi.id>selected="selected"</#if>>${serviceAi.name!''}</option>
+														    	</#list>
+														    	</#if> 
+														    </select>
+														</div>	
+													</div>
+												</div>
+												
+												<div class="row" style="margin-bottom:20px;">
+													<div class="col-lg-8">
 														<p>b、智能机器人名字</p>
 														<p style="color:#888888;font-size:13px;margin-top:10px;">智能机器人回复消息的时候显示的名称</p>
 													</div>

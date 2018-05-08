@@ -380,7 +380,7 @@ public class UKDataContext {
 		WEIBO,
 		WEBIM,
 		PHONE,
-		EMAIL;
+		EMAIL, AI;
 
 		public String toString(){
 			return super.toString().toLowerCase() ;

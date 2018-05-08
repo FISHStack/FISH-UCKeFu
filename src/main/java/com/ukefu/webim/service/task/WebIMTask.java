@@ -188,10 +188,10 @@ public class WebIMTask {
 						AiUser aiUser = (AiUser)data ;
 						if(UKDataContext.model.get("xiaoe")!=null){
 							DataExchangeInterface dataInterface = (DataExchangeInterface) UKDataContext.getContext().getBean("aiconfig") ;
-							AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(aiUser.getId(), aiUser.getOrgi()) ;
+							AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(aiUser.getAiid(), aiUser.getOrgi()) ;
 							if(aiConfig!=null){
 								long leavetime = (System.currentTimeMillis() - aiUser.getTime())/1000 ;
-								if(leavetime > 600 || leavetime > aiConfig.getAsktimes()){//最大空闲时间不能超过540秒 
+								if(leavetime > 600 || (aiConfig.getAsktimes()>0 && leavetime > aiConfig.getAsktimes())){//最大空闲时间不能超过540秒 
 									NettyClients.getInstance().closeIMEventClient(aiUser.getUserid(), aiUser.getId(), UKDataContext.SYSTEM_ORGI) ;
 								}
 							}

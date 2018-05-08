@@ -201,7 +201,8 @@ public class Handler {
 	public String getOrgiByTenantshare(HttpServletRequest request){	
 		SystemConfig systemConfig = UKTools.getSystemConfig();
 		if(systemConfig!=null&&systemConfig.isEnabletneant()&&systemConfig.isTenantshare()) {
-			return UKDataContext.SYSTEM_ORGI;
+			User user = this.getUser(request) ;
+			return user.getOrgid();
     	}
 		return getOrgi(request);
 	}

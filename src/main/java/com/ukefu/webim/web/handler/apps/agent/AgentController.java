@@ -316,10 +316,12 @@ public class AgentController extends Handler {
 				List<OnlineUser> onlineUserList = this.onlineUserRes.findByUseridAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
 				if(onlineUserList.size()  > 0){
 					OnlineUser onlineUser = onlineUserList.get(0) ;
-					if(UKDataContext.OnlineUserOperatorStatus.OFFLINE.toString().equals(onlineUser.getStatus())){
-						onlineUser.setBetweentime((int) (onlineUser.getUpdatetime().getTime() - onlineUser.getLogintime().getTime()));
-					}else{
-						onlineUser.setBetweentime((int) (System.currentTimeMillis() - onlineUser.getLogintime().getTime()));
+					if(onlineUser.getLogintime()!=null) {
+						if(UKDataContext.OnlineUserOperatorStatus.OFFLINE.toString().equals(onlineUser.getStatus())){
+							onlineUser.setBetweentime((int) (onlineUser.getUpdatetime().getTime() - onlineUser.getLogintime().getTime()));
+						}else{
+							onlineUser.setBetweentime((int) (System.currentTimeMillis() - onlineUser.getLogintime().getTime()));
+						}
 					}
 					view.addObject("onlineUser",onlineUser);
 				}

@@ -34,6 +34,7 @@ import com.ukefu.webim.web.model.AgentService;
 import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.AgentUserTask;
+import com.ukefu.webim.web.model.AiUser;
 import com.ukefu.webim.web.model.MessageOutContent;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.SessionConfig;
@@ -492,6 +493,38 @@ public class ServiceQuene {
 	 */
 	private static AgentService processAgentService(AgentStatus agentStatus , AgentUser agentUser , String orgi) throws Exception{
 		return processAgentService(agentStatus, agentUser, orgi , false) ;
+	}
+	
+	/**
+	 * 为访客 分配坐席， ACD策略，此处 AgentStatus 是建议 的 坐席，  如果启用了  历史服务坐席 优先策略， 则会默认检查历史坐席是否空闲，如果空闲，则分配，如果不空闲，则 分配当前建议的坐席
+	 * @param agentStatus
+	 * @param agentUser
+	 * @param orgi
+	 * @return
+	 * @throws Exception
+	 */
+	public static AgentService processAiService(AiUser aiUser , String orgi) throws Exception{
+		AgentService agentService = new AgentService();	//放入缓存的对象
+		if(!StringUtils.isBlank(aiUser.getAgentserviceid())) {
+			agentService.setId(aiUser.getAgentserviceid());
+		}
+		agentService.setOrgi(orgi);
+		agentService.setSessionid(aiUser.getSessionid());
+		
+		agentService.setUserid(aiUser.getUserid());
+		agentService.setAiid(aiUser.getAiid());
+		agentService.setAiservice(true);
+		agentService.setStatus(UKDataContext.AgentUserStatusEnum.INSERVICE.toString());
+		
+		agentService.setAppid(aiUser.getAppid());
+		agentService.setLeavemsg(false);
+		
+		agentService.setServicetime(new Date());
+		
+		agentService.setLogindate(new Date());
+		AgentServiceRepository agentServiceRes  = UKDataContext.getContext().getBean(AgentServiceRepository.class);
+		agentServiceRes.save(agentService) ;
+		return agentService ;
 	}
 	
 	/**

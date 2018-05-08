@@ -182,6 +182,31 @@ public class MessageUtils {
     	}
 	}
 	
+	public static ChatMessage createMessage(String message , int length , String name ,String channel ,String msgtype , String userid , String username , String appid , String orgi , String attachid ,String aiid){
+		ChatMessage data = new ChatMessage() ;
+		if(!StringUtils.isBlank(userid)){
+			data.setUserid(userid);
+			data.setUsername(username);
+			data.setTouser(userid);
+			data.setAppid(appid);
+			data.setOrgi(orgi);
+			data.setChannel(channel);
+			data.setMessage(message);
+			
+			data.setAiid(aiid);
+			
+			data.setFilesize(length);
+			data.setFilename(name);
+			data.setAttachmentid(attachid);
+			
+			data.setMsgtype(msgtype);
+			
+			data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
+			createAiMessage(data , appid , channel, UKDataContext.CallTypeEnum.IN.toString() , UKDataContext.AiItemType.USERINPUT.toString() , msgtype, data.getUserid());
+		}
+		return data ;
+	}
+	
 	public static MessageOutContent createAiMessage(ChatMessage data , String appid,String channel , String direction , String chatype, String msgtype , String userid){
     	MessageOutContent outMessage = new MessageOutContent() ;
     	

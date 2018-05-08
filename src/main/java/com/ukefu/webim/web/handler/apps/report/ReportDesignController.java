@@ -310,7 +310,7 @@ public class ReportDesignController extends Handler {
 	 */
 	@RequestMapping("/modeldesign")
 	@Menu(type = "report", subtype = "reportdesign")
-	public ModelAndView modeldesign(ModelMap map, HttpServletRequest request, @Valid String id, @Valid String tabid)
+	public ModelAndView modeldesign(ModelMap map, HttpServletRequest request, @Valid String id, @Valid String tabid , HashMap<String,String> semap)
 			throws Exception {
 		List<SysDic> tpDicList = UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_DIC);
 		for (SysDic sysDic : tpDicList) {
@@ -329,7 +329,7 @@ public class ReportDesignController extends Handler {
 			if (canGetReportData(model, cube.getCube())) {
 				ReportData reportData = null ;
 				try {
-					reportData = reportCubeService.getReportData(model, cube.getCube(), request, true) ;
+					reportData = reportCubeService.getReportData(model, cube.getCube(), request, true,semap) ;
 					map.addAttribute("reportData",reportData);
 				}catch(Exception ex) {
 					map.addAttribute("msg",ex.getMessage());
@@ -352,7 +352,7 @@ public class ReportDesignController extends Handler {
 					columnPropertiesRepository.findByModelidAndCurOrderBySortindexAsc(model.getId(), "cfield"));
 			model.setMeasures(
 					columnPropertiesRepository.findByModelidAndCurOrderBySortindexAsc(model.getId(), "measure"));
-			List<ReportFilter> listFilters = reportFilterRepository.findByModelidAndOrgiOrderBySortindexAsc(model.getId(),orgi);
+			List<ReportFilter> listFilters = reportFilterRepository.findByModelidOrderBySortindexAsc(model.getId());
 			if(!listFilters.isEmpty()) {
 				for(ReportFilter rf:listFilters) {
 					if(!StringUtils.isBlank(rf.getCascadeid())) {
@@ -657,7 +657,7 @@ public class ReportDesignController extends Handler {
 	 */
 	@RequestMapping("/getelement")
 	@Menu(type = "report", subtype = "reportdesign")
-	public ModelAndView getelement(ModelMap map, HttpServletRequest request, @Valid String id,@Valid String publishedid) throws Exception {
+	public ModelAndView getelement(ModelMap map, HttpServletRequest request, @Valid String id,@Valid String publishedid, HashMap<String,String> semap) throws Exception {
 		if (!StringUtils.isBlank(id)) {
 			ReportModel model = this.getModel(id, super.getOrgi(request),publishedid);
 			if(model!=null) {
@@ -674,7 +674,7 @@ public class ReportDesignController extends Handler {
 					if (canGetReportData(model, cube.getCube())) {
 						ReportData reportData = null ;
 						try {
-							reportData = reportCubeService.getReportData(model, cube.getCube(), request, true) ;
+							reportData = reportCubeService.getReportData(model, cube.getCube(), request, true, semap) ;
 							map.addAttribute("reportData",reportData);
 						}catch(Exception ex) {
 							map.addAttribute("msg",ex.getMessage());
@@ -687,7 +687,7 @@ public class ReportDesignController extends Handler {
 	}
 	private ReportModel getModel(String id,String orgi,String publishedid) {
 		if(!StringUtils.isBlank(publishedid)) {
-			PublishedReport publishedReport = publishedReportRes.findByIdAndOrgi(publishedid, orgi);
+			PublishedReport publishedReport = publishedReportRes.findById(publishedid);
 			if(publishedReport!=null) {
 				if(publishedReport.getReport()!=null && !publishedReport.getReport().getReportModels().isEmpty()) {
 					for(ReportModel rm :publishedReport.getReport().getReportModels()) {
@@ -1101,7 +1101,7 @@ public class ReportDesignController extends Handler {
 	
 	@RequestMapping("/changechartppy")
 	@Menu(type = "report", subtype = "reportdesign")
-	public ModelAndView changechartppy(ModelMap map,HttpServletRequest request, @Valid ReportModel reportModel, @Valid ChartProperties chartProperties) throws Exception {
+	public ModelAndView changechartppy(ModelMap map,HttpServletRequest request, @Valid ReportModel reportModel, @Valid ChartProperties chartProperties,  HashMap<String,String> semap) throws Exception {
 		ReportModel model = this.getModel(reportModel.getId(), super.getOrgi(request));
 		if (null!=model) {
 			model.setExchangerw(reportModel.isExchangerw());
@@ -1124,7 +1124,7 @@ public class ReportDesignController extends Handler {
 			PublishedCube cube = publishedCubeRepository.findOne(model.getPublishedcubeid());
 			map.addAttribute("cube", cube);
 			if (!model.getMeasures().isEmpty()) {
-				map.addAttribute("reportData",reportCubeService.getReportData(model, cube.getCube(), request, true));
+				map.addAttribute("reportData",reportCubeService.getReportData(model, cube.getCube(), request, true, semap));
 			}
 		}
 		return request(super.createRequestPageTempletResponse("/apps/business/report/design/elementajax"));
@@ -1160,7 +1160,7 @@ public class ReportDesignController extends Handler {
 				}
 			}
 		}else {
-			PublishedReport publishedReport = publishedReportRes.findByIdAndOrgi(publishedid, super.getOrgi(request));
+			PublishedReport publishedReport = publishedReportRes.findById(publishedid);
 			if(publishedReport!=null) {
 				map.addAttribute("publishedReport", publishedReport);
 				ReportFilter filter =  null;

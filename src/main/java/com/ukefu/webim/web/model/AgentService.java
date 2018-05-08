@@ -84,6 +84,12 @@ public class AgentService implements Serializable {
 	
 	private String initiator ;	//对话发起方
 	
+	
+	private String endby ;				//终止方 ， agent  ， user ， system
+	private String aiid ;				//AI 的ID
+	private boolean aiservice ;//是否是AI在提供服务
+	private boolean foragent ;	//AI直接转人工
+	
 	private String solvestatus ;		//问题解决状态
 	private boolean leavemsg ;	//是否留言
 	private String leavemsgstatus = UKDataContext.LeaveMsgStatus.NOTPROCESS.toString();	//已处理、未处理
@@ -802,5 +808,37 @@ public class AgentService implements Serializable {
 
 	public void setSkill(String skill) {
 		this.skill = skill;
+	}
+
+	public String getEndby() {
+		return endby;
+	}
+
+	public void setEndby(String endby) {
+		this.endby = endby;
+	}
+
+	public String getAiid() {
+		return aiid;
+	}
+
+	public void setAiid(String aiid) {
+		this.aiid = aiid;
+	}
+
+	public boolean isAiservice() {
+		return aiservice;
+	}
+
+	public void setAiservice(boolean aiservice) {
+		this.aiservice = aiservice;
+	}
+
+	public boolean isForagent() {
+		return foragent;
+	}
+
+	public void setForagent(boolean foragent) {
+		this.foragent = foragent;
 	}
 }

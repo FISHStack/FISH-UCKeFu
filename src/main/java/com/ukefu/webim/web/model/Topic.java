@@ -18,7 +18,7 @@ import com.ukefu.util.UKTools;
 
 
 /**
- * 
+ * 表 uk_xiaoe_topic
  */
 @Document(indexName = "uckefu", type = "uk_xiaoe_topic")
 @Entity
@@ -84,8 +84,12 @@ public class Topic implements java.io.Serializable{
 	private String memo;
 	private String organ;
 	
+	private String aiid ;		//机器人ID
+	
 	
 	private User user ;
+
+	
 	
 	
 	/**
@@ -385,4 +389,13 @@ public class Topic implements java.io.Serializable{
 	public void setSilimar(List<String> silimar) {
 		this.silimar = silimar;
 	}
+
+	public String getAiid() {
+		return aiid;
+	}
+
+	public void setAiid(String aiid) {
+		this.aiid = aiid;
+	}
+	
 }

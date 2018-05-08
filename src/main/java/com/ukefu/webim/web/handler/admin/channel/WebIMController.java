@@ -25,6 +25,7 @@ import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
 import com.ukefu.webim.service.repository.SNSAccountRepository;
+import com.ukefu.webim.service.repository.ServiceAiRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.CousultInvite;
@@ -44,6 +45,9 @@ public class WebIMController extends Handler{
 	
 	@Autowired
 	private UserRepository userRes ;
+	
+	@Autowired
+	private ServiceAiRepository serviceAiRes ;
 	
 	@Autowired
 	private OrgiSkillRelRepository orgiSkillRelService;
@@ -123,6 +127,8 @@ public class WebIMController extends Handler{
     	}
     	map.addAttribute("import", request.getServerPort()) ;
     	map.addAttribute("snsAccount", snsAccountRes.findBySnsidAndOrgi(snsid, super.getOrgi(request))) ;
+    	
+    	map.put("serviceAiList",serviceAiRes.findByOrgi(super.getOrgi(request)) ) ;
         return request(super.createAdminTempletResponse("/admin/webim/profile"));
     }
     
@@ -175,6 +181,7 @@ public class WebIMController extends Handler{
     			tempInviteData.setAimsg(inviteData.getAimsg());
     			tempInviteData.setAisuccesstip(inviteData.getAisuccesstip());
     			tempInviteData.setAiname(inviteData.getAiname());
+    			tempInviteData.setAiid(inviteData.getAiid());
     			
     			if(dialogad!=null && !StringUtils.isBlank(dialogad.getName()) && dialogad.getBytes()!=null && dialogad.getBytes().length >0){
 	    			String fileName = "ad/"+inviteData.getId()+dialogad.getOriginalFilename().substring(dialogad.getOriginalFilename().lastIndexOf(".")) ;

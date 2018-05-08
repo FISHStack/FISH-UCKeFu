@@ -78,10 +78,10 @@ function append(parent, text) {
 }
 var ukefu = {
 	time : new Date().getTime(),
-	in :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/${appid!''}/userlist.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}" ,
-	url :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/online?appid=${appid!''}&orgi=${orgi!''}&client=${client}" ,
-	chat : "${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/index.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}" , 
-	refuse :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/refuse.html?appid=${appid!''}&orgi=${orgi!''}&client=${client}", 
+	in :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/${appid!''}/userlist.html?appid=${appid!''}<#if aiid??>&aiid=${aiid}</#if>&orgi=${orgi!''}&client=${client}" ,
+	url :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/online?appid=${appid!''}&orgi=${orgi!''}<#if aiid??>&aiid=${aiid}</#if>&client=${client}" ,
+	chat : "${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/index.html?appid=${appid!''}<#if aiid??>&aiid=${aiid}</#if>&orgi=${orgi!''}&client=${client}" , 
+	refuse :"${schema!'http'}://${hostname!''}<#if port?? && port != 80>:${port!''}</#if>/im/refuse.html?appid=${appid!''}<#if aiid??>&aiid=${aiid}</#if>&orgi=${orgi!''}&client=${client}", 
 	config : function(d){
 		data = d ;	
 		if(d.id != null && d.id != ''){

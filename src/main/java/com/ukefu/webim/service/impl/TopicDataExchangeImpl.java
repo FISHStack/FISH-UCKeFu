@@ -20,7 +20,7 @@ public class TopicDataExchangeImpl implements DataExchangeInterface{
 
 	@Override
 	public List<Topic> getListDataByIdAndOrgi(String id , String creater, String orgi) {
-		return topicRes.getTopicByTopAndOrgi(true,orgi, 0, 10).getContent() ;
+		return topicRes.getTopicByTopAndOrgi(true,orgi , id , 0, 10).getContent() ;
 	}
 	
 	public void process(Object data , String orgi) {

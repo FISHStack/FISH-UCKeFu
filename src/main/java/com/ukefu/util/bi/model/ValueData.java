@@ -1,6 +1,9 @@
 package com.ukefu.util.bi.model;
 
+import java.util.List;
+
 import com.ukefu.util.UKTools;
+import com.ukefu.webim.web.model.ColumnProperties;
 
 public class ValueData implements java.io.Serializable,Cloneable{
 	/**
@@ -28,7 +31,7 @@ public class ValueData implements java.io.Serializable,Cloneable{
 	private String valueStyle;		//预警一块的格式化样式，背景色，字体什么的
 	
 	private String style ;
-	public ValueData(Object value , String foramatValue, String valueType , boolean canbedrill , String sql , String name , String formatStr){
+	public ValueData(Object value , String foramatValue, String valueType , boolean canbedrill , String sql , String name , String formatStr , List<ColumnProperties> cols){
 		this.foramatValue = foramatValue ;
 		this.value = value ; 
 		this.valueType = valueType ;
@@ -36,6 +39,12 @@ public class ValueData implements java.io.Serializable,Cloneable{
 		this.canbedrill = canbedrill ;
 		this.name = name ;
 		this.formatStr = formatStr ;
+		
+		for(ColumnProperties col : cols) {
+			if(col.getDataname().equals(name)) {
+				this.name = col.getTitle();
+			}
+		}
 	}
 	public ValueData(String name , Object value, String foramatValue , String valueType){
 		this.name = name;

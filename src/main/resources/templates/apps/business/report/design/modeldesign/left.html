@@ -108,9 +108,10 @@
 								<#if reportModel?? && reportModel.properties??>
 									<ul id="mea_sortable" class="uk_sortable">
 										<#list reportModel.measures as measure>
-										   	<li class="uk-state-default"  id="sort_${measure.id!''}">
-										   		${measure.dataname!''}
-										   		<button class="layui-btn layui-btn-xs layui-btn-danger" style="float:right;" href="/apps/report/design/columndel.html?id=${measure.id!''}" data-toggle="tip" data-title="请确认是否删除？"><i class="layui-icon">&#xe640;</i></button>
+										   	<li class="uk-state-default"  id="sort_${measure.id!''}" title="${measure.dataname!''}">
+										   		${measure.title!''}
+										   		<a class="layui-btn layui-btn-xs layui-btn-danger" style="float:right;" href="/apps/report/design/columndel.html?id=${measure.id!''}" data-toggle="tip" data-title="请确认是否删除？"><i class="layui-icon">&#xe640;</i></a>
+										   		<a class="layui-btn layui-btn-xs layui-btn-normal" style="float:right;margin-right:5px;" href="/apps/report/design/columnedit.html?id=${measure.id!''}" data-toggle="ajax" data-width="400" data-height="300"><i class="layui-icon">&#xe614;</i></a>
 										   	</li>
 										</#list>
 									</ul>

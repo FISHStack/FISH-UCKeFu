@@ -17,12 +17,14 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.IPTools;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
+import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.util.MessageUtils;
 import com.ukefu.webim.util.router.OutMessageRouter;
 import com.ukefu.webim.util.server.message.AgentStatusMessage;
 import com.ukefu.webim.util.server.message.ChatMessage;
 import com.ukefu.webim.util.server.message.NewRequestMessage;
+import com.ukefu.webim.web.model.AgentService;
 import com.ukefu.webim.web.model.AiUser;
 import com.ukefu.webim.web.model.MessageOutContent;
 
@@ -42,8 +44,9 @@ public class AiIMEventHandler
     	try {
 			String user = client.getHandshakeData().getSingleUrlParam("userid") ;
 			String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
-//			String session = client.getHandshakeData().getSingleUrlParam("session") ;
-//			String appid = client.getHandshakeData().getSingleUrlParam("appid") ;
+			String session = client.getHandshakeData().getSingleUrlParam("session") ;
+			String appid = client.getHandshakeData().getSingleUrlParam("appid") ;
+			String aiid = client.getHandshakeData().getSingleUrlParam("aiid") ;
 //			String agent = client.getHandshakeData().getSingleUrlParam("agent") ;
 //			String skill = client.getHandshakeData().getSingleUrlParam("skill") ;
 			
@@ -63,7 +66,16 @@ public class AiIMEventHandler
 				
 				InetSocketAddress address = (InetSocketAddress) client.getRemoteAddress()  ;
 				String ip = UKTools.getIpAddr(client.getHandshakeData().getHttpHeaders(), address.getHostString()) ;
-				CacheHelper.getOnlineUserCacheBean().put(client.getSessionId().toString(), new AiUser(client.getSessionId().toString(), user, System.currentTimeMillis() , orgi,IPTools.getInstance().findGeography(ip)), UKDataContext.SYSTEM_ORGI);
+				AiUser aiUser = new AiUser(client.getSessionId().toString(), user, System.currentTimeMillis() , orgi,IPTools.getInstance().findGeography(ip)) ;
+				aiUser.setSessionid(session);
+				aiUser.setAppid(appid);
+				aiUser.setAiid(aiid);
+				aiUser.setChannel(UKDataContext.ChannelTypeEnum.WEBIM.toString());
+				
+				AgentService agentService = ServiceQuene.processAiService(aiUser, orgi) ;
+				aiUser.setAgentserviceid(agentService.getId());
+				
+				CacheHelper.getOnlineUserCacheBean().put(client.getSessionId().toString(), aiUser, UKDataContext.SYSTEM_ORGI);
 				
 			}
 		} catch (Exception e) {
@@ -74,11 +86,18 @@ public class AiIMEventHandler
     
     //添加@OnDisconnect事件，客户端断开连接时调用，刷新客户端信息  
     @OnDisconnect  
-    public void onDisconnect(SocketIOClient client)  
+    public void onDisconnect(SocketIOClient client) throws Exception  
     {  
     	String user = client.getHandshakeData().getSingleUrlParam("userid") ;
-    	NettyClients.getInstance().removeIMEventClient(user , client.getSessionId().toString());
-    	CacheHelper.getOnlineUserCacheBean().delete(client.getSessionId().toString(),UKDataContext.SYSTEM_ORGI) ;
+    	String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
+    	if(!StringUtils.isBlank(user)){
+	    	NettyClients.getInstance().removeIMEventClient(user , client.getSessionId().toString());
+	    	AiUser aiUser = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(client.getSessionId().toString(), orgi) ;
+	    	if(aiUser!=null) {
+		    	ServiceQuene.processAiService(aiUser, orgi) ;
+		    	CacheHelper.getOnlineUserCacheBean().delete(client.getSessionId().toString(),UKDataContext.SYSTEM_ORGI) ;
+	    	}
+    	}
     }  
       
     //消息接收入口，网站有新用户接入对话  
@@ -99,6 +118,8 @@ public class AiIMEventHandler
     @OnEvent(value = "message")  
     public void onEvent(SocketIOClient client, AckRequest request, ChatMessage data)   
     {
+    	String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
+		String aiid = client.getHandshakeData().getSingleUrlParam("aiid") ;
     	if(data.getType() == null){
     		data.setType("message");
     	}
@@ -111,6 +132,20 @@ public class AiIMEventHandler
 		 * 处理表情
 		 */
     	data.setMessage(UKTools.processEmoti(data.getMessage()));
+    	data.setTousername(UKDataContext.ChannelTypeEnum.AI.toString());
+    	
+    	data.setAiid(aiid);
+    	
+    	Object cacheData = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(client.getSessionId().toString(),orgi) ;
+    	if(cacheData!=null && cacheData instanceof AiUser){
+			AiUser aiUser = (AiUser)cacheData ;
+			data.setAgentserviceid(aiUser.getAgentserviceid());
+			data.setChannel(aiUser.getChannel());
+			/**
+			 * 一定要设置 ContextID
+			 */
+			data.setContextid(aiUser.getAgentserviceid());
+		}
     	MessageOutContent outMessage = MessageUtils.createAiMessage(data , data.getAppid() , data.getChannel() , UKDataContext.CallTypeEnum.IN.toString() , UKDataContext.AiItemType.USERINPUT.toString() , UKDataContext.MediaTypeEnum.TEXT.toString(), data.getUserid()) ;
     	if(!StringUtils.isBlank(data.getUserid()) && UKDataContext.MessageTypeEnum.MESSAGE.toString().equals(data.getType())){
     		if(!StringUtils.isBlank(data.getTouser())){
@@ -120,7 +155,6 @@ public class AiIMEventHandler
 	    			router.handler(data.getTouser(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), data.getAppid(), outMessage);
 	    		}
 	    	}
-    		Object cacheData = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(client.getSessionId().toString(),UKDataContext.SYSTEM_ORGI) ;
     		if(cacheData!=null && cacheData instanceof AiUser){
     			AiUser aiUser = (AiUser)cacheData ;
     			aiUser.setTime(System.currentTimeMillis());

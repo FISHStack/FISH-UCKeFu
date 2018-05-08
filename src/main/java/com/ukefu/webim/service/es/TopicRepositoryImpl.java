@@ -57,13 +57,14 @@ public class TopicRepositoryImpl implements TopicEsCommonRepository{
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public Page<Topic> getTopicByTopAndOrgi(boolean top ,String orgi, final int p , final int ps) {
+	public Page<Topic> getTopicByTopAndOrgi(boolean top ,String orgi, String aiid ,final int p , final int ps) {
 
 		Page<Topic> pages  = null ;
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.must(termQuery("top" , top)) ;
 		boolQueryBuilder.must(termQuery("orgi" , orgi)) ;
+		boolQueryBuilder.must(termQuery("aiid" , aiid)) ;
 		
 		QueryBuilder beginFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("begintime")).should(QueryBuilders.rangeQuery("begintime").to(new Date().getTime())) ;
 		QueryBuilder endFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("endtime")).should(QueryBuilders.rangeQuery("endtime").from(new Date().getTime())) ;

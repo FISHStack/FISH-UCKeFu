@@ -29,6 +29,8 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	private String userid ;
 	private String username ;
 	
+	private String aiid ;
+	
 	
 	private String touser ;
 	private String tousername ;
@@ -367,5 +369,10 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	public void setAichat(boolean aichat) {
 		this.aichat = aichat;
 	}
-	
+	public String getAiid() {
+		return aiid;
+	}
+	public void setAiid(String aiid) {
+		this.aiid = aiid;
+	}
 }

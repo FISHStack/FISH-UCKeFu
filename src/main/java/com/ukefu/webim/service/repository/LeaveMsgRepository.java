@@ -13,5 +13,7 @@ public abstract interface LeaveMsgRepository  extends JpaRepository<LeaveMsg, St
 	public abstract Page<LeaveMsg> findByOrgi(String orgi , Pageable page);
 	
 	public List<LeaveMsg> findByOrgiAndMobile(String orgi , String mobile) ;
+	
+	public List<LeaveMsg> findByOrgiAndUserid(String orgi , String userid) ;
 }
 

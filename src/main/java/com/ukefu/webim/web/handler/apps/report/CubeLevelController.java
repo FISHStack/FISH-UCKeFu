@@ -104,7 +104,7 @@ public class CubeLevelController extends Handler{
     		}else {
     			List<CubeMetadata> cmList = cubeMetadataRes.findByCubeidAndMtype(cubeLevel.getCubeid(),"0");
     			if(!cmList.isEmpty() && cmList.get(0)!=null) {
-    				map.put("fktableidList", tablePropertiesRes.findByDbtableid(cmList.get(0).getId()));
+    				map.put("fktableidList", tablePropertiesRes.findByDbtableid(cmList.get(0).getTb().getId()));
     				map.addAttribute("tableid", cmList.get(0).getId());
     			}
     		}

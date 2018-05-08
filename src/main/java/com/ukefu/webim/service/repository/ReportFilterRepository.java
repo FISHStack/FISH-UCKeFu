@@ -10,8 +10,10 @@ public abstract interface ReportFilterRepository extends JpaRepository< ReportFi
 
 
 	public ReportFilter findByIdAndOrgi(String id, String orgi);
+	
+	public ReportFilter findById(String id);
 
-	public List<ReportFilter> findByModelidAndOrgiOrderBySortindexAsc(String modelid, String orgi);
+	public List<ReportFilter> findByModelidOrderBySortindexAsc(String modelid);
 
 	public List<ReportFilter> findByCascadeidAndOrgi(String id, String orgi);
 

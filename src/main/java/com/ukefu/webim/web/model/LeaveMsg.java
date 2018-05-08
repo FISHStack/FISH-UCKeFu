@@ -28,6 +28,8 @@ public class LeaveMsg {
 	private String msgstatus ;
 	private String qq ;
 	
+	private String userid ;
+	
 	
 	@Id
 	@Column(length = 32)
@@ -119,5 +121,13 @@ public class LeaveMsg {
 
 	public void setMsgstatus(String msgstatus) {
 		this.msgstatus = msgstatus;
+	}
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 }
