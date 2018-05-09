@@ -24,6 +24,7 @@ public class UKDataContext {
 	public static final String UKEFU_SYSTEM_COMMENT_ITEM_DIC = "com.dic.webim.comment.item" ;
 	
 	public static final String UKEFU_SYSTEM_COOKIES_FLAG = "uk_flagid" ;
+	public static final String UKEFU_SYSTEM_NO_AI_CONFIG = "NOTEXIST" ;
 	
 	
 	public static final String UKEFU_SYSTEM_CALLCENTER = "callcenter";
