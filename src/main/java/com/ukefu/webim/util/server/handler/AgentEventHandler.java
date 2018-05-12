@@ -21,7 +21,6 @@ import com.ukefu.webim.service.repository.AgentStatusRepository;
 import com.ukefu.webim.service.repository.AgentUserRepository;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
-import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.util.router.OutMessageRouter;
 import com.ukefu.webim.util.server.message.AgentServiceMessage;
 import com.ukefu.webim.util.server.message.AgentStatusMessage;

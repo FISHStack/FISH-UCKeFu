@@ -126,7 +126,6 @@ public class AiIMEventHandler
     	if(data.getType() == null){
     		data.setType("message");
     	}
-    	data.setMessage(Jsoup.parse(data.getMessage()).text());
     	/**
     	 * 以下代码主要用于检查 访客端的字数限制
     	 */
