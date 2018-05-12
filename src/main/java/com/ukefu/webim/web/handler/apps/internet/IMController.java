@@ -223,6 +223,7 @@ public class IMController extends Handler{
     @RequestMapping("/{id}/userlist")
     @Menu(type = "im" , subtype = "inlist" , access = true)
     public void inlist(HttpServletRequest request , HttpServletResponse response, @PathVariable String id , @Valid String userid) throws IOException {
+    	response.setHeader("Content-Type", "text/html;charset=utf-8"); 
     	if(!StringUtils.isBlank(userid)){
 	    	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) ;
 	    	if((black != null && (black.getEndtime()==null || black.getEndtime().after(new Date()))) ){
