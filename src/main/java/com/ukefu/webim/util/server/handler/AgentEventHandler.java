@@ -68,12 +68,9 @@ public class AgentEventHandler
     {  
     	String user = client.getHandshakeData().getSingleUrlParam("userid") ;
 		String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
+		String admin = client.getHandshakeData().getSingleUrlParam("admin") ;
 		if(!StringUtils.isBlank(user)){
-			try {
-				OnlineUserUtils.offline(user, orgi);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			ServiceQuene.deleteAgentStatus(user, orgi, !StringUtils.isBlank(admin) && admin.equals("true"));
 			NettyClients.getInstance().removeAgentEventClient(user , client.getSessionId().toString());
 		}
     }  

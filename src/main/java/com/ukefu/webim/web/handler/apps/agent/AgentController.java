@@ -422,14 +422,9 @@ public class AgentController extends Handler {
 	@Menu(type = "apps", subtype = "agent")
     public ModelAndView notready(HttpServletRequest request){ 
 		User user = super.getUser(request) ;
-		List<AgentStatus> agentStatusList = agentStatusRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request));
-		for(AgentStatus agentStatus : agentStatusList){
-			ServiceQuene.recordAgentStatus(agentStatus.getAgentno(),agentStatus.getUsername() , agentStatus.getAgentno(), agentStatus.getSkill(),"0".equals(super.getUser(request).getUsertype()), agentStatus.getAgentno(), agentStatus.isBusy() ? UKDataContext.AgentStatusEnum.BUSY.toString():UKDataContext.AgentStatusEnum.NOTREADY.toString(), UKDataContext.AgentStatusEnum.NOTREADY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
-			agentStatusRepository.delete(agentStatus);
+		if(user!=null) {
+			ServiceQuene.deleteAgentStatus(user.getId(), user.getOrgi(), "0".equals(user.getUsertype()));
 		}
-    	CacheHelper.getAgentStatusCacheBean().delete(super.getUser(request).getId(),super.getOrgi(request));
-    	ServiceQuene.publishMessage(super.getOrgi(request));
-    	
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 
     }
 	

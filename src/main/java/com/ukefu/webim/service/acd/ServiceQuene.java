@@ -23,6 +23,7 @@ import com.ukefu.webim.service.quene.AgentStatusOrgiFilter;
 import com.ukefu.webim.service.quene.AgentUserOrgiFilter;
 import com.ukefu.webim.service.repository.AgentReportRepository;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
+import com.ukefu.webim.service.repository.AgentStatusRepository;
 import com.ukefu.webim.service.repository.AgentUserRepository;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
@@ -771,5 +772,21 @@ public class ServiceQuene {
 			agentBusyTipMsg = sessionConfig.getAgentbusymsg().replaceAll("\\{num\\}", queneTip) ;
 		}
 		return agentBusyTipMsg;
+	}
+	
+	/**
+	 * 坐席离线 
+	 * @param userid
+	 * @param status
+	 */
+	public static void deleteAgentStatus(String userid , String orgi , boolean isAdmin) {
+		AgentStatusRepository agentStatusRes = UKDataContext.getContext().getBean(AgentStatusRepository.class) ;
+		List<AgentStatus> agentStatusList = agentStatusRes.findByAgentnoAndOrgi(userid , orgi);
+		for(AgentStatus agentStatus : agentStatusList){
+			ServiceQuene.recordAgentStatus(agentStatus.getAgentno(),agentStatus.getUsername() , agentStatus.getAgentno(), agentStatus.getSkill(),isAdmin, agentStatus.getAgentno(), agentStatus.isBusy() ? UKDataContext.AgentStatusEnum.BUSY.toString():UKDataContext.AgentStatusEnum.NOTREADY.toString(), UKDataContext.AgentStatusEnum.NOTREADY.toString(), UKDataContext.AgentWorkType.MEIDIACHAT.toString() , agentStatus.getOrgi() , agentStatus.getUpdatetime());
+			agentStatusRes.delete(agentStatus);
+		}
+    	CacheHelper.getAgentStatusCacheBean().delete(userid,orgi);
+    	ServiceQuene.publishMessage(orgi);
 	}
 }
