@@ -63,6 +63,8 @@ public class KbsTopic extends ESBean implements java.io.Serializable , UKAgg{
 	private boolean finish	;	//结贴
 	
 	private int answers ;		//回答数量
+	
+	@Column(name="sviews")
 	private int views ;			//阅读数量
 	private int followers ;		//关注数量
 	private int collections;	//收藏数量

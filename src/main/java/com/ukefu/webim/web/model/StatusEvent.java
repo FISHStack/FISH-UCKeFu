@@ -46,7 +46,9 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private Date answertime ;//应答时间
 	private int ringduration ;//振铃时长
 	
+	@Column(name="scurrent")
 	private boolean current ;//
+	
 	private boolean init ;//
 	
 	private String caller ;//呼叫发起号码
@@ -89,7 +91,9 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String extention ;//联系人ID
 	private String hostid ;//服务器ID
 	
+	@Column(name="srecord")
 	private boolean record ;//是否录音
+	
 	private Date startrecord ;//开始录音时间
 	private Date endrecord ;//结束录音时间
 	private int recordtime ;//录音时长

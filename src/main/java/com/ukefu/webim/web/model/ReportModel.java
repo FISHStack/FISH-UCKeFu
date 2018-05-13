@@ -90,7 +90,9 @@ public class ReportModel implements java.io.Serializable {
 	
 	private String colorstr ; 
 	
+	@Column(name="sstart")
 	private String start ;
+	@Column(name="send")
 	private String end ;
 	private String rowformatstr ;
 	private String colformatstr ;
