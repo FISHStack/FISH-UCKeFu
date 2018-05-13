@@ -752,3 +752,22 @@ ALTER TABLE uk_agentservice ADD foragent tinyint default 0 COMMENT '直接转人
 
 ALTER TABLE uk_consult_invite ADD aiid varchar(32) COMMENT '默认的AI';
 ALTER TABLE uk_consult_invite ADD maxwordsnum int DEFAULT 300 COMMENT '访客端允许输入的最大字数';
+
+
+ALTER TABLE uk_xiaoe_topic CHANGE views sviews varchar(32);
+ALTER TABLE uk_callcenter_event CHANGE current scurrent tinyint;
+ALTER TABLE uk_callcenter_event CHANGE record srecord tinyint;
+
+ALTER TABLE uk_callcenter_extention CHANGE record srecord tinyint;
+
+ALTER TABLE uk_fans CHANGE user suser varchar(32);
+
+ALTER TABLE uk_kbs_topic CHANGE views sviews int;
+
+ALTER TABLE uk_reportmodel CHANGE start sstart varchar(50);
+ALTER TABLE uk_reportmodel CHANGE end send varchar(50);
+
+
+ALTER TABLE uk_workorders CHANGE views sviews int;
+
+ALTER TABLE uk_xiaoe_scene CHANGE views sviews int;
