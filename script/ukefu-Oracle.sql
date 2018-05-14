@@ -26,7 +26,7 @@
 	"ADTYPE" VARCHAR2(50 CHAR), 
 	"STATUS" VARCHAR2(32 CHAR), 
 	"ADPOS" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_AGENTSERVICE
 --------------------------------------------------------
@@ -126,7 +126,7 @@
 	"AIID" VARCHAR2(32 CHAR), 
 	"AISERVICE" NUMBER(10,0), 
 	"FORAGENT" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_AGENTSTATUS
 --------------------------------------------------------
@@ -160,7 +160,7 @@
 	"PULLUSER" NUMBER(10,0), 
 	"BUSY" NUMBER(10,0), 
 	"WORKSTATUS" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_AGENTUSER
 --------------------------------------------------------
@@ -250,7 +250,7 @@
 	"AGENTUSERNAME" VARCHAR2(32 CHAR), 
 	"ALARM" NUMBER(10,0), 
 	"INITIATOR" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_AGENTUSER_CONTACTS
 --------------------------------------------------------
@@ -265,7 +265,7 @@
 	"USERNAME" VARCHAR2(50 CHAR), 
 	"CREATER" VARCHAR2(32 CHAR), 
 	"CREATETIME" DATE
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_AI
 --------------------------------------------------------
@@ -280,7 +280,7 @@
 	"UPDATETIME" DATE, 
 	"DESCRIPTION" VARCHAR2(255 CHAR), 
 	"CODE" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_AI_SNSACCOUNT
 --------------------------------------------------------
@@ -292,7 +292,7 @@
 	"CREATER" VARCHAR2(32 CHAR), 
 	"CREATETIME" DATE, 
 	"ORGI" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_AREA_TYPE
 --------------------------------------------------------
@@ -310,7 +310,7 @@
 	"INX" NUMBER(10,0), 
 	"ENABLE" NUMBER(10,0), 
 	"AREA" CLOB
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_ATTACHMENT_FILE
 --------------------------------------------------------
@@ -332,7 +332,7 @@
 	"MODEL" VARCHAR2(32 CHAR), 
 	"FILEID" VARCHAR2(32 CHAR), 
 	"MODELID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_BLACKLIST
 --------------------------------------------------------
@@ -356,7 +356,7 @@
 	"CONTROLTIME" NUMBER(10,0), 
 	"ENDTIME" DATE, 
 	"AGENTUSER" VARCHAR2(255 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_BPM_PROCESS
 --------------------------------------------------------
@@ -376,7 +376,7 @@
 	"PUBLISHED" NUMBER(10,0), 
 	"PROCESSID" VARCHAR2(50 CHAR), 
 	"PROCESSTYPE" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CALLCENTER_ACL
 --------------------------------------------------------
@@ -392,7 +392,7 @@
 	"TYPE" VARCHAR2(32 CHAR), 
 	"STRATEGY" CLOB, 
 	"DEFAULTVALUE" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CALLCENTER_EVENT
 --------------------------------------------------------
@@ -464,7 +464,7 @@
 	"SATISF" NUMBER(10,0), 
 	"SATISFACTION" VARCHAR2(32 CHAR), 
 	"SATISFDATE" DATE
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CALLCENTER_EXTENTION
 --------------------------------------------------------
@@ -485,7 +485,7 @@
 	"EXTYPE" VARCHAR2(50 CHAR), 
 	"DESCRIPTION" VARCHAR2(255 CHAR), 
 	"SUBTYPE" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CALLCENTER_IVR
 --------------------------------------------------------
@@ -519,7 +519,7 @@
 	"PARAM" VARCHAR2(255 CHAR), 
 	"PARENTID" VARCHAR2(32 CHAR), 
 	"EXTENTIONID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CALLCENTER_MEDIA
 --------------------------------------------------------
@@ -536,7 +536,7 @@
 	"FILENAME" VARCHAR2(255 CHAR), 
 	"CONTENT" VARCHAR2(50 CHAR), 
 	"FILELENGTH" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CALLCENTER_PBXHOST
 --------------------------------------------------------
@@ -562,7 +562,7 @@
 	"CALLBACKTYPE" VARCHAR2(32 CHAR), 
 	"SIPAUTOANSWER" NUMBER(10,0), 
 	"ABSCODEC" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CALLCENTER_ROUTER
 --------------------------------------------------------
@@ -582,7 +582,7 @@
 	"ROUTERINX" NUMBER(10,0), 
 	"ROUTERCONTENT" CLOB, 
 	"FIELD" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CALLCENTER_SIPTRUNK
 --------------------------------------------------------
@@ -613,7 +613,7 @@
 	"PROTOCOL" VARCHAR2(50 CHAR), 
 	"HEARTBEAT" NUMBER(10,0), 
 	"DTMF" VARCHAR2(20 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CALLCENTER_SKILL
 --------------------------------------------------------
@@ -629,7 +629,7 @@
 	"PASSWORD" VARCHAR2(100 CHAR), 
 	"QUENE" VARCHAR2(100 CHAR), 
 	"HOSTID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CALLCENTER_SKILLEXT
 --------------------------------------------------------
@@ -645,7 +645,7 @@
 	"EXTENTION" VARCHAR2(32 CHAR), 
 	"HOSTID" VARCHAR2(32 CHAR), 
 	"TYPE" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CHAT_MESSAGE
 --------------------------------------------------------
@@ -702,7 +702,7 @@
 	"TOPICID" VARCHAR2(32 CHAR), 
 	"TOPICATID" VARCHAR2(32 CHAR), 
 	"AICHAT" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_COLUMNPROPERTIES
 --------------------------------------------------------
@@ -731,7 +731,7 @@
 	"TIMEFORMAT" VARCHAR2(255 CHAR), 
 	"TITLE" VARCHAR2(255 CHAR), 
 	"SORTINDEX" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CONSULT_INVITE
 --------------------------------------------------------
@@ -832,7 +832,7 @@
 	"AREASKILLTIPMSG" CLOB, 
 	"AIID" VARCHAR2(32 CHAR), 
 	"MAXWORDSNUM" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CONTACTS
 --------------------------------------------------------
@@ -904,7 +904,7 @@
 	"ENTCUSID" VARCHAR2(32 CHAR), 
 	"PINYIN" VARCHAR2(10 CHAR), 
 	"ORGAN" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CUBE
 --------------------------------------------------------
@@ -929,7 +929,7 @@
 	"CREATER" VARCHAR2(32 CHAR), 
 	"UPDATETIME" DATE, 
 	"CUBEFILE" CLOB
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CUBE_TYPE
 --------------------------------------------------------
@@ -944,7 +944,7 @@
 	"INX" NUMBER(10,0), 
 	"UPDATETIME" DATE, 
 	"DESCRIPTION" VARCHAR2(255 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CUBELEVEL
 --------------------------------------------------------
@@ -970,7 +970,7 @@
 	"FORMATSTR" VARCHAR2(255 CHAR), 
 	"DESCRIPTION" CLOB, 
 	"CREATER" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CUBEMEASURE
 --------------------------------------------------------
@@ -998,7 +998,7 @@
 	"MEASURE" VARCHAR2(32 CHAR), 
 	"DESCRIPTION" CLOB, 
 	"CREATER" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_CUBEMETADATA
 --------------------------------------------------------
@@ -1019,7 +1019,7 @@
 	"PARAMETERS" VARCHAR2(255 CHAR), 
 	"ATTRIBUE" CLOB, 
 	"CREATER" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_DATADIC
 --------------------------------------------------------
@@ -1059,7 +1059,7 @@
 	"QUICKMENU" NUMBER(10,0), 
 	"PROJECTID" VARCHAR2(32 CHAR), 
 	"SPSEARCH" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_DATAEVENT
 --------------------------------------------------------
@@ -1079,7 +1079,7 @@
 	"DATAID" VARCHAR2(32 CHAR), 
 	"EVENTTYPE" VARCHAR2(32 CHAR), 
 	"CONTENT" VARCHAR2(255 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_DIMENSION
 --------------------------------------------------------
@@ -1105,7 +1105,7 @@
 	"FKTABLE" VARCHAR2(255 CHAR), 
 	"FKTABLEID" VARCHAR2(255 CHAR), 
 	"CREATER" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_DRILLDOWN
 --------------------------------------------------------
@@ -1127,7 +1127,7 @@
 	"PARAMTARGET" VARCHAR2(255 CHAR), 
 	"PARAMREPORT" VARCHAR2(255 CHAR), 
 	"PARAMVALUE" VARCHAR2(255 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_ENTCUSTOMER
 --------------------------------------------------------
@@ -1197,7 +1197,7 @@
 	"ENTCUSID" VARCHAR2(32 CHAR), 
 	"PINYIN" VARCHAR2(10 CHAR), 
 	"ORGAN" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_FANS
 --------------------------------------------------------
@@ -1208,7 +1208,7 @@
 	"CREATETIME" DATE, 
 	"UPDATETIME" DATE, 
 	"SUSER" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_FAVORITES
 --------------------------------------------------------
@@ -1225,7 +1225,7 @@
 	"ORDERID" VARCHAR2(32 CHAR), 
 	"TITLE" VARCHAR2(255 CHAR), 
 	"MODEL" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_FS_EVENT_SOCKET
 --------------------------------------------------------
@@ -1245,7 +1245,7 @@
 	"CONNECTED_RESULT" VARCHAR2(50 CHAR), 
 	"SHOW_CALLS" NUMBER(10,0), 
 	"ENABLE" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_GENERATION
 --------------------------------------------------------
@@ -1257,7 +1257,7 @@
 	"ORGI" VARCHAR2(32 CHAR), 
 	"CREATER" VARCHAR2(32 CHAR), 
 	"CREATETIME" DATE
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_HISTORYREPORT
 --------------------------------------------------------
@@ -1281,7 +1281,7 @@
 	"TOTAL" NUMBER(10,0), 
 	"USERID" VARCHAR2(32 CHAR), 
 	"USERNAME" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_IMGROUP
 --------------------------------------------------------
@@ -1295,7 +1295,7 @@
 	"DESCRIPT" CLOB, 
 	"NAME" VARCHAR2(100 CHAR), 
 	"ORGI" VARCHAR2(100 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_IMGROUP_USER
 --------------------------------------------------------
@@ -1310,7 +1310,7 @@
 	"USER_ID" VARCHAR2(32 CHAR), 
 	"IMGROUP_ID" VARCHAR2(32 CHAR), 
 	"ADMIN" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_INSTRUCTION
 --------------------------------------------------------
@@ -1340,7 +1340,7 @@
 	"KEYWORD" VARCHAR2(100 CHAR), 
 	"EVENTYPE" VARCHAR2(32 CHAR), 
 	"SNSID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_INVITERECORD
 --------------------------------------------------------
@@ -1358,7 +1358,7 @@
 	"TITLE" VARCHAR2(255 CHAR), 
 	"URL" VARCHAR2(255 CHAR), 
 	"TRACEID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_KBS_EXPERT
 --------------------------------------------------------
@@ -1370,7 +1370,7 @@
 	"CREATER" VARCHAR2(32 CHAR), 
 	"CREATETIME" DATE, 
 	"ORGI" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_KBS_TOPIC
 --------------------------------------------------------
@@ -1413,7 +1413,7 @@
 	"TAGS" CLOB, 
 	"ATTACHMENT" CLOB, 
 	"APPROVAL" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_KBS_TYPE
 --------------------------------------------------------
@@ -1437,7 +1437,7 @@
 	"ENABLE" NUMBER(10,0), 
 	"DESCRIPTION" VARCHAR2(255 CHAR), 
 	"BPM" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_LEAVEMSG
 --------------------------------------------------------
@@ -1456,7 +1456,7 @@
 	"MSGSTATUS" VARCHAR2(20 CHAR), 
 	"CONTACTSID" VARCHAR2(32 CHAR), 
 	"USERID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_LOG
 --------------------------------------------------------
@@ -1487,7 +1487,7 @@
 	"LOGTIME" VARCHAR2(32 CHAR), 
 	"IPADDR" VARCHAR2(255 CHAR), 
 	"PORT" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_LOG_REQUEST
 --------------------------------------------------------
@@ -1527,7 +1527,7 @@
 	"TRIGGERWARNING" VARCHAR2(32 CHAR), 
 	"TRIGGERTIME" VARCHAR2(32 CHAR), 
 	"CREATEDATE" DATE
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_MESSAGE
 --------------------------------------------------------
@@ -1542,7 +1542,7 @@
 	"STATUS" VARCHAR2(10 CHAR), 
 	"FROMUSER" VARCHAR2(32 CHAR), 
 	"TOUSER" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_ONLINEUSER
 --------------------------------------------------------
@@ -1594,7 +1594,7 @@
 	"CHANNEL" VARCHAR2(32 CHAR), 
 	"APPID" VARCHAR2(32 CHAR), 
 	"CONTACTSID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_ONLINEUSER_HIS
 --------------------------------------------------------
@@ -1647,7 +1647,7 @@
 	"APPID" VARCHAR2(32 CHAR), 
 	"CONTACTSID" VARCHAR2(32 CHAR), 
 	"DATAID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_ORDERSCOMMENT
 --------------------------------------------------------
@@ -1681,7 +1681,7 @@
 	"RETBACK" VARCHAR2(20 CHAR), 
 	"ACCDEPT" VARCHAR2(32 CHAR), 
 	"ACCUSER" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_ORGAN
 --------------------------------------------------------
@@ -1699,7 +1699,7 @@
 	"PARENT" VARCHAR2(32 CHAR), 
 	"SKILL" NUMBER(10,0), 
 	"AREA" CLOB
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_ORGANIZATION
 --------------------------------------------------------
@@ -1714,7 +1714,7 @@
 	"MEMO" VARCHAR2(200 CHAR), 
 	"LOGO" VARCHAR2(200 CHAR), 
 	"CREATETIME" DATE
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_ORGANROLE
 --------------------------------------------------------
@@ -1728,7 +1728,7 @@
 	"ORGI" VARCHAR2(32 CHAR), 
 	"DICID" VARCHAR2(32 CHAR), 
 	"DICVALUE" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_ORGI_SKILL_REL
 --------------------------------------------------------
@@ -1740,7 +1740,7 @@
 	"CREATER" VARCHAR2(32 CHAR), 
 	"UPDATETIME" DATE, 
 	"ORGI" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_PROPERTIESEVENT
 --------------------------------------------------------
@@ -1759,7 +1759,7 @@
 	"CREATETIME" DATE, 
 	"DATAID" VARCHAR2(32 CHAR), 
 	"TEXTVALUE" VARCHAR2(255 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_PUBLISHEDCUBE
 --------------------------------------------------------
@@ -1789,7 +1789,7 @@
 	"DBID" VARCHAR2(32 CHAR), 
 	"DICLOCATION" VARCHAR2(255 CHAR), 
 	"USEREMAIL" VARCHAR2(255 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_PUBLISHEDREPORT
 --------------------------------------------------------
@@ -1809,7 +1809,7 @@
 	"DATAVERSION" NUMBER(10,0), 
 	"CREATER" VARCHAR2(255 CHAR), 
 	"REPORTCONTENT" CLOB
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_QUALITY
 --------------------------------------------------------
@@ -1830,7 +1830,7 @@
 	"SCORE" NUMBER(10,0), 
 	"DESCRIPTION" VARCHAR2(255 CHAR), 
 	"QUALITYTYPE" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_QUICK_TYPE
 --------------------------------------------------------
@@ -1851,7 +1851,7 @@
 	"ENABLE" NUMBER(10,0), 
 	"DESCRIPTION" VARCHAR2(255 CHAR), 
 	"QUICKTYPE" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_QUICKREPLY
 --------------------------------------------------------
@@ -1865,7 +1865,7 @@
 	"CREATETIME" DATE, 
 	"CATE" VARCHAR2(32 CHAR), 
 	"ORGI" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_RECENTUSER
 --------------------------------------------------------
@@ -1880,7 +1880,7 @@
 	"USER_ID" VARCHAR2(32 CHAR), 
 	"LASTMSG" VARCHAR2(100 CHAR), 
 	"NEWMSG" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_REPORT
 --------------------------------------------------------
@@ -1918,7 +1918,7 @@
 	"CODE" VARCHAR2(100 CHAR), 
 	"SOURCE" VARCHAR2(50 CHAR), 
 	"VIEWTYPE" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_REPORTFILTER
 --------------------------------------------------------
@@ -1971,7 +1971,7 @@
 	"KEYFIELD" VARCHAR2(32 CHAR), 
 	"VALUEFIELD" VARCHAR2(32 CHAR), 
 	"FKFIELDID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_REPORTMODEL
 --------------------------------------------------------
@@ -2064,7 +2064,7 @@
 	"COLSPAN" NUMBER(10,0), 
 	"COLINDEX" NUMBER(10,0), 
 	"CHARTCONTENT" CLOB
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_ROLE
 --------------------------------------------------------
@@ -2079,7 +2079,7 @@
 	"ORGI" VARCHAR2(32 CHAR), 
 	"ORGID" VARCHAR2(32 CHAR), 
 	"USERNAME" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_ROLE_AUTH
 --------------------------------------------------------
@@ -2096,7 +2096,7 @@
 	"ROLEID" VARCHAR2(32 CHAR), 
 	"DICID" VARCHAR2(32 CHAR), 
 	"DICVALUE" VARCHAR2(30 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_SALES_PRODUCT
 --------------------------------------------------------
@@ -2118,7 +2118,7 @@
 	"MEMO" VARCHAR2(32 CHAR), 
 	"PRICE" NUMBER(10,0), 
 	"ORGAN" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_SALES_PRODUCT_TYPE
 --------------------------------------------------------
@@ -2132,7 +2132,7 @@
 	"UPDATETIME" DATE, 
 	"ORGI" VARCHAR2(32 CHAR), 
 	"USERNAME" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_SECRET
 --------------------------------------------------------
@@ -2145,7 +2145,7 @@
 	"ORGI" VARCHAR2(32 CHAR), 
 	"MODEL" VARCHAR2(32 CHAR), 
 	"ENABLE" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_SERVICESUMMARY
 --------------------------------------------------------
@@ -2182,7 +2182,7 @@
 	"UPDATEUSER" VARCHAR2(32 CHAR), 
 	"UPDATETIME" DATE, 
 	"PROCESSMEMO" CLOB
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_SESSIONCONFIG
 --------------------------------------------------------
@@ -2225,7 +2225,7 @@
 	"QUENETIMEOUTMSG" VARCHAR2(255 CHAR), 
 	"QUENE" NUMBER(10,0), 
 	"SERVICENAME" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_SKILL
 --------------------------------------------------------
@@ -2239,7 +2239,7 @@
 	"UPDATETIME" DATE, 
 	"ORGI" VARCHAR2(32 CHAR), 
 	"USERNAME" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_SNSACCOUNT
 --------------------------------------------------------
@@ -2303,7 +2303,7 @@
 	"VERIFY" VARCHAR2(255 CHAR), 
 	"SNSID" VARCHAR2(32 CHAR), 
 	"AGENT" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_SYSDIC
 --------------------------------------------------------
@@ -2334,7 +2334,7 @@
 	"MLEVEL" VARCHAR2(32 CHAR), 
 	"RULES" VARCHAR2(100 CHAR), 
 	"MENUTYPE" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_SYSTEM_MESSAGE
 --------------------------------------------------------
@@ -2358,7 +2358,7 @@
 	"CREATETIME" DATE, 
 	"NAME" VARCHAR2(50 CHAR), 
 	"MOREPARAM" CLOB
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_SYSTEMCONFIG
 --------------------------------------------------------
@@ -2422,7 +2422,7 @@
 	"NAMEALIAS" VARCHAR2(100 CHAR), 
 	"ENABLEREGORGI" NUMBER(10,0), 
 	"TENANTCONSOLE" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_TABLEPROPERTIES
 --------------------------------------------------------
@@ -2476,7 +2476,7 @@
 	"DESCORDER" NUMBER(10,0), 
 	"IMPFIELD" NUMBER(10,0), 
 	"TOKENTYPE" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_TABLETASK
 --------------------------------------------------------
@@ -2521,7 +2521,7 @@
 	"TBVERSION" NUMBER(10,0), 
 	"LASTUPDATE" DATE, 
 	"CREATETIME" DATE
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_TAG
 --------------------------------------------------------
@@ -2536,7 +2536,7 @@
 	"TAGTYPE" VARCHAR2(32 CHAR), 
 	"ICON" VARCHAR2(50 CHAR), 
 	"COLOR" VARCHAR2(10 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_TAGRELATION
 --------------------------------------------------------
@@ -2546,7 +2546,7 @@
 	"TAGID" VARCHAR2(32 CHAR), 
 	"USERID" VARCHAR2(32 CHAR), 
 	"DATAID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_TEMPLET
 --------------------------------------------------------
@@ -2571,7 +2571,7 @@
 	"LAYOUTCOLS" NUMBER(10,0), 
 	"DATATYPE" VARCHAR2(32 CHAR), 
 	"CHARTTYPE" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_TENANT
 --------------------------------------------------------
@@ -2596,7 +2596,7 @@
 	"SYSTEMTENANT" NUMBER(10,0), 
 	"CREATETIME" DATE, 
 	"SIGN" CLOB
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_USER
 --------------------------------------------------------
@@ -2648,7 +2648,7 @@
 	"SUPERUSER" NUMBER(10,0), 
 	"MAXUSER" NUMBER(10,0), 
 	"ORDERTYPE" VARCHAR2(20 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_USEREVENT
 --------------------------------------------------------
@@ -2684,7 +2684,7 @@
 	"APPID" VARCHAR2(32 CHAR), 
 	"CREATEDATE" VARCHAR2(32 CHAR), 
 	"REFERER" VARCHAR2(255 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_USERROLE
 --------------------------------------------------------
@@ -2696,7 +2696,7 @@
 	"CREATER" VARCHAR2(32 CHAR), 
 	"CREATETIME" DATE, 
 	"ORGI" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_WEBIM_MONITOR
 --------------------------------------------------------
@@ -2713,7 +2713,7 @@
 	"DATESTR" VARCHAR2(32 CHAR), 
 	"HOURSTR" VARCHAR2(32 CHAR), 
 	"DATEHOURSTR" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_WEIXINUSER
 --------------------------------------------------------
@@ -2737,7 +2737,7 @@
 	"GROUPID" VARCHAR2(50 CHAR), 
 	"ORGI" VARCHAR2(32 CHAR), 
 	"CONTACTSID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_WORK_MONITOR
 --------------------------------------------------------
@@ -2780,7 +2780,7 @@
 	"ADMIN" NUMBER(10,0), 
 	"FIRSTTIME" NUMBER(10,0), 
 	"FIRSTTIMES" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_WORKORDER_TYPE
 --------------------------------------------------------
@@ -2799,7 +2799,7 @@
 	"SLA" NUMBER(10,0), 
 	"SLAID" VARCHAR2(32 CHAR), 
 	"PARENTID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_WORKORDERS
 --------------------------------------------------------
@@ -2853,7 +2853,7 @@
 	"KEY" VARCHAR2(32 CHAR), 
 	"MEMO" VARCHAR2(100 CHAR), 
 	"FROMMOBILE" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_WORKTIME
 --------------------------------------------------------
@@ -2879,7 +2879,7 @@
 	"WENDTIME" VARCHAR2(20 CHAR), 
 	"DBEGINTIME" VARCHAR2(20 CHAR), 
 	"DENDTIME" VARCHAR2(20 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_WXMPEVENT
 --------------------------------------------------------
@@ -2900,7 +2900,7 @@
 	"MODEL" VARCHAR2(10 CHAR), 
 	"APPID" VARCHAR2(32 CHAR), 
 	"SNSID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_XIAOE_CONFIG
 --------------------------------------------------------
@@ -2929,7 +2929,7 @@
 	"SELECTSKILL" NUMBER(10,0), 
 	"SELECTSKILLMSG" VARCHAR2(255 CHAR), 
 	"AIID" CLOB
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_XIAOE_KBS_TYPE
 --------------------------------------------------------
@@ -2946,7 +2946,7 @@
 	"AREA" CLOB, 
 	"PARENTID" VARCHAR2(32 CHAR), 
 	"TYPEID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_XIAOE_SCENE
 --------------------------------------------------------
@@ -2989,7 +2989,7 @@
 	"USERINPUT" CLOB, 
 	"AIREPLY" CLOB, 
 	"FROMMOBILE" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_XIAOE_SCENE_TYPE
 --------------------------------------------------------
@@ -3006,7 +3006,7 @@
 	"AREA" CLOB, 
 	"PARENTID" VARCHAR2(32 CHAR), 
 	"TYPEID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_XIAOE_SCENEITEM
 --------------------------------------------------------
@@ -3023,7 +3023,7 @@
 	"ITEMTYPE" VARCHAR2(32 CHAR), 
 	"REPLAYTYPE" VARCHAR2(32 CHAR), 
 	"ALLOWASK" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_XIAOE_TOPIC
 --------------------------------------------------------
@@ -3065,7 +3065,7 @@
 	"WEIXIN" CLOB, 
 	"SILIMAR" CLOB, 
 	"AIID" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_XIAOE_TOPIC_ITEM
 --------------------------------------------------------
@@ -3077,7 +3077,7 @@
 	"ORGI" VARCHAR2(255 CHAR), 
 	"CREATER" VARCHAR2(255 CHAR), 
 	"CREATETIME" DATE
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_XIAOE_WORDS
 --------------------------------------------------------
@@ -3094,7 +3094,7 @@
 	"SUPERORDINATE" VARCHAR2(50 CHAR), 
 	"PARTOFSPEECH" VARCHAR2(50 CHAR), 
 	"CATE" VARCHAR2(32 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table UK_XIAOE_WORDS_TYPE
 --------------------------------------------------------
@@ -3108,7 +3108,7 @@
 	"UPDATETIME" DATE, 
 	"ORGI" VARCHAR2(32 CHAR), 
 	"USERNAME" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table WF_CC_ORDER
 --------------------------------------------------------
@@ -3120,7 +3120,7 @@
 	"CREATE_TIME" VARCHAR2(50 CHAR), 
 	"FINISH_TIME" VARCHAR2(50 CHAR), 
 	"STATUS" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table WF_HIST_ORDER
 --------------------------------------------------------
@@ -3137,7 +3137,7 @@
 	"PARENT_ID" VARCHAR2(32 CHAR), 
 	"ORDER_NO" VARCHAR2(50 CHAR), 
 	"VARIABLE" CLOB
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table WF_HIST_TASK
 --------------------------------------------------------
@@ -3157,7 +3157,7 @@
 	"ACTION_URL" VARCHAR2(200 CHAR), 
 	"PARENT_TASK_ID" VARCHAR2(32 CHAR), 
 	"VARIABLE" CLOB
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table WF_HIST_TASK_ACTOR
 --------------------------------------------------------
@@ -3165,7 +3165,7 @@
   CREATE TABLE "WF_HIST_TASK_ACTOR" 
    (	"TASK_ID" VARCHAR2(32 CHAR), 
 	"ACTOR_ID" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table WF_ORDER
 --------------------------------------------------------
@@ -3184,7 +3184,7 @@
 	"ORDER_NO" VARCHAR2(50 CHAR), 
 	"VARIABLE" CLOB, 
 	"VERSION" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table WF_PROCESS
 --------------------------------------------------------
@@ -3200,7 +3200,7 @@
 	"VERSION" NUMBER(10,0), 
 	"CREATE_TIME" VARCHAR2(50 CHAR), 
 	"CREATOR" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table WF_SURROGATE
 --------------------------------------------------------
@@ -3214,7 +3214,7 @@
 	"SDATE" VARCHAR2(64 CHAR), 
 	"EDATE" VARCHAR2(64 CHAR), 
 	"STATE" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table WF_TASK
 --------------------------------------------------------
@@ -3234,7 +3234,7 @@
 	"PARENT_TASK_ID" VARCHAR2(32 CHAR), 
 	"VARIABLE" CLOB, 
 	"VERSION" NUMBER(10,0)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table WF_TASK_ACTOR
 --------------------------------------------------------
@@ -3242,7 +3242,7 @@
   CREATE TABLE "WF_TASK_ACTOR" 
    (	"TASK_ID" VARCHAR2(32 CHAR), 
 	"ACTOR_ID" VARCHAR2(50 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Table WF_WORKITEM
 --------------------------------------------------------
@@ -3269,1421 +3269,1393 @@
 	"TASK_TYPE" NUMBER(10,0), 
 	"PERFORM_TYPE" NUMBER(10,0), 
 	"TASK_VARIABLE" VARCHAR2(255 CHAR)
-   )
+   );
 --------------------------------------------------------
 --  DDL for Index SYS_C0014102
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014102" ON "UK_AD_POSITION" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014102" ON "UK_AD_POSITION" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014104
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014104" ON "UK_AGENTSERVICE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014104" ON "UK_AGENTSERVICE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014107
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014107" ON "UK_AGENTUSER" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014107" ON "UK_AGENTUSER" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014109
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014109" ON "UK_AGENTUSER_CONTACTS" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014109" ON "UK_AGENTUSER_CONTACTS" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014111
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014111" ON "UK_AI" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014111" ON "UK_AI" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014113
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014113" ON "UK_AI_SNSACCOUNT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014113" ON "UK_AI_SNSACCOUNT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014115
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014115" ON "UK_AREA_TYPE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014115" ON "UK_AREA_TYPE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014117
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014117" ON "UK_ATTACHMENT_FILE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014117" ON "UK_ATTACHMENT_FILE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014119
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014119" ON "UK_BLACKLIST" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014119" ON "UK_BLACKLIST" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014121
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014121" ON "UK_BPM_PROCESS" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014121" ON "UK_BPM_PROCESS" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014123
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014123" ON "UK_CALLCENTER_ACL" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014123" ON "UK_CALLCENTER_ACL" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014125
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014125" ON "UK_CALLCENTER_EVENT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014125" ON "UK_CALLCENTER_EVENT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014127
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014127" ON "UK_CALLCENTER_EXTENTION" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014127" ON "UK_CALLCENTER_EXTENTION" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014129
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014129" ON "UK_CALLCENTER_IVR" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014129" ON "UK_CALLCENTER_IVR" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014131
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014131" ON "UK_CALLCENTER_MEDIA" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014131" ON "UK_CALLCENTER_MEDIA" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014133
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014133" ON "UK_CALLCENTER_PBXHOST" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014133" ON "UK_CALLCENTER_PBXHOST" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014135
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014135" ON "UK_CALLCENTER_ROUTER" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014135" ON "UK_CALLCENTER_ROUTER" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014137
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014137" ON "UK_CALLCENTER_SIPTRUNK" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014137" ON "UK_CALLCENTER_SIPTRUNK" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014139
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014139" ON "UK_CALLCENTER_SKILL" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014139" ON "UK_CALLCENTER_SKILL" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014141
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014141" ON "UK_CALLCENTER_SKILLEXT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014141" ON "UK_CALLCENTER_SKILLEXT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014143
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014143" ON "UK_CHAT_MESSAGE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014143" ON "UK_CHAT_MESSAGE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014145
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014145" ON "UK_COLUMNPROPERTIES" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014145" ON "UK_COLUMNPROPERTIES" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014147
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014147" ON "UK_CONSULT_INVITE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014147" ON "UK_CONSULT_INVITE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014149
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014149" ON "UK_CONTACTS" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014149" ON "UK_CONTACTS" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014152
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014152" ON "UK_CUBE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014152" ON "UK_CUBE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014154
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014154" ON "UK_CUBE_TYPE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014154" ON "UK_CUBE_TYPE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014157
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014157" ON "UK_CUBELEVEL" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014157" ON "UK_CUBELEVEL" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014160
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014160" ON "UK_CUBEMEASURE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014160" ON "UK_CUBEMEASURE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014163
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014163" ON "UK_CUBEMETADATA" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014163" ON "UK_CUBEMETADATA" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014166
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014166" ON "UK_DATAEVENT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014166" ON "UK_DATAEVENT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014169
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014169" ON "UK_DIMENSION" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014169" ON "UK_DIMENSION" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014171
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014171" ON "UK_DRILLDOWN" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014171" ON "UK_DRILLDOWN" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014173
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014173" ON "UK_ENTCUSTOMER" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014173" ON "UK_ENTCUSTOMER" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014175
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014175" ON "UK_FANS" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014175" ON "UK_FANS" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014177
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014177" ON "UK_FAVORITES" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014177" ON "UK_FAVORITES" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014180
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014180" ON "UK_FS_EVENT_SOCKET" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014180" ON "UK_FS_EVENT_SOCKET" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014182
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014182" ON "UK_GENERATION" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014182" ON "UK_GENERATION" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014188
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014188" ON "UK_HISTORYREPORT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014188" ON "UK_HISTORYREPORT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014190
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014190" ON "UK_IMGROUP" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014190" ON "UK_IMGROUP" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014192
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014192" ON "UK_IMGROUP_USER" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014192" ON "UK_IMGROUP_USER" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014194
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014194" ON "UK_INSTRUCTION" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014194" ON "UK_INSTRUCTION" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014196
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014196" ON "UK_INVITERECORD" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014196" ON "UK_INVITERECORD" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014198
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014198" ON "UK_KBS_EXPERT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014198" ON "UK_KBS_EXPERT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014201
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014201" ON "UK_KBS_TYPE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014201" ON "UK_KBS_TYPE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014203
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014203" ON "UK_LEAVEMSG" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014203" ON "UK_LEAVEMSG" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014205
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014205" ON "UK_LOG" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014205" ON "UK_LOG" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014207
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014207" ON "UK_LOG_REQUEST" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014207" ON "UK_LOG_REQUEST" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014209
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014209" ON "UK_MESSAGE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014209" ON "UK_MESSAGE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014212
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014212" ON "UK_ONLINEUSER" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014212" ON "UK_ONLINEUSER" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014215
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014215" ON "UK_ONLINEUSER_HIS" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014215" ON "UK_ONLINEUSER_HIS" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014217
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014217" ON "UK_ORDERSCOMMENT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014217" ON "UK_ORDERSCOMMENT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014219
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014219" ON "UK_ORGAN" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014219" ON "UK_ORGAN" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014221
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014221" ON "UK_ORGANIZATION" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014221" ON "UK_ORGANIZATION" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014223
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014223" ON "UK_ORGANROLE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014223" ON "UK_ORGANROLE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014225
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014225" ON "UK_ORGI_SKILL_REL" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014225" ON "UK_ORGI_SKILL_REL" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014227
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014227" ON "UK_PROPERTIESEVENT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014227" ON "UK_PROPERTIESEVENT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014230
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014230" ON "UK_PUBLISHEDCUBE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014230" ON "UK_PUBLISHEDCUBE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014233
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014233" ON "UK_PUBLISHEDREPORT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014233" ON "UK_PUBLISHEDREPORT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014235
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014235" ON "UK_QUALITY" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014235" ON "UK_QUALITY" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014237
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014237" ON "UK_QUICK_TYPE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014237" ON "UK_QUICK_TYPE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014239
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014239" ON "UK_QUICKREPLY" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014239" ON "UK_QUICKREPLY" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014241
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014241" ON "UK_RECENTUSER" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014241" ON "UK_RECENTUSER" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014243
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014243" ON "UK_REPORT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014243" ON "UK_REPORT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014245
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014245" ON "UK_REPORTFILTER" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014245" ON "UK_REPORTFILTER" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014247
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014247" ON "UK_REPORTMODEL" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014247" ON "UK_REPORTMODEL" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014249
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014249" ON "UK_ROLE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014249" ON "UK_ROLE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014251
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014251" ON "UK_ROLE_AUTH" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014251" ON "UK_ROLE_AUTH" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014253
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014253" ON "UK_SALES_PRODUCT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014253" ON "UK_SALES_PRODUCT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014255
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014255" ON "UK_SALES_PRODUCT_TYPE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014255" ON "UK_SALES_PRODUCT_TYPE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014257
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014257" ON "UK_SECRET" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014257" ON "UK_SECRET" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014259
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014259" ON "UK_SERVICESUMMARY" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014259" ON "UK_SERVICESUMMARY" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014261
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014261" ON "UK_SESSIONCONFIG" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014261" ON "UK_SESSIONCONFIG" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014263
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014263" ON "UK_SKILL" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014263" ON "UK_SKILL" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014265
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014265" ON "UK_SNSACCOUNT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014265" ON "UK_SNSACCOUNT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014820
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014820" ON "UK_SYSDIC" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014820" ON "UK_SYSDIC" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014269
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014269" ON "UK_SYSTEM_MESSAGE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014269" ON "UK_SYSTEM_MESSAGE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014273
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014273" ON "UK_TABLEPROPERTIES" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014273" ON "UK_TABLEPROPERTIES" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014277
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014277" ON "UK_TABLETASK" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014277" ON "UK_TABLETASK" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014279
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014279" ON "UK_TAG" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014279" ON "UK_TAG" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014281
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014281" ON "UK_TAGRELATION" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014281" ON "UK_TAGRELATION" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014824
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014824" ON "UK_TEMPLET" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014824" ON "UK_TEMPLET" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014285
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014285" ON "UK_TENANT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014285" ON "UK_TENANT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014822
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014822" ON "UK_USER" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014822" ON "UK_USER" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014289
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014289" ON "UK_USEREVENT" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014289" ON "UK_USEREVENT" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014291
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014291" ON "UK_USERROLE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014291" ON "UK_USERROLE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014293
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014293" ON "UK_WEBIM_MONITOR" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014293" ON "UK_WEBIM_MONITOR" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014295
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014295" ON "UK_WEIXINUSER" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014295" ON "UK_WEIXINUSER" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014297
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014297" ON "UK_WORK_MONITOR" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014297" ON "UK_WORK_MONITOR" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014299
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014299" ON "UK_WORKORDER_TYPE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014299" ON "UK_WORKORDER_TYPE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014301
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014301" ON "UK_WORKORDERS" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014301" ON "UK_WORKORDERS" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014303
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014303" ON "UK_WORKTIME" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014303" ON "UK_WORKTIME" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014828
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014828" ON "UK_XIAOE_CONFIG" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014828" ON "UK_XIAOE_CONFIG" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014830
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014830" ON "UK_XIAOE_KBS_TYPE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014830" ON "UK_XIAOE_KBS_TYPE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014832
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014832" ON "UK_XIAOE_SCENE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014832" ON "UK_XIAOE_SCENE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014834
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014834" ON "UK_XIAOE_SCENE_TYPE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014834" ON "UK_XIAOE_SCENE_TYPE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014836
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014836" ON "UK_XIAOE_SCENEITEM" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014836" ON "UK_XIAOE_SCENEITEM" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014838
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014838" ON "UK_XIAOE_TOPIC" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014838" ON "UK_XIAOE_TOPIC" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014840
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014840" ON "UK_XIAOE_TOPIC_ITEM" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014840" ON "UK_XIAOE_TOPIC_ITEM" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014842
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014842" ON "UK_XIAOE_WORDS" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014842" ON "UK_XIAOE_WORDS" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014844
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014844" ON "UK_XIAOE_WORDS_TYPE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014844" ON "UK_XIAOE_WORDS_TYPE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014849
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014849" ON "WF_HIST_ORDER" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014849" ON "WF_HIST_ORDER" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014857
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014857" ON "WF_HIST_TASK" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014857" ON "WF_HIST_TASK" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014863
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014863" ON "WF_ORDER" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014863" ON "WF_ORDER" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014865
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014865" ON "WF_PROCESS" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014865" ON "WF_PROCESS" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014867
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014867" ON "WF_SURROGATE" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014867" ON "WF_SURROGATE" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014873
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "SYS_C0014873" ON "WF_TASK" ("ID")
+  CREATE UNIQUE INDEX "SYS_C0014873" ON "WF_TASK" ("ID") ;
 --------------------------------------------------------
 --  DDL for Index SYS_C0014877
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "SYS_C0014877" ON "WF_WORKITEM" ("TASK_ID")
---------------------------------------------------------
---  DDL for Trigger UK_FS_EVENT_SOCKET_ID_TRIG
---------------------------------------------------------
 
-  CREATE OR REPLACE TRIGGER "UK_FS_EVENT_SOCKET_ID_TRIG" BEFORE INSERT OR UPDATE ON uk_fs_event_socket
-FOR EACH ROW
-DECLARE 
-v_newVal NUMBER(12) := 0;
-v_incval NUMBER(12) := 0;
-BEGIN
-  IF INSERTING AND :new.id IS NULL THEN
-    SELECT  uk_fs_event_socket_id_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
-    -- If this is the first time this table have been inserted into (sequence == 1)
-    IF v_newVal = 1 THEN 
-      --get the max indentity value from the table
-      SELECT NVL(max(id),0) INTO v_newVal FROM uk_fs_event_socket;
-      v_newVal := v_newVal + 1;
-      --set the sequence to that value
-      LOOP
-           EXIT WHEN v_incval>=v_newVal;
-           SELECT uk_fs_event_socket_id_SEQ.nextval INTO v_incval FROM dual;
-      END LOOP;
-    END IF;
-   -- assign the value from the sequence to emulate the identity column
-   :new.id := v_newVal;
-  END IF;
-END;
-
-ALTER TRIGGER "UK_FS_EVENT_SOCKET_ID_TRIG" ENABLE
 --------------------------------------------------------
 --  Constraints for Table UK_AD_POSITION
 --------------------------------------------------------
 
-  ALTER TABLE "UK_AD_POSITION" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_AD_POSITION" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_AD_POSITION" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_AD_POSITION" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_AGENTSERVICE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_AGENTSERVICE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_AGENTSERVICE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_AGENTSERVICE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_AGENTSERVICE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_AGENTSTATUS
 --------------------------------------------------------
 
-  ALTER TABLE "UK_AGENTSTATUS" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_AGENTSTATUS" MODIFY ("ID" NOT NULL ENABLE) ;
 --------------------------------------------------------
 --  Constraints for Table UK_AGENTUSER
 --------------------------------------------------------
 
-  ALTER TABLE "UK_AGENTUSER" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_AGENTUSER" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_AGENTUSER" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_AGENTUSER" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_AGENTUSER_CONTACTS
 --------------------------------------------------------
 
-  ALTER TABLE "UK_AGENTUSER_CONTACTS" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_AGENTUSER_CONTACTS" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_AGENTUSER_CONTACTS" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_AGENTUSER_CONTACTS" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_AI
 --------------------------------------------------------
 
-  ALTER TABLE "UK_AI" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_AI" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_AI" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_AI" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_AI_SNSACCOUNT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_AI_SNSACCOUNT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_AI_SNSACCOUNT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_AI_SNSACCOUNT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_AI_SNSACCOUNT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_AREA_TYPE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_AREA_TYPE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_AREA_TYPE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_AREA_TYPE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_AREA_TYPE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_ATTACHMENT_FILE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_ATTACHMENT_FILE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_ATTACHMENT_FILE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ATTACHMENT_FILE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_ATTACHMENT_FILE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_BLACKLIST
 --------------------------------------------------------
 
-  ALTER TABLE "UK_BLACKLIST" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_BLACKLIST" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_BLACKLIST" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_BLACKLIST" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_BPM_PROCESS
 --------------------------------------------------------
 
-  ALTER TABLE "UK_BPM_PROCESS" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_BPM_PROCESS" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_BPM_PROCESS" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_BPM_PROCESS" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CALLCENTER_ACL
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CALLCENTER_ACL" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CALLCENTER_ACL" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CALLCENTER_ACL" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CALLCENTER_ACL" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CALLCENTER_EVENT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CALLCENTER_EVENT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CALLCENTER_EVENT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CALLCENTER_EVENT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CALLCENTER_EVENT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CALLCENTER_EXTENTION
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CALLCENTER_EXTENTION" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CALLCENTER_EXTENTION" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CALLCENTER_EXTENTION" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CALLCENTER_EXTENTION" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CALLCENTER_IVR
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CALLCENTER_IVR" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CALLCENTER_IVR" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CALLCENTER_IVR" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CALLCENTER_IVR" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CALLCENTER_MEDIA
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CALLCENTER_MEDIA" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CALLCENTER_MEDIA" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CALLCENTER_MEDIA" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CALLCENTER_MEDIA" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CALLCENTER_PBXHOST
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CALLCENTER_PBXHOST" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CALLCENTER_PBXHOST" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CALLCENTER_PBXHOST" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CALLCENTER_PBXHOST" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CALLCENTER_ROUTER
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CALLCENTER_ROUTER" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CALLCENTER_ROUTER" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CALLCENTER_ROUTER" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CALLCENTER_ROUTER" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CALLCENTER_SIPTRUNK
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CALLCENTER_SIPTRUNK" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CALLCENTER_SIPTRUNK" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CALLCENTER_SIPTRUNK" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CALLCENTER_SIPTRUNK" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CALLCENTER_SKILL
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CALLCENTER_SKILL" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CALLCENTER_SKILL" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CALLCENTER_SKILL" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CALLCENTER_SKILL" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CALLCENTER_SKILLEXT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CALLCENTER_SKILLEXT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CALLCENTER_SKILLEXT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CALLCENTER_SKILLEXT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CALLCENTER_SKILLEXT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CHAT_MESSAGE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CHAT_MESSAGE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CHAT_MESSAGE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CHAT_MESSAGE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CHAT_MESSAGE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_COLUMNPROPERTIES
 --------------------------------------------------------
 
-  ALTER TABLE "UK_COLUMNPROPERTIES" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_COLUMNPROPERTIES" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_COLUMNPROPERTIES" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_COLUMNPROPERTIES" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CONSULT_INVITE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CONSULT_INVITE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CONSULT_INVITE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CONSULT_INVITE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CONSULT_INVITE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CONTACTS
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CONTACTS" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CONTACTS" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CONTACTS" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CONTACTS" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CUBE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CUBE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CUBE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CUBE" MODIFY ("CREATETIME" NOT NULL ENABLE)
+  ALTER TABLE "UK_CUBE" MODIFY ("CREATETIME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CUBE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CUBE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CUBE_TYPE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CUBE_TYPE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CUBE_TYPE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CUBE_TYPE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CUBE_TYPE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CUBELEVEL
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CUBELEVEL" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CUBELEVEL" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CUBELEVEL" MODIFY ("CREATETIME" NOT NULL ENABLE)
+  ALTER TABLE "UK_CUBELEVEL" MODIFY ("CREATETIME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CUBELEVEL" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CUBELEVEL" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CUBEMEASURE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CUBEMEASURE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CUBEMEASURE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CUBEMEASURE" MODIFY ("CREATETIME" NOT NULL ENABLE)
+  ALTER TABLE "UK_CUBEMEASURE" MODIFY ("CREATETIME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CUBEMEASURE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CUBEMEASURE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_CUBEMETADATA
 --------------------------------------------------------
 
-  ALTER TABLE "UK_CUBEMETADATA" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_CUBEMETADATA" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CUBEMETADATA" MODIFY ("CREATETIME" NOT NULL ENABLE)
+  ALTER TABLE "UK_CUBEMETADATA" MODIFY ("CREATETIME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_CUBEMETADATA" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_CUBEMETADATA" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_DATADIC
 --------------------------------------------------------
 
-  ALTER TABLE "UK_DATADIC" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_DATADIC" MODIFY ("ID" NOT NULL ENABLE) ;
 --------------------------------------------------------
 --  Constraints for Table UK_DATAEVENT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_DATAEVENT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_DATAEVENT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_DATAEVENT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_DATAEVENT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_DIMENSION
 --------------------------------------------------------
 
-  ALTER TABLE "UK_DIMENSION" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_DIMENSION" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_DIMENSION" MODIFY ("CREATETIME" NOT NULL ENABLE)
+  ALTER TABLE "UK_DIMENSION" MODIFY ("CREATETIME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_DIMENSION" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_DIMENSION" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_DRILLDOWN
 --------------------------------------------------------
 
-  ALTER TABLE "UK_DRILLDOWN" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_DRILLDOWN" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_DRILLDOWN" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_DRILLDOWN" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_ENTCUSTOMER
 --------------------------------------------------------
 
-  ALTER TABLE "UK_ENTCUSTOMER" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_ENTCUSTOMER" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ENTCUSTOMER" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_ENTCUSTOMER" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_FANS
 --------------------------------------------------------
 
-  ALTER TABLE "UK_FANS" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_FANS" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_FANS" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_FANS" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_FAVORITES
 --------------------------------------------------------
 
-  ALTER TABLE "UK_FAVORITES" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_FAVORITES" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_FAVORITES" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_FAVORITES" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_FS_EVENT_SOCKET
 --------------------------------------------------------
 
-  ALTER TABLE "UK_FS_EVENT_SOCKET" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_FS_EVENT_SOCKET" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_FS_EVENT_SOCKET" MODIFY ("HOSTNAME" NOT NULL ENABLE)
+  ALTER TABLE "UK_FS_EVENT_SOCKET" MODIFY ("HOSTNAME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_FS_EVENT_SOCKET" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_FS_EVENT_SOCKET" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_GENERATION
 --------------------------------------------------------
 
-  ALTER TABLE "UK_GENERATION" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_GENERATION" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_GENERATION" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_GENERATION" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_HISTORYREPORT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_HISTORYREPORT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_HISTORYREPORT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_HISTORYREPORT" MODIFY ("BYTES" NOT NULL ENABLE)
+  ALTER TABLE "UK_HISTORYREPORT" MODIFY ("BYTES" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_HISTORYREPORT" MODIFY ("THREADS" NOT NULL ENABLE)
+  ALTER TABLE "UK_HISTORYREPORT" MODIFY ("THREADS" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_HISTORYREPORT" MODIFY ("PAGES" NOT NULL ENABLE)
+  ALTER TABLE "UK_HISTORYREPORT" MODIFY ("PAGES" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_HISTORYREPORT" MODIFY ("ERRORS" NOT NULL ENABLE)
+  ALTER TABLE "UK_HISTORYREPORT" MODIFY ("ERRORS" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_HISTORYREPORT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_HISTORYREPORT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_IMGROUP
 --------------------------------------------------------
 
-  ALTER TABLE "UK_IMGROUP" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_IMGROUP" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_IMGROUP" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_IMGROUP" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_IMGROUP_USER
 --------------------------------------------------------
 
-  ALTER TABLE "UK_IMGROUP_USER" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_IMGROUP_USER" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_IMGROUP_USER" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_IMGROUP_USER" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_INSTRUCTION
 --------------------------------------------------------
 
-  ALTER TABLE "UK_INSTRUCTION" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_INSTRUCTION" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_INSTRUCTION" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_INSTRUCTION" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_INVITERECORD
 --------------------------------------------------------
 
-  ALTER TABLE "UK_INVITERECORD" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_INVITERECORD" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_INVITERECORD" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_INVITERECORD" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_KBS_EXPERT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_KBS_EXPERT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_KBS_EXPERT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_KBS_EXPERT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_KBS_EXPERT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_KBS_TOPIC
 --------------------------------------------------------
 
-  ALTER TABLE "UK_KBS_TOPIC" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_KBS_TOPIC" MODIFY ("ID" NOT NULL ENABLE) ;
 --------------------------------------------------------
 --  Constraints for Table UK_KBS_TYPE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_KBS_TYPE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_KBS_TYPE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_KBS_TYPE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_KBS_TYPE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_LEAVEMSG
 --------------------------------------------------------
 
-  ALTER TABLE "UK_LEAVEMSG" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_LEAVEMSG" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_LEAVEMSG" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_LEAVEMSG" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_LOG
 --------------------------------------------------------
 
-  ALTER TABLE "UK_LOG" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_LOG" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_LOG" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_LOG" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_LOG_REQUEST
 --------------------------------------------------------
 
-  ALTER TABLE "UK_LOG_REQUEST" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_LOG_REQUEST" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_LOG_REQUEST" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_LOG_REQUEST" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_MESSAGE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_MESSAGE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_MESSAGE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_MESSAGE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_MESSAGE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_ONLINEUSER
 --------------------------------------------------------
 
-  ALTER TABLE "UK_ONLINEUSER" MODIFY ("ASSIGNEDTO" NOT NULL ENABLE)
+  ALTER TABLE "UK_ONLINEUSER" MODIFY ("ASSIGNEDTO" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ONLINEUSER" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_ONLINEUSER" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ONLINEUSER" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_ONLINEUSER" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_ONLINEUSER_HIS
 --------------------------------------------------------
 
-  ALTER TABLE "UK_ONLINEUSER_HIS" MODIFY ("ASSIGNEDTO" NOT NULL ENABLE)
+  ALTER TABLE "UK_ONLINEUSER_HIS" MODIFY ("ASSIGNEDTO" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ONLINEUSER_HIS" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_ONLINEUSER_HIS" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ONLINEUSER_HIS" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_ONLINEUSER_HIS" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_ORDERSCOMMENT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_ORDERSCOMMENT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_ORDERSCOMMENT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ORDERSCOMMENT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_ORDERSCOMMENT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_ORGAN
 --------------------------------------------------------
 
-  ALTER TABLE "UK_ORGAN" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_ORGAN" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ORGAN" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_ORGAN" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_ORGANIZATION
 --------------------------------------------------------
 
-  ALTER TABLE "UK_ORGANIZATION" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_ORGANIZATION" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ORGANIZATION" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_ORGANIZATION" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_ORGANROLE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_ORGANROLE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_ORGANROLE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ORGANROLE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_ORGANROLE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_ORGI_SKILL_REL
 --------------------------------------------------------
 
-  ALTER TABLE "UK_ORGI_SKILL_REL" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_ORGI_SKILL_REL" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ORGI_SKILL_REL" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_ORGI_SKILL_REL" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_PROPERTIESEVENT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_PROPERTIESEVENT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_PROPERTIESEVENT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_PROPERTIESEVENT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_PROPERTIESEVENT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_PUBLISHEDCUBE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_PUBLISHEDCUBE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_PUBLISHEDCUBE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_PUBLISHEDCUBE" MODIFY ("CREATETIME" NOT NULL ENABLE)
+  ALTER TABLE "UK_PUBLISHEDCUBE" MODIFY ("CREATETIME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_PUBLISHEDCUBE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_PUBLISHEDCUBE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_PUBLISHEDREPORT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_PUBLISHEDREPORT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_PUBLISHEDREPORT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_PUBLISHEDREPORT" MODIFY ("CREATETIME" NOT NULL ENABLE)
+  ALTER TABLE "UK_PUBLISHEDREPORT" MODIFY ("CREATETIME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_PUBLISHEDREPORT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_PUBLISHEDREPORT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_QUALITY
 --------------------------------------------------------
 
-  ALTER TABLE "UK_QUALITY" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_QUALITY" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_QUALITY" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_QUALITY" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_QUICK_TYPE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_QUICK_TYPE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_QUICK_TYPE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_QUICK_TYPE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_QUICK_TYPE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_QUICKREPLY
 --------------------------------------------------------
 
-  ALTER TABLE "UK_QUICKREPLY" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_QUICKREPLY" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_QUICKREPLY" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_QUICKREPLY" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_RECENTUSER
 --------------------------------------------------------
 
-  ALTER TABLE "UK_RECENTUSER" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_RECENTUSER" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_RECENTUSER" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_RECENTUSER" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_REPORT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_REPORT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_REPORT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_REPORT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_REPORT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_REPORTFILTER
 --------------------------------------------------------
 
-  ALTER TABLE "UK_REPORTFILTER" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_REPORTFILTER" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_REPORTFILTER" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_REPORTFILTER" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_REPORTMODEL
 --------------------------------------------------------
 
-  ALTER TABLE "UK_REPORTMODEL" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_REPORTMODEL" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_REPORTMODEL" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_REPORTMODEL" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_ROLE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_ROLE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_ROLE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ROLE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_ROLE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_ROLE_AUTH
 --------------------------------------------------------
 
-  ALTER TABLE "UK_ROLE_AUTH" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_ROLE_AUTH" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_ROLE_AUTH" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_ROLE_AUTH" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_SALES_PRODUCT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_SALES_PRODUCT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_SALES_PRODUCT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_SALES_PRODUCT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_SALES_PRODUCT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_SALES_PRODUCT_TYPE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_SALES_PRODUCT_TYPE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_SALES_PRODUCT_TYPE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_SALES_PRODUCT_TYPE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_SALES_PRODUCT_TYPE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_SECRET
 --------------------------------------------------------
 
-  ALTER TABLE "UK_SECRET" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_SECRET" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_SECRET" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_SECRET" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_SERVICESUMMARY
 --------------------------------------------------------
 
-  ALTER TABLE "UK_SERVICESUMMARY" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_SERVICESUMMARY" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_SERVICESUMMARY" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_SERVICESUMMARY" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_SESSIONCONFIG
 --------------------------------------------------------
 
-  ALTER TABLE "UK_SESSIONCONFIG" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_SESSIONCONFIG" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_SESSIONCONFIG" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_SESSIONCONFIG" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_SKILL
 --------------------------------------------------------
 
-  ALTER TABLE "UK_SKILL" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_SKILL" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_SKILL" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_SKILL" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_SNSACCOUNT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_SNSACCOUNT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_SNSACCOUNT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_SNSACCOUNT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_SNSACCOUNT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_SYSDIC
 --------------------------------------------------------
 
-  ALTER TABLE "UK_SYSDIC" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_SYSDIC" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_SYSDIC" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_SYSDIC" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_SYSTEM_MESSAGE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_SYSTEM_MESSAGE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_SYSTEM_MESSAGE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_SYSTEM_MESSAGE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_SYSTEM_MESSAGE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_SYSTEMCONFIG
 --------------------------------------------------------
 
-  ALTER TABLE "UK_SYSTEMCONFIG" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_SYSTEMCONFIG" MODIFY ("ID" NOT NULL ENABLE) ;
 --------------------------------------------------------
 --  Constraints for Table UK_TABLEPROPERTIES
 --------------------------------------------------------
 
-  ALTER TABLE "UK_TABLEPROPERTIES" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_TABLEPROPERTIES" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_TABLEPROPERTIES" MODIFY ("DATATYPECODE" NOT NULL ENABLE)
+  ALTER TABLE "UK_TABLEPROPERTIES" MODIFY ("DATATYPECODE" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_TABLEPROPERTIES" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_TABLEPROPERTIES" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_TABLETASK
 --------------------------------------------------------
 
-  ALTER TABLE "UK_TABLETASK" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_TABLETASK" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_TABLETASK" MODIFY ("STARTINDEX" NOT NULL ENABLE)
+  ALTER TABLE "UK_TABLETASK" MODIFY ("STARTINDEX" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_TABLETASK" MODIFY ("UPDATETIMENUMBER" NOT NULL ENABLE)
+  ALTER TABLE "UK_TABLETASK" MODIFY ("UPDATETIMENUMBER" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_TABLETASK" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_TABLETASK" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_TAG
 --------------------------------------------------------
 
-  ALTER TABLE "UK_TAG" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_TAG" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_TAG" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_TAG" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_TAGRELATION
 --------------------------------------------------------
 
-  ALTER TABLE "UK_TAGRELATION" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_TAGRELATION" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_TAGRELATION" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_TAGRELATION" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_TEMPLET
 --------------------------------------------------------
 
-  ALTER TABLE "UK_TEMPLET" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_TEMPLET" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_TEMPLET" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_TEMPLET" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_TENANT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_TENANT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_TENANT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_TENANT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_TENANT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_USER
 --------------------------------------------------------
 
-  ALTER TABLE "UK_USER" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_USER" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_USER" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_USER" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_USEREVENT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_USEREVENT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_USEREVENT" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_USEREVENT" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_USEREVENT" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_USERROLE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_USERROLE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_USERROLE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_USERROLE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_USERROLE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_WEBIM_MONITOR
 --------------------------------------------------------
 
-  ALTER TABLE "UK_WEBIM_MONITOR" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_WEBIM_MONITOR" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_WEBIM_MONITOR" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_WEBIM_MONITOR" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_WEIXINUSER
 --------------------------------------------------------
 
-  ALTER TABLE "UK_WEIXINUSER" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_WEIXINUSER" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_WEIXINUSER" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_WEIXINUSER" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_WORK_MONITOR
 --------------------------------------------------------
 
-  ALTER TABLE "UK_WORK_MONITOR" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_WORK_MONITOR" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_WORK_MONITOR" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_WORK_MONITOR" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_WORKORDER_TYPE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_WORKORDER_TYPE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_WORKORDER_TYPE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_WORKORDER_TYPE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_WORKORDER_TYPE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_WORKORDERS
 --------------------------------------------------------
 
-  ALTER TABLE "UK_WORKORDERS" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_WORKORDERS" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_WORKORDERS" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_WORKORDERS" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_WORKTIME
 --------------------------------------------------------
 
-  ALTER TABLE "UK_WORKTIME" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_WORKTIME" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_WORKTIME" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_WORKTIME" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_WXMPEVENT
 --------------------------------------------------------
 
-  ALTER TABLE "UK_WXMPEVENT" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_WXMPEVENT" MODIFY ("ID" NOT NULL ENABLE) ;
 --------------------------------------------------------
 --  Constraints for Table UK_XIAOE_CONFIG
 --------------------------------------------------------
 
-  ALTER TABLE "UK_XIAOE_CONFIG" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_XIAOE_CONFIG" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_XIAOE_CONFIG" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_XIAOE_CONFIG" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_XIAOE_KBS_TYPE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_XIAOE_KBS_TYPE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_XIAOE_KBS_TYPE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_XIAOE_KBS_TYPE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_XIAOE_KBS_TYPE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_XIAOE_SCENE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_XIAOE_SCENE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_XIAOE_SCENE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_XIAOE_SCENE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_XIAOE_SCENE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_XIAOE_SCENE_TYPE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_XIAOE_SCENE_TYPE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_XIAOE_SCENE_TYPE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_XIAOE_SCENE_TYPE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_XIAOE_SCENE_TYPE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_XIAOE_SCENEITEM
 --------------------------------------------------------
 
-  ALTER TABLE "UK_XIAOE_SCENEITEM" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_XIAOE_SCENEITEM" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_XIAOE_SCENEITEM" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_XIAOE_SCENEITEM" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_XIAOE_TOPIC
 --------------------------------------------------------
 
-  ALTER TABLE "UK_XIAOE_TOPIC" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_XIAOE_TOPIC" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_XIAOE_TOPIC" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_XIAOE_TOPIC" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_XIAOE_TOPIC_ITEM
 --------------------------------------------------------
 
-  ALTER TABLE "UK_XIAOE_TOPIC_ITEM" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_XIAOE_TOPIC_ITEM" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_XIAOE_TOPIC_ITEM" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_XIAOE_TOPIC_ITEM" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_XIAOE_WORDS
 --------------------------------------------------------
 
-  ALTER TABLE "UK_XIAOE_WORDS" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_XIAOE_WORDS" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_XIAOE_WORDS" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_XIAOE_WORDS" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table UK_XIAOE_WORDS_TYPE
 --------------------------------------------------------
 
-  ALTER TABLE "UK_XIAOE_WORDS_TYPE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "UK_XIAOE_WORDS_TYPE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "UK_XIAOE_WORDS_TYPE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "UK_XIAOE_WORDS_TYPE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table WF_HIST_ORDER
 --------------------------------------------------------
 
-  ALTER TABLE "WF_HIST_ORDER" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_ORDER" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_HIST_ORDER" MODIFY ("PROCESS_ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_ORDER" MODIFY ("PROCESS_ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_HIST_ORDER" MODIFY ("ORDER_STATE" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_ORDER" MODIFY ("ORDER_STATE" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_HIST_ORDER" MODIFY ("CREATE_TIME" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_ORDER" MODIFY ("CREATE_TIME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_HIST_ORDER" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "WF_HIST_ORDER" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table WF_HIST_TASK
 --------------------------------------------------------
 
-  ALTER TABLE "WF_HIST_TASK" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_TASK" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_HIST_TASK" MODIFY ("ORDER_ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_TASK" MODIFY ("ORDER_ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_HIST_TASK" MODIFY ("TASK_NAME" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_TASK" MODIFY ("TASK_NAME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_HIST_TASK" MODIFY ("DISPLAY_NAME" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_TASK" MODIFY ("DISPLAY_NAME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_HIST_TASK" MODIFY ("TASK_TYPE" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_TASK" MODIFY ("TASK_TYPE" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_HIST_TASK" MODIFY ("TASK_STATE" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_TASK" MODIFY ("TASK_STATE" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_HIST_TASK" MODIFY ("CREATE_TIME" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_TASK" MODIFY ("CREATE_TIME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_HIST_TASK" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "WF_HIST_TASK" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table WF_HIST_TASK_ACTOR
 --------------------------------------------------------
 
-  ALTER TABLE "WF_HIST_TASK_ACTOR" MODIFY ("TASK_ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_TASK_ACTOR" MODIFY ("TASK_ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_HIST_TASK_ACTOR" MODIFY ("ACTOR_ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_HIST_TASK_ACTOR" MODIFY ("ACTOR_ID" NOT NULL ENABLE) ;
 --------------------------------------------------------
 --  Constraints for Table WF_ORDER
 --------------------------------------------------------
 
-  ALTER TABLE "WF_ORDER" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_ORDER" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_ORDER" MODIFY ("PROCESS_ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_ORDER" MODIFY ("PROCESS_ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_ORDER" MODIFY ("CREATE_TIME" NOT NULL ENABLE)
+  ALTER TABLE "WF_ORDER" MODIFY ("CREATE_TIME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_ORDER" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "WF_ORDER" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table WF_PROCESS
 --------------------------------------------------------
 
-  ALTER TABLE "WF_PROCESS" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_PROCESS" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_PROCESS" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "WF_PROCESS" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table WF_SURROGATE
 --------------------------------------------------------
 
-  ALTER TABLE "WF_SURROGATE" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_SURROGATE" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_SURROGATE" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "WF_SURROGATE" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table WF_TASK
 --------------------------------------------------------
 
-  ALTER TABLE "WF_TASK" MODIFY ("ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_TASK" MODIFY ("ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_TASK" MODIFY ("ORDER_ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_TASK" MODIFY ("ORDER_ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_TASK" MODIFY ("TASK_NAME" NOT NULL ENABLE)
+  ALTER TABLE "WF_TASK" MODIFY ("TASK_NAME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_TASK" MODIFY ("DISPLAY_NAME" NOT NULL ENABLE)
+  ALTER TABLE "WF_TASK" MODIFY ("DISPLAY_NAME" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_TASK" MODIFY ("TASK_TYPE" NOT NULL ENABLE)
+  ALTER TABLE "WF_TASK" MODIFY ("TASK_TYPE" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_TASK" ADD PRIMARY KEY ("ID") ENABLE
+  ALTER TABLE "WF_TASK" ADD PRIMARY KEY ("ID") ENABLE;
 --------------------------------------------------------
 --  Constraints for Table WF_TASK_ACTOR
 --------------------------------------------------------
 
-  ALTER TABLE "WF_TASK_ACTOR" MODIFY ("TASK_ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_TASK_ACTOR" MODIFY ("TASK_ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_TASK_ACTOR" MODIFY ("ACTOR_ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_TASK_ACTOR" MODIFY ("ACTOR_ID" NOT NULL ENABLE) ;
 --------------------------------------------------------
 --  Constraints for Table WF_WORKITEM
 --------------------------------------------------------
 
-  ALTER TABLE "WF_WORKITEM" MODIFY ("TASK_ID" NOT NULL ENABLE)
+  ALTER TABLE "WF_WORKITEM" MODIFY ("TASK_ID" NOT NULL ENABLE) ;
  
-  ALTER TABLE "WF_WORKITEM" ADD PRIMARY KEY ("TASK_ID") ENABLE
+  ALTER TABLE "WF_WORKITEM" ADD PRIMARY KEY ("TASK_ID") ENABLE;
 
