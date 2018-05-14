@@ -53,6 +53,7 @@ public class OrganizationController extends Handler{
     		User userTemp = userRes.getOne(user.getId());
     		if(userTemp!=null&&StringUtils.isBlank(user.getOrgid())) {
     			userTemp.setOrgid(organization.getId());
+    			userTemp.setOrgi(organization.getId());
     			userRes.save(userTemp);
     			super.setUser(request, userTemp);
     		}
