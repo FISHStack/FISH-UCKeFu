@@ -47,6 +47,11 @@ public class PbxHost implements java.io.Serializable{
 	private String callbacknumber ;
 	
 	private String creater ;
+	
+	private String enableai ;
+	private String aiid ;
+	private String sceneid ;
+	
 	private Date createtime = new Date();
 	private Date updatetime = new Date();
 	@Id
@@ -179,5 +184,23 @@ public class PbxHost implements java.io.Serializable{
 	}
 	public void setAbscodec(String abscodec) {
 		this.abscodec = abscodec;
+	}
+	public String getEnableai() {
+		return enableai;
+	}
+	public void setEnableai(String enableai) {
+		this.enableai = enableai;
+	}
+	public String getAiid() {
+		return aiid;
+	}
+	public void setAiid(String aiid) {
+		this.aiid = aiid;
+	}
+	public String getSceneid() {
+		return sceneid;
+	}
+	public void setSceneid(String sceneid) {
+		this.sceneid = sceneid;
 	}
 }

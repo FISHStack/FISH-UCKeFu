@@ -207,11 +207,43 @@
 										</div>
 									</div>
 								</div>
+								<#if models?? && models["xiaoe"]?? && models["xiaoe"] == true>
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">14、语音渠道的机器人服务内容配置</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>在语音渠道上启用智能机器人</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">启用智能机器人以后，将会对接机器人对应的知识库信息</p>
+											</div>
+											<div class="col-lg-4">
+												<input type="checkbox" title="启用" name="enableai" id="enableai" lay-filter="enableai" <#if pbxHost?? && pbxHost.enableai>checked="checked"</#if>>
+											</div>
+										</div>
+									</div>
+									<div class="box-item" id="ai_tip" style="<#if pbxHost?? && pbxHost.enableai == false>display:none;</#if>">	
+										<div class="row">
+											<div class="col-lg-8">
+												<p>请选择机器人</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<select name="aiid">
+												<option value="">请选择默认的机器人</option>
+												<#if serviceAiList??>
+												<#list serviceAiList as serviceAi>
+												<option value="${serviceAi.id!''}" <#if inviteData.aiid?? && inviteData.aiid == serviceAi.id>selected="selected"</#if>>${serviceAi.name!''}</option>
+												</#list>
+												</#if> 
+											    </select>
+											</div>
+										</div>
+									</div>
+								</div>
+								</#if>
 							</div>
 						</div>
 					</div>
 				</div>
-				
 			</div>
 		</div>
 	</div>
@@ -243,6 +275,13 @@
 				$('#hourcheck_tip').show();		
 			}else{
 				$('#hourcheck_tip').hide();
+			}
+		});
+		form.on("checkbox(enableai)" , function(data){
+			if(data.elem.checked == true){
+				$('#ai_tip').show();		
+			}else{
+				$('#ai_tip').hide();
 			}
 		});
 		form.on("checkbox(retimeout)" , function(data){

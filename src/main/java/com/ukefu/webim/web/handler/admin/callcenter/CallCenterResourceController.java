@@ -17,6 +17,7 @@ import com.ukefu.util.Menu;
 import com.ukefu.util.extra.CallCenterInterface;
 import com.ukefu.webim.service.repository.ExtentionRepository;
 import com.ukefu.webim.service.repository.PbxHostRepository;
+import com.ukefu.webim.service.repository.ServiceAiRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.PbxHost;
 
@@ -30,11 +31,17 @@ public class CallCenterResourceController extends Handler{
 	@Autowired
 	private ExtentionRepository extentionRes;
 	
+	@Autowired
+	private ServiceAiRepository serviceAiRes ;
+	
 	@RequestMapping(value = "/resource")
     @Menu(type = "callcenter" , subtype = "callcenter" , access = false , admin = true)
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String hostid) {
 		List<PbxHost> pbxHostList = pbxHostRes.findByOrgi(super.getOrgi(request)) ;
 		map.addAttribute("pbxHostList" , pbxHostList);
+		
+		map.put("serviceAiList",serviceAiRes.findByOrgi(super.getOrgi(request)) ) ;
+		
 		PbxHost pbxHost = null ;
 		if(pbxHostList.size() > 0){
 			map.addAttribute("pbxHost" , pbxHost = getPbxHost(pbxHostList, hostid));
