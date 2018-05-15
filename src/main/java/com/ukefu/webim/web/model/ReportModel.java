@@ -90,9 +90,9 @@ public class ReportModel implements java.io.Serializable {
 	
 	private String colorstr ; 
 	
-	@Column(name="sstart")
+	
 	private String start ;
-	@Column(name="send")
+	
 	private String end ;
 	private String rowformatstr ;
 	private String colformatstr ;
@@ -505,12 +505,14 @@ public class ReportModel implements java.io.Serializable {
 	public void setColorstr(String colorstr) {
 		this.colorstr = colorstr;
 	}
+	@Column(name="sstart")
 	public String getStart() {
 		return start;
 	}
 	public void setStart(String start) {
 		this.start = start;
 	}
+	@Column(name="send")
 	public String getEnd() {
 		return end;
 	}

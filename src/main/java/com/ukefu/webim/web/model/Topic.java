@@ -66,7 +66,7 @@ public class Topic implements java.io.Serializable{
 	
 	private int answers ;		//回答数量
 	
-	@Column(name="sview")
+	
 	private int views ;			//阅读数量
 	private int followers ;		//关注数量
 	private int collections;	//收藏数量
@@ -179,6 +179,7 @@ public class Topic implements java.io.Serializable{
 		this.answers = answers;
 	}
 
+	@Column(name="sview")
 	public int getViews() {
 		return views;
 	}

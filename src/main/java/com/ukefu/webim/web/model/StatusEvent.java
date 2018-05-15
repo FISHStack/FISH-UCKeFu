@@ -46,7 +46,7 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private Date answertime ;//应答时间
 	private int ringduration ;//振铃时长
 	
-	@Column(name="scurrent")
+	
 	private boolean current ;//
 	
 	private boolean init ;//
@@ -91,7 +91,7 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String extention ;//联系人ID
 	private String hostid ;//服务器ID
 	
-	@Column(name="srecord")
+	
 	private boolean record ;//是否录音
 	
 	private Date startrecord ;//开始录音时间
@@ -252,6 +252,7 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	public int compareTo(StatusEvent o) {
 		return (int) (o.getTime() - this.getTime());
 	}
+	@Column(name="scurrent")
 	public boolean isCurrent() {
 		return current;
 	}
@@ -307,6 +308,7 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	public void setUpdatetime(Date updatetime) {
 		this.updatetime = updatetime;
 	}
+	@Column(name="srecord")
 	public boolean isRecord() {
 		return record;
 	}

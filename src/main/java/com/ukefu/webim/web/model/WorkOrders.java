@@ -51,7 +51,7 @@ public class WorkOrders extends ESBean implements UKAgg{
 	
 	private int answers ;		//回答数量
 	
-	@Column(name="sviews")
+	
 	private int views ;			//阅读数量
 	private int followers ;		//关注数量
 	private int collections;	//收藏数量
@@ -243,6 +243,7 @@ public class WorkOrders extends ESBean implements UKAgg{
 		this.answers = answers;
 	}
 
+	@Column(name="sviews")
 	public int getViews() {
 		return views;
 	}

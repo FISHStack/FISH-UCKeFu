@@ -32,7 +32,6 @@ public class Extention implements java.io.Serializable{
 	private boolean callout;	//是否允许外呼 OutBound
 	private boolean playnum ;	//是否播报工号
 	
-	@Column(name="srecord")
 	private boolean record ;	//是否录音
 	
 	private String description ;	//描述信息·
@@ -112,6 +111,7 @@ public class Extention implements java.io.Serializable{
 	public void setPlaynum(boolean playnum) {
 		this.playnum = playnum;
 	}
+	@Column(name="srecord")
 	public boolean isRecord() {
 		return record;
 	}
