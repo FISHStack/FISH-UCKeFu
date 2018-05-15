@@ -771,3 +771,7 @@ ALTER TABLE uk_reportmodel CHANGE end send varchar(50);
 ALTER TABLE uk_workorders CHANGE views sviews int;
 
 ALTER TABLE uk_xiaoe_scene CHANGE views sviews int;
+
+ALTER TABLE uk_callcenter_pbxhost ADD enableai tinyint DEFAULT 0  COMMENT '启用AI机器人';
+ALTER TABLE uk_callcenter_pbxhost ADD aiid varchar(32) COMMENT 'AI机器人';
+ALTER TABLE uk_callcenter_pbxhost ADD sceneid varchar(32) COMMENT '启用场景配置';

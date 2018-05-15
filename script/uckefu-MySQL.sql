@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-05-15 08:40:24
+Date: 2018-05-15 09:10:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -711,12 +711,16 @@ CREATE TABLE `uk_callcenter_pbxhost` (
   `callbacktype` varchar(32) DEFAULT NULL COMMENT '回呼送号号码',
   `sipautoanswer` tinyint(4) DEFAULT NULL COMMENT 'SIP自动应答',
   `abscodec` varchar(50) DEFAULT NULL,
+  `enableai` tinyint(4) DEFAULT NULL,
+  `aiid` varchar(32) DEFAULT NULL,
+  `sceneid` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of uk_callcenter_pbxhost
 -- ----------------------------
+INSERT INTO `uk_callcenter_pbxhost` VALUES ('4028811b61828ab00161829ad70a037a', '4028cac3614cd2f901614cf8be1f0324', '2018-02-11 10:04:01', '2018-02-27 12:08:49', 'iceworld', 'ukewo', '10.10.0.108', '8021', 'ClueCon', '10.10.0.108', null, '1', '1', '', 'internal', '', 'default', null, '1', 'PCMU', null, null, null);
 
 -- ----------------------------
 -- Table structure for `uk_callcenter_router`
