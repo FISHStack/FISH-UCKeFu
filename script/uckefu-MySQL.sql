@@ -10,10 +10,52 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-05-08 12:26:01
+Date: 2018-05-15 08:40:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `uk_act_batch`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_act_batch`;
+CREATE TABLE `uk_act_batch` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `STATUS` varchar(50) DEFAULT NULL,
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '上级ID',
+  `ACTID` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `INX` int(11) DEFAULT '0' COMMENT '分类排序序号',
+  `NAMENUM` int(11) DEFAULT '0' COMMENT '批次包含的名单总数',
+  `VALIDNUM` int(11) DEFAULT '0' COMMENT '批次包含的有效名单总数',
+  `INVALIDNUM` int(11) DEFAULT '0' COMMENT '批次包含的无效名单总数',
+  `ASSIGNED` int(11) DEFAULT '0' COMMENT '已分配名单总数',
+  `NOTASSIGNED` int(11) DEFAULT '0' COMMENT '未分配名单总数',
+  `ENABLE` tinyint(4) DEFAULT '0' COMMENT '分类状态',
+  `DATASTATUS` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `AREA` text COMMENT '分类描述',
+  `imptype` varchar(50) DEFAULT NULL,
+  `batchtype` varchar(32) DEFAULT NULL,
+  `ORGAN` varchar(32) DEFAULT NULL,
+  `impurl` text,
+  `filetype` varchar(50) DEFAULT NULL,
+  `dbtype` varchar(50) DEFAULT NULL,
+  `jdbcurl` text,
+  `driverclazz` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `DESCRIPTION` text,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_act_batch
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `uk_ad_position`
@@ -270,10 +312,6 @@ CREATE TABLE `uk_agentuser` (
   `agentservicetimeout` int(11) DEFAULT '0',
   `agentfrewords` int(11) DEFAULT '0',
   `servicefrewords` int(11) DEFAULT '0',
-  `satisfaction` tinyint(4) DEFAULT '0',
-  `satistime` datetime ,
-  `satislevel` varchar(50) DEFAULT '0',
-  `satiscomment` varchar(255) DEFAULT '0',
   `topflag` tinyint(4) DEFAULT NULL COMMENT '是否置顶',
   `toptimes` int(20) DEFAULT NULL COMMENT '置顶时长',
   `toptime` datetime DEFAULT NULL COMMENT '置顶时间',
@@ -495,7 +533,7 @@ CREATE TABLE `uk_callcenter_event` (
   `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
   `SOURCE` varchar(50) DEFAULT NULL COMMENT '来源',
   `ANSWER` varchar(50) DEFAULT NULL COMMENT '应答时间',
-  `CURRENT` tinyint(4) DEFAULT NULL COMMENT '当前通话',
+  `scurrent` tinyint(4) DEFAULT NULL,
   `INIT` tinyint(4) DEFAULT NULL COMMENT '初始通话',
   `CALLER` varchar(50) DEFAULT NULL COMMENT '呼叫发起号码',
   `CALLING` varchar(50) DEFAULT NULL COMMENT '呼叫对象',
@@ -518,7 +556,7 @@ CREATE TABLE `uk_callcenter_event` (
   `DURATION` int(11) DEFAULT NULL COMMENT '通话时长',
   `INSIDE` tinyint(4) DEFAULT NULL COMMENT '内线',
   `MISSCALL` tinyint(4) DEFAULT NULL COMMENT '是否漏话',
-  `RECORD` tinyint(4) DEFAULT NULL COMMENT '是否录音',
+  `srecord` tinyint(4) DEFAULT NULL,
   `RECORDTIME` int(11) DEFAULT NULL COMMENT '录音时长',
   `STARTRECORD` datetime DEFAULT NULL COMMENT '开始录音时间',
   `ENDRECORD` datetime DEFAULT NULL COMMENT '结束录音时间',
@@ -574,7 +612,7 @@ CREATE TABLE `uk_callcenter_extention` (
   `password` varchar(100) DEFAULT NULL COMMENT '密码',
   `callout` tinyint(4) DEFAULT NULL COMMENT '允许呼出',
   `playnum` tinyint(4) DEFAULT NULL COMMENT '播报工号',
-  `record` tinyint(4) DEFAULT NULL COMMENT '录音',
+  `srecord` tinyint(4) DEFAULT NULL,
   `extype` varchar(50) DEFAULT NULL COMMENT '分机类型',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `subtype` varchar(50) DEFAULT NULL,
@@ -1434,7 +1472,7 @@ CREATE TABLE `uk_fans` (
   `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
   `createtime` date DEFAULT NULL COMMENT '创建时间',
   `updatetime` date DEFAULT NULL COMMENT '更新时间',
-  `user` varchar(32) DEFAULT NULL COMMENT '用户ID',
+  `suser` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -1679,7 +1717,7 @@ CREATE TABLE `uk_kbs_topic` (
   `accept` tinyint(4) DEFAULT NULL COMMENT '允许评论',
   `finish` tinyint(4) DEFAULT NULL COMMENT '已结束',
   `answers` int(11) DEFAULT NULL COMMENT '回答数量',
-  `views` int(11) DEFAULT NULL COMMENT '使用次数',
+  `sviews` int(11) DEFAULT NULL,
   `followers` int(11) DEFAULT NULL COMMENT '关注人数',
   `collections` int(11) DEFAULT NULL COMMENT '引用次数',
   `comments` int(11) DEFAULT NULL COMMENT '回复数',
@@ -2458,8 +2496,8 @@ CREATE TABLE `uk_reportmodel` (
   `extparam` varchar(50) DEFAULT NULL,
   `marginright` varchar(50) DEFAULT NULL,
   `colorstr` varchar(50) DEFAULT NULL,
-  `start` varchar(50) DEFAULT NULL,
-  `end` varchar(50) DEFAULT NULL,
+  `sstart` varchar(50) DEFAULT NULL,
+  `send` varchar(50) DEFAULT NULL,
   `rowformatstr` varchar(50) DEFAULT NULL,
   `colformatstr` varchar(50) DEFAULT NULL,
   `publishtype` varchar(50) DEFAULT NULL,
@@ -7430,8 +7468,8 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', '0fbf9965244969fec730d144ed7e9799', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-04-21 01:00:23', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-02-11 16:25:20', null, null, null, '0', '0', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-05-07 23:00:38', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-05-12 09:43:40', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-05-12 09:45:22', null, null, null, '0', '0', '0', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-05-15 08:38:52', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -7573,7 +7611,7 @@ CREATE TABLE `uk_workorders` (
   `ACCEPT` tinyint(4) DEFAULT NULL COMMENT '已采纳答案',
   `FINISH` tinyint(4) DEFAULT NULL COMMENT '已结束',
   `ANSWERS` int(11) DEFAULT NULL COMMENT '回复数量',
-  `VIEWS` int(11) DEFAULT NULL COMMENT '访问次数',
+  `sviews` int(11) DEFAULT NULL,
   `FOLLOWERS` int(11) DEFAULT NULL COMMENT '关注数',
   `COLLECTIONS` int(11) DEFAULT NULL COMMENT '收藏数',
   `COMMENTS` int(11) DEFAULT NULL COMMENT '评论数',
@@ -7815,7 +7853,7 @@ CREATE TABLE `uk_xiaoe_scene` (
   `accept` tinyint(4) DEFAULT NULL COMMENT '启用',
   `finish` tinyint(4) DEFAULT NULL COMMENT '是否结束',
   `answers` int(11) DEFAULT NULL COMMENT '回答数量',
-  `views` int(11) DEFAULT NULL COMMENT '浏览数量',
+  `sviews` int(11) DEFAULT NULL,
   `followers` int(11) DEFAULT NULL COMMENT '关注数量',
   `collections` int(11) DEFAULT NULL COMMENT '回复数量',
   `comments` int(11) DEFAULT NULL COMMENT '评论数量',
@@ -7910,7 +7948,7 @@ CREATE TABLE `uk_xiaoe_topic` (
   `accept` tinyint(4) DEFAULT NULL COMMENT '允许评论',
   `finish` tinyint(4) DEFAULT NULL COMMENT '已结束',
   `answers` int(11) DEFAULT NULL COMMENT '回答数量',
-  `views` int(11) DEFAULT NULL COMMENT '使用次数',
+  `sviews` varchar(32) DEFAULT NULL,
   `followers` int(11) DEFAULT NULL COMMENT '关注人数',
   `collections` int(11) DEFAULT NULL COMMENT '引用次数',
   `comments` int(11) DEFAULT NULL COMMENT '回复数',
