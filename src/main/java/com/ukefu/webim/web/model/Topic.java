@@ -179,7 +179,7 @@ public class Topic implements java.io.Serializable{
 		this.answers = answers;
 	}
 
-	@Column(name="sview")
+	@Column(name="sviews")
 	public int getViews() {
 		return views;
 	}
