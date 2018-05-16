@@ -53,7 +53,7 @@
 
 <script type="text/javascript" src="/js/jquery.darktooltip.js"></script>
 <script language="javascript">
-	var hostname = "${hostname!''}" , admin = "<#if user.usertype?? && user.usertype == '0'>true<#else>false</#if>" , schema = "${schema!'http'}", port = "${webimport!''}" , userid = "${user.id!''}" , session = "${sessionid!''}" , orgi = "${orgi!''}";
+	var hostname = "${hostname!''}" , adminuser = "<#if user.usertype?? && user.usertype == '0'>true<#else>false</#if>" , schema = "${schema!'http'}", port = "${webimport!''}" , userid = "${user.id!''}" , session = "${sessionid!''}" , orgi = "${orgi!''}";
 	var layinx , layerhelper ;
 	$(document).ready(function(){
 		layui.use('layer', function(){
