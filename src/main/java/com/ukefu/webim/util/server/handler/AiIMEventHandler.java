@@ -129,7 +129,7 @@ public class AiIMEventHandler
     	 * 以下代码主要用于检查 访客端的字数限制
     	 */
     	CousultInvite invite = OnlineUserUtils.cousult(data.getAppid(),data.getOrgi(), UKDataContext.getContext().getBean(ConsultInviteRepository.class));
-    	if(invite!=null) {
+    	if(invite!=null && invite.getMaxwordsnum() > 0) {
 	    	if(!StringUtils.isBlank(data.getMessage()) && data.getMessage().length() > invite.getMaxwordsnum()){
 	    		data.setMessage(data.getMessage().substring(0 , invite.getMaxwordsnum()));
 	    	}
