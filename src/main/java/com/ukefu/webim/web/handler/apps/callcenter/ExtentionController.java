@@ -58,7 +58,7 @@ public class ExtentionController extends Handler{
     @Menu(type = "callcenter" , subtype = "extention" , access = true)
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String hostname , @Valid String key_value) {
 		ModelAndView view = request(super.createRequestPageTempletResponse("/apps/business/callcenter/extention/index")) ;
-		List<PbxHost> pbxHostList = pbxHostRes.findByHostnameOrIpaddrAndOrgi(hostname, hostname, super.getOrgi(request)) ;
+		List<PbxHost> pbxHostList = pbxHostRes.findByHostnameOrIpaddr(hostname, hostname) ;
 		PbxHost pbxHost = null ;
 		SystemConfig systemConfig = UKTools.getSystemConfig() ;
 		if(pbxHostList!=null && pbxHostList.size() > 0){
@@ -83,7 +83,7 @@ public class ExtentionController extends Handler{
     @Menu(type = "callcenter" , subtype = "configuration" , access = true)
     public ModelAndView configuration(ModelMap map , HttpServletRequest request , @Valid String hostname , @Valid String key_value ,  @Valid String profile) {
 		
-		List<PbxHost> pbxHostList = pbxHostRes.findByHostnameOrIpaddrAndOrgi(hostname, hostname, super.getOrgi(request)) ;
+		List<PbxHost> pbxHostList = pbxHostRes.findByHostnameOrIpaddr(hostname, hostname) ;
 		PbxHost pbxHost = null ;
 		SystemConfig systemConfig = UKTools.getSystemConfig() ;
 		if(pbxHostList!=null && pbxHostList.size() > 0){
@@ -130,7 +130,7 @@ public class ExtentionController extends Handler{
     @Menu(type = "callcenter" , subtype = "dialplan" , access = true)
     public ModelAndView dialplan(ModelMap map , HttpServletRequest request , @Valid String hostname , @Valid String key_value) {
 		ModelAndView view = request(super.createRequestPageTempletResponse("/apps/business/callcenter/dialplan/index"));
-		List<PbxHost> pbxHostList = pbxHostRes.findByHostnameOrIpaddrAndOrgi(hostname, hostname, super.getOrgi(request)) ;
+		List<PbxHost> pbxHostList = pbxHostRes.findByHostnameOrIpaddr(hostname, hostname) ;
 		PbxHost pbxHost = null ;
 		SystemConfig systemConfig = UKTools.getSystemConfig() ;
 		Template template = null ;
