@@ -31,9 +31,18 @@ public class PbxHost implements java.io.Serializable{
 	private boolean callcenter ;
 	
 	private String recordpath ;	//录音文件存储路径
+	
+	private String asrrecordpath ;	//ASR结果文件存储路径
+	private String ttsrecordpath ;	//TTS结果文件存储路径
 	private String ivrpath ;	//IVR文件路径
 	private String fspath ;		//FreeSwitch安装路径
 	private String device ;	//设备厂商
+	
+	private String welcomemsg ;		//欢迎提示语
+	private String waitmsg ;		//等待提示语
+	private String tipmessage ;		//识别完成提示语
+	
+	private boolean afterprocess ;	//启用坐席后处理功能
 	
 	private String orgi;
 	
@@ -41,7 +50,7 @@ public class PbxHost implements java.io.Serializable{
 	
 	private boolean sipautoanswer ;
 	
-	private String abscodec = "PCMU";	//默认的 呼叫编码 
+	private String abscodec = "PCMA";	//默认的 呼叫编码 
 	
 	private String callbacktype ;	//回呼送号 号码
 	private String callbacknumber ;
@@ -202,5 +211,41 @@ public class PbxHost implements java.io.Serializable{
 	}
 	public void setSceneid(String sceneid) {
 		this.sceneid = sceneid;
+	}
+	public String getWelcomemsg() {
+		return welcomemsg;
+	}
+	public void setWelcomemsg(String welcomemsg) {
+		this.welcomemsg = welcomemsg;
+	}
+	public String getWaitmsg() {
+		return waitmsg;
+	}
+	public void setWaitmsg(String waitmsg) {
+		this.waitmsg = waitmsg;
+	}
+	public String getTipmessage() {
+		return tipmessage;
+	}
+	public void setTipmessage(String tipmessage) {
+		this.tipmessage = tipmessage;
+	}
+	public String getAsrrecordpath() {
+		return asrrecordpath;
+	}
+	public void setAsrrecordpath(String asrrecordpath) {
+		this.asrrecordpath = asrrecordpath;
+	}
+	public String getTtsrecordpath() {
+		return ttsrecordpath;
+	}
+	public void setTtsrecordpath(String ttsrecordpath) {
+		this.ttsrecordpath = ttsrecordpath;
+	}
+	public boolean isAfterprocess() {
+		return afterprocess;
+	}
+	public void setAfterprocess(boolean afterprocess) {
+		this.afterprocess = afterprocess;
 	}
 }

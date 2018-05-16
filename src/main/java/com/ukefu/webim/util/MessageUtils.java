@@ -255,6 +255,11 @@ public class MessageUtils {
     		if(UKDataContext.MessageTypeEnum.MESSAGE.toString().equals(data.getType())){
     			UKDataContext.getContext().getBean(ChatMessageRepository.class).save(data) ;
     		}
+    		AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI);
+    		if(agentUser!=null && !StringUtils.isBlank(agentUser.getAgentno())){
+        		//将消息发送给 坐席
+        		NettyClients.getInstance().sendAgentEventMessage(agentUser.getAgentno(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), data);
+        	}
     	}
     	return outMessage ;
 	}

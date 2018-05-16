@@ -506,24 +506,42 @@ public class ServiceQuene {
 	 */
 	public static AgentService processAiService(AiUser aiUser , String orgi) throws Exception{
 		AgentService agentService = new AgentService();	//放入缓存的对象
-		if(!StringUtils.isBlank(aiUser.getAgentserviceid())) {
-			agentService.setId(aiUser.getAgentserviceid());
-		}
-		agentService.setOrgi(orgi);
-		agentService.setSessionid(aiUser.getSessionid());
-		
-		agentService.setUserid(aiUser.getUserid());
-		agentService.setAiid(aiUser.getAiid());
-		agentService.setAiservice(true);
-		agentService.setStatus(UKDataContext.AgentUserStatusEnum.INSERVICE.toString());
-		
-		agentService.setAppid(aiUser.getAppid());
-		agentService.setLeavemsg(false);
-		
-		agentService.setServicetime(new Date());
-		
-		agentService.setLogindate(new Date());
 		AgentServiceRepository agentServiceRes  = UKDataContext.getContext().getBean(AgentServiceRepository.class);
+		if(!StringUtils.isBlank(aiUser.getAgentserviceid())) {
+			agentService = agentServiceRes.findByIdAndOrgi(aiUser.getAgentserviceid(), orgi) ;
+			agentService.setEndtime(new Date());
+			if(agentService.getServicetime()!=null) {
+				agentService.setSessiontimes(System.currentTimeMillis() - agentService.getServicetime().getTime());
+			}
+			agentService.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
+		}else {
+			agentService.setServicetime(new Date());
+			agentService.setLogindate(new Date());
+			agentService.setOrgi(orgi);
+			agentService.setOwner(aiUser.getContextid());
+			agentService.setSessionid(aiUser.getSessionid());
+			if(aiUser.getIpdata()!=null) {
+				agentService.setRegion(aiUser.getIpdata().getRegion());
+			}
+			
+			agentService.setUsername(aiUser.getUsername());
+			agentService.setChannel(aiUser.getChannel());
+			
+			if(!StringUtils.isBlank(aiUser.getContextid())) {
+				agentService.setContextid(aiUser.getContextid());
+			}else {
+				agentService.setContextid(aiUser.getSessionid());
+			}
+			
+			agentService.setUserid(aiUser.getUserid());
+			agentService.setAiid(aiUser.getAiid());
+			agentService.setAiservice(true);
+			agentService.setStatus(UKDataContext.AgentUserStatusEnum.INSERVICE.toString());
+			
+			agentService.setAppid(aiUser.getAppid());
+			agentService.setLeavemsg(false);
+		}
+		
 		agentServiceRes.save(agentService) ;
 		return agentService ;
 	}
@@ -543,6 +561,7 @@ public class ServiceQuene {
 		}
 		agentService.setOrgi(orgi);
 		
+		agentService.setChannel(agentUser.getChannel());
 		
 		agentService.setSessionid(agentUser.getSessionid());
 		OnlineUserRepository onlineUserRes = UKDataContext.getContext().getBean(OnlineUserRepository.class) ;
@@ -613,7 +632,8 @@ public class ServiceQuene {
 	
 			agentUser.setServicetime(new Date());
 	
-	
+			agentService.setOwner(agentUser.getOwner());
+			
 			agentService.setTimes(0);
 			agentUser.setAgentno(agentService.getAgentno());
 	

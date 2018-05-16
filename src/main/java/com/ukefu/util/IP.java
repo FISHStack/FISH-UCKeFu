@@ -43,6 +43,6 @@ public class IP implements java.io.Serializable{
 	}
 	
 	public String toString(){
-		return "0".equals(this.province) || "0".equals(this.city) ? this.country : (this.province+this.city) ;
+		return "0".equals(this.province) || "0".equals(this.city) ? this.country : this.province!=null || this.city!=null ? (this.province!=null ? this.province : "" + this.city!=null ? this.city : "") : this.getRegion()!=null ? this.getRegion() : "未知" ;
 	}
 }

@@ -47,7 +47,7 @@
 					<% }else if(data.msgtype == 'voice'){ %>
 						<p class="weixinAudio" id="voice_media_<%:=data.id%>" style="<% if(data.duration > 30) {%>width:300px;<% }else{ %>width:<%:=50+data.duration* 10%>px;<%}%>">
 							<audio src="<%:=data.message%>" id="media" width="1" height="1" preload></audio>
-							<span id="audio_area" class="db audio_area">
+							<span id="audio_area" class="db audio_area"  title="<%:=data.expmsg%>">
 								<span class="audio_wrp db">
 									<span class="audio_play_area">
 										<i class="icon_audio_default"></i>
@@ -58,6 +58,9 @@
 								</span>
 							</span>
 						</p>
+						<% if(data.expmsg != ''){ %>
+						<div class="ukefu-asr"><%:=data.expmsg%></div>
+						<%}%>
 						<script type='text/javascript'>
 							$('#voice_media_<%:=data.id%>').weixinAudio({
 								autoplay:false

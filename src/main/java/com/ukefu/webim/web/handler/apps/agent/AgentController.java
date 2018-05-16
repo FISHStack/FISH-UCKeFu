@@ -48,9 +48,11 @@ import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.PbxHostRepository;
 import com.ukefu.webim.service.repository.QuickTypeRepository;
 import com.ukefu.webim.service.repository.SNSAccountRepository;
 import com.ukefu.webim.service.repository.ServiceSummaryRepository;
+import com.ukefu.webim.service.repository.StatusEventRepository;
 import com.ukefu.webim.service.repository.TagRelationRepository;
 import com.ukefu.webim.service.repository.TagRepository;
 import com.ukefu.webim.service.repository.UserRepository;
@@ -70,9 +72,11 @@ import com.ukefu.webim.web.model.BlackEntity;
 import com.ukefu.webim.web.model.MessageOutContent;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.Organ;
+import com.ukefu.webim.web.model.PbxHost;
 import com.ukefu.webim.web.model.QuickReply;
 import com.ukefu.webim.web.model.QuickType;
 import com.ukefu.webim.web.model.SessionConfig;
+import com.ukefu.webim.web.model.StatusEvent;
 import com.ukefu.webim.web.model.TagRelation;
 import com.ukefu.webim.web.model.UploadStatus;
 import com.ukefu.webim.web.model.User;
@@ -132,6 +136,14 @@ public class AgentController extends Handler {
 	
 	@Autowired
 	private UserRepository userRes ;
+	
+	
+	@Autowired
+	private StatusEventRepository statusEventRes ;
+	
+	@Autowired
+	private PbxHostRepository pbxHostRes ;
+	
 	
 	@Autowired
 	private AgentUserContactsRepository agentUserContactsRes; 
@@ -199,6 +211,18 @@ public class AgentController extends Handler {
 			}
 
 			view.addObject("agentUserMessageList", this.chatMessageRepository.findByUsessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "updatetime")));
+			AgentService agentService = null ;
+			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
+				agentService = this.agentServiceRepository.findOne(agentUser.getAgentserviceid()) ;
+				view.addObject("curAgentService", agentService) ;
+				
+				if(agentService!=null){
+					/**
+					 * 获取关联数据
+					 */
+					processRelaData(request, agentService, map);
+				}
+			}
 			
 			if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentUser.getChannel())){
 				List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
@@ -217,18 +241,19 @@ public class AgentController extends Handler {
 					}
 					view.addObject("onlineUser",onlineUser);
 				}
-			}
-			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
-				AgentService agentService = this.agentServiceRepository.findOne(agentUser.getAgentserviceid()) ;
-				view.addObject("curAgentService", agentService) ;
-				
-				if(agentService!=null){
-					/**
-					 * 获取关联数据
-					 */
-					processRelaData(request, agentService, map);
+			}else if(UKDataContext.ChannelTypeEnum.PHONE.toString().equals(agentUser.getChannel())){
+				if(agentService!=null && !StringUtils.isBlank(agentService.getOwner())) {
+					StatusEvent statusEvent = this.statusEventRes.findById(agentService.getOwner()) ;
+					if(statusEvent!=null){
+						if(!StringUtils.isBlank(statusEvent.getHostid())) {
+							PbxHost pbxHost = pbxHostRes.findById(statusEvent.getHostid()) ;
+							view.addObject("pbxHost",pbxHost);
+						}
+						view.addObject("statusEvent",statusEvent);
+					}
 				}
 			}
+			
 			view.addObject("serviceCount", Integer
 					.valueOf(this.agentServiceRepository
 							.countByUseridAndOrgiAndStatus(agentUser
@@ -305,7 +330,17 @@ public class AgentController extends Handler {
 			}
 			
 			view.addObject("agentUserMessageList", this.chatMessageRepository.findByUsessionAndOrgi(agentUser.getUserid() , super.getOrgi(request), new PageRequest(0, 20, Direction.DESC , "updatetime")));
-			
+			AgentService agentService = null ;
+			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
+				agentService = this.agentServiceRepository.findOne(agentUser.getAgentserviceid()) ;
+				view.addObject("curAgentService", agentService) ;
+				if(agentService!=null){
+					/**
+					 * 获取关联数据
+					 */
+					processRelaData(request, agentService, map);
+				}
+			}
 			if(UKDataContext.ChannelTypeEnum.WEIXIN.toString().equals(agentUser.getChannel())){
 				List<WeiXinUser> weiXinUserList = weiXinUserRes.findByOpenidAndOrgi(agentUser.getUserid(), super.getOrgi(request)) ;
 				if(weiXinUserList.size() > 0){
@@ -325,18 +360,19 @@ public class AgentController extends Handler {
 					}
 					view.addObject("onlineUser",onlineUser);
 				}
-			}
-			
-			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
-				AgentService agentService = this.agentServiceRepository.findOne(agentUser.getAgentserviceid()) ;
-				view.addObject("curAgentService", agentService) ;
-				if(agentService!=null){
-					/**
-					 * 获取关联数据
-					 */
-					processRelaData(request, agentService, map);
+			}else if(UKDataContext.ChannelTypeEnum.PHONE.toString().equals(agentUser.getChannel())){
+				if(agentService!=null && !StringUtils.isBlank(agentService.getOwner())) {
+					StatusEvent statusEvent = this.statusEventRes.findById(agentService.getOwner()) ;
+					if(statusEvent!=null){
+						if(!StringUtils.isBlank(statusEvent.getHostid())) {
+							PbxHost pbxHost = pbxHostRes.findById(statusEvent.getHostid()) ;
+							view.addObject("pbxHost",pbxHost);
+						}
+						view.addObject("statusEvent",statusEvent);
+					}
 				}
 			}
+			
 	
 			view.addObject("serviceCount", Integer
 					.valueOf(this.agentServiceRepository

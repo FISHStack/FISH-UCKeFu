@@ -66,6 +66,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.googlecode.aviator.AviatorEvaluator;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.ukefu.core.UKDataContext;
+import com.ukefu.util.asr.AsrResult;
 import com.ukefu.util.event.AiEvent;
 import com.ukefu.util.event.MultiUpdateEvent;
 import com.ukefu.util.event.UserDataEvent;
@@ -1231,7 +1232,25 @@ public class UKTools {
 
         return null;
     }
-    
+    /**
+     * 
+     * @param message
+     */
+    public static AsrResult parseAsrResult(String id,String message , int speakms) {
+    	AsrResult asrResult = null ;
+    	Pattern pattern = Pattern.compile("([\\d]{1,})[\\.]{1}([\\s\\S]*);");
+    	Matcher matcher = pattern.matcher(message);    	
+    	if(matcher.find() && matcher.groupCount() == 2) {
+    		asrResult = new AsrResult(id , matcher.group(2) , matcher.group(1));
+    		if(asrResult.getMessage().endsWith("。")) {
+    			asrResult.setMessage(asrResult.getMessage().substring(0 , asrResult.getMessage().length() - 1));	
+    		}
+    	}
+    	if(speakms > 0 && asrResult!=null) {
+    		asrResult.setSpeakms(speakms);
+    	}
+    	return asrResult;
+    }
     /**
 	 * 发送短信
 	 * @param email
@@ -1302,4 +1321,6 @@ public class UKTools {
 		}
 		return false;
 	}
+	
+	
 }

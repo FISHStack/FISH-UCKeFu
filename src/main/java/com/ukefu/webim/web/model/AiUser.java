@@ -14,15 +14,18 @@ public class AiUser implements java.io.Serializable{
 	private String orgi;
 	private String agentserviceid ;
 	private String sessionid ;
+	
+	private String contextid ;
 	private String appid ;
 	private String channel ;
+	private String username ;
 	private String aiid ;
 	
 	private int userask ;	//访客提问数量
 	private boolean agent ; //直接转人工
 	
 	public AiUser(String id , String userid, long time,String orgi , IP ipdata){
-		this.id = id ;
+		this.id = id.replace("-", "") ;
 		this.userid = userid ;
 		this.time = time ;
 		this.ipdata = ipdata ;
@@ -118,6 +121,22 @@ public class AiUser implements java.io.Serializable{
 
 	public void setChannel(String channel) {
 		this.channel = channel;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getContextid() {
+		return contextid;
+	}
+
+	public void setContextid(String contextid) {
+		this.contextid = contextid;
 	}
 	
 }

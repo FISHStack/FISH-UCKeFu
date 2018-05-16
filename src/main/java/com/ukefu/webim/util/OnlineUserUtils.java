@@ -707,9 +707,9 @@ public class OnlineUserUtils {
 		return source;
 	}
 
-	private static NewRequestMessage newRequestMessage(String user , String nickname, String orgi,
+	public static NewRequestMessage newRequestMessage(String user , String nickname, String orgi,
 			String session, String appid, String ip, String osname,
-			String browser , String headimg , IP ipdata , String channel , String skill , String agent, String title, String url , String traceid, String initiator) throws Exception {
+			String browser , String headimg , IP ipdata , String channel , String skill , String agent, String title, String url , String traceid, String initiator ,String eventid) throws Exception {
 		// 坐席服务请求，分配 坐席
 		NewRequestMessage data = new NewRequestMessage();
 		data.setAppid(appid);
@@ -745,7 +745,7 @@ public class OnlineUserUtils {
 				}
 			}
 
-			// agentUser.setContextid(session);
+			agentUser.setOwner(eventid);
 			agentUser.setHeadimgurl(headimg);
 			// agentUser.setId(data.getUserid());
 		}else if(!agentUser.getUsername().equals(nickname)){
@@ -756,6 +756,7 @@ public class OnlineUserUtils {
 		agentUser.setTitle(title);
 		agentUser.setUrl(url);
 		agentUser.setTraceid(traceid);
+		agentUser.setOwner(eventid); //智能IVR的 EventID
 		
 		CousultInvite invite = OnlineUserUtils.cousult(appid, orgi, UKDataContext.getContext().getBean(ConsultInviteRepository.class)) ;
 		if(invite!=null && !invite.isTraceuser()){
@@ -830,7 +831,7 @@ public class OnlineUserUtils {
 			nickname = "Guest_" + userid;
 		}
 		
-		return newRequestMessage(userid , nickname, orgi, session, appid, ip, osname, browser , "" , ipdata , channel , skill , agent , title ,url , traceid , initiator) ;
+		return newRequestMessage(userid , nickname, orgi, session, appid, ip, osname, browser , "" , ipdata , channel , skill , agent , title ,url , traceid , initiator , session) ;
 	}
 	
 	public static NewRequestMessage newRequestMessage(String openid , String nickname, String orgi,
@@ -839,7 +840,7 @@ public class OnlineUserUtils {
 		ipdata.setCountry(country);
 		ipdata.setProvince(province);
 		ipdata.setCity(city);
-		return newRequestMessage(openid , nickname , orgi, session, appid, null , null , null , headimg , ipdata , channel , skill , agent , null , null , null , initiator) ;
+		return newRequestMessage(openid , nickname , orgi, session, appid, null , null , null , headimg , ipdata , channel , skill , agent , null , null , null , initiator , session) ;
 	}
 
 	public static void parseParameters(Map<String, String[]> map, String data,

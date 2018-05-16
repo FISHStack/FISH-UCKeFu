@@ -194,7 +194,22 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">13、发起呼叫的默认编码</div>
+									<div class="ukefu-webim-tl" style="clear:both;">13、坐席通话结束后变更状态到后处理</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>启用此功能后，坐席在呼叫中心队列中通话结束后自动进入后处理状态</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">需要预先配置Freeswitch呼叫中心功能模块</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<input type="checkbox" title="启用" name="afterprocess" id="afterprocess" <#if pbxHost?? && pbxHost.afterprocess>checked="checked"</#if>>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">14、发起呼叫的默认编码</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -227,7 +242,7 @@
 												<p>请选择机器人</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
-												<select name="aiid" lay-filter="aiid_change">
+												<select name="aiid">
 													<option value="">请选择默认的机器人</option>
 													<#if serviceAiList??>
 													<#list serviceAiList as serviceAi>
@@ -238,6 +253,39 @@
 											</div>
 										</div>
 										
+										<div class="row" style="margin-top:10px;">
+											<div class="col-lg-8">
+												<p>欢迎提示语</p>
+											</div>
+										</div>
+										<div class="row" style="margin-top:10px;">
+											<div class="col-lg-12">
+												<textarea id="welcomemsg" name="welcomemsg" class="layui-textarea">${pbxHost.welcomemsg!"您好，欢迎致电优客服智能IVR演示系统，这里是电话机器人演示系统，请说要进入的测试流程，比如，客服系统！"}</textarea>
+											</div>
+										</div>
+										
+										<div class="row" style="margin-top:10px;">
+											<div class="col-lg-8">
+												<p>等待提示语</p>
+											</div>
+										</div>
+										<div class="row" style="margin-top:10px;">
+											<div class="col-lg-12">
+												<textarea id="waitmsg" name="waitmsg" class="layui-textarea">${pbxHost.waitmsg!"请说话测试吧"}</textarea>
+											</div>
+										</div>
+										
+										
+										<div class="row" style="margin-top:10px;">
+											<div class="col-lg-8">
+												<p>等待提示语</p>
+											</div>
+										</div>
+										<div class="row" style="margin-top:10px;">
+											<div class="col-lg-12">
+												<textarea id="tipmessage" name="tipmessage" class="layui-textarea">${pbxHost.tipmessage!"正在为您查询 ，请稍候"}</textarea>
+											</div>
+										</div>
 										
 										<div class="row" style="margin-top:10px;">
 											<div class="col-lg-4">
@@ -249,7 +297,7 @@
 										<div class="row" style="margin-top:10px;">
 											
 											<div class="col-lg-12">
-												<textarea readOnly id="pbxhostaiid" class="layui-textarea">${schema!''}://${hostname!''}:${port?string('###')}/apps/smartivr/asr?id=${pbxHost.id!''}&aiid=${pbxHost.aiid!''}</textarea>
+												<textarea readOnly id="pbxhostaiid" class="layui-textarea">${schema!''}://${hostname!''}:${port?string('###')}/apps/smartivr/asr?id=${pbxHost.id!''}</textarea>
 											</div>
 										</div>
 									</div>
@@ -286,9 +334,6 @@
 			}else{
 				$('#ai_tip').hide();
 			}
-		});
-		form.on("select(aiid_change)" , function(data){
-			$('#pbxhostaiid').val('${schema!''}://${hostname!''}:${port?string('###')}/apps/smartivr/asr?id=${pbxHost.id!''}&aiid='+data.value);
 		});
 	});
 	

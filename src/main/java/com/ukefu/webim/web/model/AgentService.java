@@ -41,6 +41,8 @@ public class AgentService implements Serializable {
 	private String source;
 	private Date endtime;
 	private String ipaddr;
+	
+	private String owner ;	//变更用处，修改为 智能IVR的 EventID
 	private String osname;
 	private String browser;
 	private String nickname;
@@ -840,5 +842,13 @@ public class AgentService implements Serializable {
 
 	public void setForagent(boolean foragent) {
 		this.foragent = foragent;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 }

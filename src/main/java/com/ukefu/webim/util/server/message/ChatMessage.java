@@ -50,6 +50,8 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	private boolean aichat ;	//是否和AI提问
 	
 	private String message ;
+	private String expmsg ;		//显示消息
+	
 	private String orgi ;
 	private String channel ;
 	private String model ;			//消息所属模块， WebIM/EntIM
@@ -374,5 +376,11 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	}
 	public void setAiid(String aiid) {
 		this.aiid = aiid;
+	}
+	public String getExpmsg() {
+		return expmsg;
+	}
+	public void setExpmsg(String expmsg) {
+		this.expmsg = expmsg;
 	}
 }

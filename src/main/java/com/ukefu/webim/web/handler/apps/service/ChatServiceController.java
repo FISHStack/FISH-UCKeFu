@@ -1,9 +1,7 @@
 package com.ukefu.webim.web.handler.apps.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.core.UKDataContext;
+import com.ukefu.util.IP;
 import com.ukefu.util.Menu;
 import com.ukefu.util.client.NettyClients;
 import com.ukefu.webim.service.acd.ServiceQuene;
@@ -36,6 +35,7 @@ import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentService;
 import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
+import com.ukefu.webim.web.model.AiUser;
 import com.ukefu.webim.web.model.LeaveMsg;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.OrgiSkillRel;
@@ -184,6 +184,27 @@ public class ChatServiceController extends Handler{
 		}
         return request(super.createRequestPageTempletResponse("redirect:/service/current/index.html"));
     }
+	
+	@RequestMapping("/current/invite")
+    @Menu(type = "service" , subtype = "current" , admin= true)
+    public ModelAndView currentinvite(ModelMap map , HttpServletRequest request , @Valid String id) throws Exception {
+		if(!StringUtils.isBlank(id)){
+			AgentService agentService = agentServiceRes.findByIdAndOrgi(id, super.getOrgi(request)) ;
+			if(agentService!=null){
+				User user = super.getUser(request);
+				if(StringUtils.isBlank(agentService.getAgentno())) {
+					AiUser aiUser = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(agentService.getSessionid(), agentService.getOrgi()) ;
+					IP ipdata = null ;
+					if(aiUser != null ) {
+						ipdata = aiUser.getIpdata() ;
+					}
+					OnlineUserUtils.newRequestMessage(aiUser.getUserid() , aiUser.getUsername(), user.getOrgi(), agentService.getSessionid(), agentService.getAppid() , agentService.getIpaddr(), agentService.getOsname() , agentService.getBrowser() , "" , ipdata!=null ? ipdata : null , agentService.getChannel() , user.getOrgan(), user.getId() , null ,null, agentService.getContactsid(), UKDataContext.ChatInitiatorType.AGENT.toString() , aiUser.getContextid()) ;
+				}
+			}
+		}
+        return request(super.createRequestPageTempletResponse("redirect:/service/current/index.html"));
+    }
+	
 	
 	@RequestMapping("/quene/index")
     @Menu(type = "service" , subtype = "quene" , admin= true)

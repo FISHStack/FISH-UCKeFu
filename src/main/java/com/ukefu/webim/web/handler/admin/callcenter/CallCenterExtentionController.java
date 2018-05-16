@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.util.Menu;
 import com.ukefu.webim.service.repository.ExtentionRepository;
+import com.ukefu.webim.service.repository.MediaRepository;
 import com.ukefu.webim.service.repository.PbxHostRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Extention;
@@ -30,6 +31,10 @@ public class CallCenterExtentionController extends Handler{
 	
 	@Autowired
 	private ExtentionRepository extentionRes;
+	
+	@Autowired
+	private MediaRepository mediaRes ;
+	
 	
 	@RequestMapping(value = "/extention")
     @Menu(type = "callcenter" , subtype = "callcenterresource" , access = false , admin = true)
@@ -60,6 +65,7 @@ public class CallCenterExtentionController extends Handler{
     @Menu(type = "callcenter" , subtype = "extention" , access = false , admin = true)
     public ModelAndView extentionadd(ModelMap map , HttpServletRequest request , @Valid String hostid) {
 		map.put("pbxHost", pbxHostRes.findByIdAndOrgi(hostid, super.getOrgi(request))) ;
+		map.put("mediaList" , mediaRes.findByHostidAndOrgi(hostid, super.getOrgi(request)));
     	return request(super.createRequestPageTempletResponse("/admin/callcenter/extention/add"));
     }
 	
@@ -100,6 +106,7 @@ public class CallCenterExtentionController extends Handler{
 		extno.setCallout(src.isCallout());
 		extno.setRecord(src.isRecord());
 		extno.setExtype(src.getExtype());
+		extno.setMediapath(src.getMediapath());
 		
 		int count = extentionRes.countByExtentionAndHostidAndOrgi(extno.getExtention() , hostid, orgi) ;
 		if(count == 0){	
@@ -113,6 +120,7 @@ public class CallCenterExtentionController extends Handler{
     public ModelAndView extentionedit(ModelMap map , HttpServletRequest request , @Valid String id , @Valid String hostid) {
 		map.addAttribute("extention" , extentionRes.findByIdAndOrgi(id, super.getOrgi(request)));
 		map.put("pbxHost", pbxHostRes.findByIdAndOrgi(hostid, super.getOrgi(request))) ;
+		map.put("mediaList" , mediaRes.findByHostidAndOrgi(hostid, super.getOrgi(request)));
     	return request(super.createRequestPageTempletResponse("/admin/callcenter/extention/edit"));
     }
 	
@@ -132,6 +140,8 @@ public class CallCenterExtentionController extends Handler{
 				ext.setExtype(extention.getExtype());
 				ext.setSubtype(extention.getSubtype());
 				ext.setDescription(extention.getDescription());
+				
+				ext.setMediapath(extention.getMediapath());
 				
 				ext.setUpdatetime(new Date());
 				extentionRes.save(ext) ;

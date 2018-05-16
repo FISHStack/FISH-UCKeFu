@@ -1,6 +1,5 @@
 package com.ukefu.webim.service.task;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -263,7 +262,7 @@ public class WebIMTask {
 	        		data.setUsername(servicename);
 	        		outMessage.setNickName(servicename);
 	        	}
-	    		outMessage.setCreatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(data.getCreatetime()));
+	    		outMessage.setCreatetime(data.getCreatetime());
 	    		
 	    		/**
 	    		 * 保存消息

@@ -33,6 +33,8 @@ public class AgentUser implements Serializable, Comparable<AgentUser> {
 	private String url;
 	private String traceid ;
 	
+	private String owner;	//变更用处，修改为 智能IVR的 EventID
+	
 	private String ipaddr;
 	private String osname;
 	private String browser;
@@ -529,6 +531,13 @@ public class AgentUser implements Serializable, Comparable<AgentUser> {
 
 	public void setTraceid(String traceid) {
 		this.traceid = traceid;
+	}
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 
 	@Transient

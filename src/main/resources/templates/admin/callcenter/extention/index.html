@@ -52,7 +52,8 @@
 							  </td>
 							  <td>
 									<#if extention.playnum>
-								  		<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
+								  		<i class="layui-icon" style="color:#19a55d;" title="${extention.mediapath!''}">&#xe618;</i>
+								  		<span  title="${extention.mediapath!''}"><#if extention.mediapath?? && extention.mediapath!="">播报文件已设置</#if></span>
 								  	</#if>
 							  </td>
 							  <td>

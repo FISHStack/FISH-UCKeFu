@@ -35,6 +35,7 @@ public class Extention implements java.io.Serializable{
 	private boolean record ;	//是否录音
 	
 	private String description ;	//描述信息·
+	private String mediapath ;		//播报工号录音
 	
 	private String orgi;
 	private String creater ;
@@ -136,4 +137,11 @@ public class Extention implements java.io.Serializable{
 	public void setSubtype(String subtype) {
 		this.subtype = subtype;
 	}
+	public String getMediapath() {
+		return mediapath;
+	}
+	public void setMediapath(String mediapath) {
+		this.mediapath = mediapath;
+	}
+	
 }

@@ -9,8 +9,9 @@ import com.ukefu.webim.web.model.PbxHost;
 public interface PbxHostRepository extends JpaRepository<PbxHost, String> {
 	
 	public PbxHost findByIdAndOrgi(String id , String orgi);
+	public PbxHost findById(String id );
 	public List<PbxHost> findByOrgi(String orgi);
-	public List<PbxHost> findByHostnameOrIpaddrAndOrgi(String hostname , String ip,String orgi);
+	public List<PbxHost> findByHostnameOrIpaddr(String hostname , String ip);
 	
 	public int countByHostnameAndOrgi(String hostname, String orgi) ;
 	

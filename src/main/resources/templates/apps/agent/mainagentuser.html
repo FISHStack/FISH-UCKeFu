@@ -131,6 +131,8 @@
 								<#include "/apps/agent/channel/webim.html">
 							<#elseif curagentuser.channel?? && curagentuser.channel == "weixin">
 								<#include "/apps/agent/channel/weixin.html">
+							<#elseif curagentuser.channel?? && curagentuser.channel == "phone">
+								<#include "/apps/agent/channel/phone.html">
 							</#if>
 							<#if curagentuser.name??>
 							<ul class="info-list">

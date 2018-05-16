@@ -26,6 +26,9 @@ public class AiConfig implements java.io.Serializable{
 	private String name ;
 	private String aiid;
 	
+	private String welcomemsg ;
+	private String waitmsg ;
+	
 	private boolean enableask = false;
 	private boolean askfirst = false;
 	private boolean enablescene = false;
@@ -189,5 +192,17 @@ public class AiConfig implements java.io.Serializable{
 	}
 	public void setAiid(String aiid) {
 		this.aiid = aiid;
+	}
+	public String getWelcomemsg() {
+		return welcomemsg;
+	}
+	public void setWelcomemsg(String welcomemsg) {
+		this.welcomemsg = welcomemsg;
+	}
+	public String getWaitmsg() {
+		return waitmsg;
+	}
+	public void setWaitmsg(String waitmsg) {
+		this.waitmsg = waitmsg;
 	}
 }
