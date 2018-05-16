@@ -864,3 +864,20 @@ CREATE TABLE `uk_agentuser` (
   KEY `agentuser_orgi` (`orgi`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
+
+
+ALTER TABLE uk_xiaoe_config ADD welcomemsg text  COMMENT '机器人欢迎语';
+ALTER TABLE uk_xiaoe_config ADD waitmsg text  COMMENT '机器人等待提示语';
+
+ALTER TABLE uk_callcenter_pbxhost ADD welcomemsg text  COMMENT '机器人欢迎语';
+ALTER TABLE uk_callcenter_pbxhost ADD waitmsg text  COMMENT '机器人等待提示语';
+ALTER TABLE uk_callcenter_pbxhost ADD tipmessage text  COMMENT '机器人提示客户说话';
+ALTER TABLE uk_callcenter_pbxhost ADD afterprocess tinyint DEFAULT 0 COMMENT '坐席通话后启用后处理功能';
+
+
+ALTER TABLE uk_callcenter_pbxhost ADD asrrecordpath varchar(255)  COMMENT 'ASR结果路径';
+ALTER TABLE uk_callcenter_pbxhost ADD ttsrecordpath varchar(255)  COMMENT 'ASR结果路径';
+
+ALTER TABLE uk_callcenter_extention ADD mediapath varchar(255)  COMMENT '播报工号语音文件';
+
+ALTER TABLE uk_callcenter_extention ADD afterprocess tinyint DEFAULT 0 COMMENT '坐席通话后启用后处理功能';

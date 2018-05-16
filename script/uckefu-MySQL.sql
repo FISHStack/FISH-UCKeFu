@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-05-15 09:10:33
+Date: 2018-05-16 11:03:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -616,6 +616,8 @@ CREATE TABLE `uk_callcenter_extention` (
   `extype` varchar(50) DEFAULT NULL COMMENT '分机类型',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `subtype` varchar(50) DEFAULT NULL,
+  `mediapath` varchar(255) DEFAULT NULL COMMENT '播报工号语音文件',
+  `afterprocess` tinyint(4) DEFAULT '0' COMMENT '坐席通话后启用后处理功能',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -714,13 +716,18 @@ CREATE TABLE `uk_callcenter_pbxhost` (
   `enableai` tinyint(4) DEFAULT NULL,
   `aiid` varchar(32) DEFAULT NULL,
   `sceneid` varchar(32) DEFAULT NULL,
+  `welcomemsg` text COMMENT '机器人欢迎语',
+  `waitmsg` text COMMENT '机器人等待提示语',
+  `tipmessage` text COMMENT '机器人提示客户说话',
+  `asrrecordpath` varchar(255) DEFAULT NULL COMMENT 'ASR结果路径',
+  `ttsrecordpath` varchar(255) DEFAULT NULL COMMENT 'ASR结果路径',
+  `afterprocess` tinyint(4) DEFAULT '0' COMMENT '坐席通话后启用后处理功能',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of uk_callcenter_pbxhost
 -- ----------------------------
-INSERT INTO `uk_callcenter_pbxhost` VALUES ('4028811b61828ab00161829ad70a037a', '4028cac3614cd2f901614cf8be1f0324', '2018-02-11 10:04:01', '2018-02-27 12:08:49', 'iceworld', 'ukewo', '10.10.0.108', '8021', 'ClueCon', '10.10.0.108', null, '1', '1', '', 'internal', '', 'default', null, '1', 'PCMU', null, null, null);
 
 -- ----------------------------
 -- Table structure for `uk_callcenter_router`
@@ -7473,7 +7480,7 @@ CREATE TABLE `uk_user` (
 -- Records of uk_user
 -- ----------------------------
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-05-12 09:43:40', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-05-12 09:45:22', null, null, null, '0', '0', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-05-15 08:38:52', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-05-16 10:39:44', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -7808,6 +7815,8 @@ CREATE TABLE `uk_xiaoe_config` (
   `selectskill` int(11) DEFAULT NULL,
   `selectskillmsg` varchar(255) DEFAULT NULL,
   `aiid` text COMMENT '机器人ID',
+  `welcomemsg` text COMMENT '机器人欢迎语',
+  `waitmsg` text COMMENT '机器人等待提示语',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
