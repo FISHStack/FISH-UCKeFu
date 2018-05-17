@@ -46,7 +46,7 @@ public class AiIMEventHandler
     	try {
 			String user = client.getHandshakeData().getSingleUrlParam("userid") ;
 			String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
-			String session = client.getHandshakeData().getSingleUrlParam("session") ;
+//			String session = client.getHandshakeData().getSingleUrlParam("session") ;
 			String appid = client.getHandshakeData().getSingleUrlParam("appid") ;
 			String aiid = client.getHandshakeData().getSingleUrlParam("aiid") ;
 //			String agent = client.getHandshakeData().getSingleUrlParam("agent") ;
