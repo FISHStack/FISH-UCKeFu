@@ -308,7 +308,6 @@ public class IMController extends Handler{
 			
 			map.addAttribute("sessionConfig", sessionConfig);
 			
-    		map.addAttribute("contacts", contacts) ;
     		
     		map.addAttribute("hostname", request.getServerName()) ;
 			map.addAttribute("port", port) ;
@@ -417,6 +416,8 @@ public class IMController extends Handler{
 				if(!StringUtils.isBlank(agent)){
 					map.addAttribute("agent", agent) ;
 				}
+				
+				map.addAttribute("contacts", contacts) ;
 				
 				if(!StringUtils.isBlank(type)){
 					map.addAttribute("type", type) ;
