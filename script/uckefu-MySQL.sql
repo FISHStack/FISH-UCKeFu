@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-05-16 11:03:00
+Date: 2018-05-17 11:21:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7814,7 +7814,7 @@ CREATE TABLE `uk_xiaoe_config` (
   `asktimes` int(11) DEFAULT NULL COMMENT '最长多久开始询问',
   `selectskill` int(11) DEFAULT NULL,
   `selectskillmsg` varchar(255) DEFAULT NULL,
-  `aiid` text COMMENT '机器人ID',
+  `aiid` varchar(32) DEFAULT NULL COMMENT '机器人ID',
   `welcomemsg` text COMMENT '机器人欢迎语',
   `waitmsg` text COMMENT '机器人等待提示语',
   PRIMARY KEY (`id`) USING BTREE
