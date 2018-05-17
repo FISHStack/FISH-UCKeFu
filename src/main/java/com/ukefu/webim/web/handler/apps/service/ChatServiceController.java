@@ -197,8 +197,8 @@ public class ChatServiceController extends Handler{
 					IP ipdata = null ;
 					if(aiUser != null ) {
 						ipdata = aiUser.getIpdata() ;
+						OnlineUserUtils.newRequestMessage(aiUser.getUserid() , aiUser.getUsername(), user.getOrgi(), agentService.getSessionid(), agentService.getAppid() , agentService.getIpaddr(), agentService.getOsname() , agentService.getBrowser() , "" , ipdata!=null ? ipdata : null , agentService.getChannel() , user.getOrgan(), user.getId() , null ,null, agentService.getContactsid(), UKDataContext.ChatInitiatorType.AGENT.toString() , aiUser.getContextid()) ;
 					}
-					OnlineUserUtils.newRequestMessage(aiUser.getUserid() , aiUser.getUsername(), user.getOrgi(), agentService.getSessionid(), agentService.getAppid() , agentService.getIpaddr(), agentService.getOsname() , agentService.getBrowser() , "" , ipdata!=null ? ipdata : null , agentService.getChannel() , user.getOrgan(), user.getId() , null ,null, agentService.getContactsid(), UKDataContext.ChatInitiatorType.AGENT.toString() , aiUser.getContextid()) ;
 				}
 			}
 		}
