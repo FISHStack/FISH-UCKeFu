@@ -3532,7 +3532,7 @@ CREATE TABLE uk_xiaoe_config (
  asktimes number(11) DEFAULT NULL , 
  selectskill number(11) DEFAULT NULL , 
  selectskillmsg varchar2(255) DEFAULT NULL , 
- aiid clob , 
+ aiid varchar2(32) , 
  welcomemsg clob , 
  waitmsg clob , 
  PRIMARY KEY (id) 
