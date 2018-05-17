@@ -69,7 +69,7 @@ public class AiIMEventHandler
 				InetSocketAddress address = (InetSocketAddress) client.getRemoteAddress()  ;
 				String ip = UKTools.getIpAddr(client.getHandshakeData().getHttpHeaders(), address.getHostString()) ;
 				AiUser aiUser = new AiUser(client.getSessionId().toString(), user, System.currentTimeMillis() , orgi,IPTools.getInstance().findGeography(ip)) ;
-				aiUser.setSessionid(session);
+				aiUser.setSessionid(client.getSessionId().toString());
 				aiUser.setAppid(appid);
 				aiUser.setAiid(aiid);
 				aiUser.setChannel(UKDataContext.ChannelTypeEnum.WEBIM.toString());
