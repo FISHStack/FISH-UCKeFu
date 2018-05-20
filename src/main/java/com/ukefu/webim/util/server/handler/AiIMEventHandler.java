@@ -72,6 +72,7 @@ public class AiIMEventHandler
 				aiUser.setSessionid(client.getSessionId().toString());
 				aiUser.setAppid(appid);
 				aiUser.setAiid(aiid);
+				aiUser.setUsername(UKDataContext.GUEST_USER+"_"+UKTools.genIDByKey(aiUser.getId()));
 				aiUser.setChannel(UKDataContext.ChannelTypeEnum.WEBIM.toString());
 				
 				AgentService agentService = ServiceQuene.processAiService(aiUser, orgi) ;
