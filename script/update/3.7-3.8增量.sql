@@ -881,3 +881,6 @@ ALTER TABLE uk_callcenter_pbxhost ADD ttsrecordpath varchar(255)  COMMENT 'ASR�
 ALTER TABLE uk_callcenter_extention ADD mediapath varchar(255)  COMMENT '播报工号语音文件';
 
 ALTER TABLE uk_callcenter_extention ADD afterprocess tinyint DEFAULT 0 COMMENT '坐席通话后启用后处理功能';
+
+ALTER TABLE uk_callcenter_event ADD datestr varchar(32) DEFAULT 0 COMMENT '坐席通话日期（yyyy-MM-dd）用于每小时通话数量折线图';
+ALTER TABLE uk_callcenter_event ADD hourstr varchar(32) DEFAULT 0 COMMENT '坐席通话时间小时（HH）用于每小时通话数量折线图';
