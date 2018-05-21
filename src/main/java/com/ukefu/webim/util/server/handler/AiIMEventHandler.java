@@ -68,8 +68,8 @@ public class AiIMEventHandler
 				
 				InetSocketAddress address = (InetSocketAddress) client.getRemoteAddress()  ;
 				String ip = UKTools.getIpAddr(client.getHandshakeData().getHttpHeaders(), address.getHostString()) ;
-				AiUser aiUser = new AiUser(client.getSessionId().toString(), user, System.currentTimeMillis() , orgi,IPTools.getInstance().findGeography(ip)) ;
-				aiUser.setSessionid(client.getSessionId().toString());
+				AiUser aiUser = new AiUser(UKTools.getContextID(client.getSessionId().toString()), user, System.currentTimeMillis() , orgi,IPTools.getInstance().findGeography(ip)) ;
+				aiUser.setSessionid(UKTools.getContextID(client.getSessionId().toString()));
 				aiUser.setAppid(appid);
 				aiUser.setAiid(aiid);
 				aiUser.setUsername(UKDataContext.GUEST_USER+"_"+UKTools.genIDByKey(aiUser.getId()));
@@ -78,7 +78,7 @@ public class AiIMEventHandler
 				AgentService agentService = ServiceQuene.processAiService(aiUser, orgi) ;
 				aiUser.setAgentserviceid(agentService.getId());
 				
-				CacheHelper.getOnlineUserCacheBean().put(client.getSessionId().toString(), aiUser, UKDataContext.SYSTEM_ORGI);
+				CacheHelper.getOnlineUserCacheBean().put(UKTools.getContextID(client.getSessionId().toString()), aiUser, UKDataContext.SYSTEM_ORGI);
 				
 			}
 		} catch (Exception e) {
@@ -94,11 +94,11 @@ public class AiIMEventHandler
     	String user = client.getHandshakeData().getSingleUrlParam("userid") ;
     	String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
     	if(!StringUtils.isBlank(user)){
-	    	NettyClients.getInstance().removeIMEventClient(user , client.getSessionId().toString());
-	    	AiUser aiUser = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(client.getSessionId().toString(), orgi) ;
+	    	NettyClients.getInstance().removeIMEventClient(user , UKTools.getContextID(client.getSessionId().toString()));
+	    	AiUser aiUser = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(UKTools.getContextID(client.getSessionId().toString()), orgi) ;
 	    	if(aiUser!=null) {
 		    	ServiceQuene.processAiService(aiUser, orgi) ;
-		    	CacheHelper.getOnlineUserCacheBean().delete(client.getSessionId().toString(),UKDataContext.SYSTEM_ORGI) ;
+		    	CacheHelper.getOnlineUserCacheBean().delete(UKTools.getContextID(client.getSessionId().toString()),UKDataContext.SYSTEM_ORGI) ;
 	    	}
     	}
     }  
@@ -137,7 +137,7 @@ public class AiIMEventHandler
     	}else if(!StringUtils.isBlank(data.getMessage()) && data.getMessage().length() > 300){
     		data.setMessage(data.getMessage().substring(0 , 300));
     	}
-    	data.setSessionid(client.getSessionId().toString());
+    	data.setSessionid(UKTools.getContextID(client.getSessionId().toString()));
     	/**
 		 * 处理表情
 		 */
@@ -146,7 +146,7 @@ public class AiIMEventHandler
     	
     	data.setAiid(aiid);
     	
-    	Object cacheData = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(client.getSessionId().toString(),orgi) ;
+    	Object cacheData = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(UKTools.getContextID(client.getSessionId().toString()),orgi) ;
     	if(cacheData!=null && cacheData instanceof AiUser){
 			AiUser aiUser = (AiUser)cacheData ;
 			data.setAgentserviceid(aiUser.getAgentserviceid());
@@ -168,7 +168,7 @@ public class AiIMEventHandler
     		if(cacheData!=null && cacheData instanceof AiUser){
     			AiUser aiUser = (AiUser)cacheData ;
     			aiUser.setTime(System.currentTimeMillis());
-    			CacheHelper.getOnlineUserCacheBean().put(client.getSessionId().toString(), aiUser, UKDataContext.SYSTEM_ORGI);
+    			CacheHelper.getOnlineUserCacheBean().put(UKTools.getContextID(client.getSessionId().toString()), aiUser, UKDataContext.SYSTEM_ORGI);
     		}
     	}
     	UKTools.ai(data);
