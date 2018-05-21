@@ -568,6 +568,8 @@ CREATE TABLE uk_callcenter_event (
  SATISF number(4) DEFAULT '0' , 
  SATISFACTION varchar2(32) DEFAULT NULL , 
  SATISFDATE date DEFAULT NULL , 
+ datestr varchar2(32) DEFAULT NULL,
+ hourstr varchar2(32) DEFAULT NULL,
  PRIMARY KEY (ID) 
 ); 
  
@@ -3986,5 +3988,4 @@ CREATE TABLE wf_workitem (
 -- ---------------------------- 
 -- Records of wf_workitem 
 -- ---------------------------- 
- 
- 
+
