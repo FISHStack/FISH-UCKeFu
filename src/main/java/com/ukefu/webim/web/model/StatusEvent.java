@@ -1,6 +1,7 @@
 package com.ukefu.webim.web.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,6 +13,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
+
+import com.ukefu.util.UKTools;
 
 @Entity
 @Table(name = "uk_callcenter_event")
@@ -122,6 +125,9 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private boolean satisf ;	//是否记录满意度调查
 	private String satisfaction 	;		//满意度评价
 	private Date satisfdate ;				//满意度调查提交时间
+	
+	private String datestr = UKTools.simpleDateFormat.format(new Date());
+	private String hourstr = new SimpleDateFormat("HH").format(new Date());
 	
 
 	@Id
@@ -526,4 +532,17 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	public void setCode(String code) {
 		this.code = code;
 	}
+	public String getDatestr() {
+		return datestr;
+	}
+	public void setDatestr(String datestr) {
+		this.datestr = datestr;
+	}
+	public String getHourstr() {
+		return hourstr;
+	}
+	public void setHourstr(String hourstr) {
+		this.hourstr = hourstr;
+	}
+	
 }
