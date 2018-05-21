@@ -83,5 +83,10 @@ public abstract interface OnlineUserRepository extends JpaRepository<OnlineUser,
 	@Query("select avg(duration) from StatusEvent where ani = ?1")
 	Long avgByDurationFromCallCenter(String ani);
 	
+	@Query("select hourstr as dt, count(id) as calls from StatusEvent where orgi = ?1 and datestr = ?2 group by hourstr order by dt asc")
+	List<Object> findByOrgiAndDatestrRangeForAgent(String orgi , String start );
+	
+	@Query("select code as dt, count(id) as co from CallMonitor where orgi = ?1 group by code")
+	List<Object> findByOrgiAndStatusRangeForAgent(String orgi);
 	
 }
