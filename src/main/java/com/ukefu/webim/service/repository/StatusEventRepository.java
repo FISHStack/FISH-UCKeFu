@@ -39,8 +39,4 @@ public interface StatusEventRepository extends JpaRepository<StatusEvent, String
 	
 	public int countByCalled(String called);
 	
-	
-	
-	@Query("select HOUR(starttime) as Hour ,count(*) as count  from StatusEvent where orgi = ?1 and DATE_FORMAT(starttime,'%Y-%m-%d') = ?2 group by HOUR(starttime) order by HOUR(starttime)")
-	List<Object> findByOrgiAndStarttime(String orgi , String start);
 }
