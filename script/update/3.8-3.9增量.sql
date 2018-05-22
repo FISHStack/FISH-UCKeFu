@@ -29,3 +29,12 @@ CREATE TABLE `uk_act_formfilter` (
 
 ALTER TABLE uk_callcenter_event ADD datestr varchar(32) DEFAULT 0 COMMENT '坐席通话日期（yyyy-MM-dd）用于每小时通话数量折线图';
 ALTER TABLE uk_callcenter_event ADD hourstr varchar(32) DEFAULT 0 COMMENT '坐席通话时间小时（HH）用于每小时通话数量折线图';
+
+
+
+ALTER TABLE uk_historyreport ADD batid varchar(32) COMMENT "批次ID";
+ALTER TABLE uk_historyreport ADD title varchar(100) COMMENT "标题";
+
+ALTER TABLE uk_webim_monitor ADD worktype varchar(50) COMMENT "操作类型";
+ALTER TABLE uk_webim_monitor ADD workresult varchar(50) COMMENT "操作结果";
+ALTER TABLE uk_webim_monitor ADD dataid varchar(50) COMMENT "数据ID";
