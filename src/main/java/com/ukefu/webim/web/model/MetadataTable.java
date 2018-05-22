@@ -76,7 +76,7 @@ public class MetadataTable implements java.io.Serializable{
 	@Where(clause="impfield=0")	//不载入 设置为 禁用 导入导出的字段
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JoinColumn(name = "dbtableid")
-	@OrderBy("name")
+	@OrderBy("sortindex")
 	public List<TableProperties> getTableproperty() {
 		return tableproperty;
 	}

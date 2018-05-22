@@ -142,7 +142,7 @@ public class ApiServiceQueneController extends Handler{
 				}
 				ServiceQuene.allotAgent(agentStatus.getAgentno(), super.getOrgi(request));
 			}
-			ServiceQuene.publishMessage(super.getOrgi(request));
+			ServiceQuene.publishMessage(super.getOrgi(request) , "agent" , "api" , super.getUser(request).getId());
 		}
         return new ResponseEntity<>(new RestResult(RestResultType.OK , agentStatus), HttpStatus.OK);
     }

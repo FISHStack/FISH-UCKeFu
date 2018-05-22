@@ -1,5 +1,6 @@
 package com.ukefu.webim.util.server.handler;
 
+import java.net.InetSocketAddress;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import com.ukefu.webim.service.repository.AgentStatusRepository;
 import com.ukefu.webim.service.repository.AgentUserRepository;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
+import com.ukefu.webim.service.repository.WorkSessionRepository;
 import com.ukefu.webim.util.router.OutMessageRouter;
 import com.ukefu.webim.util.server.message.AgentServiceMessage;
 import com.ukefu.webim.util.server.message.AgentStatusMessage;
@@ -29,6 +31,7 @@ import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.AgentUserTask;
 import com.ukefu.webim.web.model.MessageOutContent;
+import com.ukefu.webim.web.model.WorkSession;
   
 public class AgentEventHandler 
 {  
@@ -45,6 +48,8 @@ public class AgentEventHandler
     {  
     	String user = client.getHandshakeData().getSingleUrlParam("userid") ;
     	String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
+    	String session = client.getHandshakeData().getSingleUrlParam("session") ;
+    	String admin = client.getHandshakeData().getSingleUrlParam("admin") ;
 		if(!StringUtils.isBlank(user) && !StringUtils.isBlank(user)){
 			client.set("agentno", user);
 			AgentStatusRepository agentStatusRepository = UKDataContext.getContext().getBean(AgentStatusRepository.class) ;
@@ -57,6 +62,15 @@ public class AgentEventHandler
 					CacheHelper.getAgentStatusCacheBean().put(user, agentStatus , orgi);
 				}
 			}
+	    	InetSocketAddress address = (InetSocketAddress) client.getRemoteAddress()  ;
+			String ip = UKTools.getIpAddr(client.getHandshakeData().getHttpHeaders(), address.getHostString()) ;
+			
+	    	
+	    	WorkSessionRepository workSessionRepository = UKDataContext.getContext().getBean(WorkSessionRepository.class) ;
+	    	int count = workSessionRepository.countByAgentAndDatestrAndOrgi(user, UKTools.simpleDateFormat.format(new Date()), orgi) ;
+	    	
+	    	workSessionRepository.save(UKTools.createWorkSession(user, client.getSessionId().toString(), session, orgi, ip, address.getHostName() , admin , count == 0)) ;
+	    	
 			NettyClients.getInstance().putAgentEventClient(user, client);
 		}
     }  
@@ -71,6 +85,22 @@ public class AgentEventHandler
 		if(!StringUtils.isBlank(user)){
 			ServiceQuene.deleteAgentStatus(user, orgi, !StringUtils.isBlank(admin) && admin.equals("true"));
 			NettyClients.getInstance().removeAgentEventClient(user , client.getSessionId().toString());
+			
+			WorkSessionRepository workSessionRepository = UKDataContext.getContext().getBean(WorkSessionRepository.class) ;
+			List<WorkSession> workSessionList = workSessionRepository.findByOrgiAndClientid(orgi, client.getSessionId().toString()) ;
+			if(workSessionList.size() > 0) {
+				WorkSession workSession = workSessionList.get(0) ;
+				workSession.setEndtime(new Date());
+				if(workSession.getBegintime()!=null) {
+					workSession.setDuration((int) (System.currentTimeMillis() - workSession.getBegintime().getTime()));
+				}else if(workSession.getCreatetime()!=null) {
+					workSession.setDuration((int) (System.currentTimeMillis() - workSession.getCreatetime().getTime()));
+				}
+				if(workSession.isFirsttime()) {
+					workSession.setFirsttimes(workSession.getDuration());
+				}
+				workSessionRepository.save(workSession) ;
+			}
 		}
     }  
       

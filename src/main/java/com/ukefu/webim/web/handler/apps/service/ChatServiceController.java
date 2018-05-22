@@ -306,7 +306,7 @@ public class ChatServiceController extends Handler{
 			agentStatusRepository.delete(agentStatus);
 		}
     	CacheHelper.getAgentStatusCacheBean().delete(agentStatus.getAgentno(), super.getOrgi(request));;
-    	ServiceQuene.publishMessage(super.getOrgi(request));
+    	ServiceQuene.publishMessage(super.getOrgi(request) , "agent" , "offline" , super.getUser(request).getId());
     	
 		
         return request(super.createRequestPageTempletResponse("redirect:/service/agent/index.html"));

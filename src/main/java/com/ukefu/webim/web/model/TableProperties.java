@@ -67,7 +67,7 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	private boolean pk = false;
 	private boolean modits = false ;
 	private String orgi ;
-	private String viewtype;
+	private String viewtype;				//变更用处，修改为 在哪些地方显示  ， view | edit | add | detail
 	private int sortindex = 1;
 	private boolean token ;
 	private String tokentype ;	//分词方式

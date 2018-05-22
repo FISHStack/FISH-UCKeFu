@@ -9,6 +9,10 @@ public class DSDataEvent {
 	
 	private String orgi ;
 	
+	private String tablename ;
+	
+	private String batid ;
+	
 	private Map<String , Object> values = new HashMap<String , Object>();
 	
 	private boolean failures;
@@ -63,5 +67,21 @@ public class DSDataEvent {
 
 	public void setValues(Map<String, Object> values) {
 		this.values = values;
+	}
+
+	public String getTablename() {
+		return tablename;
+	}
+
+	public void setTablename(String tablename) {
+		this.tablename = tablename;
+	}
+
+	public String getBatid() {
+		return batid;
+	}
+
+	public void setBatid(String batid) {
+		this.batid = batid;
 	}
 }

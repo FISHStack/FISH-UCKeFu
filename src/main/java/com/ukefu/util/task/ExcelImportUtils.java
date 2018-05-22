@@ -4,17 +4,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -25,37 +20,34 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
-import com.ukefu.util.extra.DataExchangeInterface;
+import com.ukefu.util.es.ESTools;
 import com.ukefu.webim.web.model.MetadataTable;
-import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.TableProperties;
-import com.ukefu.webim.web.model.UKeFuDic;
 
-public class ExcelImportProecess extends DataProcess{
+public class ExcelImportUtils{
 	private DecimalFormat format = new DecimalFormat("###");
+	protected DSDataEvent event ;
 	
-	public ExcelImportProecess(DSDataEvent event){
-		super(event);
+	public ExcelImportUtils(DSDataEvent event){
+		this.event = event ;
 	}
 	
-	@Override
-	public void process() {
-		processExcel(event);
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void processExcel(final DSDataEvent event){
+	public MetadataTable processExcel(final DSDataEvent event ,String tableTitle){
+		MetadataTable metaDataTable = new MetadataTable(); 
 		InputStream is = null;  
+		boolean findId = false ;
     	try {
-    		event.getDSData().getReport().setTableid(event.getDSData().getTask().getId());
-    		if(event.getDSData().getUser()!=null){
-    			event.getDSData().getReport().setUserid(event.getDSData().getUser().getId());
-    			event.getDSData().getReport().setUsername(event.getDSData().getUser().getUsername());
-    		}
-    		
+    		metaDataTable.setTablename(event.getTablename());
+    		metaDataTable.setOrgi(this.event.getOrgi());
+    		metaDataTable.setId(UKTools.md5(event.getTablename()));
+    		metaDataTable.setTabledirid("0");
+    		metaDataTable.setCreater(event.getDSData().getUser().getId());
+    		metaDataTable.setCreatername(event.getDSData().getUser().getUsername());
+    		metaDataTable.setName(tableTitle);
+    		metaDataTable.setUpdatetime(new Date());
+    		metaDataTable.setCreatetime(new Date());
+    		metaDataTable.setTableproperty(new ArrayList<TableProperties>()); 
             try {  
                 is = new FileInputStream(event.getDSData().getFile());  
             } catch (FileNotFoundException ex) {  
@@ -74,156 +66,55 @@ public class ExcelImportProecess extends DataProcess{
             }  
             Sheet sheet = wb.getSheetAt(0);  
             Row titleRow = sheet.getRow(0);
-            Row valueRow = sheet.getRow(1);
             int totalRows = sheet.getPhysicalNumberOfRows(); 
             int colNum = titleRow.getPhysicalNumberOfCells();
-            for(int i=2 ; i<totalRows && valueRow == null ; i++){
-            	valueRow = sheet.getRow(i);
-            	if(valueRow !=null){
-            		break ;
-            	}
-            }
+           
             /**
              * 需要检查Mapping 是否存在
              */
-            long start = System.currentTimeMillis() ;
-            Map<Object, List> refValues = new HashMap<Object , List>() ;
-            MetadataTable table = event.getDSData().getTask() ;
-            for(TableProperties tp : table.getTableproperty()){
-            	if(tp.isReffk() && !StringUtils.isBlank(tp.getReftbid())){
-            		DataExchangeInterface exchange = (DataExchangeInterface) UKDataContext.getContext().getBean(tp.getReftbid()) ;
-            		refValues.put(tp.getFieldname(), exchange.getListDataByIdAndOrgi(null, null, event.getOrgi())) ;
-            	}
-            }
-            
-            for(int i=1 ; i<totalRows; i++){
-            	Row row = sheet.getRow(i) ;
-            	Object data = null ;
-            	if(row!=null){
-					if(event.getDSData().getClazz() != null) {
-						data = event.getDSData().getClazz().newInstance() ;
-					}
-					Map<Object, Object> values = new HashMap<Object , Object>() ;
-					ArrayListMultimap<String, Object> multiValues = ArrayListMultimap.create();
-					boolean skipDataVal = false; //跳过数据校验
+            if(totalRows > 1) {
+	            Row row = sheet.getRow(0) ;
+	        	if(row!=null){
 					for(int col=0 ; col<colNum ; col++){
-						Cell value = row.getCell(col) ;
 						Cell title = titleRow.getCell(col) ;
 						String titleValue = getValue(title) ;
-						TableProperties tableProperties = getTableProperties(event, titleValue);
-						if(tableProperties!=null && value!=null){
-							String valuestr = getValue(value) ;
-							if(!StringUtils.isBlank(valuestr)) {
-								if(tableProperties.isModits()){
-									if(!StringUtils.isBlank(valuestr)) {
-										multiValues.put(tableProperties.getFieldname(), valuestr) ;
-									}
-								}else{
-									if(tableProperties.isSeldata()){
-										SysDic sysDic = UKeFuDic.getInstance().getDicItem(valuestr) ;
-										if(sysDic!=null){
-											values.put(tableProperties.getFieldname(), sysDic.getName()) ;
-										}else{
-											List<SysDic> dicItemList = UKeFuDic.getInstance().getSysDic(tableProperties.getSeldatacode());
-											if(dicItemList!=null && dicItemList.size() > 0) {
-												for(SysDic dicItem : dicItemList) {
-													if(dicItem.getName().equals(valuestr)) {
-														values.put(tableProperties.getFieldname(), dicItem.isDiscode()?dicItem.getCode():dicItem.getId()) ; break ;
-													}
-												}
-											}
-										}
-									}else if(tableProperties.isReffk() && refValues.get(tableProperties.getFieldname())!=null){
-										List keys = refValues.get(tableProperties.getFieldname()) ;
-										if(keys != null) {
-											values.put(tableProperties.getFieldname() , getRefid(tableProperties,refValues.get(tableProperties.getFieldname()) , valuestr)) ;
-										}
-									}else{
-										values.put(tableProperties.getFieldname(), valuestr) ;
-									}
-									if(tableProperties.isPk() && !tableProperties.getFieldname().equalsIgnoreCase("id")){
-										values.put("id", UKTools.md5(valuestr)) ;
-									}
-								}
+						if(!StringUtils.isBlank(titleValue)) {
+							if(titleValue.equalsIgnoreCase("id")) {
+								findId = true ;
 							}
-							event.getDSData().getReport().setBytes(event.getDSData().getReport().getBytes() + valuestr.length());
-							event.getDSData().getReport().getAtompages().incrementAndGet() ;
+							metaDataTable.getTableproperty().add(initProperties("f"+UKTools.genIDByKey(titleValue) , titleValue, "String", event.getOrgi() , event.getTablename())) ;
 						}
 					}
-					values.put("orgi", event.getOrgi()) ;
-					if(values.get("id")==null){
-						values.put("id", UKTools.getUUID()) ;
-					}
-					if(event.getValues()!=null && event.getValues().size() > 0){
-						values.putAll(event.getValues());
-					}
-					values.putAll(multiValues.asMap());
-					String validFaildMessage = null ;
-					for(TableProperties tp : table.getTableproperty()){
-						if(!StringUtils.isBlank(tp.getDefaultvaluetitle())) {
-							String valuestr = (String) values.get(tp.getFieldname()) ;
-							if(tp.getDefaultvaluetitle().indexOf("required") >= 0 && StringUtils.isBlank(valuestr)) {
-								skipDataVal = true ; validFaildMessage = "required" ;break ;
-							}else if(valuestr!=null && (tp.getDefaultvaluetitle().indexOf("numstr") >= 0 && !valuestr.matches("[\\d]{1,}"))) {
-								skipDataVal = true ; validFaildMessage = "numstr" ;break ;
-							}else if(valuestr!=null && (tp.getDefaultvaluetitle().indexOf("datenum") >= 0 || tp.getDefaultvaluetitle().indexOf("datetime") >= 0 )) {
-								if(!valuestr.matches("[\\d]{4,4}-[\\d]{2,2}-[\\d]{2,2}") && !valuestr.matches("[\\d]{4,4}-[\\d]{2,2}-[\\d]{2} [\\d]{2,2}:[\\d]{2,2}:[\\d]{2,2}")) {
-									skipDataVal = true ; validFaildMessage = "datenum" ; break ;
-								}else {
-									if(valuestr.matches("[\\d]{4,4}-[\\d]{2,2}-{1,1}")) {
-										if("date".equals(tp.getDefaultfieldvalue())) {
-											values.put(tp.getFieldname(),UKTools.simpleDateFormat.parse(valuestr));
-										}else {
-											values.put(tp.getFieldname(),UKTools.simpleDateFormat.format(UKTools.simpleDateFormat.parse(valuestr)));
-										}
-									}else if(valuestr.matches("[\\d]{4,4}-[\\d]{2,2}-[\\d]{2,2} [\\d]{2,2}:[\\d]{2,2}:[\\d]{2,2}")) {
-										if("date".equals(tp.getDefaultfieldvalue())) {
-											values.put(tp.getFieldname(),UKTools.dateFormate.parse(valuestr));
-										}else {
-											values.put(tp.getFieldname(),UKTools.simpleDateFormat.format(UKTools.dateFormate.parse(valuestr)));
-										}
-										
-									}
-								}
-							}
-						}
-		            	if(tp.isReffk() && !StringUtils.isBlank(tp.getReftbid()) && refValues.get(tp.getFieldname()) == null){
-		            		DataExchangeInterface exchange = (DataExchangeInterface) UKDataContext.getContext().getBean(tp.getReftbid()) ;
-		            		exchange.process(data, event.getOrgi());
-		            	}
-		            }
-					
-					if(!values.containsKey("orgi")) {
-						skipDataVal = true ;
-					}
-					
-					values.put("creater", event.getValues().get("creater")) ;
-					if(data!=null && skipDataVal == false) {
-						UKTools.populate(data, values);
-						event.getDSData().getProcess().process(data);
-					}else if(data == null){
-						/**
-						 * 导入的数据，只写入ES
-						 */
-						if(skipDataVal == true) {	//跳过
-							values.put("status", "invalid") ;
-							values.put("validresult", "error") ;
-							values.put("validmessage", validFaildMessage!=null ? validFaildMessage : "") ;
-						}
-						values.put("batid", event.getBatid()) ;
-						values.put("execid", event.getDSData().getReport().getId()) ;
-						values.put("cretetime", new Date()) ;
-						event.getDSData().getProcess().process(values);
-					}
-					if(skipDataVal == true) {	//跳过
-						continue ;
-					}
-            	}
+	        	}
+            }
+            if(findId == false) {
+				metaDataTable.getTableproperty().add(initProperties("id", "主键", "String", event.getOrgi() , event.getTablename())) ;
 			}
-            
-            event.setTimes(System.currentTimeMillis() - start);
-            event.getDSData().getReport().setEndtime(new Date());
-            event.getDSData().getReport().setStatus(UKDataContext.TaskStatusType.END.getType());
+			metaDataTable.getTableproperty().add(initProperties("orgi", "租户ID", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("creater", "创建人", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("createtime", "创建时间", "Date", event.getOrgi() , event.getTablename())) ;
+			
+			metaDataTable.getTableproperty().add(initProperties("validresult", "数据状态", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("validmessage", "数据状态", "String", event.getOrgi() , event.getTablename())) ;
+			
+			
+			
+			metaDataTable.getTableproperty().add(initProperties("owneruser", "分配用户", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("ownerdept", "分配部门", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("distime", "分配时间", "Date", event.getOrgi() , event.getTablename())) ;
+			
+			metaDataTable.getTableproperty().add(initProperties("status", "状态", "String", event.getOrgi() , event.getTablename())) ;
+			
+			metaDataTable.getTableproperty().add(initProperties("process", "处理状态", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("processtime", "处理时间", "Date", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("processmemo", "处理备注", "String", event.getOrgi() , event.getTablename())) ;
+			
+			metaDataTable.getTableproperty().add(initProperties("batid", "批次ID", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("execid", "执行ID", "String", event.getOrgi() , event.getTablename())) ;
+            /**
+			 * 映射 Mapping
+			 */
+			ESTools.mapping(metaDataTable, "uckefu");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{
@@ -234,52 +125,20 @@ public class ExcelImportProecess extends DataProcess{
 					e.printStackTrace();
 				}
 			}
-			if(event.getDSData().getFile().exists()){
-				event.getDSData().getFile().delete() ;
-			}
 		}
+    	return metaDataTable;
 	}
 	
-	private String getRefid(TableProperties tp , List<Object> dataList , String value) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException{
-		String id = "" ;
-		for(Object data : dataList){
-			Object target = null ;
-			if(PropertyUtils.isReadable(data, "name")){
-				target = BeanUtils.getProperty(data, "name") ;
-				if(target!=null && target.equals(value)){
-					id = BeanUtils.getProperty(data, "id") ;
-				}
-			}
-			if(PropertyUtils.isReadable(data, "tag")){
-				target = BeanUtils.getProperty(data, "tag") ;
-				if(target!=null && target.equals(value)){
-					id = BeanUtils.getProperty(data, "id") ;
-				}
-			}
-			if(StringUtils.isBlank(id) && PropertyUtils.isReadable(data, "title")){
-				target = BeanUtils.getProperty(data, "title") ; 
-				if(target!=null && target.equals(value)){
-					id = BeanUtils.getProperty(data, "id") ;
-				}
-			}
-			if(StringUtils.isBlank(id)){
-				target = BeanUtils.getProperty(data, "id") ; 
-				if(target!=null && target.equals(value)){
-					id = target.toString() ;
-				}
-			}
-		}
-		return id ;
-	}
-	
-	private TableProperties getTableProperties(DSDataEvent event , String title){
-		TableProperties tableProperties = null ; 
-		for(TableProperties tp : event.getDSData().getTask().getTableproperty()){
-			if(tp.getName().equals(title) || tp.getFieldname().equals(title)){
-				tableProperties = tp ; break ;
-			}
-		}
-		return tableProperties;
+	private TableProperties initProperties(String name ,String title, String type ,String orgi ,String tableName) {
+		TableProperties tablePorperties = new TableProperties(name, type, 255 , tableName) ;
+		tablePorperties.setOrgi(orgi) ;
+		
+		tablePorperties.setDatatypecode(0);
+		tablePorperties.setLength(255);
+		tablePorperties.setDatatypename(type);
+		tablePorperties.setName(title);
+		
+		return tablePorperties;
 	}
 	
 	private boolean isExcel2007(String fileName) {  

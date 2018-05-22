@@ -7,6 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 
 import com.ukefu.util.DateConverter;
 import com.ukefu.webim.web.model.Log;
@@ -25,6 +26,8 @@ public class UKDataContext {
 	
 	public static final String UKEFU_SYSTEM_COOKIES_FLAG = "uk_flagid" ;
 	public static final String UKEFU_SYSTEM_NO_AI_CONFIG = "NOTEXIST" ;
+	
+	public static final String SYSTEM_INDEX = "uckefu" ;
 	
 	
 	public static final String UKEFU_SYSTEM_CALLCENTER = "callcenter";
@@ -66,6 +69,8 @@ public class UKDataContext {
 	private static int WebIMPort = 8081 ;
 	
 	private static ApplicationContext applicationContext ;
+	
+	private static ElasticsearchTemplate templet ;
 	
 	public static BlockingQueue<Log> tempLogQueue = new LinkedBlockingQueue<Log>();
 	
@@ -548,6 +553,14 @@ public class UKDataContext {
 	
 	public static ApplicationContext getContext(){
 		return applicationContext ;
+	}
+	
+	public static ElasticsearchTemplate getTemplet() {
+		return templet;
+	}
+
+	public static void setTemplet(ElasticsearchTemplate templet) {
+		UKDataContext.templet = templet;
 	}
 
 	public static int getWebIMPort() {

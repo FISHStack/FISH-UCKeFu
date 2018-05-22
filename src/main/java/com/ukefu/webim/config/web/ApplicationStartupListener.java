@@ -7,6 +7,7 @@ import org.springframework.data.elasticsearch.ElasticsearchException;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Component;
 
+import com.ukefu.core.UKDataContext;
 import com.ukefu.webim.web.model.Favorites;
 import com.ukefu.webim.web.model.WorkOrders;
 
@@ -29,5 +30,6 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
         	elasticSearchTemplate.putMapping(Favorites.class);
         	elasticSearchTemplate.putMapping(WorkOrders.class);
         }
+    	UKDataContext.setTemplet(elasticSearchTemplate);
     }
 }

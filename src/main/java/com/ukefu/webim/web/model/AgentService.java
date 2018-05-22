@@ -324,7 +324,6 @@ public class AgentService implements Serializable {
 		this.sessiontimes = sessiontimes;
 	}
 
-	@Transient
 	public String getSessiontype() {
 		return this.sessiontype;
 	}

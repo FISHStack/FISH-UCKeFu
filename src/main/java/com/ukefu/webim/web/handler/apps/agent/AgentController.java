@@ -478,7 +478,7 @@ public class AgentController extends Handler {
 			agentStatusRepository.save(agentStatus);
 			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus, super.getOrgi(request));
 		}
-    	ServiceQuene.publishMessage(super.getOrgi(request));
+    	ServiceQuene.publishMessage(super.getOrgi(request) , "agent" , "busy" , user.getId());
     	
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 
     }

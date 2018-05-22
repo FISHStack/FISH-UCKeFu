@@ -30,6 +30,11 @@ public class AgentReport implements java.io.Serializable{
 	private int inquene ;		//队列中的用户
 	private int busy ;			//队列中忙的坐席
 	private String orgi;
+	
+	private String worktype ;
+	private String workresult ;
+	private String dataid ;
+	
 	private String datestr = UKTools.simpleDateFormat.format(new Date());
 	private String hourstr = new SimpleDateFormat("HH").format(new Date());
 	private String datehourstr = new SimpleDateFormat("yyyy-MM-dd HH").format(new Date());
@@ -104,5 +109,23 @@ public class AgentReport implements java.io.Serializable{
 	}
 	public void setDatehourstr(String datehourstr) {
 		this.datehourstr = datehourstr;
+	}
+	public String getWorktype() {
+		return worktype;
+	}
+	public void setWorktype(String worktype) {
+		this.worktype = worktype;
+	}
+	public String getWorkresult() {
+		return workresult;
+	}
+	public void setWorkresult(String workresult) {
+		this.workresult = workresult;
+	}
+	public String getDataid() {
+		return dataid;
+	}
+	public void setDataid(String dataid) {
+		this.dataid = dataid;
 	}
 }

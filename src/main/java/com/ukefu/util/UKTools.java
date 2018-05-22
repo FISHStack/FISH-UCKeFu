@@ -90,6 +90,7 @@ import com.ukefu.webim.web.model.Template;
 import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.WorkOrders;
+import com.ukefu.webim.web.model.WorkSession;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -1322,5 +1323,39 @@ public class UKTools {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param userid
+	 * @param client
+	 * @param session
+	 * @param orgi
+	 * @param ipaddr
+	 * @param hostname
+	 * @return
+	 */
+	public static WorkSession createWorkSession(String userid , String client, String session ,String orgi , String ipaddr , String hostname , String admin , boolean first) {
+		WorkSession workSession = new WorkSession();
+		workSession.setCreatetime(new Date());
+		workSession.setBegintime(new Date());
+		workSession.setAgent(userid);
+		workSession.setAgentno(userid);
+		workSession.setAgentno(userid);
+		if(!StringUtils.isBlank(admin) && admin.equalsIgnoreCase("true")) {
+			workSession.setAdmin(true);
+		}
+		
+		workSession.setFirsttime(first);
+		
+		workSession.setIpaddr(ipaddr);
+		workSession.setHostname(hostname);
+		workSession.setUserid(userid);
+		workSession.setClientid(client); 
+		workSession.setSessionid(session);
+		workSession.setOrgi(orgi);
+		
+		workSession.setDatestr(UKTools.simpleDateFormat.format(new Date()));
+		
+		return workSession ;
+	} 
 	
 }

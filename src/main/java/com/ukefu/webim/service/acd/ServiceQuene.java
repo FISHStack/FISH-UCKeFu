@@ -212,7 +212,7 @@ public class ServiceQuene {
 				break ;
 			}
 		}
-		publishMessage(orgi);
+		publishMessage(orgi , "agent" , "success" , agentno);
 	}
 	
 	/**
@@ -324,7 +324,7 @@ public class ServiceQuene {
 					allotAgent(agentStatus.getAgentno(), orgi);
 				}
 			}
-			publishMessage(orgi);
+			publishMessage(orgi, "end" , "success" ,agentUser!=null ? agentUser.getId() : null);
 		}
 	}
 	
@@ -347,7 +347,7 @@ public class ServiceQuene {
 		}
 	}
 	
-	public static void publishMessage(String orgi){
+	public static void publishMessage(String orgi ,String worktype,String workresult ,String dataid){
 		/**
 		 * 坐席状态改变，通知监测服务
 		 */
@@ -355,6 +355,10 @@ public class ServiceQuene {
 		AgentReportRepository agentReportRes = UKDataContext.getContext().getBean(AgentReportRepository.class) ;
 		if(agentReportRes!=null) {
 			agentReport.setOrgi(orgi);
+			agentReport.setWorktype(worktype);
+			agentReport.setWorkresult(workresult);
+			agentReport.setDataid(dataid);
+			
 			agentReportRes.save(agentReport) ;
 		}
 		UKDataContext.getContext().getBean("agentNamespace" , SocketIONamespace.class) .getBroadcastOperations().sendEvent("status", agentReport);
@@ -460,7 +464,7 @@ public class ServiceQuene {
 		}catch(Exception ex){
 			ex.printStackTrace(); 
 		}
-		publishMessage(orgi);
+		publishMessage(orgi, "user" , agentService!=null && agentService.getStatus().equals(UKDataContext.AgentUserStatusEnum.INSERVICE.toString()) ? "inservice" : "inquene" , agentUser.getId());
 		return agentService;
 	}
 	/**
@@ -476,7 +480,7 @@ public class ServiceQuene {
 		AgentService agentService = null ;
 		if(agentStatus!=null){
 			agentService = processAgentService(agentStatus, agentUser, orgi) ;
-			publishMessage(orgi);
+			publishMessage(orgi , "invite" , "success" , agentno);
 			NettyClients.getInstance().sendAgentEventMessage(agentService.getAgentno(), UKDataContext.MessageTypeEnum.NEW.toString(), agentUser);
 		}else{
 			agentService = allotAgent(agentUser, orgi) ;
@@ -598,6 +602,8 @@ public class ServiceQuene {
 			
 			agentUser.setStatus(UKDataContext.AgentUserStatusEnum.INSERVICE.toString());
 			agentService.setStatus(UKDataContext.AgentUserStatusEnum.INSERVICE.toString());
+			
+			agentService.setSessiontype(UKDataContext.AgentUserStatusEnum.INSERVICE.toString());
 
 			agentService.setAgentno(agentStatus.getUserid());
 			agentService.setAgentusername(agentStatus.getUsername());	//agent
@@ -605,6 +611,7 @@ public class ServiceQuene {
 			if(finished == true) {
 				agentUser.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
 				agentService.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
+				agentService.setSessiontype(UKDataContext.AgentUserStatusEnum.END.toString());
 				if(agentStatus==null) {
 					agentService.setLeavemsg(true); //是留言
 					agentService.setLeavemsgstatus(UKDataContext.LeaveMsgStatus.NOTPROCESS.toString()); //未处理的留言
@@ -612,6 +619,8 @@ public class ServiceQuene {
 			}else {
 				agentUser.setStatus(UKDataContext.AgentUserStatusEnum.INQUENE.toString());
 				agentService.setStatus(UKDataContext.AgentUserStatusEnum.INQUENE.toString());
+				
+				agentService.setSessiontype(UKDataContext.AgentUserStatusEnum.INQUENE.toString());
 			}
 		}
 		if(finished || agentStatus!=null) {
@@ -807,6 +816,6 @@ public class ServiceQuene {
 			agentStatusRes.delete(agentStatus);
 		}
     	CacheHelper.getAgentStatusCacheBean().delete(userid,orgi);
-    	ServiceQuene.publishMessage(orgi);
+    	ServiceQuene.publishMessage(orgi , "agent" , "leave" , userid);
 	}
 }
