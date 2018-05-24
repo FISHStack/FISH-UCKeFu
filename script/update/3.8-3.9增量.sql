@@ -38,3 +38,14 @@ ALTER TABLE uk_historyreport ADD title varchar(100) COMMENT "标题";
 ALTER TABLE uk_webim_monitor ADD worktype varchar(50) COMMENT "操作类型";
 ALTER TABLE uk_webim_monitor ADD workresult varchar(50) COMMENT "操作结果";
 ALTER TABLE uk_webim_monitor ADD dataid varchar(50) COMMENT "数据ID";
+
+ALTER TABLE uk_tableproperties ADD phonenumber tinyint DEFAULT 0 COMMENT "是否电话号码";
+ALTER TABLE uk_tableproperties ADD phonetype varchar(50) COMMENT "电话号码类型";
+ALTER TABLE uk_tableproperties ADD phonememo varchar(50) COMMENT "电话号码备注";
+
+ALTER TABLE uk_tableproperties ADD secfield tinyint DEFAULT 0 COMMENT "隐藏字段";
+ALTER TABLE uk_tableproperties ADD secdistype varchar(50) COMMENT "字段隐藏方式";
+
+
+
+

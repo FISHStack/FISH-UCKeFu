@@ -881,3 +881,16 @@ ALTER TABLE uk_callcenter_pbxhost ADD ttsrecordpath varchar(255)  COMMENT 'ASR�
 ALTER TABLE uk_callcenter_extention ADD mediapath varchar(255)  COMMENT '播报工号语音文件';
 
 ALTER TABLE uk_callcenter_extention ADD afterprocess tinyint DEFAULT 0 COMMENT '坐席通话后启用后处理功能';
+
+CREATE TABLE `uk_ai` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(255) DEFAULT NULL COMMENT '维度名称',
+  `createtime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户id',
+  `inx` int(11) DEFAULT NULL COMMENT '分类排序序号',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `description` varchar(255) DEFAULT NULL COMMENT '分类描述',
+  `code` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
