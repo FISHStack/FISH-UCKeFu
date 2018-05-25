@@ -32,7 +32,7 @@ ALTER TABLE uk_callcenter_event ADD hourstr varchar(32) DEFAULT 0 COMMENT '坐�
 
 
 
-ALTER TABLE uk_historyreport ADD batid varchar(32) COMMENT "批次ID";
+ALTER TABLE uk_historyreport ADD dataid varchar(32) COMMENT "数据ID";
 ALTER TABLE uk_historyreport ADD title varchar(100) COMMENT "标题";
 
 ALTER TABLE uk_webim_monitor ADD worktype varchar(50) COMMENT "操作类型";
