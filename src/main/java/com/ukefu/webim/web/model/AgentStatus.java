@@ -172,7 +172,7 @@ public class AgentStatus implements java.io.Serializable ,  Comparable<AgentStat
 	public int compareTo(AgentStatus o) {
 		int retValue = 0 ;
 		SessionConfig sessionConfig = ServiceQuene.initSessionConfig(this.orgi) ;
-		if(!StringUtils.isBlank(sessionConfig.getDistribution()) && sessionConfig.getDistribution().equals("0")) {
+		if(sessionConfig!=null && !StringUtils.isBlank(sessionConfig.getDistribution()) && sessionConfig.getDistribution().equals("0")) {
 			if(this.getUpdatetime()!=null && o.getUpdatetime()!=null) {
 				retValue = (int) (this.getUpdatetime().getTime() - o.getUpdatetime().getTime());
 			}else if(o.getUpdatetime()!=null) {
