@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.ukefu.core.UKDataContext;
@@ -169,7 +170,20 @@ public class AgentStatus implements java.io.Serializable ,  Comparable<AgentStat
 	}
 	@Override
 	public int compareTo(AgentStatus o) {
-		return this.users - o.users;
+		int retValue = 0 ;
+		SessionConfig sessionConfig = ServiceQuene.initSessionConfig(this.orgi) ;
+		if(!StringUtils.isBlank(sessionConfig.getDistribution()) && sessionConfig.getDistribution().equals("0")) {
+			if(this.getUpdatetime()!=null && o.getUpdatetime()!=null) {
+				retValue = (int) (this.getUpdatetime().getTime() - o.getUpdatetime().getTime());
+			}else if(o.getUpdatetime()!=null) {
+				retValue = -1; 
+			}else {
+				retValue = 1;
+			}
+		}else {
+			retValue = this.users - o.users ;
+		}
+		return retValue;
 	}
 	public boolean isBusy() {
 		return busy;
