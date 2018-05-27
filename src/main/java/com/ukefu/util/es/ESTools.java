@@ -29,7 +29,7 @@ public class ESTools {
 		for(TableProperties tp:tb.getTableproperty()){
 			builder.startObject(tp.getFieldname().toLowerCase()) ;
 			if(tp.getDatatypename().equalsIgnoreCase("text") && !tp.getFieldname().equalsIgnoreCase("id")){
-				builder.field("type", "string").field("store", "yes").field("index", tp.isToken() ? "analyzed":"not_analyzed") ;
+				builder.field("type", "string").field("index", tp.isToken() ? "analyzed":"not_analyzed") ;
 				if(tp.isToken() && "keyword".equalsIgnoreCase(tp.getTokentype())){
 					builder.field("analyzer" , "whitespace") ;
 				}
@@ -37,23 +37,23 @@ public class ESTools {
 					builder.field("ignore_above" , "256") ;
 				}
 			}else if(tp.getDatatypename().equalsIgnoreCase("date") ){
-				builder.field("type", "date").field("store", "yes").field("index", "not_analyzed").field("format","yyyy-MM-dd") ;
+				builder.field("type", "date").field("index", "not_analyzed") ;
 			}else if(tp.getDatatypename().equalsIgnoreCase("datetime")){
-				builder.field("type", "date").field("store", "yes").field("index", "not_analyzed").field("format","yyyy-MM-dd HH:mm:ss") ;
+				builder.field("type", "date").field("index", "not_analyzed");
 			}else if(tp.getDatatypename().equalsIgnoreCase("textarea")){
-				builder.field("type", "string").field("store", "yes").field("index", "analyzed") ;
+				builder.field("type", "string").field("index", "analyzed") ;
 			}else if(tp.getDatatypename().equalsIgnoreCase("nlp")){
-				builder.field("type", "string").field("store", "yes").field("index", "not_analyzed").field("ignore_above" , "256") ;
+				builder.field("type", "string").field("index", "not_analyzed").field("ignore_above" , "256") ;
 			}else if(tp.getDatatypename().equalsIgnoreCase("url")){
-				builder.field("type", "string").field("store", "yes").field("index", "analyzed") ;
+				builder.field("type", "string").field("index", "not_analyzed") ;
 			}else if(tp.getDatatypename().equalsIgnoreCase("email")){
-				builder.field("type", "string").field("store", "yes").field("index", "analyzed") ;
+				builder.field("type", "string").field("index", "not_analyzed") ;
 			}else if(tp.getDatatypename().equalsIgnoreCase("number") ){
-				builder.field("type", "float").field("store", "yes").field("index", "not_analyzed");
+				builder.field("type", "float").field("index", "not_analyzed");
 			}else if(tp.getDatatypename().equalsIgnoreCase("boolean") ){
-				builder.field("type", "boolean").field("store", "yes").field("index", "not_analyzed");
+				builder.field("type", "boolean").field("index", "not_analyzed");
 			}else{
-				builder.field("type", "string").field("store", "yes").field("index", tp.isToken() ? "analyzed":"not_analyzed") ;
+				builder.field("type", "string").field("index", tp.isToken() ? "analyzed"  : "not_analyzed") ;
 			}
 			builder.endObject() ;
 		}

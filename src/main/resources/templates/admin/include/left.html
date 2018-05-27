@@ -55,6 +55,7 @@
 			</dl>
 		</li>
 	</#if>
+	<#if user.superuser?? && user.superuser == true>
 	<li class="layui-nav-item layui-nav-itemed">
 		<a class="layui-nav-title" href="javascript:;">系统日志</a>
 		<dl class="layui-nav-child">
@@ -116,4 +117,5 @@
 			</dd>
 		</dl>
 	</li>
+	</#if>
 </ul>

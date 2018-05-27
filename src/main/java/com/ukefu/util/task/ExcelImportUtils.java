@@ -20,6 +20,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.es.ESTools;
 import com.ukefu.webim.web.model.MetadataTable;
@@ -82,7 +83,9 @@ public class ExcelImportUtils{
 							if(titleValue.equalsIgnoreCase("id")) {
 								findId = true ;
 							}
-							metaDataTable.getTableproperty().add(initProperties("f"+UKTools.genIDByKey(titleValue) , titleValue, "String", event.getOrgi() , event.getTablename())) ;
+							TableProperties tp  = initProperties("f"+UKTools.genIDByKey(titleValue) , titleValue, "String", event.getOrgi() , event.getTablename()) ;
+							tp.setViewtype("list,add,edit,detail");
+							metaDataTable.getTableproperty().add(tp) ;
 						}
 					}
 	        	}
@@ -92,7 +95,7 @@ public class ExcelImportUtils{
 			}
 			metaDataTable.getTableproperty().add(initProperties("orgi", "租户ID", "String", event.getOrgi() , event.getTablename())) ;
 			metaDataTable.getTableproperty().add(initProperties("creater", "创建人", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("createtime", "创建时间", "Date", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("createtime", "创建时间", "Datetime", event.getOrgi() , event.getTablename())) ;
 			
 			metaDataTable.getTableproperty().add(initProperties("validresult", "数据状态", "String", event.getOrgi() , event.getTablename())) ;
 			metaDataTable.getTableproperty().add(initProperties("validmessage", "数据状态", "String", event.getOrgi() , event.getTablename())) ;
@@ -101,12 +104,12 @@ public class ExcelImportUtils{
 			
 			metaDataTable.getTableproperty().add(initProperties("owneruser", "分配用户", "String", event.getOrgi() , event.getTablename())) ;
 			metaDataTable.getTableproperty().add(initProperties("ownerdept", "分配部门", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("distime", "分配时间", "Date", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("distime", "分配时间", "Datetime", event.getOrgi() , event.getTablename())) ;
 			
 			metaDataTable.getTableproperty().add(initProperties("status", "状态", "String", event.getOrgi() , event.getTablename())) ;
 			
 			metaDataTable.getTableproperty().add(initProperties("process", "处理状态", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("processtime", "处理时间", "Date", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("processtime", "处理时间", "Datetime", event.getOrgi() , event.getTablename())) ;
 			metaDataTable.getTableproperty().add(initProperties("processmemo", "处理备注", "String", event.getOrgi() , event.getTablename())) ;
 			
 			metaDataTable.getTableproperty().add(initProperties("batid", "批次ID", "String", event.getOrgi() , event.getTablename())) ;
@@ -114,7 +117,7 @@ public class ExcelImportUtils{
             /**
 			 * 映射 Mapping
 			 */
-			ESTools.mapping(metaDataTable, "uckefu");
+			ESTools.mapping(metaDataTable, UKDataContext.SYSTEM_INDEX);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{

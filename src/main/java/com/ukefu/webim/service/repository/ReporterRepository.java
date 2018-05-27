@@ -8,5 +8,5 @@ import com.ukefu.webim.web.model.Reporter;
 
 public interface ReporterRepository extends  JpaRepository<Reporter, String> {
 	
-	public Page<Reporter> findByBatidAndOrgi(String batid , String orgi , Pageable pageable) ;
+	public Page<Reporter> findByDataidAndOrgi(String dataid , String orgi , Pageable pageable) ;
 }

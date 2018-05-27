@@ -258,6 +258,10 @@ public class MessageUtils {
     		AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI);
     		if(agentUser!=null && !StringUtils.isBlank(agentUser.getAgentno())){
         		//将消息发送给 坐席
+    			
+    			if(UKDataContext.CallTypeEnum.OUT.toString().equals(direction)) {
+    				data.setUserid(agentUser.getAgentno());
+    			}
         		NettyClients.getInstance().sendAgentEventMessage(agentUser.getAgentno(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), data);
         	}
     	}

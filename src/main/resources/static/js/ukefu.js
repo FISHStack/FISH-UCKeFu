@@ -171,6 +171,7 @@ $(document).ready(function(){
 		var target = $(this).data("target");
 		var inner = $(this).data("inner");
 		var close = $(this).data("close");
+		var message = $(this).data("message");
 		var index ;
 		if(close == null){
 			index = top.layer.load(0, {shade: false});
@@ -190,7 +191,11 @@ $(document).ready(function(){
 					}else{
 						layer.close(layer.index);
 					}
-					top.layer.alert('保存成功', {icon: 1});
+					if(message){
+						
+					}else{
+						top.layer.alert('保存成功', {icon: 1});
+					}
 				}
 			},
 			error:function(xhr, type, s){  				

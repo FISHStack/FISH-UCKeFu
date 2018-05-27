@@ -116,6 +116,14 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum FormFilterTypeEnum{
+		BATCH,
+		BUSINESS;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	
 	public enum TagTypeEnum{
 		QUALITY;
@@ -293,6 +301,15 @@ public class UKDataContext {
 	
 	public enum ReportType{
 		REPORT;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+
+	public enum TaskType{
+		BATCH,
+		ACTIVE;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}

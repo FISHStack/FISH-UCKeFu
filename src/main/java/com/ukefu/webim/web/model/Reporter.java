@@ -43,7 +43,7 @@ public class Reporter implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 1620523470991367318L;
 	
-	private String batid ;
+	private String dataid ;
 	private String title ;
 
 	private String id;
@@ -314,11 +314,11 @@ public class Reporter implements java.io.Serializable{
 	public void setTabledirid(String tabledirid) {
 		this.tabledirid = tabledirid;
 	}
-	public String getBatid() {
-		return batid;
+	public String getDataid() {
+		return dataid;
 	}
-	public void setBatid(String batid) {
-		this.batid = batid;
+	public void setDataid(String dataid) {
+		this.dataid = dataid;
 	}
 	public String getTitle() {
 		return title;

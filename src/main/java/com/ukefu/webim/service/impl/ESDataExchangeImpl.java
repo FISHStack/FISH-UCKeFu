@@ -58,7 +58,7 @@ public class ESDataExchangeImpl{
 
 	public void deleteIObject(UKDataBean dataBean ) throws Exception {
 		if(dataBean.getTable()!=null){
-			UKDataContext.getTemplet().getClient().prepareDelete(dataBean.getOrgi(), dataBean.getTable().getTablename(), dataBean.getId()).setRefresh(true).execute().actionGet();
+			UKDataContext.getTemplet().getClient().prepareDelete(UKDataContext.SYSTEM_INDEX, dataBean.getTable().getTablename(), dataBean.getId()).setRefresh(true).execute().actionGet();
 		}
 	}
 	/**

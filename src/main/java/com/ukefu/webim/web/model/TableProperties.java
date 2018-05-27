@@ -76,6 +76,14 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	private boolean systemfield  = false ;	//变更用处，是否流程变量
 	private int length = 255 ;
 	private boolean fieldstatus ;			
+	
+	private boolean secfield ;			//隐藏字段
+	private String secdistype;			//字段隐藏方式
+	
+	private boolean phonenumber ;	//是否电话号码
+	private String phonetype ;		//号码类型   ， 第一联系号码|家庭电话|工作电话
+	private String phonememo ;		//号码备注
+	
 	private boolean seldata ;
 	private String seldatatype ;	//选择数据方式  ： 字典数据  ， 表数据  ， 如果是表数据，则需要选择 表ID
 	private String seldatacode ;
@@ -436,5 +444,35 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	}
 	public void setImpfield(boolean impfield) {
 		this.impfield = impfield;
+	}
+	public boolean isPhonenumber() {
+		return phonenumber;
+	}
+	public void setPhonenumber(boolean phonenumber) {
+		this.phonenumber = phonenumber;
+	}
+	public String getPhonetype() {
+		return phonetype;
+	}
+	public void setPhonetype(String phonetype) {
+		this.phonetype = phonetype;
+	}
+	public String getPhonememo() {
+		return phonememo;
+	}
+	public void setPhonememo(String phonememo) {
+		this.phonememo = phonememo;
+	}
+	public boolean isSecfield() {
+		return secfield;
+	}
+	public void setSecfield(boolean secfield) {
+		this.secfield = secfield;
+	}
+	public String getSecdistype() {
+		return secdistype;
+	}
+	public void setSecdistype(String secdistype) {
+		this.secdistype = secdistype;
 	}
 }
