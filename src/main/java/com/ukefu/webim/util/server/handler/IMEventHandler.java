@@ -107,7 +107,7 @@ public class IMEventHandler
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			NettyClients.getInstance().removeIMEventClient(user , client.getSessionId().toString());
+			NettyClients.getInstance().removeIMEventClient(user ,UKTools.getContextID(client.getSessionId().toString()));
 		}
     }  
       

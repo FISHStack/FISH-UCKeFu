@@ -69,7 +69,7 @@ public class AgentEventHandler
 	    	WorkSessionRepository workSessionRepository = UKDataContext.getContext().getBean(WorkSessionRepository.class) ;
 	    	int count = workSessionRepository.countByAgentAndDatestrAndOrgi(user, UKTools.simpleDateFormat.format(new Date()), orgi) ;
 	    	
-	    	workSessionRepository.save(UKTools.createWorkSession(user, client.getSessionId().toString(), session, orgi, ip, address.getHostName() , admin , count == 0)) ;
+	    	workSessionRepository.save(UKTools.createWorkSession(user, UKTools.getContextID(client.getSessionId().toString()), session, orgi, ip, address.getHostName() , admin , count == 0)) ;
 	    	
 			NettyClients.getInstance().putAgentEventClient(user, client);
 		}
@@ -84,10 +84,10 @@ public class AgentEventHandler
 		String admin = client.getHandshakeData().getSingleUrlParam("admin") ;
 		if(!StringUtils.isBlank(user)){
 			ServiceQuene.deleteAgentStatus(user, orgi, !StringUtils.isBlank(admin) && admin.equals("true"));
-			NettyClients.getInstance().removeAgentEventClient(user , client.getSessionId().toString());
+			NettyClients.getInstance().removeAgentEventClient(user , UKTools.getContextID(client.getSessionId().toString()));
 			
 			WorkSessionRepository workSessionRepository = UKDataContext.getContext().getBean(WorkSessionRepository.class) ;
-			List<WorkSession> workSessionList = workSessionRepository.findByOrgiAndClientid(orgi, client.getSessionId().toString()) ;
+			List<WorkSession> workSessionList = workSessionRepository.findByOrgiAndClientid(orgi, UKTools.getContextID(client.getSessionId().toString())) ;
 			if(workSessionList.size() > 0) {
 				WorkSession workSession = workSessionList.get(0) ;
 				workSession.setEndtime(new Date());
