@@ -3,6 +3,7 @@ package com.ukefu.util.client;
 import java.util.List;
 
 import com.corundumstudio.socketio.SocketIOClient;
+import com.ukefu.util.UKTools;
 
 
 public class NettyClients {
@@ -36,7 +37,7 @@ public class NettyClients {
 	public void closeIMEventClient(String id , String sessionid, String orgi){
 		List<SocketIOClient> userClients = imClients.getClients(id) ;
 		for(SocketIOClient userClient : userClients){
-			if(userClient.getSessionId().toString().equals(sessionid)){
+			if(UKTools.getContextID(userClient.getSessionId().toString()).equals(sessionid)){
 				userClient.disconnect();
 			}
 		}
