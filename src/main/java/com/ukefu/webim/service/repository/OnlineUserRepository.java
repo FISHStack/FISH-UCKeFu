@@ -89,4 +89,6 @@ public abstract interface OnlineUserRepository extends JpaRepository<OnlineUser,
 	@Query("select code as dt, count(id) as co from CallMonitor where orgi = ?1 group by code")
 	List<Object> findByOrgiAndStatusRangeForAgent(String orgi);
 	
+	@Query("select s from StatusEvent s  where startrecord<= ?1 AND ORGI = ?2 AND (discalled = ?3 OR discaller= ?4 )")
+	List<Object> findByOrgiAndStartrecord(Date startrecord, String orgi, String discalled, String discaller);
 }
