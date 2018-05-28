@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-05-22 17:39:43
+Date: 2018-05-28 18:23:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -51,11 +51,77 @@ CREATE TABLE `uk_act_batch` (
   `password` varchar(255) DEFAULT NULL,
   `DESCRIPTION` text,
   `execnum` int(11) DEFAULT '0' COMMENT '导入次数',
+  `SOURCE` varchar(255) DEFAULT NULL,
+  `CLAZZ` varchar(255) DEFAULT NULL,
+  `TASKFIRETIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `CRAWLTASKID` varchar(255) DEFAULT NULL,
+  `EMAIL` varchar(255) DEFAULT NULL,
+  `NICKNAME` varchar(255) DEFAULT NULL,
+  `USERID` varchar(255) DEFAULT NULL,
+  `TASKTYPE` varchar(255) DEFAULT NULL,
+  `TASKID` varchar(255) DEFAULT NULL,
+  `FETCHER` smallint(6) NOT NULL,
+  `PAUSE` smallint(6) NOT NULL,
+  `PLANTASK` smallint(6) NOT NULL,
+  `SECURE_ID` varchar(32) DEFAULT NULL,
+  `CONFIGURE_ID` varchar(32) DEFAULT NULL,
+  `TAKSPLAN_ID` varchar(32) DEFAULT NULL,
+  `CRAWLTASK` varchar(32) DEFAULT NULL,
+  `TARGETTASK` varchar(32) DEFAULT NULL,
+  `STARTINDEX` int(11) DEFAULT NULL,
+  `LASTDATE` timestamp NULL DEFAULT NULL,
+  `CREATETABLE` tinyint(4) DEFAULT NULL,
+  `MEMO` text,
+  `NEXTFIRETIME` timestamp NULL DEFAULT NULL,
+  `CRONEXP` varchar(255) DEFAULT NULL,
+  `TASKSTATUS` varchar(32) DEFAULT NULL,
+  `usearea` varchar(255) DEFAULT '',
+  `areafield` varchar(255) DEFAULT NULL,
+  `areafieldtype` varchar(32) DEFAULT NULL,
+  `arearule` varchar(255) DEFAULT NULL,
+  `minareavalue` varchar(255) DEFAULT NULL,
+  `maxareavalue` varchar(255) DEFAULT NULL,
+  `formatstr` varchar(255) DEFAULT NULL,
+  `DATAID` varchar(1000) DEFAULT NULL COMMENT '报表id字符串',
+  `DICID` varchar(1000) DEFAULT NULL COMMENT '目录id字符串',
+  `taskinfo` longtext COMMENT 'taskinfo信息',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of uk_act_batch
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_act_callagent`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_act_callagent`;
+CREATE TABLE `uk_act_callagent` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `STATUS` varchar(50) DEFAULT NULL,
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '上级ID',
+  `FILTERTYPE` varchar(32) DEFAULT NULL COMMENT '筛选类型（批次筛选/元数据筛选）',
+  `BATID` varchar(32) DEFAULT NULL COMMENT '筛选表单使用的批次ID',
+  `TABLEID` varchar(32) DEFAULT NULL COMMENT '筛选表单使用元数据ID',
+  `DATASTATUS` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `INX` int(11) DEFAULT '0' COMMENT '分类排序序号',
+  `ORGAN` varchar(32) DEFAULT NULL,
+  `DESCRIPTION` text,
+  `distype` varchar(32) DEFAULT NULL,
+  `distarget` varchar(32) DEFAULT NULL,
+  `disnum` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_act_callagent
 -- ----------------------------
 
 -- ----------------------------
@@ -88,6 +154,63 @@ CREATE TABLE `uk_act_formfilter` (
 
 -- ----------------------------
 -- Records of uk_act_formfilter
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_act_formfilter_item`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_act_formfilter_item`;
+CREATE TABLE `uk_act_formfilter_item` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `formfilterid` varchar(32) DEFAULT NULL COMMENT '筛选器ID',
+  `field` varchar(32) DEFAULT NULL COMMENT '字段',
+  `cond` varchar(32) DEFAULT NULL COMMENT '条件',
+  `value` varchar(32) DEFAULT NULL COMMENT '取值',
+  `contype` varchar(32) DEFAULT NULL COMMENT '条件类型',
+  `itemtype` varchar(32) DEFAULT NULL COMMENT '类型',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_act_formfilter_item
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_act_schedule`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_act_schedule`;
+CREATE TABLE `uk_act_schedule` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `STATUS` varchar(50) DEFAULT NULL,
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '上级ID',
+  `FILTERTYPE` varchar(32) DEFAULT NULL COMMENT '筛选类型（批次筛选/元数据筛选）',
+  `ACTID` varchar(32) DEFAULT NULL COMMENT '筛选表单使用的批次ID',
+  `TABLEID` varchar(32) DEFAULT NULL COMMENT '筛选表单使用元数据ID',
+  `DATASTATUS` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `INX` int(11) DEFAULT '0' COMMENT '分类排序序号',
+  `ORGAN` varchar(32) DEFAULT NULL,
+  `DESCRIPTION` text,
+  `daytype` varchar(32) DEFAULT NULL,
+  `begintime` varchar(32) DEFAULT NULL,
+  `endtime` varchar(32) DEFAULT NULL,
+  `policy` varchar(32) DEFAULT NULL,
+  `callvalues` text,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_act_schedule
 -- ----------------------------
 
 -- ----------------------------
@@ -1619,7 +1742,7 @@ CREATE TABLE `uk_historyreport` (
   `TOTAL` int(11) DEFAULT NULL COMMENT '总数',
   `USERID` varchar(32) DEFAULT NULL COMMENT '用户ID',
   `USERNAME` varchar(50) DEFAULT '' COMMENT '用户名',
-  `batid` varchar(32) DEFAULT NULL COMMENT '批次ID',
+  `dataid` varchar(32) DEFAULT NULL COMMENT '批次ID',
   `title` varchar(100) DEFAULT NULL COMMENT '标题',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
@@ -1727,6 +1850,95 @@ CREATE TABLE `uk_inviterecord` (
 
 -- ----------------------------
 -- Records of uk_inviterecord
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_jobdetail`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_jobdetail`;
+CREATE TABLE `uk_jobdetail` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `STATUS` varchar(50) DEFAULT NULL,
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '上级ID',
+  `ACTID` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `INX` int(11) DEFAULT '0' COMMENT '分类排序序号',
+  `NAMENUM` int(11) DEFAULT '0' COMMENT '批次包含的名单总数',
+  `VALIDNUM` int(11) DEFAULT '0' COMMENT '批次包含的有效名单总数',
+  `INVALIDNUM` int(11) DEFAULT '0' COMMENT '批次包含的无效名单总数',
+  `ASSIGNED` int(11) DEFAULT '0' COMMENT '已分配名单总数',
+  `NOTASSIGNED` int(11) DEFAULT '0' COMMENT '未分配名单总数',
+  `ENABLE` tinyint(4) DEFAULT '0' COMMENT '分类状态',
+  `DATASTATUS` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `AREA` text COMMENT '分类描述',
+  `imptype` varchar(50) DEFAULT NULL,
+  `batchtype` varchar(32) DEFAULT NULL,
+  `ORGAN` varchar(32) DEFAULT NULL,
+  `impurl` text,
+  `filetype` varchar(50) DEFAULT NULL,
+  `dbtype` varchar(50) DEFAULT NULL,
+  `jdbcurl` text,
+  `driverclazz` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `DESCRIPTION` text,
+  `execnum` int(11) DEFAULT '0' COMMENT '导入次数',
+  `SOURCE` varchar(255) DEFAULT NULL,
+  `CLAZZ` varchar(255) DEFAULT NULL,
+  `TASKFIRETIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `CRAWLTASKID` varchar(255) DEFAULT NULL,
+  `EMAIL` varchar(255) DEFAULT NULL,
+  `NICKNAME` varchar(255) DEFAULT NULL,
+  `USERID` varchar(255) DEFAULT NULL,
+  `TASKTYPE` varchar(255) DEFAULT NULL,
+  `TASKID` varchar(255) DEFAULT NULL,
+  `FETCHER` smallint(6) NOT NULL,
+  `PAUSE` smallint(6) NOT NULL,
+  `PLANTASK` smallint(6) NOT NULL,
+  `SECURE_ID` varchar(32) DEFAULT NULL,
+  `CONFIGURE_ID` varchar(32) DEFAULT NULL,
+  `TAKSPLAN_ID` varchar(32) DEFAULT NULL,
+  `CRAWLTASK` varchar(32) DEFAULT NULL,
+  `TARGETTASK` varchar(32) DEFAULT NULL,
+  `STARTINDEX` int(11) DEFAULT NULL,
+  `LASTDATE` timestamp NULL DEFAULT NULL,
+  `CREATETABLE` tinyint(4) DEFAULT NULL,
+  `MEMO` text,
+  `NEXTFIRETIME` timestamp NULL DEFAULT NULL,
+  `CRONEXP` varchar(255) DEFAULT NULL,
+  `TASKSTATUS` varchar(32) DEFAULT NULL,
+  `usearea` varchar(255) DEFAULT '',
+  `areafield` varchar(255) DEFAULT NULL,
+  `areafieldtype` varchar(32) DEFAULT NULL,
+  `arearule` varchar(255) DEFAULT NULL,
+  `minareavalue` varchar(255) DEFAULT NULL,
+  `maxareavalue` varchar(255) DEFAULT NULL,
+  `formatstr` varchar(255) DEFAULT NULL,
+  `DATAID` varchar(1000) DEFAULT NULL COMMENT '报表id字符串',
+  `DICID` varchar(1000) DEFAULT NULL COMMENT '目录id字符串',
+  `taskinfo` longtext COMMENT 'taskinfo信息',
+  `FILTERID` varchar(32) DEFAULT NULL,
+  `FETCH_SIZE` int(11) DEFAULT NULL,
+  `LASTINDEX` int(11) DEFAULT NULL,
+  `PAGES` int(11) DEFAULT NULL,
+  `plantaskreadtorun` tinyint(4) DEFAULT NULL,
+  `priority` int(11) DEFAULT NULL,
+  `runserver` varchar(100) DEFAULT NULL,
+  `actype` varchar(50) DEFAULT NULL,
+  `distype` varchar(32) DEFAULT NULL,
+  `distpolicy` varchar(50) DEFAULT NULL,
+  `policynum` int(11) DEFAULT NULL,
+  `busstype` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_jobdetail
 -- ----------------------------
 
 -- ----------------------------
@@ -2645,6 +2857,9 @@ CREATE TABLE `uk_sales_product` (
   `memo` varchar(32) DEFAULT NULL,
   `price` int(11) DEFAULT NULL,
   `organ` varchar(32) DEFAULT NULL,
+  `termtype` varchar(32) DEFAULT '0' COMMENT '有效期类型（1永久有效，0有效期）',
+  `begintime` datetime DEFAULT NULL COMMENT '有效期开始时间',
+  `endtime` datetime DEFAULT NULL COMMENT '有效期结束时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -6447,6 +6662,23 @@ INSERT INTO `uk_sysdic` VALUES ('4028811b618d0dca01618d5a5fe6034a', '报表组�
 INSERT INTO `uk_sysdic` VALUES ('4028811b618d0dca01618d5a5ff6034b', '过滤器组件', 'pub', 'filter', 'ukewo', 'layui-icon', '297e63f05d1da6be015d1dae6de20002', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-13 12:09:25', '2018-02-13 12:09:25', '0', '3', '297e63f05d1da6be015d1dae6de20002', '0', '1', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028811b621faf9401621fcabd0203c6', '短信网关类型', 'pub', 'com.dic.sms.type', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-03-13 22:36:43', null, '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028811b621faf9401621fcae43003c7', '阿里大鱼', 'pub', 'aliyun', 'ukewo', 'layui-icon', '4028811b621faf9401621fcabd0203c6', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-03-13 22:36:53', '2018-03-13 22:36:53', '0', '1', '4028811b621faf9401621fcabd0203c6', '0', '1', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b639010de0163904e80d30539', '电话号码类型', 'pub', 'com.dic.phone.type', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:00:53', null, '1', '0', null, '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b639010de016390502552053e', '家庭电话', 'pub', '01', 'ukewo', 'layui-icon', '4028811b639010de0163904e80d30539', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:02:41', '2018-05-24 12:02:41', '0', '1', '4028811b639010de0163904e80d30539', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b639010de016390502562053f', '工作电话', 'pub', '02', 'ukewo', 'layui-icon', '4028811b639010de0163904e80d30539', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:02:41', '2018-05-24 12:02:41', '0', '2', '4028811b639010de0163904e80d30539', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b639010de0163905025700540', '住宅电话', 'pub', '03', 'ukewo', 'layui-icon', '4028811b639010de0163904e80d30539', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:02:41', '2018-05-24 12:02:41', '0', '3', '4028811b639010de0163904e80d30539', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b639010de01639050257e0541', '主要电话', 'pub', '04', 'ukewo', 'layui-icon', '4028811b639010de0163904e80d30539', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:02:41', '2018-05-24 12:02:41', '0', '4', '4028811b639010de0163904e80d30539', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b639010de01639050258f0542', '无线电话', 'pub', '05', 'ukewo', 'layui-icon', '4028811b639010de0163904e80d30539', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:02:41', '2018-05-24 12:02:41', '0', '5', '4028811b639010de0163904e80d30539', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b639010de01639050259b0543', '移动电话', 'pub', '06', 'ukewo', 'layui-icon', '4028811b639010de0163904e80d30539', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:02:41', '2018-05-24 12:02:41', '0', '6', '4028811b639010de0163904e80d30539', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b639010de0163905025a50544', '车载电话', 'pub', '07', 'ukewo', 'layui-icon', '4028811b639010de0163904e80d30539', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:02:41', '2018-05-24 12:02:41', '0', '7', '4028811b639010de0163904e80d30539', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b639010de0163905025b00545', '助理电话', 'pub', '08', 'ukewo', 'layui-icon', '4028811b639010de0163904e80d30539', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:02:41', '2018-05-24 12:02:41', '0', '8', '4028811b639010de0163904e80d30539', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b639010de0163905025bb0546', '回拨电话', 'pub', '09', 'ukewo', 'layui-icon', '4028811b639010de0163904e80d30539', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:02:41', '2018-05-24 12:02:41', '0', '9', '4028811b639010de0163904e80d30539', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b63905368016390662e700570', '字段隐藏显示', 'pub', 'com.dic.phone.secdis', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:26:45', null, '1', '0', null, '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b63905368016390666f4d0575', '隐藏中间四位', 'pub', '01', 'ukewo', 'layui-icon', '4028811b63905368016390662e700570', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:27:02', '2018-05-24 12:27:02', '0', '1', '4028811b63905368016390662e700570', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b6390536801639066bae2057c', '隐藏后四位', 'pub', '02', 'ukewo', null, '4028811b63905368016390662e700570', null, null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:27:21', '2018-05-24 12:27:21', '0', '1', '4028811b63905368016390662e700570', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b6390536801639066df8e0580', '隐藏前4位', 'pub', '03', 'ukewo', null, '4028811b63905368016390662e700570', null, null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:27:31', '2018-05-24 12:27:31', '0', '1', '4028811b63905368016390662e700570', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b63906a0c01639139c1520562', '外呼业务类型', 'pub', 'com.dic.callout.type', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 16:17:51', null, '1', '0', null, '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b63906a0c0163913a1c790567', '电销', 'pub', '01', 'ukewo', null, '4028811b63906a0c01639139c1520562', null, null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 16:18:14', '2018-05-24 16:18:14', '0', '1', '4028811b63906a0c01639139c1520562', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b63906a0c0163913a1c890568', '回访', 'pub', '02', 'ukewo', null, '4028811b63906a0c01639139c1520562', null, null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 16:18:14', '2018-05-24 16:18:14', '0', '2', '4028811b63906a0c01639139c1520562', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402881e8618cc9ab01618cd99f40035a', '模型类型', 'pub', 'com.dic.cube.modeltype', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-13 09:48:47', null, '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402881e8618cc9ab01618cd9cfae035b', '立方体', 'pub', 'cube', 'ukewo', 'layui-icon', '402881e8618cc9ab01618cd99f40035a', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-13 09:49:00', '2018-02-13 09:49:00', '0', '1', '402881e8618cc9ab01618cd99f40035a', '0', '1', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402881e86191fd51016191ff64550355', '维度成员数据类型', 'pub', 'com.dic.cubelevel.type', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-14 09:48:09', null, '1', '0', null, '0', '0', null, null, null, null, null);
@@ -7278,6 +7510,11 @@ CREATE TABLE `uk_tableproperties` (
   `DESCORDER` tinyint(4) DEFAULT NULL,
   `impfield` tinyint(4) DEFAULT '0',
   `tokentype` varchar(32) DEFAULT NULL,
+  `phonenumber` tinyint(4) DEFAULT NULL COMMENT '是否电话号码',
+  `phonetype` varchar(50) DEFAULT NULL COMMENT '电话号码类型',
+  `phonememo` varchar(50) DEFAULT NULL COMMENT '电话号码备注',
+  `secfield` tinyint(4) DEFAULT '0' COMMENT '隐藏字段',
+  `secdistype` varchar(50) DEFAULT NULL COMMENT '字段隐藏方式',
   PRIMARY KEY (`ID`) USING BTREE,
   UNIQUE KEY `SQL130112140848940` (`ID`) USING BTREE,
   KEY `FKF8D74787854BC62` (`DBTABLEID`) USING BTREE,
@@ -7517,8 +7754,8 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-05-18 09:54:52', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-05-18 09:54:58', null, null, null, '0', '1', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-05-22 17:21:58', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-05-18 09:54:52', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-05-27 09:35:38', null, null, null, '0', '1', '0', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-05-28 16:56:29', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
