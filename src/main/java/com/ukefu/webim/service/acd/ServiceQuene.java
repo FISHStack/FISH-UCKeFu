@@ -702,17 +702,10 @@ public class ServiceQuene {
 			onlineUserRes.save(onlineUser) ;
 		}
 		
-		if(CacheHelper.getAgentUserCacheBean().getCacheObject(agentUser.getUserid(), UKDataContext.SYSTEM_ORGI) == null){
-			agentUserRepository.save(agentUser);
-		}else{
-			AgentUser agentUseDataBean = agentUserRepository.findByIdAndOrgi(agentUser.getId() , agentUser.getOrgi()) ;
-			if(agentUseDataBean!=null){
-				agentUseDataBean.setAgentno(agentService.getAgentno()) ;
-				agentUseDataBean.setStatus(agentUser.getStatus()) ;
-				
-				agentUserRepository.save(agentUseDataBean) ;
-			}
-		}
+		/**
+		 * 
+		 */
+		agentUserRepository.save(agentUser);
 
 		CacheHelper.getAgentUserCacheBean().put(agentUser.getUserid(), agentUser , UKDataContext.SYSTEM_ORGI) ;
 		
