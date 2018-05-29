@@ -20,7 +20,6 @@ import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.es.ContactsRepository;
 import com.ukefu.webim.service.impl.AgentUserService;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
-import com.ukefu.webim.service.repository.AgentStatusRepository;
 import com.ukefu.webim.service.repository.AgentUserContactsRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.OnlineUserHisRepository;
@@ -29,7 +28,6 @@ import com.ukefu.webim.service.repository.ServiceSummaryRepository;
 import com.ukefu.webim.service.repository.TagRelationRepository;
 import com.ukefu.webim.service.repository.TagRepository;
 import com.ukefu.webim.service.repository.UserEventRepository;
-import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.WeiXinUserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentService;
@@ -57,14 +55,9 @@ public class OnlineUserController extends Handler{
 	@Autowired
 	private ServiceSummaryRepository serviceSummaryRes; 
 	
-	@Autowired
-	private AgentStatusRepository agentStatusRepository ;
 	
 	@Autowired
 	private OnlineUserHisRepository onlineUserHisRes;
-	
-	@Autowired
-	private UserRepository userRes ;
 	
 	@Autowired
 	private WeiXinUserRepository weiXinUserRes;

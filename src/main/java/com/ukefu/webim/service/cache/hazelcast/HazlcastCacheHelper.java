@@ -7,6 +7,7 @@ import com.ukefu.webim.service.cache.hazelcast.impl.AgentStatusCache;
 import com.ukefu.webim.service.cache.hazelcast.impl.AgentUserCache;
 import com.ukefu.webim.service.cache.hazelcast.impl.ApiUserCache;
 import com.ukefu.webim.service.cache.hazelcast.impl.CallCenterCache;
+import com.ukefu.webim.service.cache.hazelcast.impl.JobCache;
 import com.ukefu.webim.service.cache.hazelcast.impl.MultiCache;
 import com.ukefu.webim.service.cache.hazelcast.impl.OnlineCache;
 import com.ukefu.webim.service.cache.hazelcast.impl.SystemCache;
@@ -22,7 +23,7 @@ public class HazlcastCacheHelper implements CacheInstance{
 	 *
 	 */
 	public enum CacheServiceEnum{
-		HAZLCAST_CLUSTER_AGENT_USER_CACHE, HAZLCAST_CLUSTER_AGENT_STATUS_CACHE, HAZLCAST_CLUSTER_QUENE_USER_CACHE,HAZLCAST_ONLINE_CACHE , HAZLCAST_CULUSTER_SYSTEM , HAZLCAST_IMR_CACHE , API_USER_CACHE , CALLCENTER_CURRENT_CALL ,CALLCENTER_AGENT;
+		HAZLCAST_CLUSTER_AGENT_USER_CACHE, HAZLCAST_CLUSTER_AGENT_STATUS_CACHE, HAZLCAST_CLUSTER_QUENE_USER_CACHE,HAZLCAST_ONLINE_CACHE , HAZLCAST_CULUSTER_SYSTEM , HAZLCAST_IMR_CACHE , API_USER_CACHE , CALLCENTER_CURRENT_CALL ,CALLCENTER_AGENT,JOB_CACHE;
 		public String toString(){
 			return super.toString().toLowerCase();
 		}
@@ -61,5 +62,9 @@ public class HazlcastCacheHelper implements CacheInstance{
 	@Override
 	public CacheBean getApiUserCacheBean() {
 		return UKDataContext.getContext().getBean(ApiUserCache.class).getCacheInstance(CacheServiceEnum.API_USER_CACHE.toString()) ;
+	}
+	@Override
+	public CacheBean getJobCacheBean() {
+		return UKDataContext.getContext().getBean(JobCache.class).getCacheInstance(CacheServiceEnum.JOB_CACHE.toString()) ;
 	}
 }

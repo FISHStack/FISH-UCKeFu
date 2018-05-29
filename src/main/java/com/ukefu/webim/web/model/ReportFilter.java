@@ -84,6 +84,7 @@ public class ReportFilter implements java.io.Serializable{
 	
 	private ReportFilter childFilter;//级联下一级
 	
+	@SuppressWarnings("unused")
 	private ReportFilter parentFilter;//级联中上一级
 	
 	private String parentValue;

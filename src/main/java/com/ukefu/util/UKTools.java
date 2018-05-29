@@ -817,7 +817,7 @@ public class UKTools {
 	    if(strb.length() == 0){
 	    	strb.append(message) ;
 	    }
-	    return strb.toString() ;
+	    return strb.toString().replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "[表情]") ;
 	}
 	
 	public static String getIpAddr(HttpServletRequest request) {  

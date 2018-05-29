@@ -207,9 +207,12 @@ public class ExcelImportProecess extends DataProcess{
 						 */
 						if(skipDataVal == true) {	//跳过
 							values.put("status", "invalid") ;
-							values.put("validresult", "error") ;
+							values.put("validresult", "invalid") ;
 							values.put("validmessage", validFaildMessage!=null ? validFaildMessage : "") ;
+						}else {
+							values.put("validresult", "valid") ;
 						}
+						values.put("status", UKDataContext.NamesDisStatusType.NOT.toString()) ;
 						values.put("batid", event.getBatid()) ;
 						values.put("execid", event.getDSData().getReport().getId()) ;
 						values.put("cretetime", new Date()) ;

@@ -38,5 +38,8 @@ public class CacheHelper {
 	public static CacheBean getApiUserCacheBean() {
 		return cacheInstance!=null ? cacheInstance.getApiUserCacheBean() : null ;
 	}
+	public static CacheBean getJobCacheBean() {
+		return cacheInstance!=null ? cacheInstance.getJobCacheBean(): null ;
+	}
 	
 }

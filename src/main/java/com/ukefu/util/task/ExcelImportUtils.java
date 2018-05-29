@@ -102,9 +102,9 @@ public class ExcelImportUtils{
 			
 			
 			
-			metaDataTable.getTableproperty().add(initProperties("owneruser", "分配用户", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("ownerdept", "分配部门", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("distime", "分配时间", "Datetime", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, "分配用户", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, "分配部门", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties(UKDataContext.UKEFU_SYSTEM_DIS_TIME, "分配时间", "Datetime", event.getOrgi() , event.getTablename())) ;
 			
 			metaDataTable.getTableproperty().add(initProperties("status", "状态", "String", event.getOrgi() , event.getTablename())) ;
 			
@@ -112,8 +112,11 @@ public class ExcelImportUtils{
 			metaDataTable.getTableproperty().add(initProperties("processtime", "处理时间", "Datetime", event.getOrgi() , event.getTablename())) ;
 			metaDataTable.getTableproperty().add(initProperties("processmemo", "处理备注", "String", event.getOrgi() , event.getTablename())) ;
 			
+			metaDataTable.getTableproperty().add(initProperties("metaid", "元数据", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("actid", "活动ID", "String", event.getOrgi() , event.getTablename())) ;
 			metaDataTable.getTableproperty().add(initProperties("batid", "批次ID", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("execid", "执行ID", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("execid", "任务ID", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("cusid", "客户ID", "String", event.getOrgi() , event.getTablename())) ;
             /**
 			 * 映射 Mapping
 			 */

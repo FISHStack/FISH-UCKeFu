@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.google.common.collect.ArrayListMultimap;
+import com.ukefu.util.UKTools;
 
 public class NettyIMClient implements NettyClient{
 	
@@ -24,7 +25,7 @@ public class NettyIMClient implements NettyClient{
 	public void removeClient(String key , String id){
 		List<SocketIOClient> keyClients = this.getClients(key) ;
 		for(SocketIOClient client : keyClients){
-			if(client.getSessionId().toString().equals(id)){
+			if(UKTools.getContextID(client.getSessionId().toString()).equals(id)){
 				keyClients.remove(client) ;
 				break ;
 			}

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ukefu.webim.web.model.MetadataTable;
+import com.ukefu.webim.web.model.Organ;
+import com.ukefu.webim.web.model.User;
 
 public class UKDataBean implements java.io.Serializable{
 
@@ -20,6 +22,9 @@ public class UKDataBean implements java.io.Serializable{
 	private Date createtime ;	//创建时间
 	private Date updatetime ;	//修改时间
 	private MetadataTable table ;
+	
+	private User user ;
+	private Organ organ;
 	
 	private Map<String , Object> values = new HashMap<String , Object>();
 
@@ -86,5 +91,20 @@ public class UKDataBean implements java.io.Serializable{
 	public void setValues(Map<String, Object> values) {
 		this.values = values;
 	}
-	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Organ getOrgan() {
+		return organ;
+	}
+
+	public void setOrgan(Organ organ) {
+		this.organ = organ;
+	}
 }

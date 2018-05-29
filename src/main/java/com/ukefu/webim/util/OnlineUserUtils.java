@@ -728,30 +728,31 @@ public class OnlineUserUtils {
 																				// UserID作为主键ID存储
 			agentUser.setNickname(nickname);
 			agentUser.setUsername(nickname);
-			
-			agentUser.setOsname(osname);
-			agentUser.setBrowser(browser);
-			agentUser.setAppid(appid);
-			agentUser.setSessionid(session);
-			
-			if (ipdata != null) {
-				agentUser.setCountry(ipdata.getCountry());
-				agentUser.setProvince(ipdata.getProvince());
-				agentUser.setCity(ipdata.getCity());
-				if(!StringUtils.isBlank(ip)){
-					agentUser.setRegion(ipdata.toString() + "[" + ip + "]");
-				}else{
-					agentUser.setRegion(ipdata.toString());
-				}
-			}
-
-			agentUser.setOwner(eventid);
-			agentUser.setHeadimgurl(headimg);
 			// agentUser.setId(data.getUserid());
 		}else if(!agentUser.getUsername().equals(nickname)){
 			agentUser.setUsername(nickname);
 			agentUser.setNickname(nickname);
 		}
+		
+		agentUser.setOsname(osname);
+		agentUser.setBrowser(browser);
+		agentUser.setAppid(appid);
+		agentUser.setSessionid(session);
+		
+		if (ipdata != null) {
+			agentUser.setCountry(ipdata.getCountry());
+			agentUser.setProvince(ipdata.getProvince());
+			agentUser.setCity(ipdata.getCity());
+			if(!StringUtils.isBlank(ip)){
+				agentUser.setRegion(ipdata.toString() + "[" + ip + "]");
+			}else{
+				agentUser.setRegion(ipdata.toString());
+			}
+		}
+
+		agentUser.setOwner(eventid);
+		agentUser.setHeadimgurl(headimg);
+		
 		agentUser.setStatus(null); // 修改状态
 		agentUser.setTitle(title);
 		agentUser.setUrl(url);

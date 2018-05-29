@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.webim.service.repository.BlackListRepository;
-import com.ukefu.webim.service.repository.SkillExtentionRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.BlackEntity;
 
@@ -23,9 +22,6 @@ public class CallCenterBlackController extends Handler{
 	
 	@Autowired
 	private BlackListRepository blackRes ;
-	
-	@Autowired
-	private SkillExtentionRepository skillExtentionRes;
 	
 	@RequestMapping(value = "/black")
     @Menu(type = "callcenter" , subtype = "callcenterblack" , access = false , admin = true)

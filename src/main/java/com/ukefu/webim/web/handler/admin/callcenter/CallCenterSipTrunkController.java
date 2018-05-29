@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.util.Menu;
-import com.ukefu.webim.service.repository.ExtentionRepository;
 import com.ukefu.webim.service.repository.PbxHostRepository;
 import com.ukefu.webim.service.repository.SipTrunkRepository;
-import com.ukefu.webim.service.repository.SkillExtentionRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.SipTrunk;
 
@@ -25,14 +23,10 @@ public class CallCenterSipTrunkController extends Handler{
 	@Autowired
 	private PbxHostRepository pbxHostRes ;
 	
-	@Autowired
-	private ExtentionRepository extentionRes;
 	
 	@Autowired
 	private SipTrunkRepository sipTrunkRes ;
 	
-	@Autowired
-	private SkillExtentionRepository skillExtentionRes;
 	
 	@RequestMapping(value = "/siptrunk")
     @Menu(type = "callcenter" , subtype = "callcenterresource" , access = false , admin = true)

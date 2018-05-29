@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -16,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,8 +35,6 @@ import com.ukefu.webim.web.model.Contacts;
 import com.ukefu.webim.web.model.InviteRecord;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.OrgiSkillRel;
-import com.ukefu.webim.web.model.Role;
-import com.ukefu.webim.web.model.RoleAuth;
 import com.ukefu.webim.web.model.User;
 
 @Controller
@@ -61,9 +54,6 @@ public class AppsController extends Handler{
 	
 	@Autowired
 	private ContactsRepository contactsRes ;
-
-	@Autowired
-	private OrgiSkillRelRepository orgiSkillRelRepository ;
 	
 	@Autowired
 	private OrgiSkillRelRepository orgiSkillRelService;

@@ -2,7 +2,6 @@ package com.ukefu.webim.service.es;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,8 +27,6 @@ import com.ukefu.webim.web.model.User;
 
 @Component
 public class ContactsRepositoryImpl implements ContactsEsCommonRepository{
-	private SimpleDateFormat dateFromate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
-	
 	@Autowired
 	private UserRepository userRes ;
 	

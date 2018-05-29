@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.util.Menu;
 import com.ukefu.webim.service.repository.SkillRepository;
-import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Skill;
 
@@ -32,9 +31,6 @@ public class AgentSkillController extends Handler{
 	
 	@Autowired
 	private SkillRepository skillRepository;
-	
-	@Autowired
-	private UserRepository userRepository;
 
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "skill")

@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 
 import com.ukefu.util.DateConverter;
+import com.ukefu.webim.service.resource.ActivityResource;
 import com.ukefu.webim.web.model.Log;
 
 public class UKDataContext {
@@ -23,6 +24,10 @@ public class UKDataContext {
 	public static final String UKEFU_SYSTEM_ADPOS_DIC = "com.dic.adv.type" ;
 	public static final String UKEFU_SYSTEM_COMMENT_DIC = "com.dic.webim.comment" ;
 	public static final String UKEFU_SYSTEM_COMMENT_ITEM_DIC = "com.dic.webim.comment.item" ;
+	
+	public static final String UKEFU_SYSTEM_DIS_AGENT = "owneruser" ;
+	public static final String UKEFU_SYSTEM_DIS_ORGAN = "ownerdept" ;
+	public static final String UKEFU_SYSTEM_DIS_TIME = "distime" ;
 	
 	public static final String UKEFU_SYSTEM_COOKIES_FLAG = "uk_flagid" ;
 	public static final String UKEFU_SYSTEM_NO_AI_CONFIG = "NOTEXIST" ;
@@ -66,6 +71,8 @@ public class UKDataContext {
 	public static final String USER_CURRENT_ORGI_SESSION = "current_orgi";
 	public static Map<String , Boolean> model = new HashMap<String,Boolean>();
 	
+	public static Map<String , Class<?>> uKeFuResourceMap = new HashMap<String , Class<?>>() ;
+	
 	private static int WebIMPort = 8081 ;
 	
 	private static ApplicationContext applicationContext ;
@@ -77,6 +84,8 @@ public class UKDataContext {
 	static{
 		ConvertUtils.register(new DateConverter(), java.util.Date.class); 
 		model.put("report", true) ;
+		
+		uKeFuResourceMap.put(TaskType.ACTIVE.toString(), ActivityResource.class) ;
 	}
 	
 	public enum AskSectionType{
@@ -96,6 +105,18 @@ public class UKDataContext {
 	
 	public enum SystemMessageType{
 		EMAIL,SMS;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	/**
+	 * 名单分配状态：已分配|未分配
+	 * @author iceworld
+	 *
+	 */
+	public enum NamesDisStatusType{
+		NOT,DISAGENT,DISORGAN;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}
@@ -436,6 +457,7 @@ public class UKDataContext {
 	public enum TaskStatusType{
 		NORMAL("0"),
 		READ("1"),
+		QUEUE("5"),
 		RUNNING("2"),
 		END("3");
 		
@@ -655,5 +677,14 @@ public class UKDataContext {
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}
+	}
+
+	/**
+	 * 
+	 * @param resource
+	 * @return
+	 */
+	public static Class<?> getResource(String resource){
+		return uKeFuResourceMap.get(resource) ;
 	}
 }

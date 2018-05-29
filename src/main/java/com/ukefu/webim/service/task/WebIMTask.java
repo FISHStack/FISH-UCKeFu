@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -21,6 +22,7 @@ import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
+import com.ukefu.webim.service.repository.JobDetailRepository;
 import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
 import com.ukefu.webim.util.router.OutMessageRouter;
@@ -31,6 +33,7 @@ import com.ukefu.webim.web.model.AgentUserTask;
 import com.ukefu.webim.web.model.AiConfig;
 import com.ukefu.webim.web.model.AiUser;
 import com.ukefu.webim.web.model.CousultInvite;
+import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.MessageOutContent;
 import com.ukefu.webim.web.model.OnlineUser;
 import com.ukefu.webim.web.model.SessionConfig;
@@ -44,6 +47,12 @@ public class WebIMTask {
 	
 	@Autowired
 	private OnlineUserRepository onlineUserRes ;
+	
+	@Autowired
+	private JobDetailRepository jobDetailRes ;
+	
+	@Autowired
+	private TaskExecutor taskExecutor;
 	
 	@Scheduled(fixedDelay= 5000) // 每5秒执行一次
     public void task() {
@@ -284,4 +293,25 @@ public class WebIMTask {
 	    	}
 		}
 	}
+	
+	
+	@Scheduled(fixedDelay= 3000) // 每三秒 , 加载 标记为执行中的任务何 即将执行的 计划任务
+    public void jobDetail() {
+		Page<JobDetail> pages = jobDetailRes.findByTaskstatus(UKDataContext.TaskStatusType.READ.getType() , new PageRequest(0,  100)) ;
+		if(pages.getContent().size()>0){
+			for(JobDetail jobDetail : pages.getContent()){
+				if(CacheHelper.getJobCacheBean().getCacheObject(jobDetail.getId(), jobDetail.getOrgi()) == null) {
+					jobDetail.setTaskstatus(UKDataContext.TaskStatusType.QUEUE.getType());
+					jobDetailRes.save(jobDetail) ;
+					CacheHelper.getJobCacheBean().put(jobDetail.getId(), jobDetail, jobDetail.getOrgi());
+					/**
+					 * 加入到作业执行引擎
+					 */
+					taskExecutor.execute(new Task(jobDetail, jobDetailRes));
+				}
+			}
+		}
+	}
+	
+	
 }

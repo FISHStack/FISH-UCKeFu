@@ -26,7 +26,6 @@ import com.ukefu.webim.service.es.KbsTopicRepository;
 import com.ukefu.webim.service.repository.AttachmentRepository;
 import com.ukefu.webim.service.repository.KbsTypeRepository;
 import com.ukefu.webim.service.repository.TagRepository;
-import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AttachmentFile;
 import com.ukefu.webim.web.model.KbsTopic;
@@ -35,9 +34,6 @@ import com.ukefu.webim.web.model.KbsType;
 @Controller
 @RequestMapping({"/apps/kbs"})
 public class KbsController extends Handler{
-	
-	@Autowired
-	private UserRepository userRes;
 	
 	@Autowired
 	private TagRepository tagRes ;

@@ -100,6 +100,7 @@ public class MailSender {
 	 * @param smtpHostName
 	 *            SMTP主机地址
 	 */
+	@SuppressWarnings("restriction")
 	private void init(String username, String password, String smtpHostName,String seclev,String sslport) {
 		// 初始化props
 		props.put("mail.smtp.auth", "true");

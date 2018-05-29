@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.util.Menu;
 import com.ukefu.webim.service.repository.AclRepository;
 import com.ukefu.webim.service.repository.PbxHostRepository;
-import com.ukefu.webim.service.repository.SkillExtentionRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Acl;
 
@@ -26,9 +25,6 @@ public class CallCenterAclController extends Handler{
 	
 	@Autowired
 	private AclRepository aclRes ;
-	
-	@Autowired
-	private SkillExtentionRepository skillExtentionRes;
 	
 	@RequestMapping(value = "/acl")
     @Menu(type = "callcenter" , subtype = "callcenteracl" , access = false , admin = true)

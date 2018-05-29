@@ -1,10 +1,10 @@
 package com.ukefu.util.client;
 
 import java.util.List;
-import java.util.UUID;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.google.common.collect.ArrayListMultimap;
+import com.ukefu.util.UKTools;
 
 public class NettyAgentClient implements NettyClient{
 	
@@ -21,7 +21,7 @@ public class NettyAgentClient implements NettyClient{
 	public void removeClient(String key , String id){
 		List<SocketIOClient> keyClients = this.getClients(key) ;
 		for(SocketIOClient client : keyClients){
-			if(client.getSessionId().equals(UUID.fromString(id))){
+			if(UKTools.getContextID(client.getSessionId().toString()).equals(id)){
 				keyClients.remove(client) ;
 				break ;
 			}

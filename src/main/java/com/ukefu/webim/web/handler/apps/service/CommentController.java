@@ -13,8 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.util.Menu;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
-import com.ukefu.webim.service.repository.UserRepository;
-import com.ukefu.webim.service.repository.WeiXinUserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AgentService;
 
@@ -23,12 +21,6 @@ import com.ukefu.webim.web.model.AgentService;
 public class CommentController extends Handler{
 	@Autowired
 	private AgentServiceRepository agentServiceRes ;
-	
-	@Autowired
-	private UserRepository userRes ;
-	
-	@Autowired
-	private WeiXinUserRepository weiXinUserRes;
 	
 	
 	@RequestMapping("/comment/index")

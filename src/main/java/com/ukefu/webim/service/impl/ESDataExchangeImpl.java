@@ -14,6 +14,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -21,12 +22,22 @@ import org.springframework.stereotype.Repository;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.es.UKDataBean;
+import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.model.MetadataTable;
+import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.TableProperties;
+import com.ukefu.webim.web.model.User;
 
 @Repository("esdataservice")
 public class ESDataExchangeImpl{
 
+	@Autowired
+	private UserRepository userRes ;
+	
+	@Autowired
+	private OrganRepository organRes ;
+	
 	public void saveIObject(UKDataBean dataBean) throws Exception {
 		if (dataBean.getId() == null) {
 			dataBean.setId(UKTools.getUUID());
@@ -125,19 +136,56 @@ public class ESDataExchangeImpl{
 	 * @param start
 	 * @return
 	 */
-	public PageImpl<UKDataBean> findPageResult(QueryBuilder query,String index ,MetadataTable metadata, Pageable page) {
+	public PageImpl<UKDataBean> findPageResult(QueryBuilder query,String index ,MetadataTable metadata, Pageable page , boolean loadRef) {
 		List<UKDataBean> dataBeanList = new ArrayList<UKDataBean>() ;
 		SearchRequestBuilder searchBuilder = UKDataContext.getTemplet().getClient().prepareSearch(UKDataContext.SYSTEM_INDEX).setTypes(metadata.getTablename()) ;
 	
 		int start = page.getPageSize() * page.getPageNumber();
 		searchBuilder.setFrom(start).setSize(page.getPageSize()) ;
 		
-		SearchResponse response = searchBuilder.setQuery(query).execute().actionGet(); ;
+		SearchResponse response = searchBuilder.setQuery(query).execute().actionGet();
+		List<String> users = new ArrayList<String>() , organs = new ArrayList<String>();
 		for(SearchHit hit : response.getHits().getHits()){
 			UKDataBean temp = new UKDataBean() ;
 			temp.setTable(metadata);
 			temp.setValues(hit.getSource());
 			dataBeanList.add(temp) ;
+			
+			if(!StringUtils.isBlank((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT))) {
+				users.add((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT)) ;
+			}
+			if(!StringUtils.isBlank((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN))) {
+				organs.add((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN)) ;
+			}
+		}
+		
+		if(users.size() > 0) {
+			List<User> userList = userRes.findAll(users) ;
+			for(UKDataBean dataBean : dataBeanList) {
+				String userid = (String)dataBean.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT) ;
+				if(!StringUtils.isBlank(userid)) {
+					for(User user : userList) {
+						if(user.getId().equals(userid)) {
+							dataBean.setUser(user);
+							break ;
+						}
+					}
+				}
+			}
+		}
+		if(organs.size() > 0) {
+			List<Organ> organList = organRes.findAll(organs) ;
+			for(UKDataBean dataBean : dataBeanList) {
+				String organid = (String)dataBean.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN) ;
+				if(!StringUtils.isBlank(organid)) {
+					for(Organ organ : organList) {
+						if(organ.getId().equals(organid)) {
+							dataBean.setOrgan(organ);
+							break ;
+						}
+					}
+				}
+			}
 		}
 		return new PageImpl<UKDataBean>(dataBeanList,page , (int)response.getHits().getTotalHits());
 	}

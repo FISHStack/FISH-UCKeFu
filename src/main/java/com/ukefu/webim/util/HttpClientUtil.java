@@ -30,7 +30,7 @@ public class HttpClientUtil {
     private static Logger log = LoggerFactory.getLogger(HttpClientUtil.class);
 
     // 字符编码
-    private static ThreadLocal<String> encodeMap = new ThreadLocal();
+    private static ThreadLocal<String> encodeMap = new ThreadLocal<String>();
 
 
 
@@ -79,7 +79,7 @@ public class HttpClientUtil {
             HttpPost httpPost = new HttpPost(url);
             httpPost.setConfig(config);
 
-            List<NameValuePair> parameters = new ArrayList();
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
             Set<String> keys = paraMap.keySet();
             for (String key : keys) {
                 parameters.add(new BasicNameValuePair(key, paraMap.get(key)));

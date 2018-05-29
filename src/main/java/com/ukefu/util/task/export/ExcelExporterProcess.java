@@ -19,7 +19,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import com.ukefu.core.UKDataContext;
-import com.ukefu.util.bi.model.FirstTitle;
 import com.ukefu.util.extra.DataExchangeInterface;
 import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.SysDic;
@@ -125,7 +124,8 @@ public class ExcelExporterProcess {
 					cell2.setCellStyle(cellStyle); 
 					if(value.get(tp.getFieldname())!=null){
 						if(tp.isModits()) {
-							List<String> list = (List)value.get(tp.getFieldname());
+							@SuppressWarnings("unchecked")
+							List<String> list = (List<String>)value.get(tp.getFieldname());
 							if(list.size()>0) {
 								cell2.setCellValue(new HSSFRichTextString(list.remove(0)));
 							}

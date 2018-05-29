@@ -10,7 +10,7 @@ import freemarker.cache.TemplateLoader;
 
 public class TempletLoader implements TemplateLoader {
 	private static final String DEFAULT_TEMPLATE_KEY = "_default_template_key";
-	private Map templates = new HashMap();
+	private Map<String, String> templates = new HashMap<String, String>();
 
 	public TempletLoader(String defaultTemplate) {
 		if (defaultTemplate != null && !defaultTemplate.equals("")) {

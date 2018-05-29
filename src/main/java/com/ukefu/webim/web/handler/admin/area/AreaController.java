@@ -7,7 +7,6 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.snaker.engine.SnakerEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,7 +18,6 @@ import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.repository.AreaTypeRepository;
 import com.ukefu.webim.service.repository.SysDicRepository;
-import com.ukefu.webim.service.repository.UserRoleRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AreaType;
 import com.ukefu.webim.web.model.SysDic;
@@ -41,12 +39,6 @@ public class AreaController extends Handler{
 	
 	@Autowired
 	private SysDicRepository sysDicRepository;
-
-	@Autowired
-	private SnakerEngine engine ;
-	
-	@Autowired
-	private UserRoleRepository userRoleRes;
 
     @RequestMapping("/index")
     @Menu(type = "admin" , subtype = "area")
