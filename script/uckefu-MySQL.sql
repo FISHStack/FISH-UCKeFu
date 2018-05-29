@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-05-28 18:23:29
+Date: 2018-05-29 19:14:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -117,11 +117,49 @@ CREATE TABLE `uk_act_callagent` (
   `distype` varchar(32) DEFAULT NULL,
   `distarget` varchar(32) DEFAULT NULL,
   `disnum` varchar(32) DEFAULT NULL,
+  `ACTID` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of uk_act_callagent
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_act_filter_his`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_act_filter_his`;
+CREATE TABLE `uk_act_filter_his` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `STATUS` varchar(50) DEFAULT NULL,
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '上级ID',
+  `ACTID` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `INX` int(11) DEFAULT '0' COMMENT '分类排序序号',
+  `NAMENUM` int(11) DEFAULT '0' COMMENT '批次包含的名单总数',
+  `VALIDNUM` int(11) DEFAULT '0' COMMENT '批次包含的有效名单总数',
+  `INVALIDNUM` int(11) DEFAULT '0' COMMENT '批次包含的无效名单总数',
+  `ASSIGNED` int(11) DEFAULT '0' COMMENT '已分配名单总数',
+  `NOTASSIGNED` int(11) DEFAULT '0' COMMENT '未分配名单总数',
+  `ENABLE` tinyint(4) DEFAULT '0' COMMENT '分类状态',
+  `DATASTATUS` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `ORGAN` varchar(32) DEFAULT NULL,
+  `DESCRIPTION` text,
+  `execnum` int(11) DEFAULT '0' COMMENT '导入次数',
+  `SOURCE` varchar(255) DEFAULT NULL,
+  `BATID` varchar(32) DEFAULT NULL,
+  `FILTERID` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_act_filter_his
 -- ----------------------------
 
 -- ----------------------------
@@ -211,6 +249,43 @@ CREATE TABLE `uk_act_schedule` (
 
 -- ----------------------------
 -- Records of uk_act_schedule
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_act_task`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_act_task`;
+CREATE TABLE `uk_act_task` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `STATUS` varchar(50) DEFAULT NULL,
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '上级ID',
+  `ACTID` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `INX` int(11) DEFAULT '0' COMMENT '分类排序序号',
+  `NAMENUM` int(11) DEFAULT '0' COMMENT '批次包含的名单总数',
+  `VALIDNUM` int(11) DEFAULT '0' COMMENT '批次包含的有效名单总数',
+  `INVALIDNUM` int(11) DEFAULT '0' COMMENT '批次包含的无效名单总数',
+  `ASSIGNED` int(11) DEFAULT '0' COMMENT '已分配名单总数',
+  `NOTASSIGNED` int(11) DEFAULT '0' COMMENT '未分配名单总数',
+  `ENABLE` tinyint(4) DEFAULT '0' COMMENT '分类状态',
+  `DATASTATUS` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `ORGAN` varchar(32) DEFAULT NULL,
+  `DESCRIPTION` text,
+  `execnum` int(11) DEFAULT '0' COMMENT '导入次数',
+  `SOURCE` varchar(255) DEFAULT NULL,
+  `BATID` varchar(32) DEFAULT NULL,
+  `FILTERID` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_act_task
 -- ----------------------------
 
 -- ----------------------------
@@ -1934,6 +2009,7 @@ CREATE TABLE `uk_jobdetail` (
   `distpolicy` varchar(50) DEFAULT NULL,
   `policynum` int(11) DEFAULT NULL,
   `busstype` varchar(32) DEFAULT NULL,
+  `disnum` varchar(32) DEFAULT NULL COMMENT '默认分配数量',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -2885,6 +2961,46 @@ CREATE TABLE `uk_sales_product_type` (
 
 -- ----------------------------
 -- Records of uk_sales_product_type
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_sales_status`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_sales_status`;
+CREATE TABLE `uk_sales_status` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(255) DEFAULT NULL COMMENT '状态名',
+  `code` varchar(255) DEFAULT NULL COMMENT '状态代码',
+  `cate` varchar(32) DEFAULT NULL COMMENT '状态分类ID',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `memo` varchar(32) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_sales_status
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_sales_status_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_sales_status_type`;
+CREATE TABLE `uk_sales_status_type` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(255) DEFAULT NULL COMMENT '状态分类名',
+  `parentid` varchar(32) DEFAULT NULL COMMENT '父级ID',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_sales_status_type
 -- ----------------------------
 
 -- ----------------------------
@@ -7755,7 +7871,7 @@ CREATE TABLE `uk_user` (
 -- Records of uk_user
 -- ----------------------------
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-05-18 09:54:52', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-05-27 09:35:38', null, null, null, '0', '1', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-05-28 16:56:29', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-05-29 18:15:24', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
