@@ -19,4 +19,6 @@ public abstract interface CallAgentRepository extends JpaRepository<CallAgent, S
 	public abstract List<CallAgent> findByOrgi(String orgi) ;
 	
 	public abstract List<CallAgent> findByActidAndOrgi(String actid ,String orgi) ;
+	
+	public abstract List<CallAgent> findByOrgiAndActivityid(String orgi , String activityid) ;
 }
