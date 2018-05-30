@@ -95,6 +95,13 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum ActivityExecType{
+		DEFAULT , RECOVERY;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	public enum AgentWorkType{
 		MEIDIACHAT,
 		CALLCENTER;

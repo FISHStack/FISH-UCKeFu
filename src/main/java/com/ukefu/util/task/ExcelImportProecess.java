@@ -106,6 +106,7 @@ public class ExcelImportProecess extends DataProcess{
 					Map<Object, Object> values = new HashMap<Object , Object>() ;
 					ArrayListMultimap<String, Object> multiValues = ArrayListMultimap.create();
 					boolean skipDataVal = false; //跳过数据校验
+					StringBuffer pkStr = new StringBuffer() , allStr = new StringBuffer();
 					for(int col=0 ; col<colNum ; col++){
 						Cell value = row.getCell(col) ;
 						Cell title = titleRow.getCell(col) ;
@@ -142,17 +143,22 @@ public class ExcelImportProecess extends DataProcess{
 										values.put(tableProperties.getFieldname(), valuestr) ;
 									}
 									if(tableProperties.isPk() && !tableProperties.getFieldname().equalsIgnoreCase("id")){
-										values.put("id", UKTools.md5(valuestr)) ;
+										pkStr.append(valuestr) ;
 									}
 								}
+								allStr.append(valuestr) ;
 							}
 							event.getDSData().getReport().setBytes(event.getDSData().getReport().getBytes() + valuestr.length());
 							event.getDSData().getReport().getAtompages().incrementAndGet() ;
 						}
 					}
 					values.put("orgi", event.getOrgi()) ;
-					if(values.get("id")==null){
-						values.put("id", UKTools.getUUID()) ;
+					if(values.get("id") == null){
+						if(pkStr.length() > 0) {
+							values.put("id", UKTools.md5(pkStr.toString())) ;
+						}else {
+							values.put("id", UKTools.md5(allStr.toString())) ;
+						}
 					}
 					if(event.getValues()!=null && event.getValues().size() > 0){
 						values.putAll(event.getValues());
@@ -216,7 +222,19 @@ public class ExcelImportProecess extends DataProcess{
 						values.put("batid", event.getBatid()) ;
 						values.put("execid", event.getDSData().getReport().getId()) ;
 						values.put("cretetime", new Date()) ;
+						
+						if(values.get("cusid")==null) {
+							/**
+							 * 
+							 */
+							values.put("cusid", values.get("id"))  ;
+						}
+						
 						event.getDSData().getProcess().process(values);
+						
+						/**
+						 * 访客信息表
+						 */
 					}
 					if(skipDataVal == true) {	//跳过
 						continue ;

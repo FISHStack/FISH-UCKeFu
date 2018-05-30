@@ -114,6 +114,10 @@ public class JobDetail implements Serializable{
 	private String description ;	//备注
 	
 	private String execmd ;		//执行的指令：分配|回收
+	private String exectype;	//回收的类型
+	private String exectarget;	//回收的对象
+	
+	private String execto ;		//回收到部门对象
 	
 	private String name;		//导入的批次名称 ， 自动生成， 规则为 yyyyMMdd--ORDER
 	
@@ -706,5 +710,29 @@ public class JobDetail implements Serializable{
 
 	public void setDisnum(int disnum) {
 		this.disnum = disnum;
+	}
+
+	public String getExectarget() {
+		return exectarget;
+	}
+
+	public void setExectarget(String exectarget) {
+		this.exectarget = exectarget;
+	}
+
+	public String getExectype() {
+		return exectype;
+	}
+
+	public void setExectype(String exectype) {
+		this.exectype = exectype;
+	}
+
+	public String getExecto() {
+		return execto;
+	}
+
+	public void setExecto(String execto) {
+		this.execto = execto;
 	}
 }

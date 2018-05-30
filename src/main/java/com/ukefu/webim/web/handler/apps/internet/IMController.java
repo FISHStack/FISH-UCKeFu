@@ -430,7 +430,7 @@ public class IMController extends Handler{
 						nickname = contacts.getName() ;
 					}
 					map.addAttribute("username", nickname) ;
-	    			if(UKDataContext.model.get("xiaoe")!=null  && invite.isAi() && ((!StringUtils.isBlank(ai) && ai.equals("true")) || (invite.isAifirst() && ai == null))){	//启用 AI ， 并且 AI优先 接待
+	    			if(UKDataContext.model.get("xiaoe")!=null && !StringUtils.isBlank(invite.getAiid()) && invite.isAi() && ((!StringUtils.isBlank(ai) && ai.equals("true")) || (invite.isAifirst() && ai == null))){	//启用 AI ， 并且 AI优先 接待
 	    				DataExchangeInterface dataInterface = (DataExchangeInterface) UKDataContext.getContext().getBean("aiconfig") ;
 	    				AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(aiid, invite.getOrgi()) ;
 	    				if(aiConfig!=null){

@@ -45,9 +45,13 @@ public class CallOutFilter implements Serializable{
 	
 	private int namenum ;		//批次名单总数
 	
-	private int execnum ;		//执行次数
+	private int renum ;		//回收数量
 	
-	private int assigned ;		//已分配
+	private int execnum ;		//执行次数
+	private String exectype ;	//任务类型
+	
+	private int assigned ;		//已分配到坐席
+	private int assignedorgan ;	//已分配到部门
 	private int notassigned;	//未分配
 	private String description ;//备注
 	
@@ -190,5 +194,29 @@ public class CallOutFilter implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getAssignedorgan() {
+		return assignedorgan;
+	}
+
+	public void setAssignedorgan(int assignedorgan) {
+		this.assignedorgan = assignedorgan;
+	}
+
+	public String getExectype() {
+		return exectype;
+	}
+
+	public void setExectype(String exectype) {
+		this.exectype = exectype;
+	}
+
+	public int getRenum() {
+		return renum;
+	}
+
+	public void setRenum(int renum) {
+		this.renum = renum;
 	}
 }

@@ -2970,7 +2970,11 @@ select{
     left: 150px;
     background-color: rgba(0,0,0,.15);
     border-radius: 50px;
-    width: 640px;
+    <#if user?? && user.usertype?? && user.usertype == "0">
+    width: 740px;
+    <#else>
+    width: 690px;
+    </#if>
     padding: 0px 5px 0px 20px;
 }
 .ukefu-softphone{

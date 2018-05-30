@@ -1,7 +1,6 @@
 package com.ukefu.webim.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.ukefu.core.UKDataContext;
-import com.ukefu.util.UKTools;
 import com.ukefu.util.es.UKDataBean;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.UserRepository;
@@ -39,8 +37,8 @@ public class ESDataExchangeImpl{
 	private OrganRepository organRes ;
 	
 	public void saveIObject(UKDataBean dataBean) throws Exception {
-		if (dataBean.getId() == null) {
-			dataBean.setId(UKTools.getUUID());
+		if(dataBean.getId() == null) {
+			dataBean.setId((String) dataBean.getValues().get("id"));
 		}
 		UKDataContext.getTemplet().getClient().prepareIndex(UKDataContext.SYSTEM_INDEX,
 						dataBean.getTable().getTablename(), dataBean.getId())
@@ -55,7 +53,7 @@ public class ESDataExchangeImpl{
 	private Map<String , Object> processValues(UKDataBean dataBean) throws Exception{
 		Map<String , Object> values = new HashMap<String , Object>() ;
 		for(TableProperties tp : dataBean.getTable().getTableproperty()){
-			if(dataBean.getValues().get(tp.getFieldname())!=null && dataBean.getValues().get(tp.getFieldname()) instanceof Date){
+			if(dataBean.getValues().get(tp.getFieldname())!=null){
 				values.put(tp.getFieldname(), dataBean.getValues().get(tp.getFieldname())) ;
 			}else if(tp.getDatatypename().equals("nlp") && dataBean.getValues()!=null){
 				//智能处理， 需要计算过滤HTML内容，自动获取关键词、摘要、实体识别、情感分析、信息指纹 等功能
@@ -115,6 +113,9 @@ public class ESDataExchangeImpl{
 	}
 	
 	public void updateIObject(UKDataBean dataBean) throws Exception {
+		if(dataBean.getId() == null) {
+			dataBean.setId((String) dataBean.getValues().get("id"));
+		}
 		UKDataBean oldDataBean = (UKDataBean) this.getIObjectByPK(dataBean , dataBean.getId()) ;
 		
 		for(TableProperties tp : dataBean.getTable().getTableproperty()){
