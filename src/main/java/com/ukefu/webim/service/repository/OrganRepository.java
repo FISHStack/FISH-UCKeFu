@@ -30,6 +30,8 @@ public abstract interface OrganRepository
   
   public abstract List<Organ> findByOrgiAndSkillAndOrgid(String orgi , boolean skill,String orgid);
 
-public abstract List<Organ> findByIdInAndSkill(List<String> organIdList, boolean b);
+  public abstract List<Organ> findByIdInAndSkill(List<String> organIdList, boolean b);
+  
+  public abstract List<Organ> findByOrgiAndParent(String orgi, String parent);
   
 }
