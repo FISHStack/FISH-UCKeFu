@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 <meta name="viewport"
 	content="width=device-width, maximum-scale=1.0, initial-scale=1.0,initial-scale=1.0,user-scalable=no" />
@@ -245,14 +245,15 @@
 									</dd>
 								</#if> -->
 							</#if>
-							<!-- 
+							<#if user?? && (user.roleAuthMap["A09_A02_A01"]?? || user.usertype == "0") >
 							
 							<dd class="ukefu-left-menu" data-tooltip="知识库">
 								<a href="javascript:void(0)" data-title="知识库" data-href="/apps/kbs/index.html" class="iframe_btn" data-id="maincontent" data-type="tabChange"> 
 									<i class="kfont" style="position: relative;">&#xe62a;</i>
 								</a>
 							</dd>
-							-->
+							</#if>
+
 							<#if models?? && models["xiaoe"]?? && models["xiaoe"] == false>
 								<#if user?? && (user.roleAuthMap["A09_A02_A01"]?? || user.usertype == "0") >
 									<a href="javascript:void(0)" data-title="知识库" data-href="/apps/topic.html" class="iframe_btn" data-id="maincontent" data-type="tabChange"> 

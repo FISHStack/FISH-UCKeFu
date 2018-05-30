@@ -454,6 +454,15 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum WorkStatusEnum{
+		IDLE,
+		WAITTING,
+		CALLOUT;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	public enum TaskStatusType{
 		NORMAL("0"),
 		READ("1"),

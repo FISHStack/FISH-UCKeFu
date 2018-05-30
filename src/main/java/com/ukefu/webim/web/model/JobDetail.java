@@ -111,6 +111,8 @@ public class JobDetail implements Serializable{
 	private int notassigned;	//未分配
 	private String description ;	//备注
 	
+	private String execmd ;		//执行的指令：分配|回收
+	
 	private String name;		//导入的批次名称 ， 自动生成， 规则为 yyyyMMdd--ORDER
 	
 	@Transient
@@ -686,5 +688,13 @@ public class JobDetail implements Serializable{
 	}
 	public void setReport(Reporter report) {
 		this.report = report;
+	}
+
+	public String getExecmd() {
+		return execmd;
+	}
+
+	public void setExecmd(String execmd) {
+		this.execmd = execmd;
 	}
 }
