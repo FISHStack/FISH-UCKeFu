@@ -2,6 +2,7 @@
 	"id":"${extention.id!''}",
 	"extention":"${extention.extention!''}",
 	"hostid":"${extention.hostid!''}",
+	"callout":"<#if models?? && models["sales"]?? && models["sales"] == true>${extention.callout!''}</#if>",
 	"orgi":"${extention.orgi!''}",
 	"userid":"${user.id!''}"
 }
