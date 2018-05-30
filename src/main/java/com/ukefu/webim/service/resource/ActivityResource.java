@@ -2,6 +2,7 @@ package com.ukefu.webim.service.resource;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageImpl;
@@ -52,6 +53,8 @@ public class ActivityResource extends Resource{
 	private MetadataRepository metadataRes ;
 	
 	private JobDetail batch ;
+	
+	private AtomicInteger atomInt = new AtomicInteger();
 	
 	public ActivityResource(JobDetail jobDetail) {
 		this.jobDetail = jobDetail ;
@@ -137,6 +140,16 @@ public class ActivityResource extends Resource{
 		if(this.batchRes!=null && this.batch != null) {
 			this.batchRes.save(batch) ;
 		}
+		
+		this.task.setAssigned(this.atomInt.intValue());
+		this.task.setNotassigned(this.task.getNamenum() - this.atomInt.intValue());
+		
+		this.callOutTaskRes.save(this.task) ;
+		
+		this.filter.setAssigned(this.atomInt.intValue());
+		this.filter.setNotassigned(this.filter.getNamenum() - this.atomInt.intValue());
+		
+		this.callOutFilterRes.save(this.filter) ;
 	}
 
 	@Override
@@ -183,16 +196,24 @@ public class ActivityResource extends Resource{
 	public OutputTextFormat next() throws Exception {
 		OutputTextFormat outputTextFormat = null;
 		synchronized (this.dataList) {
-			if(this.dataList!=null && this.dataList.getContent().size() > 0 && this.callAgentList.size() > 0) {
-				if(this.current.getDisnames().intValue() >= this.current.getDisnum()) {
-					this.current = this.callAgentList.remove(0) ;
+			if(this.dataList!=null && atomInt.intValue() < this.dataList.getSize() ) {
+				if(this.current.getDisnames().intValue() >= this.current.getDisnum() ) {
+					if(this.callAgentList.size() > 0) {
+						this.current = this.callAgentList.remove(0) ;
+					}else {
+						this.current = null ;
+					}
 				}
-				UKDataBean dataBean = this.dataList.getContent().remove(0) ;
-				outputTextFormat = new OutputTextFormat(this.jobDetail);
-				if(this.formFilter!=null) {
-					outputTextFormat.setTitle(this.formFilter.getName());
+				if(this.current != null) {
+					UKDataBean dataBean = this.dataList.getContent().get(atomInt.intValue()) ;
+					outputTextFormat = new OutputTextFormat(this.jobDetail);
+					if(this.formFilter!=null) {
+						outputTextFormat.setTitle(this.formFilter.getName());
+					}
+					outputTextFormat.setDataBean(dataBean);
+					
+					atomInt.incrementAndGet() ;
 				}
-				outputTextFormat.setDataBean(dataBean);
 			}
 		}
 		return outputTextFormat;

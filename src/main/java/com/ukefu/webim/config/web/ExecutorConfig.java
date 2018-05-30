@@ -11,9 +11,13 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
  */
 @Configuration
 public class ExecutorConfig {
-	private static int CORE_POOL_SIZE = 5;
+	private static int CORE_POOL_SIZE = 1;
 	private static int MAX_POOL_SIZE = 20;
 
+	/**
+	 * 作业平台使用的线程池
+	 * @return
+	 */
 	@Bean(name = "uKeFuTaskExecutor")
 	public ThreadPoolTaskExecutor taskExecutor() {
 

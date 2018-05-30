@@ -94,6 +94,8 @@ public class JobDetail implements Serializable{
 	private int policynum ;	//策略数量
 	private String busstype ;	//业务类型
 	
+	private int disnum ;		//默认分配数量
+	
 	private Date createtime = new Date();	//创建时间
 	
 	private Date updatetime = new Date();
@@ -696,5 +698,13 @@ public class JobDetail implements Serializable{
 
 	public void setExecmd(String execmd) {
 		this.execmd = execmd;
+	}
+
+	public int getDisnum() {
+		return disnum;
+	}
+
+	public void setDisnum(int disnum) {
+		this.disnum = disnum;
 	}
 }

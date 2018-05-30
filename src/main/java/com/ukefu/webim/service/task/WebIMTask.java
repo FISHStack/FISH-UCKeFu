@@ -54,6 +54,9 @@ public class WebIMTask {
 	@Autowired
 	private TaskExecutor taskExecutor;
 	
+	@Autowired
+	private TaskExecutor calloutTaskExecutor ;
+	
 	@Scheduled(fixedDelay= 5000) // 每5秒执行一次
     public void task() {
 		List<SessionConfig> sessionConfigList = ServiceQuene.initSessionConfigList() ;
@@ -319,6 +322,12 @@ public class WebIMTask {
 			/**
 			 * 遍历 队列， 然后推送 名单
 			 */
+			calloutTaskExecutor.execute(new Runnable() {
+				@Override
+				public void run() {
+					
+				}
+			});
 		}
 	}
 }
