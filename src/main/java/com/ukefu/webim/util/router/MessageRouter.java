@@ -43,7 +43,7 @@ public class MessageRouter extends Router{
 					outMessage.setMessage(ServiceQuene.getSuccessMessage(agentService , inMessage.getAgentUser().getChannel(),inMessage.getOrgi()));
 					NettyClients.getInstance().sendAgentEventMessage(agentService.getAgentno(), UKDataContext.MessageTypeEnum.NEW.toString(), inMessage.getAgentUser());
 				}else{
-					if(agentService.getQueneindex() >= 0){	//当前有坐席
+					if(agentService.getQueneindex() > 0){	//当前有坐席
 						outMessage.setMessage(ServiceQuene.getQueneMessage(agentService.getQueneindex(), inMessage.getAgentUser().getChannel(), inMessage.getOrgi()));
 					}else{
 						outMessage.setMessage(ServiceQuene.getNoAgentMessage(agentService.getQueneindex(), inMessage.getAgentUser().getChannel(), inMessage.getOrgi()));

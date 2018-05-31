@@ -67,7 +67,7 @@ public class NamesTask implements Runnable{
 				
 				UKDataContext.getContext().getBean(CallOutNamesRepository.class).save(callOutName) ;
 				
-				NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "outboundcall", callOutName);
+				NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "preview", callOutName);
 			}
 		}
 	}

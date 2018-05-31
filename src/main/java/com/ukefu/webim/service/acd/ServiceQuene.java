@@ -762,7 +762,7 @@ public class ServiceQuene {
 	public static String getServiceFinishMessage(String channel,String orgi){
 		SessionConfig sessionConfig = initSessionConfig(orgi) ;
 		String queneTip = "坐席已断开和您的对话" ;
-		if(!StringUtils.isBlank(sessionConfig.getNoagentmsg())){
+		if(!StringUtils.isBlank(sessionConfig.getFinessmsg())){
 			queneTip = sessionConfig.getFinessmsg();
 		}
 		return queneTip ;
@@ -777,7 +777,7 @@ public class ServiceQuene {
 			queneTip = String.valueOf(queneIndex) ;
 		}
 		SessionConfig sessionConfig = initSessionConfig(orgi) ;
-		String noAgentTipMsg = "坐席全忙，已进入等待队列，在您之前，还有 "+queneTip+" 位等待用户。"  ;
+		String noAgentTipMsg = "坐席全忙，已进入等待队列，您也可以在其他时间再来咨询。"  ;
 		if(!StringUtils.isBlank(sessionConfig.getNoagentmsg())){
 			noAgentTipMsg = sessionConfig.getNoagentmsg().replaceAll("\\{num\\}", queneTip) ;
 		}
