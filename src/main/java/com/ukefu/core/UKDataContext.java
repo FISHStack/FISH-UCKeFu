@@ -464,7 +464,8 @@ public class UKDataContext {
 	public enum WorkStatusEnum{
 		IDLE,
 		WAITTING,
-		CALLOUT;
+		CALLOUT,
+		INPROCESS;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}

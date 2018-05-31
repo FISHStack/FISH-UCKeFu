@@ -17,8 +17,10 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
 import com.ukefu.util.extra.DataExchangeInterface;
+import com.ukefu.util.freeswitch.model.CallCenterAgent;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.impl.CallOutQuene;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
@@ -53,9 +55,6 @@ public class WebIMTask {
 	
 	@Autowired
 	private TaskExecutor taskExecutor;
-	
-	@Autowired
-	private TaskExecutor calloutTaskExecutor ;
 	
 	@Scheduled(fixedDelay= 5000) // 每5秒执行一次
     public void task() {
@@ -322,12 +321,10 @@ public class WebIMTask {
 			/**
 			 * 遍历 队列， 然后推送 名单
 			 */
-			calloutTaskExecutor.execute(new Runnable() {
-				@Override
-				public void run() {
-					
-				}
-			});
+			List<CallCenterAgent> agents = CallOutQuene.service() ;
+			for(CallCenterAgent agent : agents) {
+				taskExecutor.execute(new NamesTask(agent));
+			}
 		}
 	}
 }

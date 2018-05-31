@@ -200,8 +200,8 @@ public class AgentEventHandler
     			
 	    		agentUserTask.setLastgetmessage(new Date());
 	    		
-	    		agentUserTask.setReptime(null);
-	    		agentUserTask.setReptimes("0");
+//	    		agentUserTask.setReptime(null);
+//	    		agentUserTask.setReptimes("0");
 	    		
 	    		agentUserTaskRes.save(agentUserTask) ;
     		}

@@ -36,6 +36,7 @@ import com.ukefu.webim.service.repository.TenantRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.router.RouterHelper;
 import com.ukefu.webim.util.server.message.NewRequestMessage;
+import com.ukefu.webim.web.model.AgentReport;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.AreaType;
 import com.ukefu.webim.web.model.Contacts;
@@ -803,10 +804,14 @@ public class OnlineUserUtils {
 		MessageDataBean outMessageDataBean = null ;
 		
 		SessionConfig sessionConfig = ServiceQuene.initSessionConfig(data.getOrgi()) ;
+		AgentReport report = ServiceQuene.getAgentReport(data.getOrgi()) ;
 		
 		if(sessionConfig.isHourcheck() && !UKTools.isInWorkingHours(sessionConfig.getWorkinghours())){
 			data.setMessage(sessionConfig.getNotinwhmsg());
 		}else{
+			if(report.getAgents() == 0){
+				data.setNoagent(true);
+			}
 			outMessageDataBean = RouterHelper.getRouteInstance().handler(inMessage);
 			if (outMessageDataBean != null) {
 				data.setMessage(outMessageDataBean.getMessage());

@@ -117,7 +117,32 @@ public class SearchTools {
 		
 		return search(queryBuilder, metadataTable, false, p, ps);
 	}
-	
+	/**
+	 * 
+	 * @param orgi
+	 * @param agent
+	 * @param p
+	 * @param ps
+	 * @return
+	 */
+	public static PageImpl<UKDataBean> agentsearch(String orgi , String agent , int p, int ps){
+		BoolQueryBuilder queryBuilder = new BoolQueryBuilder();
+		queryBuilder.must(termQuery("orgi", orgi)) ;
+		queryBuilder.must(termQuery("validresult", "valid")) ;
+		queryBuilder.must(termQuery(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, agent)) ;
+		queryBuilder.must(termQuery("status", UKDataContext.NamesDisStatusType.DISAGENT.toString())) ;
+		
+		return search(queryBuilder, null, false, p, ps);
+	}
+	/**
+	 * 
+	 * @param queryBuilder
+	 * @param metadataTable
+	 * @param loadRef
+	 * @param p
+	 * @param ps
+	 * @return
+	 */
 	private static PageImpl<UKDataBean> search(BoolQueryBuilder queryBuilder , MetadataTable metadataTable , boolean loadRef , int p, int ps){
 		ESDataExchangeImpl esDataExchange = UKDataContext.getContext().getBean(ESDataExchangeImpl.class);
 		return esDataExchange.findPageResult(queryBuilder, UKDataContext.SYSTEM_INDEX, metadataTable, new PageRequest(p, ps) , loadRef) ;

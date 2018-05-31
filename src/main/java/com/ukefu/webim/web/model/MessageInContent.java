@@ -22,6 +22,8 @@ public class MessageInContent implements MessageDataBean{
 	
 	private String attachmentid ;
 	
+	private boolean noagent ;
+	
 	private Object user ;
 	private String contextid ;
 	private String createtime ;
@@ -134,5 +136,10 @@ public class MessageInContent implements MessageDataBean{
 	public void setAttachmentid(String attachmentid) {
 		this.attachmentid = attachmentid;
 	}
-	
+	public boolean isNoagent() {
+		return noagent;
+	}
+	public void setNoagent(boolean noagent) {
+		this.noagent = noagent;
+	}
 }

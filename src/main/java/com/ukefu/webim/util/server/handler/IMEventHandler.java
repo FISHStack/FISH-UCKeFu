@@ -81,6 +81,8 @@ public class IMEventHandler
 					outMessage.setCreatetime(UKTools.dateFormate.format(new Date()));
 					outMessage.setAgentserviceid(newRequestMessage.getAgentserviceid());
 					
+					outMessage.setNoagent(newRequestMessage.isNoagent());
+					
 					client.sendEvent(UKDataContext.MessageTypeEnum.STATUS.toString(), outMessage);
 				}
 			}else{//非法链接

@@ -138,9 +138,23 @@ public class ESDataExchangeImpl{
 	 * @return
 	 */
 	public PageImpl<UKDataBean> findPageResult(QueryBuilder query,String index ,MetadataTable metadata, Pageable page , boolean loadRef) {
-		List<UKDataBean> dataBeanList = new ArrayList<UKDataBean>() ;
-		SearchRequestBuilder searchBuilder = UKDataContext.getTemplet().getClient().prepareSearch(UKDataContext.SYSTEM_INDEX).setTypes(metadata.getTablename()) ;
+		return findAllPageResult(query, index, metadata, page, loadRef, metadata!=null ? metadata.getTablename() : null);
+	}
 	
+	/**
+	 * 
+	 * @param dataBean
+	 * @param ps
+	 * @param start
+	 * @return
+	 */
+	public PageImpl<UKDataBean> findAllPageResult(QueryBuilder query,String index ,MetadataTable metadata, Pageable page , boolean loadRef , String types) {
+		List<UKDataBean> dataBeanList = new ArrayList<UKDataBean>() ;
+		SearchRequestBuilder searchBuilder = UKDataContext.getTemplet().getClient().prepareSearch(UKDataContext.SYSTEM_INDEX);
+		if(!StringUtils.isBlank(types)) {
+			searchBuilder.setTypes(types) ;
+		}
+		
 		int start = page.getPageSize() * page.getPageNumber();
 		searchBuilder.setFrom(start).setSize(page.getPageSize()) ;
 		

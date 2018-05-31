@@ -156,6 +156,13 @@ public class MessageUtils {
 		    		agentUserTask.setLastmessage(new Date());
 		    		agentUserTask.setWarnings("0");
 		    		agentUserTask.setWarningtime(null);
+		    		
+		    		/**
+		    		 * 去掉坐席超时回复消息提醒
+		    		 */
+		    		agentUserTask.setReptime(null);
+		    		agentUserTask.setReptimes("0");
+		    		
 		    		agentUserTask.setLastmsg(data.getMessage().length() > 100 ? data.getMessage().substring(0 , 100) : data.getMessage());
 		    		agentUserTask.setTokenum(agentUserTask.getTokenum()+1);
 		    		data.setTokenum(agentUserTask.getTokenum());
