@@ -104,7 +104,7 @@
 			if($(this).hasClass('layui-form-onswitch')){
 				$(this).removeClass("layui-form-onswitch");
 				loadURL("/agent/notready.html",null, function(){
-					$('#agentstatus_busy').hide();
+					$('#agentstatus_busy').removeClass("layui-form-onswitch-busy").hide();
 				});
 			}else{
 				$(this).addClass("layui-form-onswitch");
