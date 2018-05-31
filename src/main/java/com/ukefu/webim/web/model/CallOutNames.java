@@ -13,9 +13,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.ukefu.util.UKTools;
 
-@Entity
-@Table(name = "uk_act_callnames")
-@org.hibernate.annotations.Proxy(lazy = false)
+//@Entity
+//@Table(name = "uk_act_callnames")
+//@org.hibernate.annotations.Proxy(lazy = false)
 public class CallOutNames implements java.io.Serializable{
 	
 	
@@ -42,6 +42,9 @@ public class CallOutNames implements java.io.Serializable{
 	
 	private String workstatus ;	//名单状态， 预约
 	private Date optime ;		//预约的下次拨打时间
+	
+	private String batname ;
+	private String taskname ;
 	
 	
 	private String owneruser ;	//分配 坐席
@@ -243,5 +246,21 @@ public class CallOutNames implements java.io.Serializable{
 
 	public void setOptime(Date optime) {
 		this.optime = optime;
+	}
+
+	public String getBatname() {
+		return batname;
+	}
+
+	public void setBatname(String batname) {
+		this.batname = batname;
+	}
+
+	public String getTaskname() {
+		return taskname;
+	}
+
+	public void setTaskname(String taskname) {
+		this.taskname = taskname;
 	}
 }

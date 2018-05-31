@@ -21,7 +21,7 @@ public class CallOutQuene {
 	public static List<CallCenterAgent> service(){
 		List<CallCenterAgent> agentList = new ArrayList<CallCenterAgent>();
 		PagingPredicate<String, CallCenterAgent> pagingPredicate = new PagingPredicate<String, CallCenterAgent>(  new SqlPredicate( "workstatus = 'callout'") , 10 ) ;
-		agentList.addAll(((IMap<String , CallCenterAgent>) CacheHelper.getCallCenterAgentCacheBean()).values(pagingPredicate)) ;
+		agentList.addAll(((IMap<String , CallCenterAgent>) CacheHelper.getCallCenterAgentCacheBean().getCache()).values(pagingPredicate)) ;
 		return agentList ;
 	}
 }

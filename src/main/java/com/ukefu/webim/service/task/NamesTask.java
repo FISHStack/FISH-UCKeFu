@@ -7,11 +7,11 @@ import com.ukefu.util.es.SearchTools;
 import com.ukefu.util.es.UKDataBean;
 import com.ukefu.util.freeswitch.model.CallCenterAgent;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.CallOutTaskRepository;
 import com.ukefu.webim.service.repository.JobDetailRepository;
-import com.ukefu.webim.service.repository.MetadataRepository;
+import com.ukefu.webim.web.model.CallOutNames;
+import com.ukefu.webim.web.model.CallOutTask;
 import com.ukefu.webim.web.model.JobDetail;
-import com.ukefu.webim.web.model.MetadataTable;
-import com.ukefu.webim.web.model.TableProperties;
 
 public class NamesTask implements Runnable{
 	
@@ -39,6 +39,18 @@ public class NamesTask implements Runnable{
 			 */
 			if(names!=null && names.getContent().size() > 0) {
 				UKDataBean name = names.getContent().get(0) ;
+				String batid = (String) name.getValues().get("batid") ;
+				String taskid = (String) name.getValues().get("taskid") ;
+				JobDetail batch = UKDataContext.getContext().getBean(JobDetailRepository.class).findByIdAndOrgi(batid, this.agent.getOrgi()) ;
+				CallOutTask task = UKDataContext.getContext().getBean(CallOutTaskRepository.class).findByIdAndOrgi(taskid, this.agent.getOrgi()) ;
+				CallOutNames callOutName = new CallOutNames() ; 
+				callOutName.setOrgi(this.agent.getOrgi());
+				callOutName.setName(task.getName());	//任务名称
+				callOutName.setBatname(batch.getName());
+				callOutName.setBatid(batid);
+				callOutName.setTaskid(taskid);
+				callOutName.setFilterid((String) name.getValues().get("filterid"));
+				callOutName.setDataid((String)name.getValues().get("id"));
 				
 			}
 		}
