@@ -748,7 +748,7 @@ public class ServiceQuene {
 		}
 		SessionConfig sessionConfig = initSessionConfig(orgi) ;
 		String successMsg = "坐席分配成功，"+queneTip+"为您服务。"  ;
-		if(!StringUtils.isBlank(sessionConfig.getNoagentmsg())){
+		if(!StringUtils.isBlank(sessionConfig.getSuccessmsg())){
 			successMsg = sessionConfig.getSuccessmsg().replaceAll("\\{agent\\}", queneTip) ;
 		}
 		return successMsg ;
