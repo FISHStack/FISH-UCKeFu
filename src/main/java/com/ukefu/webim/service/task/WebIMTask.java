@@ -109,7 +109,7 @@ public class WebIMTask {
 					}
 				}
 				if(sessionConfig.isQuene()){	//启用排队超时功能，超时断开
-					List<AgentUserTask> agentUserTask = agentUserTaskRes.findByLastmessageLessThanAndStatusAndOrgi(UKTools.getLastTime(sessionConfig.getQuenetimeout()) , UKDataContext.AgentUserStatusEnum.INQUENE.toString() , sessionConfig.getOrgi()) ;
+					List<AgentUserTask> agentUserTask = agentUserTaskRes.findByLogindateLessThanAndStatusAndOrgi(UKTools.getLastTime(sessionConfig.getQuenetimeout()) , UKDataContext.AgentUserStatusEnum.INQUENE.toString() , sessionConfig.getOrgi()) ;
 					for(AgentUserTask task : agentUserTask){		// 超时未回复
 						AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(task.getUserid(), UKDataContext.SYSTEM_ORGI);
 						if(agentUser!=null){

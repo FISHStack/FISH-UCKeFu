@@ -15,5 +15,6 @@ public abstract interface AgentUserTaskRepository  extends JpaRepository<AgentUs
 	
 	public List<AgentUserTask> findByLastgetmessageLessThanAndStatusAndOrgi(Date start , String status , String orgi) ;
 	
+	public List<AgentUserTask> findByLogindateLessThanAndStatusAndOrgi(Date start , String status , String orgi) ;
 }
 
