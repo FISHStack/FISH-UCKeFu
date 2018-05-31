@@ -105,10 +105,10 @@ public class ActivityResource extends Resource{
 			
 			this.jobDetail.setExecnum(this.jobDetail.getExecnum() + 1);
 			
-			if(this.isRecovery() && !StringUtils.isBlank(this.jobDetail.getExectype()) && (this.jobDetail.getExectype().equals("filterid") || this.jobDetail.getExectype().equals("taskid"))) {
-				if(this.jobDetail.getExectype().equals("filterid") ) {
+			if(this.isRecovery() && !StringUtils.isBlank(this.jobDetail.getExectype()) && (this.jobDetail.getExectype().equals("filterid") || this.jobDetail.getExectype().equals("filterskill") || this.jobDetail.getExectype().equals("taskskill") || this.jobDetail.getExectype().equals("taskid"))) {
+				if(this.jobDetail.getExectype().equals("filterid") || this.jobDetail.getExectype().equals("filterskill")) {
 					this.filter = this.callOutFilterRes.findByIdAndOrgi(this.jobDetail.getExectarget(), this.jobDetail.getOrgi()) ;
-				}else if(this.jobDetail.getExectype().equals("taskid") ) {
+				}else if(this.jobDetail.getExectype().equals("taskid") || this.jobDetail.getExectype().equals("taskskill") ) {
 					this.task = this.callOutTaskRes.findByIdAndOrgi(this.jobDetail.getExectarget(), this.jobDetail.getOrgi()) ;
 				}
 			}else {
@@ -166,7 +166,11 @@ public class ActivityResource extends Resource{
 		}
 		if(this.task!=null) {
 			if(this.isRecovery()) {
-				this.task.setRenum(this.atomInt.intValue());
+				if(!StringUtils.isBlank(this.jobDetail.getExecto())) {
+					this.task.setReorgannum(this.atomInt.intValue());
+				}else {
+					this.task.setRenum(this.atomInt.intValue());
+				}
 			}else {
 				this.task.setAssigned(this.assignInt.intValue());
 				this.task.setAssignedorgan(this.assignorganInt.intValue());
@@ -176,7 +180,11 @@ public class ActivityResource extends Resource{
 		}
 		if(this.filter!=null) {
 			if(this.isRecovery()) {
-				this.filter.setRenum(this.atomInt.intValue());
+				if(!StringUtils.isBlank(this.jobDetail.getExecto())) {
+					this.filter.setReorgannum(this.atomInt.intValue());
+				}else {
+					this.filter.setRenum(this.atomInt.intValue());
+				}
 			}else {
 				this.filter.setAssigned(this.assignInt.intValue());
 				this.filter.setAssignedorgan(this.assignorganInt.intValue());

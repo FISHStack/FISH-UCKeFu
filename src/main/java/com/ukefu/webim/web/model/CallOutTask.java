@@ -50,6 +50,7 @@ public class CallOutTask implements Serializable{
 	private int execnum ;		//执行次数
 	
 	private int renum ;		//回收数量
+	private int reorgannum ;		//回收到部门数量
 	
 	private int assigned ;		//已分配到坐席
 	private int assignedorgan ;	//已分配到部门
@@ -220,5 +221,12 @@ public class CallOutTask implements Serializable{
 	public void setRenum(int renum) {
 		this.renum = renum;
 	}
-	
+
+	public int getReorgannum() {
+		return reorgannum;
+	}
+
+	public void setReorgannum(int reorgannum) {
+		this.reorgannum = reorgannum;
+	}
 }

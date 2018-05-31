@@ -46,6 +46,7 @@ public class CallOutFilter implements Serializable{
 	private int namenum ;		//批次名单总数
 	
 	private int renum ;		//回收数量
+	private int reorgannum ;		//回收到部门数量
 	
 	private int execnum ;		//执行次数
 	private String exectype ;	//任务类型
@@ -219,4 +220,13 @@ public class CallOutFilter implements Serializable{
 	public void setRenum(int renum) {
 		this.renum = renum;
 	}
+
+	public int getReorgannum() {
+		return reorgannum;
+	}
+
+	public void setReorgannum(int reorgannum) {
+		this.reorgannum = reorgannum;
+	}
+	
 }
