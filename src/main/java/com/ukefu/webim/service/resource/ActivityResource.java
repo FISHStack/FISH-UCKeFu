@@ -230,8 +230,6 @@ public class ActivityResource extends Resource{
 				/**
 				 * 
 				 */
-				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, this.current.getDistarget()) ;
-				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, this.current.getOrgan()) ;
 				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_TIME, new Date()) ;
 				
 				meta.getDataBean().getValues().put("actid", this.jobDetail.getId()) ;
@@ -246,9 +244,12 @@ public class ActivityResource extends Resource{
 				
 				if("agent".equals(this.current.getDistype())) {
 					meta.getDataBean().getValues().put("status", UKDataContext.NamesDisStatusType.DISAGENT.toString()) ;
+					meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, this.current.getDistarget()) ;
+					meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, this.current.getOrgan()) ;
 					this.assignInt.incrementAndGet() ;
 				}else if("skill".equals(this.current.getDistype())) {
 					meta.getDataBean().getValues().put("status", UKDataContext.NamesDisStatusType.DISORGAN.toString()) ;
+					meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, this.current.getDistarget()) ;
 					this.assignorganInt.incrementAndGet() ;
 				}
 			}
