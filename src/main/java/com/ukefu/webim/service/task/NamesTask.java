@@ -1,12 +1,16 @@
 package com.ukefu.webim.service.task;
 
+import java.util.Date;
+
 import org.springframework.data.domain.Page;
 
 import com.ukefu.core.UKDataContext;
+import com.ukefu.util.client.NettyClients;
 import com.ukefu.util.es.SearchTools;
 import com.ukefu.util.es.UKDataBean;
 import com.ukefu.util.freeswitch.model.CallCenterAgent;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.CallOutNamesRepository;
 import com.ukefu.webim.service.repository.CallOutTaskRepository;
 import com.ukefu.webim.service.repository.JobDetailRepository;
 import com.ukefu.webim.web.model.CallOutNames;
@@ -45,13 +49,25 @@ public class NamesTask implements Runnable{
 				CallOutTask task = UKDataContext.getContext().getBean(CallOutTaskRepository.class).findByIdAndOrgi(taskid, this.agent.getOrgi()) ;
 				CallOutNames callOutName = new CallOutNames() ; 
 				callOutName.setOrgi(this.agent.getOrgi());
-				callOutName.setName(task.getName());	//任务名称
-				callOutName.setBatname(batch.getName());
+				if(task!=null) {
+					callOutName.setName(task.getName());	//任务名称
+				}
+				if(batch!=null) {
+					callOutName.setBatname(batch.getName());
+				}
 				callOutName.setBatid(batid);
 				callOutName.setTaskid(taskid);
 				callOutName.setFilterid((String) name.getValues().get("filterid"));
 				callOutName.setDataid((String)name.getValues().get("id"));
 				
+				callOutName.setCreater((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT));
+				callOutName.setOrgan((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN));
+				callOutName.setCreatetime(new Date());
+				callOutName.setUpdatetime(new Date());
+				
+				UKDataContext.getContext().getBean(CallOutNamesRepository.class).save(callOutName) ;
+				
+				NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "outboundcall", callOutName);
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 package com.ukefu.webim.web.model;
 
 import java.util.Date;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,9 +12,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.ukefu.util.UKTools;
 
-//@Entity
-//@Table(name = "uk_act_callnames")
-//@org.hibernate.annotations.Proxy(lazy = false)
+@Entity
+@Table(name = "uk_act_callnames")
+@org.hibernate.annotations.Proxy(lazy = false)
 public class CallOutNames implements java.io.Serializable{
 	
 	
@@ -58,8 +57,6 @@ public class CallOutNames implements java.io.Serializable{
 	private String name ;		//名单名称	
 	private String phonenumber;	//电话号码
 	
-	private Map<String,Object> properties ;
-
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -222,14 +219,6 @@ public class CallOutNames implements java.io.Serializable{
 
 	public void setPhonenumber(String phonenumber) {
 		this.phonenumber = phonenumber;
-	}
-
-	public Map<String, Object> getProperties() {
-		return properties;
-	}
-
-	public void setProperties(Map<String, Object> properties) {
-		this.properties = properties;
 	}
 
 	public String getWorkstatus() {
