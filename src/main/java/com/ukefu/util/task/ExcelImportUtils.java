@@ -126,6 +126,10 @@ public class ExcelImportUtils{
 			
 			metaDataTable.getTableproperty().add(initProperties("aptime", "预约时间", "Date", event.getOrgi() , event.getTablename())) ;
 			metaDataTable.getTableproperty().add(initProperties("calltimes", "拨打次数", "number", event.getOrgi() , event.getTablename())) ;
+			
+			
+			metaDataTable.getTableproperty().add(initProperties("succcall", "拨打成功次数", "number", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("faildcall", "拨打失败次数", "number", event.getOrgi() , event.getTablename())) ;
             /**
 			 * 映射 Mapping
 			 */

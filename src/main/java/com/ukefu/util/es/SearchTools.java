@@ -132,6 +132,18 @@ public class SearchTools {
 		queryBuilder.must(termQuery(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, agent)) ;
 		queryBuilder.must(termQuery("status", UKDataContext.NamesDisStatusType.DISAGENT.toString())) ;
 		
+		return search(queryBuilder, p, ps);
+	}
+	
+	/**
+	 * 
+	 * @param orgi
+	 * @param agent
+	 * @param p
+	 * @param ps
+	 * @return
+	 */
+	public static PageImpl<UKDataBean> search(BoolQueryBuilder queryBuilder, int p, int ps){
 		return search(queryBuilder, null, false, p, ps);
 	}
 	/**
