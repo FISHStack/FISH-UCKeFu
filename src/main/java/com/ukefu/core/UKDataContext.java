@@ -152,7 +152,7 @@ public class UKDataContext {
 		}
 	}
 	
-	public enum NamesStatusTypeEnum{
+	public enum NameStatusTypeEnum{
 		CALLED,	//已拨打
 		NOTCALL	//未拨打
 		;
