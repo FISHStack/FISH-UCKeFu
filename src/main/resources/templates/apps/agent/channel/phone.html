@@ -12,11 +12,11 @@
 	<li>
 		主叫号码：
 	    <span class="tgreen">
-		<#if statusEvent??>${statusEvent.ani!''}</#if>
+		<#if statusEvent??>${statusEvent.discaller!''}</#if>
 	    </span>
 	</li>
 	<li>
-		被叫号码：<#if statusEvent??>${statusEvent.called!''}</#if>
+		被叫号码：<#if statusEvent??>${statusEvent.discalled!''}</#if>
 	</li>
 	<li>
 		类型：<#if statusEvent??>${statusEvent.calltype!''}</#if>
