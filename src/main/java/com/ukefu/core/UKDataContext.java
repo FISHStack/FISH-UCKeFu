@@ -160,6 +160,14 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum StatusTypeEnum{
+		INBOUND,
+		OUTBOUND;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	
 	public enum LogTypeEnum{
 		REQUEST,

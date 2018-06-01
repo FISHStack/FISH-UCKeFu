@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
+import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 
 @Entity
@@ -94,6 +95,12 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	
 	private String extention ;//联系人ID
 	private String hostid ;//服务器ID
+	
+	private String taskid ;			//呼叫ID，电销业务产生的
+	private String actid ;			//呼叫ID，电销业务产生的
+	private String batid ;			//呼叫ID，电销业务产生的
+	private String dataid ;			//呼叫ID，电销业务产生的
+	private String statustype = UKDataContext.StatusTypeEnum.INBOUND.toString();		//呼叫类型 ： 电销业务产生的
 	
 	
 	private boolean record ;//是否录音
@@ -544,5 +551,34 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	public void setHourstr(String hourstr) {
 		this.hourstr = hourstr;
 	}
-	
+	public String getTaskid() {
+		return taskid;
+	}
+	public void setTaskid(String taskid) {
+		this.taskid = taskid;
+	}
+	public String getActid() {
+		return actid;
+	}
+	public void setActid(String actid) {
+		this.actid = actid;
+	}
+	public String getBatid() {
+		return batid;
+	}
+	public void setBatid(String batid) {
+		this.batid = batid;
+	}
+	public String getDataid() {
+		return dataid;
+	}
+	public void setDataid(String dataid) {
+		this.dataid = dataid;
+	}
+	public String getStatustype() {
+		return statustype;
+	}
+	public void setStatustype(String statustype) {
+		this.statustype = statustype;
+	}
 }

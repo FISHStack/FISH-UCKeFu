@@ -54,6 +54,7 @@ public class NamesTask implements Runnable{
 				if(batch!=null) {
 					callOutName.setBatname(batch.getName());
 				}
+				callOutName.setActid(task.getActid());
 				callOutName.setBatid(batid);
 				callOutName.setTaskid(taskid);
 				callOutName.setFilterid((String) name.getValues().get("filterid"));
@@ -68,6 +69,11 @@ public class NamesTask implements Runnable{
 				
 				NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "preview", callOutName);
 				agent.setNames(callOutName);
+			}else {
+				agent.setWorkstatus(UKDataContext.WorkStatusEnum.IDLE.toString());
+				NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "error", "nonames");
+				
+				NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "docallout", agent);
 			}
 			
 			CacheHelper.getCallCenterAgentCacheBean().put(agent.getUserid(), agent, agent.getOrgi());

@@ -215,7 +215,7 @@ public class ActivityResource extends Resource{
 		if(this.isRecovery()) {
 			if(!StringUtils.isBlank(this.jobDetail.getExecto())) {
 				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, null) ;
-				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, this.jobDetail.getExecto()) ;
+//				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, this.jobDetail.getExecto()) ;
 				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_TIME, new Date()) ;
 				meta.getDataBean().getValues().put("status", UKDataContext.NamesDisStatusType.DISORGAN.toString()) ;
 			}else {
