@@ -42,6 +42,7 @@ public class NamesTask implements Runnable{
 			 */
 			if(names!=null && names.getContent().size() > 0) {
 				UKDataBean name = names.getContent().get(0) ;
+			
 				String batid = (String) name.getValues().get("batid") ;
 				String taskid = (String) name.getValues().get("taskid") ;
 				JobDetail batch = UKDataContext.getContext().getBean(JobDetailRepository.class).findByIdAndOrgi(batid, this.agent.getOrgi()) ;
@@ -56,6 +57,9 @@ public class NamesTask implements Runnable{
 				}
 				callOutName.setActid(task.getActid());
 				callOutName.setBatid(batid);
+				
+				callOutName.setLeavenum((int)names.getTotalElements() - 1);
+				
 				callOutName.setTaskid(taskid);
 				callOutName.setFilterid((String) name.getValues().get("filterid"));
 				callOutName.setDataid((String)name.getValues().get("id"));

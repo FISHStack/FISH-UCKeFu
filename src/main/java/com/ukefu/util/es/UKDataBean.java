@@ -23,6 +23,8 @@ public class UKDataBean implements java.io.Serializable{
 	private Date updatetime ;	//修改时间
 	private MetadataTable table ;
 	
+	private String type ;
+	
 	private User user ;
 	private Organ organ;
 	
@@ -106,5 +108,13 @@ public class UKDataBean implements java.io.Serializable{
 
 	public void setOrgan(Organ organ) {
 		this.organ = organ;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

@@ -226,6 +226,8 @@ public class ExcelImportProecess extends DataProcess{
 						}
 						values.put("status", UKDataContext.NamesDisStatusType.NOT.toString()) ;
 						values.put("batid", event.getBatid()) ;
+						
+						values.put("callstatus", UKDataContext.NameStatusTypeEnum.NOTCALL.toString()) ;
 						values.put("execid", event.getDSData().getReport().getId()) ;
 						values.put("cretetime", new Date()) ;
 						

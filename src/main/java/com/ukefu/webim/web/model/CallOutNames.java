@@ -45,6 +45,8 @@ public class CallOutNames implements java.io.Serializable{
 	private String batname ;
 	private String taskname ;
 	
+	private int leavenum ;		//剩余名单数量
+	
 	
 	private String owneruser ;	//分配 坐席
 	private String ownerdept ;	//分配 部门
@@ -251,5 +253,13 @@ public class CallOutNames implements java.io.Serializable{
 
 	public void setTaskname(String taskname) {
 		this.taskname = taskname;
+	}
+
+	public int getLeavenum() {
+		return leavenum;
+	}
+
+	public void setLeavenum(int leavenum) {
+		this.leavenum = leavenum;
 	}
 }

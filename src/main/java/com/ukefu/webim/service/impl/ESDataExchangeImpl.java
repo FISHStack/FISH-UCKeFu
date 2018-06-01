@@ -162,8 +162,10 @@ public class ESDataExchangeImpl{
 		List<String> users = new ArrayList<String>() , organs = new ArrayList<String>();
 		for(SearchHit hit : response.getHits().getHits()){
 			UKDataBean temp = new UKDataBean() ;
+			temp.setType(hit.getType());
 			temp.setTable(metadata);
 			temp.setValues(hit.getSource());
+			temp.setId((String)temp.getValues().get("id"));
 			dataBeanList.add(temp) ;
 			
 			if(!StringUtils.isBlank((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT))) {

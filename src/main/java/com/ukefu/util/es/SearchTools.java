@@ -128,6 +128,7 @@ public class SearchTools {
 	public static PageImpl<UKDataBean> agentsearch(String orgi , String agent , int p, int ps){
 		BoolQueryBuilder queryBuilder = new BoolQueryBuilder();
 		queryBuilder.must(termQuery("orgi", orgi)) ;
+		queryBuilder.must(termQuery("callstatus", UKDataContext.NameStatusTypeEnum.NOTCALL.toString())) ;
 		queryBuilder.must(termQuery("validresult", "valid")) ;
 		queryBuilder.must(termQuery(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, agent)) ;
 		queryBuilder.must(termQuery("status", UKDataContext.NamesDisStatusType.DISAGENT.toString())) ;
