@@ -2,6 +2,7 @@ package com.ukefu.util.freeswitch.model;
 
 import java.util.Date;
 
+import com.ukefu.webim.web.model.CallOutNames;
 import com.ukefu.webim.web.model.Extention;
 
 public class CallCenterAgent implements java.io.Serializable{
@@ -20,6 +21,8 @@ public class CallCenterAgent implements java.io.Serializable{
 	private String eventid ;
 	
 	private Extention extention ;
+	
+	private CallOutNames names ;
 	
 	public CallCenterAgent(String userid, String extno , String orgi) {
 		this.userid = userid ;
@@ -82,5 +85,13 @@ public class CallCenterAgent implements java.io.Serializable{
 
 	public void setWorkstatus(String workstatus) {
 		this.workstatus = workstatus;
+	}
+
+	public CallOutNames getNames() {
+		return names;
+	}
+
+	public void setNames(CallOutNames names) {
+		this.names = names;
 	}
 }

@@ -30,7 +30,6 @@ public class NamesTask implements Runnable{
 			 * 更新状态
 			 */
 			agent.setWorkstatus(UKDataContext.WorkStatusEnum.PREVIEW.toString());
-			CacheHelper.getCallCenterAgentCacheBean().put(agent.getUserid(), agent, agent.getOrgi());
 			/**
 			 * 根据策略拉取名单 ，
 			 * 1、拨打时间
@@ -68,7 +67,10 @@ public class NamesTask implements Runnable{
 				UKDataContext.getContext().getBean(CallOutNamesRepository.class).save(callOutName) ;
 				
 				NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "preview", callOutName);
+				agent.setNames(callOutName);
 			}
+			
+			CacheHelper.getCallCenterAgentCacheBean().put(agent.getUserid(), agent, agent.getOrgi());
 		}
 	}
 

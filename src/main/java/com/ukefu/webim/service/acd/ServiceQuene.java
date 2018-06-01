@@ -137,7 +137,7 @@ public class ServiceQuene {
 		}else if(!StringUtils.isBlank(agent)){
 			pagingPredicate = new PagingPredicate<String, AgentUser>(  new SqlPredicate( "status = 'inquene' AND agent = '"+agent+"' AND orgi = '" + orgi +"'") , 100 );
 		}else{
-			pagingPredicate = new PagingPredicate<String, AgentUser>(  new SqlPredicate( "status = 'inquene' AND agent =null AND skill = null AND orgi = '" + orgi +"'") , 100 );
+			pagingPredicate = new PagingPredicate<String, AgentUser>(  new SqlPredicate( "status = 'inquene' AND orgi = '" + orgi +"'") , 100 );
 		}
 		queneUsers = ((IMap<String , AgentUser>) CacheHelper.getAgentUserCacheBean().getCache()).values(pagingPredicate) .size();
 		return queneUsers;

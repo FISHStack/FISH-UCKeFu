@@ -147,4 +147,18 @@ public class SearchTools {
 		ESDataExchangeImpl esDataExchange = UKDataContext.getContext().getBean(ESDataExchangeImpl.class);
 		return esDataExchange.findPageResult(queryBuilder, UKDataContext.SYSTEM_INDEX, metadataTable, new PageRequest(p, ps) , loadRef) ;
 	}
+	
+	/**
+	 * 
+	 * @param queryBuilder
+	 * @param metadataTable
+	 * @param loadRef
+	 * @param p
+	 * @param ps
+	 * @return
+	 */
+	public static UKDataBean get(UKDataBean dataBean){
+		ESDataExchangeImpl esDataExchange = UKDataContext.getContext().getBean(ESDataExchangeImpl.class);
+		return esDataExchange.getIObjectByPK(dataBean, dataBean.getId());
+	}
 }

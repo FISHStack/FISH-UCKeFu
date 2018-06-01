@@ -93,7 +93,7 @@ public class OnlineUser implements UserEvent{
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")
 	public String getId() {
 		return this.id;
 	}
