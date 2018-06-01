@@ -442,7 +442,6 @@ public class ServiceQuene {
 		
 		agentStatusList.addAll(((IMap<String , AgentStatus>) CacheHelper.getAgentStatusCacheBean().getCache()).values(pagingPredicate)) ;
 		AgentStatus agentStatus = null ;
-		int queneIndex = -1 ;
 		AgentService agentService = null ;	//放入缓存的对象
 		if(agentStatusList.size() > 0){
 			agentStatus = agentStatusList.get(0) ;
@@ -452,13 +451,13 @@ public class ServiceQuene {
 				 * 判断当前有多少人排队中 ， 分三种情况：1、请求技能组的，2、请求坐席的，3，默认请求的
 				 * 
 				 */
-				queneIndex = (getQueneIndex(agentUser.getAgent(), orgi, agentUser.getSkill()));
+				
 			}
 		}
 		try {
 			agentService = processAgentService(agentStatus, agentUser, orgi) ;
-			if(queneIndex >= 0 && agentService.getStatus().equals(UKDataContext.AgentUserStatusEnum.INQUENE.toString())){
-				agentService.setQueneindex(queneIndex);
+			if(agentService.getStatus().equals(UKDataContext.AgentUserStatusEnum.INQUENE.toString())){
+				agentService.setQueneindex(getQueneIndex(agentUser.getAgent(), orgi, agentUser.getSkill()));
 			}
 			
 		}catch(Exception ex){
