@@ -152,6 +152,26 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum NamesStatusTypeEnum{
+		CALLED,	//已拨打
+		NOTCALL	//未拨打
+		;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum NamesCalledEnum{
+		FAILD,	//拨打失败
+		NOANSWER,//无人接听
+		EMPNO,	//空号
+		ARREARS,//欠费
+		APPO,	//预约拨打
+		INVALID;//无效名单
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
 	
 	public enum TagTypeEnum{
 		QUALITY;

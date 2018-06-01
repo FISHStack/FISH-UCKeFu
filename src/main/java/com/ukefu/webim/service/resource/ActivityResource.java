@@ -162,6 +162,12 @@ public class ActivityResource extends Resource{
 		 * 批次的信息更新，批次剩余未分配的名单总数 ， 已分配的名单总数
 		 */
 		if(this.batchRes!=null && this.batch != null) {
+			if(this.isRecovery()) {
+				batch.setAssigned(batch.getAssigned() - this.atomInt.intValue());
+			}else {
+				batch.setAssigned(batch.getAssigned() + this.atomInt.intValue());
+			}
+			batch.setNotassigned(batch.getNamenum() - batch.getAssigned());
 			this.batchRes.save(batch) ;
 		}
 		if(this.task!=null) {

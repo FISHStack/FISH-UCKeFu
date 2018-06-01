@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -29,6 +30,9 @@ import com.google.common.collect.ArrayListMultimap;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.extra.DataExchangeInterface;
+import com.ukefu.webim.service.repository.JobDetailRepository;
+import com.ukefu.webim.service.repository.ReporterRepository;
+import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.TableProperties;
@@ -36,6 +40,7 @@ import com.ukefu.webim.web.model.UKeFuDic;
 
 public class ExcelImportProecess extends DataProcess{
 	private DecimalFormat format = new DecimalFormat("###");
+	private AtomicInteger pages = new AtomicInteger() , errors = new AtomicInteger(); 
 	
 	public ExcelImportProecess(DSDataEvent event){
 		super(event);
@@ -206,6 +211,7 @@ public class ExcelImportProecess extends DataProcess{
 					values.put("creater", event.getValues().get("creater")) ;
 					if(data!=null && skipDataVal == false) {
 						UKTools.populate(data, values);
+						pages.incrementAndGet() ;
 						event.getDSData().getProcess().process(data);
 					}else if(data == null){
 						/**
@@ -229,7 +235,7 @@ public class ExcelImportProecess extends DataProcess{
 							 */
 							values.put("cusid", values.get("id"))  ;
 						}
-						
+						pages.incrementAndGet() ;
 						event.getDSData().getProcess().process(values);
 						
 						/**
@@ -237,6 +243,7 @@ public class ExcelImportProecess extends DataProcess{
 						 */
 					}
 					if(skipDataVal == true) {	//跳过
+						errors.incrementAndGet();
 						continue ;
 					}
             	}
@@ -245,6 +252,8 @@ public class ExcelImportProecess extends DataProcess{
             event.setTimes(System.currentTimeMillis() - start);
             event.getDSData().getReport().setEndtime(new Date());
             event.getDSData().getReport().setStatus(UKDataContext.TaskStatusType.END.getType());
+            event.getDSData().getReport().setTotal(pages.intValue());
+            event.getDSData().getReport().setErrors(errors.intValue());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{
@@ -253,6 +262,21 @@ public class ExcelImportProecess extends DataProcess{
 					is.close();
 				} catch (IOException e) {
 					e.printStackTrace();
+				}
+			}
+			/**
+			 * 更新数据
+			 */
+			UKDataContext.getContext().getBean(ReporterRepository.class).save(event.getDSData().getReport()) ;
+			if(event.getDSData().getClazz() == null && !StringUtils.isBlank(event.getBatid())) {
+				JobDetailRepository batchRes = UKDataContext.getContext().getBean(JobDetailRepository.class) ;
+				JobDetail batch = batchRes.findByIdAndOrgi(event.getBatid(), event.getOrgi()) ;
+				if(batch!=null) {
+					batch.setNamenum(batch.getNamenum() + pages.intValue());
+					batch.setValidnum(batch.getValidnum() + (pages.intValue() - errors.intValue()));
+					batch.setInvalidnum(batch.getInvalidnum() + errors.intValue());
+					batch.setExecnum(batch.getExecnum() + 1);
+					batchRes.save(batch) ;
 				}
 			}
 			if(event.getDSData().getFile().exists()){
