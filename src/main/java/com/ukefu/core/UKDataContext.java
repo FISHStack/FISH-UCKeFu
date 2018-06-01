@@ -465,7 +465,8 @@ public class UKDataContext {
 		IDLE,
 		WAITTING,
 		CALLOUT,
-		INPROCESS;
+		PREVIEW,
+		OUTBOUNDCALL;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}

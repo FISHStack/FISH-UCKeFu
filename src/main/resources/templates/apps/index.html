@@ -347,6 +347,14 @@
 			layui.use('element', function(){
 			  var $ = layui.jquery,element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
 			  //触发事件
+			  $(".layui-tab").on("click",function(e){
+			  	if($(e.target).is(".layui-tab-close")){
+					var win = $(e.target).parent().attr("lay-id");
+					if(win == "outboundCallConsole" && uKeFuSoftPhone){
+						uKeFuSoftPhone.outboundcall();
+					}
+				}
+			  })
 			  $('.iframe_btn').on('click', function(){
 				var type = $(this).data('type');
 				if(type == "tabAdd"){

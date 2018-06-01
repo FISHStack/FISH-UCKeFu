@@ -29,7 +29,7 @@ public class NamesTask implements Runnable{
 			/**
 			 * 更新状态
 			 */
-			agent.setWorkstatus(UKDataContext.WorkStatusEnum.INPROCESS.toString());
+			agent.setWorkstatus(UKDataContext.WorkStatusEnum.PREVIEW.toString());
 			CacheHelper.getCallCenterAgentCacheBean().put(agent.getUserid(), agent, agent.getOrgi());
 			/**
 			 * 根据策略拉取名单 ，
