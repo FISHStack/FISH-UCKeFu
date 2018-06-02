@@ -145,7 +145,7 @@ public class SearchTools {
 	 * @return
 	 */
 	public static PageImpl<UKDataBean> search(BoolQueryBuilder queryBuilder, int p, int ps){
-		return search(queryBuilder, null, false, p, ps);
+		return search(queryBuilder, null, true, p, ps);
 	}
 	/**
 	 * 

@@ -35,6 +35,7 @@ public class CallOutNames implements java.io.Serializable{
 	private String datastatus;	//数据状态（逻辑删除）
 	private String status ;		//状态
 	private int calls;			//拨打次数
+	private int faildcalls ;	//失败拨打次数
 	
 	private boolean invalid ;	//多次未接通名单（6次以上）
 	private boolean failed ;	//无效名单
@@ -261,5 +262,13 @@ public class CallOutNames implements java.io.Serializable{
 
 	public void setLeavenum(int leavenum) {
 		this.leavenum = leavenum;
+	}
+
+	public int getFaildcalls() {
+		return faildcalls;
+	}
+
+	public void setFaildcalls(int faildcalls) {
+		this.faildcalls = faildcalls;
 	}
 }

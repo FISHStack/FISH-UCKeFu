@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ukefu.webim.web.model.CallOutTask;
+import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.User;
@@ -27,6 +29,10 @@ public class UKDataBean implements java.io.Serializable{
 	
 	private User user ;
 	private Organ organ;
+	
+	private CallOutTask task ;
+	private JobDetail activity ;
+	private JobDetail batch ;
 	
 	private Map<String , Object> values = new HashMap<String , Object>();
 
@@ -117,4 +123,29 @@ public class UKDataBean implements java.io.Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public CallOutTask getTask() {
+		return task;
+	}
+
+	public void setTask(CallOutTask task) {
+		this.task = task;
+	}
+
+	public JobDetail getActivity() {
+		return activity;
+	}
+
+	public void setActivity(JobDetail activity) {
+		this.activity = activity;
+	}
+
+	public JobDetail getBatch() {
+		return batch;
+	}
+
+	public void setBatch(JobDetail batch) {
+		this.batch = batch;
+	}
+	
 }

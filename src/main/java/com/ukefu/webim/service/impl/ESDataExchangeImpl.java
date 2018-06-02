@@ -20,8 +20,12 @@ import org.springframework.stereotype.Repository;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.es.UKDataBean;
+import com.ukefu.webim.service.repository.CallOutTaskRepository;
+import com.ukefu.webim.service.repository.JobDetailRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.UserRepository;
+import com.ukefu.webim.web.model.CallOutTask;
+import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.TableProperties;
@@ -35,6 +39,12 @@ public class ESDataExchangeImpl{
 	
 	@Autowired
 	private OrganRepository organRes ;
+	
+	@Autowired
+	private CallOutTaskRepository taskRes ;
+	
+	@Autowired
+	private JobDetailRepository jobRes ;
 	
 	public void saveIObject(UKDataBean dataBean) throws Exception {
 		if(dataBean.getId() == null) {
@@ -159,7 +169,7 @@ public class ESDataExchangeImpl{
 		searchBuilder.setFrom(start).setSize(page.getPageSize()) ;
 		
 		SearchResponse response = searchBuilder.setQuery(query).execute().actionGet();
-		List<String> users = new ArrayList<String>() , organs = new ArrayList<String>();
+		List<String> users = new ArrayList<String>() , organs = new ArrayList<String>() , taskList = new ArrayList<String>(),batchList = new ArrayList<String>(),activityList = new ArrayList<String>();
 		for(SearchHit hit : response.getHits().getHits()){
 			UKDataBean temp = new UKDataBean() ;
 			temp.setType(hit.getType());
@@ -168,37 +178,91 @@ public class ESDataExchangeImpl{
 			temp.setId((String)temp.getValues().get("id"));
 			dataBeanList.add(temp) ;
 			
-			if(!StringUtils.isBlank((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT))) {
-				users.add((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT)) ;
-			}
-			if(!StringUtils.isBlank((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN))) {
-				organs.add((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN)) ;
+			if(loadRef == true) {
+				if(!StringUtils.isBlank((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT))) {
+					users.add((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT)) ;
+				}
+				if(!StringUtils.isBlank((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN))) {
+					organs.add((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN)) ;
+				}
+				if(!StringUtils.isBlank((String)temp.getValues().get("taskid"))) {
+					taskList.add((String)temp.getValues().get("taskid")) ;
+				}
+				if(!StringUtils.isBlank((String)temp.getValues().get("batid"))) {
+					batchList.add((String)temp.getValues().get("batid")) ;
+				}
+				if(!StringUtils.isBlank((String)temp.getValues().get("actid"))) {
+					activityList.add((String)temp.getValues().get("actid")) ;
+				}
 			}
 		}
-		
-		if(users.size() > 0) {
-			List<User> userList = userRes.findAll(users) ;
-			for(UKDataBean dataBean : dataBeanList) {
-				String userid = (String)dataBean.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT) ;
-				if(!StringUtils.isBlank(userid)) {
-					for(User user : userList) {
-						if(user.getId().equals(userid)) {
-							dataBean.setUser(user);
-							break ;
+		if(loadRef) {
+			if(users.size() > 0) {
+				List<User> userList = userRes.findAll(users) ;
+				for(UKDataBean dataBean : dataBeanList) {
+					String userid = (String)dataBean.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT) ;
+					if(!StringUtils.isBlank(userid)) {
+						for(User user : userList) {
+							if(user.getId().equals(userid)) {
+								dataBean.setUser(user);
+								break ;
+							}
 						}
 					}
 				}
 			}
-		}
-		if(organs.size() > 0) {
-			List<Organ> organList = organRes.findAll(organs) ;
-			for(UKDataBean dataBean : dataBeanList) {
-				String organid = (String)dataBean.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN) ;
-				if(!StringUtils.isBlank(organid)) {
-					for(Organ organ : organList) {
-						if(organ.getId().equals(organid)) {
-							dataBean.setOrgan(organ);
-							break ;
+			if(organs.size() > 0) {
+				List<Organ> organList = organRes.findAll(organs) ;
+				for(UKDataBean dataBean : dataBeanList) {
+					String organid = (String)dataBean.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN) ;
+					if(!StringUtils.isBlank(organid)) {
+						for(Organ organ : organList) {
+							if(organ.getId().equals(organid)) {
+								dataBean.setOrgan(organ);
+								break ;
+							}
+						}
+					}
+				}
+			}
+			if(taskList.size() > 0) {
+				List<CallOutTask> callOutTaskList = taskRes.findAll(taskList) ;
+				for(UKDataBean dataBean : dataBeanList) {
+					String taskid = (String)dataBean.getValues().get("taskid") ;
+					if(!StringUtils.isBlank(taskid)) {
+						for(CallOutTask task : callOutTaskList) {
+							if(task.getId().equals(taskid)) {
+								dataBean.setTask(task);
+								break ;
+							}
+						}
+					}
+				}
+			}
+			if(batchList.size() > 0) {
+				List<JobDetail> batchJobList = jobRes.findAll(batchList) ;
+				for(UKDataBean dataBean : dataBeanList) {
+					String batid = (String)dataBean.getValues().get("batid") ;
+					if(!StringUtils.isBlank(batid)) {
+						for(JobDetail batch : batchJobList) {
+							if(batch.getId().equals(batid)) {
+								dataBean.setBatch(batch);
+								break ;
+							}
+						}
+					}
+				}
+			}
+			if(activityList.size() > 0) {
+				List<JobDetail> activityJobList = jobRes.findAll(activityList) ;
+				for(UKDataBean dataBean : dataBeanList) {
+					String actid = (String)dataBean.getValues().get("actid") ;
+					if(!StringUtils.isBlank(actid)) {
+						for(JobDetail activity : activityJobList) {
+							if(activity.getId().equals(actid)) {
+								dataBean.setActivity(activity);
+								break ;
+							}
 						}
 					}
 				}

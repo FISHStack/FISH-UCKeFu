@@ -69,6 +69,9 @@ public class NamesTask implements Runnable{
 				callOutName.setCreatetime(new Date());
 				callOutName.setUpdatetime(new Date());
 				
+				callOutName.setOwneruser((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT));
+				callOutName.setOwnerdept((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT));
+				
 				UKDataContext.getContext().getBean(CallOutNamesRepository.class).save(callOutName) ;
 				
 				NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "preview", callOutName);
