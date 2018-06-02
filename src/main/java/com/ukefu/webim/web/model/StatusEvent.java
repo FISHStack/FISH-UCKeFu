@@ -101,6 +101,8 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String batid ;			//呼叫ID，电销业务产生的
 	private String dataid ;			//呼叫ID，电销业务产生的
 	private String statustype = UKDataContext.StatusTypeEnum.INBOUND.toString();		//呼叫类型 ： 电销业务产生的
+	private String disphonenum ;	//是否隐藏号码 
+	private String distype ;		//号码隐藏方式
 	
 	
 	private boolean record ;//是否录音
@@ -580,5 +582,17 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setStatustype(String statustype) {
 		this.statustype = statustype;
+	}
+	public String getDisphonenum() {
+		return disphonenum;
+	}
+	public void setDisphonenum(String disphonenum) {
+		this.disphonenum = disphonenum;
+	}
+	public String getDistype() {
+		return distype;
+	}
+	public void setDistype(String distype) {
+		this.distype = distype;
 	}
 }
