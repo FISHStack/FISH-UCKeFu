@@ -20,8 +20,10 @@ import org.springframework.stereotype.Repository;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.es.UKDataBean;
+import com.ukefu.webim.service.repository.CallOutTaskRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.UserRepository;
+import com.ukefu.webim.web.model.CallOutTask;
 import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.TableProperties;
@@ -32,6 +34,9 @@ public class ESDataExchangeImpl{
 
 	@Autowired
 	private UserRepository userRes ;
+	
+	@Autowired
+	private CallOutTaskRepository taskRes ;
 	
 	@Autowired
 	private OrganRepository organRes ;
@@ -233,6 +238,20 @@ public class ESDataExchangeImpl{
 						for(Organ organ : organList) {
 							if(organ.getId().equals(organid)) {
 								dataBean.setOrgan(organ);
+								break ;
+							}
+						}
+					}
+				}
+			}
+			if(taskList.size() > 0) {
+				List<CallOutTask> callOutTaskList = taskRes.findAll(taskList) ;
+				for(UKDataBean dataBean : dataBeanList) {
+					String taskid = (String)dataBean.getValues().get("taskid") ;
+					if(!StringUtils.isBlank(taskid)) {
+						for(CallOutTask task : callOutTaskList) {
+							if(task.getId().equals(taskid)) {
+								dataBean.setTask(task);
 								break ;
 							}
 						}

@@ -46,6 +46,8 @@ public class CallOutNames implements java.io.Serializable{
 	private String batname ;
 	private String taskname ;
 	
+	private String servicetype ;	//服务类型标签
+	
 	private int leavenum ;		//剩余名单数量
 	
 	private String metaname ;	//表名
@@ -308,5 +310,13 @@ public class CallOutNames implements java.io.Serializable{
 
 	public void setPreviewtime(int previewtime) {
 		this.previewtime = previewtime;
+	}
+
+	public String getServicetype() {
+		return servicetype;
+	}
+
+	public void setServicetype(String servicetype) {
+		this.servicetype = servicetype;
 	}
 }
