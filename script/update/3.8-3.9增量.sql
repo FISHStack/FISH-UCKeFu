@@ -47,5 +47,102 @@ ALTER TABLE uk_tableproperties ADD secfield tinyint DEFAULT 0 COMMENT "隐藏字
 ALTER TABLE uk_tableproperties ADD secdistype varchar(50) COMMENT "字段隐藏方式";
 
 
+ALTER TABLE uk_callcenter_event ADD taskid varchar(50) COMMENT "外呼任务ID";
+ALTER TABLE uk_callcenter_event ADD actid varchar(50) COMMENT "外呼活动ID";
+ALTER TABLE uk_callcenter_event ADD batid varchar(50) COMMENT "外呼批次ID";
 
+ALTER TABLE uk_callcenter_event ADD batid varchar(50) COMMENT "外呼名单ID";
+ALTER TABLE uk_callcenter_event ADD statustype varchar(50) COMMENT "外呼名单状态";
+
+ALTER TABLE uk_callcenter_event ADD disphonenum varchar(50) COMMENT "外呼名单号码";
+ALTER TABLE uk_callcenter_event ADD distype varchar(50) COMMENT "外呼名单号码隐藏方式";
+
+
+
+
+CREATE TABLE `uk_jobdetail` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `STATUS` varchar(50) DEFAULT NULL,
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '上级ID',
+  `ACTID` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `INX` int(11) DEFAULT '0' COMMENT '分类排序序号',
+  `NAMENUM` int(11) DEFAULT '0' COMMENT '批次包含的名单总数',
+  `VALIDNUM` int(11) DEFAULT '0' COMMENT '批次包含的有效名单总数',
+  `INVALIDNUM` int(11) DEFAULT '0' COMMENT '批次包含的无效名单总数',
+  `ASSIGNED` int(11) DEFAULT '0' COMMENT '已分配名单总数',
+  `NOTASSIGNED` int(11) DEFAULT '0' COMMENT '未分配名单总数',
+  `ENABLE` tinyint(4) DEFAULT '0' COMMENT '分类状态',
+  `DATASTATUS` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `AREA` text COMMENT '分类描述',
+  `imptype` varchar(50) DEFAULT NULL,
+  `batchtype` varchar(32) DEFAULT NULL,
+  `ORGAN` varchar(32) DEFAULT NULL,
+  `impurl` text,
+  `filetype` varchar(50) DEFAULT NULL,
+  `dbtype` varchar(50) DEFAULT NULL,
+  `jdbcurl` text,
+  `driverclazz` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `DESCRIPTION` text,
+  `execnum` int(11) DEFAULT '0' COMMENT '导入次数',
+  `SOURCE` varchar(255) DEFAULT NULL,
+  `CLAZZ` varchar(255) DEFAULT NULL,
+  `TASKFIRETIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `CRAWLTASKID` varchar(255) DEFAULT NULL,
+  `EMAIL` varchar(255) DEFAULT NULL,
+  `NICKNAME` varchar(255) DEFAULT NULL,
+  `USERID` varchar(255) DEFAULT NULL,
+  `TASKTYPE` varchar(255) DEFAULT NULL,
+  `TASKID` varchar(255) DEFAULT NULL,
+  `FETCHER` smallint(6) NOT NULL,
+  `PAUSE` smallint(6) NOT NULL,
+  `PLANTASK` smallint(6) NOT NULL,
+  `SECURE_ID` varchar(32) DEFAULT NULL,
+  `CONFIGURE_ID` varchar(32) DEFAULT NULL,
+  `TAKSPLAN_ID` varchar(32) DEFAULT NULL,
+  `CRAWLTASK` varchar(32) DEFAULT NULL,
+  `TARGETTASK` varchar(32) DEFAULT NULL,
+  `STARTINDEX` int(11) DEFAULT NULL,
+  `LASTDATE` timestamp NULL DEFAULT NULL,
+  `CREATETABLE` tinyint(4) DEFAULT NULL,
+  `MEMO` text,
+  `NEXTFIRETIME` timestamp NULL DEFAULT NULL,
+  `CRONEXP` varchar(255) DEFAULT NULL,
+  `TASKSTATUS` varchar(32) DEFAULT NULL,
+  `usearea` varchar(255) DEFAULT '',
+  `areafield` varchar(255) DEFAULT NULL,
+  `areafieldtype` varchar(32) DEFAULT NULL,
+  `arearule` varchar(255) DEFAULT NULL,
+  `minareavalue` varchar(255) DEFAULT NULL,
+  `maxareavalue` varchar(255) DEFAULT NULL,
+  `formatstr` varchar(255) DEFAULT NULL,
+  `DATAID` varchar(1000) DEFAULT NULL COMMENT '报表id字符串',
+  `DICID` varchar(1000) DEFAULT NULL COMMENT '目录id字符串',
+  `taskinfo` longtext COMMENT 'taskinfo信息',
+  `FILTERID` varchar(32) DEFAULT NULL,
+  `FETCH_SIZE` int(11) DEFAULT NULL,
+  `LASTINDEX` int(11) DEFAULT NULL,
+  `PAGES` int(11) DEFAULT NULL,
+  `plantaskreadtorun` tinyint(4) DEFAULT NULL,
+  `priority` int(11) DEFAULT NULL,
+  `runserver` varchar(100) DEFAULT NULL,
+  `actype` varchar(50) DEFAULT NULL,
+  `distype` varchar(32) DEFAULT NULL,
+  `distpolicy` varchar(50) DEFAULT NULL,
+  `policynum` int(11) DEFAULT NULL,
+  `busstype` varchar(32) DEFAULT NULL,
+  `disnum` varchar(32) DEFAULT NULL COMMENT '默认分配数量',
+  `execmd` varchar(32) DEFAULT NULL,
+  `exectarget` varchar(50) DEFAULT NULL,
+  `exectype` varchar(32) DEFAULT NULL,
+  `execto` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
