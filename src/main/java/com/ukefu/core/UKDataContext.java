@@ -144,6 +144,17 @@ public class UKDataContext {
 		}
 	}
 	
+	public enum NamesProcessStatus{
+		DIS,
+		PREVIEW,
+		CALLING,
+		CALLED,
+		CALLFAILD;
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 	public enum FormFilterTypeEnum{
 		BATCH,
 		BUSINESS;
@@ -162,6 +173,7 @@ public class UKDataContext {
 	}
 	
 	public enum NamesCalledEnum{
+		SUCCESS,//拨打成功
 		FAILD,	//拨打失败
 		NOANSWER,//无人接听
 		EMPNO,	//空号

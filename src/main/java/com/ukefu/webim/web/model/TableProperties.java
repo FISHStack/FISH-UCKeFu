@@ -68,7 +68,7 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	private boolean modits = false ;
 	private String orgi ;
 	private String viewtype;				//变更用处，修改为 在哪些地方显示  ， view | edit | add | detail
-	private int sortindex = 1;
+	private int sortindex = 100;
 	private boolean token ;
 	private String tokentype ;	//分词方式
 	private boolean inx = true;
@@ -83,6 +83,8 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	private boolean phonenumber ;	//是否电话号码
 	private String phonetype ;		//号码类型   ， 第一联系号码|家庭电话|工作电话
 	private String phonememo ;		//号码备注
+	private String styletype ;		//样式类型  ： 文本框、文本域 ， 单选列表、复选框、单选按钮等等
+	
 	
 	private boolean seldata ;
 	private String seldatatype ;	//选择数据方式  ： 字典数据  ， 表数据  ， 如果是表数据，则需要选择 表ID
@@ -474,5 +476,11 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	}
 	public void setSecdistype(String secdistype) {
 		this.secdistype = secdistype;
+	}
+	public String getStyletype() {
+		return styletype;
+	}
+	public void setStyletype(String styletype) {
+		this.styletype = styletype;
 	}
 }

@@ -48,6 +48,8 @@ public class CallOutNames implements java.io.Serializable{
 	
 	private int leavenum ;		//剩余名单数量
 	
+	private String metaname ;	//表名
+	
 	
 	private String owneruser ;	//分配 坐席
 	private String ownerdept ;	//分配 部门
@@ -59,6 +61,10 @@ public class CallOutNames implements java.io.Serializable{
 	
 	private String name ;		//名单名称	
 	private String phonenumber;	//电话号码
+	private String distype ;	//号码隐藏
+	
+	private int previewtimes ;	//预览次数
+	private int previewtime ;	//预览时长
 	
 	@Id
 	@Column(length = 32)
@@ -270,5 +276,37 @@ public class CallOutNames implements java.io.Serializable{
 
 	public void setFaildcalls(int faildcalls) {
 		this.faildcalls = faildcalls;
+	}
+
+	public String getMetaname() {
+		return metaname;
+	}
+
+	public void setMetaname(String metaname) {
+		this.metaname = metaname;
+	}
+
+	public String getDistype() {
+		return distype;
+	}
+
+	public void setDistype(String distype) {
+		this.distype = distype;
+	}
+
+	public int getPreviewtimes() {
+		return previewtimes;
+	}
+
+	public void setPreviewtimes(int previewtimes) {
+		this.previewtimes = previewtimes;
+	}
+
+	public int getPreviewtime() {
+		return previewtime;
+	}
+
+	public void setPreviewtime(int previewtime) {
+		this.previewtime = previewtime;
 	}
 }

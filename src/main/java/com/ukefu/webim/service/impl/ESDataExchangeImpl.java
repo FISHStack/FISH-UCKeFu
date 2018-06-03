@@ -20,12 +20,8 @@ import org.springframework.stereotype.Repository;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.es.UKDataBean;
-import com.ukefu.webim.service.repository.CallOutTaskRepository;
-import com.ukefu.webim.service.repository.JobDetailRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.UserRepository;
-import com.ukefu.webim.web.model.CallOutTask;
-import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.TableProperties;
@@ -40,19 +36,19 @@ public class ESDataExchangeImpl{
 	@Autowired
 	private OrganRepository organRes ;
 	
-	@Autowired
-	private CallOutTaskRepository taskRes ;
-	
-	@Autowired
-	private JobDetailRepository jobRes ;
-	
 	public void saveIObject(UKDataBean dataBean) throws Exception {
 		if(dataBean.getId() == null) {
 			dataBean.setId((String) dataBean.getValues().get("id"));
 		}
-		UKDataContext.getTemplet().getClient().prepareIndex(UKDataContext.SYSTEM_INDEX,
+		if(!StringUtils.isBlank(dataBean.getType())) {
+			UKDataContext.getTemplet().getClient().prepareIndex(UKDataContext.SYSTEM_INDEX,
+					dataBean.getType(), dataBean.getId())
+			.setSource(processValues(dataBean)).execute().actionGet();
+		}else {
+			UKDataContext.getTemplet().getClient().prepareIndex(UKDataContext.SYSTEM_INDEX,
 						dataBean.getTable().getTablename(), dataBean.getId())
 				.setSource(processValues(dataBean)).execute().actionGet();
+		}
 	}
 	/**
 	 * 处理数据，包含 自然语言处理算法计算 智能处理字段
@@ -62,15 +58,19 @@ public class ESDataExchangeImpl{
 	 */
 	private Map<String , Object> processValues(UKDataBean dataBean) throws Exception{
 		Map<String , Object> values = new HashMap<String , Object>() ;
-		for(TableProperties tp : dataBean.getTable().getTableproperty()){
-			if(dataBean.getValues().get(tp.getFieldname())!=null){
-				values.put(tp.getFieldname(), dataBean.getValues().get(tp.getFieldname())) ;
-			}else if(tp.getDatatypename().equals("nlp") && dataBean.getValues()!=null){
-				//智能处理， 需要计算过滤HTML内容，自动获取关键词、摘要、实体识别、情感分析、信息指纹 等功能
-				values.put(tp.getFieldname(), dataBean.getValues().get(tp.getFieldname())) ;
-			}else{
-				values.put(tp.getFieldname(), dataBean.getValues().get(tp.getFieldname())) ;
+		if(dataBean.getTable()!=null) {
+			for(TableProperties tp : dataBean.getTable().getTableproperty()){
+				if(dataBean.getValues().get(tp.getFieldname())!=null){
+					values.put(tp.getFieldname(), dataBean.getValues().get(tp.getFieldname())) ;
+				}else if(tp.getDatatypename().equals("nlp") && dataBean.getValues()!=null){
+					//智能处理， 需要计算过滤HTML内容，自动获取关键词、摘要、实体识别、情感分析、信息指纹 等功能
+					values.put(tp.getFieldname(), dataBean.getValues().get(tp.getFieldname())) ;
+				}else{
+					values.put(tp.getFieldname(), dataBean.getValues().get(tp.getFieldname())) ;
+				}
 			}
+		}else {
+			values.putAll(dataBean.getValues());
 		}
 		return values ;
 	}
@@ -118,7 +118,21 @@ public class ESDataExchangeImpl{
 		}else{
 			dataBean.setValues(new HashMap<String,Object>());
 		}
-		
+		return dataBean;
+	}
+	
+	public UKDataBean getIObjectByPK(String type , String id) {
+		UKDataBean dataBean = new UKDataBean() ;
+		if(!StringUtils.isBlank(type)){
+			GetResponse getResponse = UKDataContext.getTemplet().getClient()
+					.prepareGet(UKDataContext.SYSTEM_INDEX,
+							type, id)
+					.execute().actionGet();
+			dataBean.setValues(getResponse.getSource());
+			dataBean.setType(getResponse.getType());
+		}else{
+			dataBean.setValues(new HashMap<String,Object>());
+		}
 		return dataBean;
 	}
 	
@@ -219,48 +233,6 @@ public class ESDataExchangeImpl{
 						for(Organ organ : organList) {
 							if(organ.getId().equals(organid)) {
 								dataBean.setOrgan(organ);
-								break ;
-							}
-						}
-					}
-				}
-			}
-			if(taskList.size() > 0) {
-				List<CallOutTask> callOutTaskList = taskRes.findAll(taskList) ;
-				for(UKDataBean dataBean : dataBeanList) {
-					String taskid = (String)dataBean.getValues().get("taskid") ;
-					if(!StringUtils.isBlank(taskid)) {
-						for(CallOutTask task : callOutTaskList) {
-							if(task.getId().equals(taskid)) {
-								dataBean.setTask(task);
-								break ;
-							}
-						}
-					}
-				}
-			}
-			if(batchList.size() > 0) {
-				List<JobDetail> batchJobList = jobRes.findAll(batchList) ;
-				for(UKDataBean dataBean : dataBeanList) {
-					String batid = (String)dataBean.getValues().get("batid") ;
-					if(!StringUtils.isBlank(batid)) {
-						for(JobDetail batch : batchJobList) {
-							if(batch.getId().equals(batid)) {
-								dataBean.setBatch(batch);
-								break ;
-							}
-						}
-					}
-				}
-			}
-			if(activityList.size() > 0) {
-				List<JobDetail> activityJobList = jobRes.findAll(activityList) ;
-				for(UKDataBean dataBean : dataBeanList) {
-					String actid = (String)dataBean.getValues().get("actid") ;
-					if(!StringUtils.isBlank(actid)) {
-						for(JobDetail activity : activityJobList) {
-							if(activity.getId().equals(actid)) {
-								dataBean.setActivity(activity);
 								break ;
 							}
 						}
