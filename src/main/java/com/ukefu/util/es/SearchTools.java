@@ -29,13 +29,13 @@ public class SearchTools {
 			}else {
 				switch(formFilterItem.getCond()) {
 					case "01" : 
-						queryBuilder.must(rangeQuery(formFilterItem.getField()).from(formFilterItem.getValue())) ;
+						queryBuilder.must(rangeQuery(formFilterItem.getField()).from(formFilterItem.getValue()).includeLower(false)) ;
 						break ;
 					case "02" : 
 						queryBuilder.must(rangeQuery(formFilterItem.getField()).from(formFilterItem.getValue()).includeLower(true)) ;
 						break ;
 					case "03" : 
-						queryBuilder.must(rangeQuery(formFilterItem.getField()).to(formFilterItem.getValue())) ;
+						queryBuilder.must(rangeQuery(formFilterItem.getField()).to(formFilterItem.getValue()).includeUpper(false)) ;
 						break ;
 					case "04" : 
 						queryBuilder.must(rangeQuery(formFilterItem.getField()).to(formFilterItem.getValue()).includeUpper(true)) ;
