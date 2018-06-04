@@ -40,8 +40,11 @@ public class CallOutNames implements java.io.Serializable{
 	private boolean invalid ;	//多次未接通名单（6次以上）
 	private boolean failed ;	//无效名单
 	
-	private String workstatus ;	//名单状态， 预约
+	private String workstatus ;	//名单状态
+	
+	private boolean reservation ;	//是否预约
 	private Date optime ;		//预约的下次拨打时间
+	private String memo ;		//预约备注
 	
 	private String batname ;
 	private String taskname ;
@@ -318,5 +321,21 @@ public class CallOutNames implements java.io.Serializable{
 
 	public void setServicetype(String servicetype) {
 		this.servicetype = servicetype;
+	}
+
+	public boolean isReservation() {
+		return reservation;
+	}
+
+	public void setReservation(boolean reservation) {
+		this.reservation = reservation;
+	}
+
+	public String getMemo() {
+		return memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 }
