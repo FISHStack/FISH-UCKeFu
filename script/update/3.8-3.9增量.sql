@@ -56,7 +56,7 @@ ALTER TABLE uk_callcenter_event ADD statustype varchar(50) COMMENT "外呼名单
 
 ALTER TABLE uk_callcenter_event ADD disphonenum varchar(50) COMMENT "外呼名单号码";
 ALTER TABLE uk_callcenter_event ADD distype varchar(50) COMMENT "外呼名单号码隐藏方式";
-
+ALTER TABLE uk_tableproperties ADD styletype varchar(50) COMMENT "显示样式";
 
 
 
