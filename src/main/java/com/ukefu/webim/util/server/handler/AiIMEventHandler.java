@@ -145,11 +145,6 @@ public class AiIMEventHandler
     	data.setMessage(UKTools.processEmoti(data.getMessage()));
     	data.setTousername(UKDataContext.ChannelTypeEnum.AI.toString());
     	
-    	/**
-    	 * 替换 无效字符
-    	 */
-    	data.setMessage(Jsoup.parse(data.getMessage()).text());
-    	
     	data.setAiid(aiid);
     	
     	Object cacheData = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(UKTools.getContextID(client.getSessionId().toString()),orgi) ;
