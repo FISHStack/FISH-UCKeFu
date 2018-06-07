@@ -82,6 +82,8 @@ import com.ukefu.webim.service.repository.SystemMessageRepository;
 import com.ukefu.webim.service.repository.TemplateRepository;
 import com.ukefu.webim.web.model.AdType;
 import com.ukefu.webim.web.model.AttachmentFile;
+import com.ukefu.webim.web.model.JobDetail;
+import com.ukefu.webim.web.model.JobTask;
 import com.ukefu.webim.web.model.Secret;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.SystemConfig;
@@ -1358,4 +1360,36 @@ public class UKTools {
 		return workSession ;
 	} 
 	
+	/**
+	 * 
+	 * @param plan
+	 * @return
+	 */
+    public static String convertCrond(JobTask plan){
+		StringBuffer strb = new StringBuffer() ;
+		if("day".equals(plan.getRunCycle())){
+			strb.append(plan.getRunBeginSecond()).append(" ").append(plan.getRunBeginMinute()).append(plan.getIsRepeat() && plan.getRepeatSpace()!=null && plan.getRepeatSpace()<60 ? "/"+ plan.getRepeatSpace() : "").append(" ").append(plan.getRunBeginHour()).append(plan.getIsRepeat() && plan.getRepeatSpace()!=null && plan.getRepeatSpace()>60 ? "/"+ plan.getRepeatSpace()/60 : (plan.getRepeatJustTime()!=null && plan.getRepeatJustTime() > 0 ? "-" + (plan.getRunBeginHour() + plan.getRepeatJustTime()):"")).append(" ").append("*").append(plan.getRunSpace() != null && plan.getRunSpace()>0 ? "/"+plan.getRunSpace():"").append(" ").append(" * ?") ;
+		}
+		if("week".equals(plan.getRunCycle())){
+			strb.append(plan.getRunBeginSecond()).append(" ").append(plan.getRunBeginMinute()).append(plan.getIsRepeat() && plan.getRepeatSpace()!=null && plan.getRepeatSpace()<60 ? "/"+ plan.getRepeatSpace() : "").append(" ").append(plan.getRunBeginHour()).append(plan.getIsRepeat() && plan.getRepeatSpace()!=null && plan.getRepeatSpace()>60 ? "/"+ plan.getRepeatSpace()/60 : (plan.getRepeatJustTime()!=null && plan.getRepeatJustTime() > 0 ? "-" + (plan.getRunBeginHour() + plan.getRepeatJustTime()):"")).append(" ").append(plan.getRunDates()==null || plan.getRunDates().length==0 ? "*":"?").append(" * ").append(plan.getRunDates()==null || plan.getRunDates().length==0? "?" : StringUtils.join(plan.getRunDates() , ",")).append(plan.getRunSpace()!=null && plan.getRunSpace()>0 ? "/"+plan.getRunSpace(): "") ;
+		}
+		if("month".equals(plan.getRunCycle())){
+			strb.append(plan.getRunBeginSecond()).append(" ").append(plan.getRunBeginMinute()).append(plan.getIsRepeat() && plan.getRepeatSpace()!=null && plan.getRepeatSpace()<60 ? "/"+ plan.getRepeatSpace() : "").append(" ").append(plan.getRunBeginHour()).append(plan.getIsRepeat() && plan.getRepeatSpace()!=null && plan.getRepeatSpace()>60 ? "/"+ plan.getRepeatSpace()/60 : (plan.getRepeatJustTime()!=null && plan.getRepeatJustTime() > 0 ? "-" + (plan.getRunBeginHour() + plan.getRepeatJustTime()):"")).append(" ").append(plan.getRunBeginDate()).append(" ").append(plan.getRunDates()==null || plan.getRunDates().length==0? "*" : StringUtils.join(plan.getRunDates() , ",")).append(" ").append(" ?") ;
+		}
+		return strb.toString() ;
+	}
+    
+    public static Date updateTaskNextFireTime(JobDetail jobDetail) throws Exception{
+		Date nextFireDate = new Date();
+		Date date = new Date();
+		if(jobDetail!=null && jobDetail.getCronexp()!=null && jobDetail.getCronexp().length()>0){
+			try {
+				nextFireDate = (CronTools.getFinalFireTime(jobDetail.getCronexp(), jobDetail.getNextfiretime()!=null ? jobDetail.getNextfiretime() : date)) ;
+			} catch (ParseException e) {
+				nextFireDate = new Date(System.currentTimeMillis() + 1000*60*60*24) ; 	//一旦任务的 Cron表达式错误，将下次执行时间自动设置为一天后，避免出现任务永远无法终止的情况
+				e.printStackTrace();
+			}
+		}
+		return nextFireDate ;
+	}
 }
