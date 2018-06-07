@@ -21,6 +21,6 @@ public class AgentStatusBusyOrgiFilter implements KeyPredicate<String>{
 	}
 	public boolean evaluate(String key) {
 		AgentStatus agent = (AgentStatus) CacheHelper.getAgentStatusCacheBean().getCacheObject(key, orgi);
-		return !StringUtils.isBlank(orgi) && orgi.equals(agent.getOrgi()) && agent.isBusy();
+		return agent!=null && !StringUtils.isBlank(orgi) && orgi.equals(agent.getOrgi()) && agent.isBusy();
 	}
 }

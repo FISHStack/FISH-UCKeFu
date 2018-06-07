@@ -4,7 +4,6 @@ import java.net.InetSocketAddress;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
-import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.corundumstudio.socketio.AckRequest;
