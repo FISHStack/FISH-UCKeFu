@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-05-31 09:02:51
+Date: 2018-06-07 11:45:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -123,6 +123,54 @@ CREATE TABLE `uk_act_callagent` (
 
 -- ----------------------------
 -- Records of uk_act_callagent
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_act_callnames`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_act_callnames`;
+CREATE TABLE `uk_act_callnames` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `STATUS` varchar(50) DEFAULT NULL,
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '上级ID',
+  `ACTID` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `BATID` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `DATASTATUS` varchar(32) DEFAULT NULL COMMENT '数据状态',
+  `CALLS` int(11) DEFAULT '0' COMMENT '拨打次数',
+  `FAILDCALLS` int(11) DEFAULT '0' COMMENT '拨打失败次数',
+  `invalid` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `failed` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `WORKSTATUS` varchar(32) DEFAULT NULL,
+  `OPTIME` datetime DEFAULT NULL,
+  `ORGAN` varchar(32) DEFAULT NULL,
+  `BATNAME` varchar(100) DEFAULT NULL,
+  `TASKNAME` varchar(100) DEFAULT NULL,
+  `owneruser` varchar(100) DEFAULT NULL,
+  `ownerdept` varchar(100) DEFAULT NULL,
+  `dataid` varchar(100) DEFAULT NULL,
+  `taskid` varchar(100) DEFAULT NULL,
+  `filterid` varchar(100) DEFAULT NULL,
+  `phonenumber` varchar(100) DEFAULT NULL,
+  `leavenum` int(11) DEFAULT '0',
+  `metaname` varchar(100) DEFAULT NULL,
+  `distype` varchar(100) DEFAULT NULL,
+  `previewtime` int(11) DEFAULT '0',
+  `previewtimes` int(11) DEFAULT '0',
+  `servicetype` text,
+  `reservation` tinyint(4) DEFAULT '0',
+  `memo` text,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_act_callnames
 -- ----------------------------
 
 -- ----------------------------
@@ -831,6 +879,13 @@ CREATE TABLE `uk_callcenter_event` (
   `SATISFDATE` datetime DEFAULT NULL,
   `datestr` varchar(32) DEFAULT '0' COMMENT '坐席通话日期（yyyy-MM-dd）用于每小时通话数量折线图',
   `hourstr` varchar(32) DEFAULT '0' COMMENT '坐席通话时间小时（HH）用于每小时通话数量折线图',
+  `taskid` varchar(32) DEFAULT NULL,
+  `actid` varchar(32) DEFAULT NULL,
+  `batid` varchar(32) DEFAULT NULL,
+  `dataid` varchar(32) DEFAULT NULL,
+  `statustype` varchar(32) DEFAULT NULL,
+  `disphonenum` varchar(32) DEFAULT NULL,
+  `distype` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -1076,6 +1131,143 @@ CREATE TABLE `uk_callcenter_skillext` (
 
 -- ----------------------------
 -- Records of uk_callcenter_skillext
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_call_monitor`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_call_monitor`;
+CREATE TABLE `uk_call_monitor` (
+  `ID` varchar(50) NOT NULL COMMENT 'ID',
+  `USERID` varchar(50) DEFAULT NULL COMMENT '登录人ID',
+  `AGENT` varchar(50) DEFAULT NULL COMMENT '坐席工号',
+  `USERNAME` varchar(50) DEFAULT NULL COMMENT '坐席用户名（登录名）',
+  `AGENTNO` varchar(50) DEFAULT NULL COMMENT '分机号（坐席登录的分机号码）',
+  `NAME` varchar(50) DEFAULT NULL COMMENT '坐席姓名',
+  `CODE` varchar(50) DEFAULT NULL COMMENT '坐席状态code（对应字典表里的CODE）',
+  `STATUS` varchar(50) DEFAULT NULL COMMENT '坐席当前状态（坐席当前状态（坐席监控首页显示，判断根本依据，每次状态改变，数据记录会被更新））',
+  `ORGI` varchar(50) DEFAULT NULL COMMENT '租户ID',
+  `AGENTSERVICEID` varchar(50) DEFAULT NULL COMMENT '会话ID',
+  `SKILL` varchar(50) DEFAULT NULL COMMENT '接入的技能组ID',
+  `SKILLNAME` varchar(50) DEFAULT NULL COMMENT '接入的技能组名称',
+  `BUSY` varchar(50) DEFAULT NULL COMMENT '是否忙',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '记录创建时间（每个坐席的第一条记录为，点击登录之后，登录成功之后的时间，则会插入一条记录。以后每次状态改变，记录会被更新，时间都会跟着改变，变为状态改变后的时间。）',
+  `ANI` varchar(50) DEFAULT NULL COMMENT '主叫号码',
+  `CALLED` varchar(50) DEFAULT NULL COMMENT '被叫号码',
+  `DIRECTION` varchar(50) DEFAULT NULL COMMENT '呼叫方向',
+  `CALLSTARTTIME` datetime DEFAULT NULL COMMENT '通话开始时间',
+  `CALLENDTIME` datetime DEFAULT NULL COMMENT '通话结束时间',
+  `RINGDURATION` int(11) DEFAULT NULL COMMENT '振铃时长',
+  `DURATION` int(11) DEFAULT NULL COMMENT '通话时长',
+  `MISSCALL` tinyint(4) DEFAULT NULL COMMENT '是否漏话',
+  `RECORD` tinyint(4) DEFAULT NULL COMMENT '是否录音',
+  `RECORDTIME` int(11) DEFAULT NULL COMMENT '录音时长',
+  `STARTRECORD` datetime DEFAULT NULL COMMENT '开始录音时间',
+  `ENDRECORD` datetime DEFAULT NULL COMMENT '结束录音时间',
+  `RECORDFILENAME` varchar(100) DEFAULT NULL COMMENT '录音文件名（单纯录音文件名）',
+  `RECORDFILE` varchar(255) DEFAULT NULL COMMENT '录音文件全路径名（存放位置+文件名）',
+  `SOURCE` varchar(50) DEFAULT NULL COMMENT '来源',
+  `ANSWERTIME` datetime DEFAULT NULL COMMENT '应答时间',
+  `CURRENT` tinyint(4) DEFAULT NULL COMMENT '当前通话',
+  `INIT` tinyint(4) DEFAULT NULL COMMENT '初始通话',
+  `ACTION` varchar(50) DEFAULT NULL COMMENT '事件动作',
+  `HOST` varchar(50) DEFAULT NULL COMMENT '时间主机（FreeWitch主机帐户名）',
+  `IPADDR` varchar(50) DEFAULT NULL COMMENT '主机IP（FreeWitch主机IP）',
+  `SERVICESUMMARY` tinyint(4) DEFAULT NULL COMMENT '是否记录服务小结',
+  `SERVICEID` varchar(32) DEFAULT NULL COMMENT '服务记录ID',
+  `SERVICESTATUS` varchar(50) DEFAULT NULL COMMENT '当前呼叫状态',
+  `CHANNELSTATUS` varchar(50) DEFAULT NULL COMMENT '事件中的呼叫状态',
+  `COUNTRY` varchar(50) DEFAULT NULL COMMENT '来电国家',
+  `PROVINCE` varchar(50) DEFAULT NULL COMMENT '来电号码归属省份',
+  `CITY` varchar(50) DEFAULT NULL COMMENT '来电号码归属城市',
+  `ISP` varchar(50) DEFAULT NULL COMMENT '来电号码运营商',
+  `CONTACTSID` varchar(50) DEFAULT NULL COMMENT '联系人ID',
+  `EXTENTION` varchar(50) DEFAULT NULL COMMENT '分机ID',
+  `HOSTID` varchar(50) DEFAULT NULL COMMENT 'PBX服务器ID',
+  `CALLTYPE` varchar(50) DEFAULT NULL COMMENT '呼叫方向类型 | 计费类型',
+  `CALLDIR` varchar(50) DEFAULT NULL COMMENT '我方呼叫方向',
+  `OTHERDIR` varchar(50) DEFAULT NULL COMMENT '对方呼叫方向',
+  `BRIDGEID` varchar(50) DEFAULT NULL COMMENT '桥接ID',
+  `BRIDRE` tinyint(4) DEFAULT NULL COMMENT '是否有桥接',
+  `DISCALLER` varchar(50) DEFAULT NULL COMMENT '主叫分机号',
+  `DISCALLED` varchar(50) DEFAULT NULL COMMENT '被叫分机号',
+  `ORGAN` varchar(50) DEFAULT NULL COMMENT '所属组织机构ID',
+  `EVENTID` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='坐席监控表';
+
+-- ----------------------------
+-- Records of uk_call_monitor
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_call_performance`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_call_performance`;
+CREATE TABLE `uk_call_performance` (
+  `ID` varchar(50) NOT NULL COMMENT '坐席ID',
+  `USERID` varchar(50) DEFAULT NULL COMMENT '登录人ID',
+  `AGENT` varchar(50) DEFAULT NULL COMMENT '坐席工号',
+  `USERNAME` varchar(50) DEFAULT NULL COMMENT '坐席用户名（登录名）',
+  `AGENTNO` varchar(50) DEFAULT NULL COMMENT '分机号（坐席登录的分机号码）',
+  `NAME` varchar(50) DEFAULT NULL COMMENT '坐席姓名',
+  `STARTSTATUS` varchar(50) DEFAULT NULL COMMENT '上一个状态',
+  `CODE` varchar(50) DEFAULT NULL COMMENT '坐席状态code（对应字典管理中的CODE）',
+  `STATUS` varchar(50) DEFAULT NULL COMMENT '坐席历史状态（插入该表时的状态（复制自坐席监控表的状态））',
+  `ORGI` varchar(50) DEFAULT NULL COMMENT '租户ID',
+  `AGENTSERVICEID` varchar(50) DEFAULT NULL COMMENT '会话ID',
+  `SKILL` varchar(50) DEFAULT NULL COMMENT '接入的技能组ID',
+  `SKILLNAME` varchar(50) DEFAULT NULL COMMENT '接入的技能组名称',
+  `BUSY` varchar(50) DEFAULT NULL COMMENT '是否忙',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '状态开始时间（取值（坐席监控表的记录创建时间））',
+  `ENDTIME` datetime DEFAULT NULL COMMENT '记录创建时间（取值（纪录插入表时的时间））',
+  `INTERVALTIME` varchar(50) DEFAULT NULL COMMENT '状态持续时间（秒）（endtime - createtime = intervaltime）',
+  `ANI` varchar(50) DEFAULT NULL COMMENT '主叫号码',
+  `CALLED` varchar(50) DEFAULT NULL COMMENT '被叫号码',
+  `DIRECTION` varchar(50) DEFAULT NULL COMMENT '呼叫方向',
+  `CALLSTARTTIME` datetime DEFAULT NULL COMMENT '通话开始时间',
+  `CALLENDTIME` datetime DEFAULT NULL COMMENT '通话结束时间',
+  `RINGDURATION` int(11) DEFAULT NULL COMMENT '振铃时长',
+  `DURATION` int(11) DEFAULT NULL COMMENT '通话时长',
+  `MISSCALL` tinyint(4) DEFAULT NULL COMMENT '是否漏话',
+  `RECORD` tinyint(4) DEFAULT NULL COMMENT '是否录音',
+  `RECORDTIME` int(11) DEFAULT NULL COMMENT '录音时长',
+  `STARTRECORD` datetime DEFAULT NULL COMMENT '开始录音时间',
+  `ENDRECORD` datetime DEFAULT NULL COMMENT '结束录音时间',
+  `RECORDFILENAME` varchar(100) DEFAULT NULL COMMENT '录音文件名（单纯录音文件名）',
+  `RECORDFILE` varchar(255) DEFAULT NULL COMMENT '录音文件全路径名（存放位置+文件名）',
+  `SOURCE` varchar(50) DEFAULT NULL COMMENT '来源',
+  `ANSWERTIME` datetime DEFAULT NULL COMMENT '应答时间',
+  `CURRENT` tinyint(4) DEFAULT NULL COMMENT '当前通话',
+  `INIT` tinyint(4) DEFAULT NULL COMMENT '初始通话',
+  `ACTION` varchar(50) DEFAULT NULL COMMENT '事件动作',
+  `HOST` varchar(50) DEFAULT NULL COMMENT '时间主机（FreeWitch主机帐户名）',
+  `IPADDR` varchar(50) DEFAULT NULL COMMENT '主机IP（FreeWitch主机IP）',
+  `SERVICESUMMARY` tinyint(4) DEFAULT NULL COMMENT '是否记录服务小结',
+  `SERVICEID` varchar(32) DEFAULT NULL COMMENT '服务记录ID',
+  `SERVICESTATUS` varchar(50) DEFAULT NULL COMMENT '当前呼叫状态',
+  `CHANNELSTATUS` varchar(50) DEFAULT NULL COMMENT '事件中的呼叫状态',
+  `COUNTRY` varchar(50) DEFAULT NULL COMMENT '来电国家',
+  `PROVINCE` varchar(50) DEFAULT NULL COMMENT '来电号码归属省份',
+  `CITY` varchar(50) DEFAULT NULL COMMENT '来电号码归属城市',
+  `ISP` varchar(50) DEFAULT NULL COMMENT '来电号码运营商',
+  `CONTACTSID` varchar(50) DEFAULT NULL COMMENT '联系人ID',
+  `EXTENTION` varchar(50) DEFAULT NULL COMMENT '分机ID',
+  `HOSTID` varchar(50) DEFAULT NULL COMMENT 'PBX服务器ID',
+  `CALLTYPE` varchar(50) DEFAULT NULL COMMENT '呼叫方向类型 | 计费类型',
+  `CALLDIR` varchar(50) DEFAULT NULL COMMENT '我方呼叫方向',
+  `OTHERDIR` varchar(50) DEFAULT NULL COMMENT '对方呼叫方向',
+  `BRIDGEID` varchar(50) DEFAULT NULL COMMENT '桥接ID',
+  `BRIDRE` tinyint(4) DEFAULT NULL COMMENT '是否有桥接',
+  `DISCALLER` varchar(50) DEFAULT NULL COMMENT '主叫分机号',
+  `DISCALLED` varchar(50) DEFAULT NULL COMMENT '被叫分机号',
+  `SATISF` tinyint(4) DEFAULT NULL COMMENT '是否进行满意度调查',
+  `SATISFACTION` varchar(50) DEFAULT NULL COMMENT '服务小结',
+  `SATISFDATE` datetime DEFAULT NULL COMMENT '满意度调查提交时间',
+  `ORGAN` varchar(50) DEFAULT NULL COMMENT '所属组织机构ID'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='坐席绩效表';
+
+-- ----------------------------
+-- Records of uk_call_performance
 -- ----------------------------
 
 -- ----------------------------
@@ -2027,6 +2219,24 @@ CREATE TABLE `uk_jobdetail` (
 
 -- ----------------------------
 -- Records of uk_jobdetail
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_jobdetailproduct`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_jobdetailproduct`;
+CREATE TABLE `uk_jobdetailproduct` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `job_detail_id` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `product_id` varchar(32) DEFAULT NULL COMMENT '产品ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_jobdetailproduct
 -- ----------------------------
 
 -- ----------------------------
@@ -6805,12 +7015,14 @@ INSERT INTO `uk_sysdic` VALUES ('4028811b639010de0163905025a50544', '车载电�
 INSERT INTO `uk_sysdic` VALUES ('4028811b639010de0163905025b00545', '助理电话', 'pub', '08', 'ukewo', 'layui-icon', '4028811b639010de0163904e80d30539', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:02:41', '2018-05-24 12:02:41', '0', '8', '4028811b639010de0163904e80d30539', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028811b639010de0163905025bb0546', '回拨电话', 'pub', '09', 'ukewo', 'layui-icon', '4028811b639010de0163904e80d30539', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:02:41', '2018-05-24 12:02:41', '0', '9', '4028811b639010de0163904e80d30539', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028811b63905368016390662e700570', '字段隐藏显示', 'pub', 'com.dic.phone.secdis', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:26:45', null, '1', '0', null, '0', '0', null, null, null, null, null);
-INSERT INTO `uk_sysdic` VALUES ('4028811b63905368016390666f4d0575', '隐藏中间四位', 'pub', '01', 'ukewo', 'layui-icon', '4028811b63905368016390662e700570', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:27:02', '2018-05-24 12:27:02', '0', '1', '4028811b63905368016390662e700570', '0', '0', null, null, null, null, null);
-INSERT INTO `uk_sysdic` VALUES ('4028811b6390536801639066bae2057c', '隐藏后四位', 'pub', '02', 'ukewo', null, '4028811b63905368016390662e700570', null, null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:27:21', '2018-05-24 12:27:21', '0', '1', '4028811b63905368016390662e700570', '0', '0', null, null, null, null, null);
-INSERT INTO `uk_sysdic` VALUES ('4028811b6390536801639066df8e0580', '隐藏前4位', 'pub', '03', 'ukewo', null, '4028811b63905368016390662e700570', null, null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:27:31', '2018-05-24 12:27:31', '0', '1', '4028811b63905368016390662e700570', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b63905368016390666f4d0575', '隐藏中间四位', 'pub', '01', 'ukewo', 'layui-icon', '4028811b63905368016390662e700570', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:27:02', '2018-05-24 12:27:02', '0', '1', '4028811b63905368016390662e700570', '0', '1', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b6390536801639066bae2057c', '隐藏后四位', 'pub', '02', 'ukewo', 'layui-icon', '4028811b63905368016390662e700570', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:27:21', '2018-05-24 12:27:21', '0', '1', '4028811b63905368016390662e700570', '0', '1', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b6390536801639066df8e0580', '隐藏前4位', 'pub', '03', 'ukewo', 'layui-icon', '4028811b63905368016390662e700570', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 12:27:31', '2018-05-24 12:27:31', '0', '1', '4028811b63905368016390662e700570', '0', '1', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028811b63906a0c01639139c1520562', '外呼业务类型', 'pub', 'com.dic.callout.type', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 16:17:51', null, '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028811b63906a0c0163913a1c790567', '电销', 'pub', '01', 'ukewo', null, '4028811b63906a0c01639139c1520562', null, null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 16:18:14', '2018-05-24 16:18:14', '0', '1', '4028811b63906a0c01639139c1520562', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028811b63906a0c0163913a1c890568', '回访', 'pub', '02', 'ukewo', null, '4028811b63906a0c01639139c1520562', null, null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-05-24 16:18:14', '2018-05-24 16:18:14', '0', '2', '4028811b63906a0c01639139c1520562', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b63c516b60163c51cc6d0057f', '外呼', 'pub', 'callout', 'ukewo', 'layui-icon', '4028838b5b565caf015b566d11d80010', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-06-03 18:06:27', null, '1', '0', '4028838b5b565caf015b566d11d80010', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b63c5281b0163c5c6cbf905d4', '全部隐藏', 'pub', '04', 'ukewo', 'layui-icon', '4028811b63905368016390662e700570', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-06-03 21:12:09', null, '1', '0', '4028811b63905368016390662e700570', '0', '1', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402881e8618cc9ab01618cd99f40035a', '模型类型', 'pub', 'com.dic.cube.modeltype', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-13 09:48:47', null, '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402881e8618cc9ab01618cd9cfae035b', '立方体', 'pub', 'cube', 'ukewo', 'layui-icon', '402881e8618cc9ab01618cd99f40035a', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-13 09:49:00', '2018-02-13 09:49:00', '0', '1', '402881e8618cc9ab01618cd99f40035a', '0', '1', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402881e86191fd51016191ff64550355', '维度成员数据类型', 'pub', 'com.dic.cubelevel.type', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-14 09:48:09', null, '1', '0', null, '0', '0', null, null, null, null, null);
@@ -7647,6 +7859,7 @@ CREATE TABLE `uk_tableproperties` (
   `phonememo` varchar(50) DEFAULT NULL COMMENT '电话号码备注',
   `secfield` tinyint(4) DEFAULT '0' COMMENT '隐藏字段',
   `secdistype` varchar(50) DEFAULT NULL COMMENT '字段隐藏方式',
+  `styletype` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   UNIQUE KEY `SQL130112140848940` (`ID`) USING BTREE,
   KEY `FKF8D74787854BC62` (`DBTABLEID`) USING BTREE,
@@ -7887,7 +8100,7 @@ CREATE TABLE `uk_user` (
 -- Records of uk_user
 -- ----------------------------
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-05-18 09:54:52', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-05-30 10:05:15', null, null, null, '0', '1', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-05-31 09:02:16', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-06-07 10:41:43', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
