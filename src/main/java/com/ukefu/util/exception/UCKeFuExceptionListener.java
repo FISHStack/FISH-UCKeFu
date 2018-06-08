@@ -54,4 +54,14 @@ public class UCKeFuExceptionListener extends ExceptionListenerAdapter {
     	ctx.close();
         return true;
     }
+
+	@Override
+	public void onPingException(Exception e, SocketIOClient client) {
+		if(e instanceof IOException){
+    		log.info(e.getMessage());
+    	}else{
+    		log.error(e.getMessage(), e);
+    	}
+		client.disconnect();
+	}
 }

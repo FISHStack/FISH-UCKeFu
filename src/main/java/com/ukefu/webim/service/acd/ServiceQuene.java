@@ -270,8 +270,9 @@ public class ServiceQuene {
 				}
 
 				AgentUserTaskRepository agentUserTaskRes = UKDataContext.getContext().getBean(AgentUserTaskRepository.class) ;
-				AgentUserTask agentUserTask = agentUserTaskRes.getOne(agentUser.getId()) ;
-				if(agentUserTask!=null){
+				List<AgentUserTask> agentUserTaskList = agentUserTaskRes.findByIdAndOrgi(agentUser.getId() , agentUser.getOrgi()) ;
+				if(agentUserTaskList.size() > 0){
+					AgentUserTask agentUserTask = agentUserTaskList.get(0) ;
 					service.setAgentreplyinterval(agentUserTask.getAgentreplyinterval());
 					service.setAgentreplytime(agentUserTask.getAgentreplytime());
 					service.setAvgreplyinterval(agentUserTask.getAvgreplyinterval());

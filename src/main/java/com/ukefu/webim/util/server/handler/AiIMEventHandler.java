@@ -58,7 +58,13 @@ public class AiIMEventHandler
 //				 */
 				NettyClients.getInstance().putIMEventClient(user, client);
 				MessageOutContent outMessage = new MessageOutContent() ;
-		    	outMessage.setMessage("欢迎使用优客服小E，我来帮您解答问题");
+				CousultInvite invite = OnlineUserUtils.cousult(appid , orgi, UKDataContext.getContext().getBean(ConsultInviteRepository.class));
+		    	if(invite!=null && !StringUtils.isBlank(invite.getAisuccesstip())) {
+		    		outMessage.setMessage(invite.getAisuccesstip());
+		    	}else{
+		    		outMessage.setMessage("欢迎使用优客服小E，我来帮您解答问题");
+		    	}
+		    	
 		    	outMessage.setMessageType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
 		    	outMessage.setCalltype(UKDataContext.CallTypeEnum.IN.toString());
 		    	outMessage.setNickName("AI");
@@ -101,6 +107,7 @@ public class AiIMEventHandler
 		    	CacheHelper.getOnlineUserCacheBean().delete(UKTools.getContextID(client.getSessionId().toString()),UKDataContext.SYSTEM_ORGI) ;
 	    	}
     	}
+    	client.disconnect();
     }  
       
     //消息接收入口，网站有新用户接入对话  

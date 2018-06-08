@@ -170,6 +170,7 @@ $(document).ready(function(){
 		var formValue = $(e.target) ;
 		var target = $(this).data("target");
 		var inner = $(this).data("inner");
+		var callback = $(this).data("callback");
 		var close = $(this).data("close");
 		var message = $(this).data("message");
 		var index ;
@@ -181,6 +182,9 @@ $(document).ready(function(){
 			success: function(data){
 				if(target){
 					$(target).empty().append(data) ;
+				}else if(callback){
+					var targetIFrame = eval(iframe);
+					targetIFrame.Proxy.callback(callback, data) ;
 				}else if(inner){
 					var targetIFrame = eval(iframe);
 					targetIFrame.Proxy.updateData(inner , data) ;
@@ -192,7 +196,7 @@ $(document).ready(function(){
 						layer.close(layer.index);
 					}
 					if(message){
-						
+						top.layer.alert(message, {icon: 1});
 					}else{
 						top.layer.alert('保存成功', {icon: 1});
 					}
@@ -312,6 +316,9 @@ var Proxy = {
 	},
 	updateData : function(inner , data){
 		$(inner).empty().append(data) ;
+	},
+	callback:function(callback , data){
+		eval(callback);
 	},
 	updateFormData : function(inner , data){
 		$(inner).val(data).click() ;

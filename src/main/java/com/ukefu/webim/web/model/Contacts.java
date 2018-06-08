@@ -46,7 +46,7 @@ public class Contacts extends ESBean implements java.io.Serializable{
 	private String website;
 	private String email;
 	private String emailalt;
-	private String mobile;
+	private String mobileno;
 	private String mobilealt;
 	private String phone;
 	private String extension;
@@ -209,11 +209,11 @@ public class Contacts extends ESBean implements java.io.Serializable{
 	public void setEmailalt(String emailalt) {
 		this.emailalt = emailalt;
 	}
-	public String getMobile() {
-		return mobile;
+	public String getMobileno() {
+		return mobileno;
 	}
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setMobileno(String mobileno) {
+		this.mobileno = mobileno;
 	}
 	public String getMobilealt() {
 		return mobilealt;

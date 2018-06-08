@@ -490,11 +490,11 @@ public class IMController extends Handler{
     
     private Contacts processContacts(String orgi ,Contacts contacts , String appid , String userid){
     	if(contacts!=null){
-			if(contacts != null && (!StringUtils.isBlank(contacts.getName()) || !StringUtils.isBlank(contacts.getMobile()) || !StringUtils.isBlank(contacts.getEmail()))){
+			if(contacts != null && (!StringUtils.isBlank(contacts.getName()) || !StringUtils.isBlank(contacts.getPhone()) || !StringUtils.isBlank(contacts.getEmail()))){
 				StringBuffer query = new StringBuffer();
 				query.append(contacts.getName()) ;
-				if(!StringUtils.isBlank(contacts.getMobile())){
-					query.append(" OR ").append(contacts.getMobile()) ;
+				if(!StringUtils.isBlank(contacts.getPhone())){
+					query.append(" OR ").append(contacts.getPhone()) ;
 				}
 				if(!StringUtils.isBlank(contacts.getEmail())){
 					query.append(" OR ").append(contacts.getEmail()) ;

@@ -146,3 +146,6 @@ CREATE TABLE `uk_jobdetail` (
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
+
+
+ALTER TABLE uk_contacts CHANGE mobile mobileno varchar(40);

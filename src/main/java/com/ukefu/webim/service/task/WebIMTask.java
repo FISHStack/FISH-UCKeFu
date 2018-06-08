@@ -1,5 +1,6 @@
 package com.ukefu.webim.service.task;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -300,9 +301,13 @@ public class WebIMTask {
 	
 	@Scheduled(fixedDelay= 3000) // 每三秒 , 加载 标记为执行中的任务何 即将执行的 计划任务
     public void jobDetail() {
-		Page<JobDetail> pages = jobDetailRes.findByTaskstatus(UKDataContext.TaskStatusType.READ.getType() , new PageRequest(0,  100)) ;
-		if(pages.getContent().size()>0){
-			for(JobDetail jobDetail : pages.getContent()){
+		List<JobDetail> allJob = new ArrayList<JobDetail>();
+		Page<JobDetail> readyTaskList = jobDetailRes.findByTaskstatus(UKDataContext.TaskStatusType.READ.getType() , new PageRequest(0,  100)) ;
+		allJob.addAll(readyTaskList.getContent()) ;
+		Page<JobDetail> planTaskList = jobDetailRes.findByPlantaskAndTaskstatusAndNextfiretimeLessThan(true , UKDataContext.TaskStatusType.NORMAL.getType() ,new Date(), new PageRequest(0,  100)) ;
+		allJob.addAll(planTaskList.getContent()) ;
+		if(allJob.size()>0){
+			for(JobDetail jobDetail : allJob){
 				if(CacheHelper.getJobCacheBean().getCacheObject(jobDetail.getId(), jobDetail.getOrgi()) == null) {
 					jobDetail.setTaskstatus(UKDataContext.TaskStatusType.QUEUE.getType());
 					jobDetailRes.save(jobDetail) ;

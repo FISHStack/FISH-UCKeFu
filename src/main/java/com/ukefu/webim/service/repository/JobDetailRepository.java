@@ -1,5 +1,6 @@
 package com.ukefu.webim.service.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -17,4 +18,6 @@ public abstract interface JobDetailRepository extends JpaRepository<JobDetail, S
 	public abstract Page<JobDetail> findByTaskstatus(String taskstatus , Pageable page) ;
 	
 	public abstract List<JobDetail> findByTasktypeAndOrgi(String tasktype , String orgi) ;
+	
+	public abstract Page<JobDetail> findByPlantaskAndTaskstatusAndNextfiretimeLessThan(boolean plantask ,String taskstatus,Date time , Pageable page) ;
 }

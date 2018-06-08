@@ -66,27 +66,7 @@ public class NamesTask implements Runnable{
 					if(batch!=null) {
 						callOutName.setBatname(batch.getName());
 					}
-					String dial_number = null ;
-					boolean disphonenum = false ;
-					String distype = null;
 					
-					if(batch!=null && !StringUtils.isBlank(batch.getActid())) {
-						MetadataTable table = UKDataContext.getContext().getBean(MetadataRepository.class).findByTablename(batch.getActid()) ;
-						for(TableProperties tp : table.getTableproperty()) {
-							if(tp.isPhonenumber()) {
-								dial_number = (String) name.getValues().get(tp.getFieldname()) ; 
-								disphonenum = tp.isSecfield() ;
-								distype = tp.getSecdistype() ;
-								break ;
-							}
-						}
-					}
-					if(!StringUtils.isBlank(dial_number)) {
-						callOutName.setPhonenumber(dial_number);
-						if(disphonenum) {
-							callOutName.setDistype(distype);
-						}
-					}
 					
 					callOutName.setActid(task.getActid());
 					callOutName.setBatid(batid);
@@ -111,10 +91,37 @@ public class NamesTask implements Runnable{
 					callOutName.setOwnerdept((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT));
 				}
 				
-				callOutNamesRes.save(callOutName) ;
+				String dial_number = null ;
+				boolean disphonenum = false ;
+				String distype = null;
 				
-				NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "preview", callOutName);
-				agent.setNames(callOutName);
+				if(batch!=null && !StringUtils.isBlank(batch.getActid())) {
+					MetadataTable table = UKDataContext.getContext().getBean(MetadataRepository.class).findByTablename(batch.getActid()) ;
+					for(TableProperties tp : table.getTableproperty()) {
+						if(tp.isPhonenumber()) {
+							dial_number = (String) name.getValues().get(tp.getFieldname()) ; 
+							disphonenum = tp.isSecfield() ;
+							distype = tp.getSecdistype() ;
+							break ;
+						}
+					}
+				}
+				
+				if(!StringUtils.isBlank(dial_number)) {
+					callOutName.setPhonenumber(dial_number);
+					if(disphonenum) {
+						callOutName.setDistype(distype);
+					}
+					
+					NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "preview", callOutName);
+					agent.setNames(callOutName);
+				}else {
+					agent.setWorkstatus(UKDataContext.WorkStatusEnum.IDLE.toString());
+					NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "error", "nophonenumber");
+					
+					NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "docallout", agent);
+				}
+				callOutNamesRes.save(callOutName) ;
 			}else {
 				agent.setWorkstatus(UKDataContext.WorkStatusEnum.IDLE.toString());
 				NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "error", "nonames");
