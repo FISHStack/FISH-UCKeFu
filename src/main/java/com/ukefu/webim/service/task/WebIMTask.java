@@ -203,7 +203,7 @@ public class WebIMTask {
 							AiConfig aiConfig = (AiConfig) dataInterface.getDataByIdAndOrgi(aiUser.getAiid(), aiUser.getOrgi()) ;
 							if(aiConfig!=null){
 								long leavetime = (System.currentTimeMillis() - aiUser.getTime())/1000 ;
-								if(leavetime > 600 || (aiConfig.getAsktimes()>0 && leavetime > aiConfig.getAsktimes())){//最大空闲时间不能超过540秒 
+								if(aiConfig.getAsktimes()>0 && leavetime > aiConfig.getAsktimes()){//最大空闲时间不能超过540秒 
 									NettyClients.getInstance().closeIMEventClient(aiUser.getUserid(), aiUser.getId(), UKDataContext.SYSTEM_ORGI) ;
 								}
 							}
