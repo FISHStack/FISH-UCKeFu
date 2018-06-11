@@ -58,8 +58,6 @@ ALTER TABLE uk_callcenter_event ADD disphonenum varchar(50) COMMENT "外呼名�
 ALTER TABLE uk_callcenter_event ADD distype varchar(50) COMMENT "外呼名单号码隐藏方式";
 ALTER TABLE uk_tableproperties ADD styletype varchar(50) COMMENT "显示样式";
 
-
-
 CREATE TABLE `uk_jobdetail` (
   `ID` varchar(32) NOT NULL,
   `NAME` varchar(50) DEFAULT NULL,
@@ -143,9 +141,28 @@ CREATE TABLE `uk_jobdetail` (
   `exectarget` varchar(50) DEFAULT NULL,
   `exectype` varchar(32) DEFAULT NULL,
   `execto` varchar(32) DEFAULT NULL,
+  `threads` int(11) DEFAULT '0',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 
 
 ALTER TABLE uk_contacts CHANGE mobile mobileno varchar(40);
+
+
+CREATE TABLE `uk_act_config` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `username` varchar(32) DEFAULT NULL COMMENT '创建人用户名',
+  `name` varchar(32) DEFAULT NULL COMMENT '名称',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `enablecallout` tinyint(4) DEFAULT '0' COMMENT '启用自动外呼功能',
+  `countdown` int(11) DEFAULT '0' COMMENT '倒计时时长',
+  `enabletagentthreads` tinyint(4) DEFAULT '0' COMMENT '启用坐席外呼并发控制',
+  `agentthreads` int(11) DEFAULT '0' COMMENT '坐席外呼并发数量',
+  `enabletaithreads` tinyint(4) DEFAULT '0' COMMENT '启用机器人外呼并发控制',
+  `aithreads` int(11) DEFAULT '0' COMMENT '机器人并发数量',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
