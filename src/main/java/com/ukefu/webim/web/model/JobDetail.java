@@ -40,6 +40,8 @@ public class JobDetail implements Serializable{
 	
 	private String parentid ;	//目录ID
 	
+	private int threads ;		//并发限制
+	
 	private String impurl ;
 	private String filetype ;
 	private String dbtype ;		//数据库类型
@@ -735,4 +737,14 @@ public class JobDetail implements Serializable{
 	public void setExecto(String execto) {
 		this.execto = execto;
 	}
+
+	public int getThreads() {
+		return threads;
+	}
+
+	public void setThreads(int threads) {
+		this.threads = threads;
+	}
+	
+	
 }
