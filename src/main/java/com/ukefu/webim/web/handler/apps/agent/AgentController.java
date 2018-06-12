@@ -497,8 +497,8 @@ public class AgentController extends Handler {
 			agentStatus.setUpdatetime(new Date());
 			agentStatusRepository.save(agentStatus);
 			CacheHelper.getAgentStatusCacheBean().put(agentStatus.getAgentno(), agentStatus,super.getOrgi(request));
+			ServiceQuene.allotAgent(agentStatus.getAgentno(), super.getOrgi(request));
 		}
-		ServiceQuene.allotAgent(agentStatus.getAgentno(), super.getOrgi(request));
     	return request(super.createRequestPageTempletResponse("/public/success")) ; 
     }
 	

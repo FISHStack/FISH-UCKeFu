@@ -48,6 +48,10 @@ public class SipTrunk implements java.io.Serializable{
 	
 	private String sipcontent ;		//SIP配置代码
 	
+	
+	private String province ;		//号码省份
+	private String city ;			//号码城市
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -201,5 +205,17 @@ public class SipTrunk implements java.io.Serializable{
 	}
 	public void setDtmf(String dtmf) {
 		this.dtmf = dtmf;
+	}
+	public String getProvince() {
+		return province;
+	}
+	public void setProvince(String province) {
+		this.province = province;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
 	}
 }

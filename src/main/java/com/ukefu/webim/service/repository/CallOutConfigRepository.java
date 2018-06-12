@@ -11,4 +11,6 @@ public abstract interface CallOutConfigRepository extends JpaRepository<CallOutC
 	public abstract CallOutConfig findByIdAndOrgi(String id, String orgi);
 	
 	public abstract List<CallOutConfig> findByOrgi(String orgi);
+	
+	public abstract List<CallOutConfig> findByDataidAndOrgi(String dataid,String orgi);
 }

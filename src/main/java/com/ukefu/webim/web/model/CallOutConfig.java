@@ -23,6 +23,9 @@ public class CallOutConfig implements java.io.Serializable{
 	private String orgi;
 	private String creater ;
 	private String type;
+	
+	private String dataid ;		//部门ID，将来按照部门扩展，每个部门可以有团队长独立设置 部门策略或其他标识
+	
 	private Date createtime = new Date();
 	private Date updatetime = new Date();
 	private String username ;
@@ -137,5 +140,11 @@ public class CallOutConfig implements java.io.Serializable{
 	}
 	public void setAithreads(int aithreads) {
 		this.aithreads = aithreads;
+	}
+	public String getDataid() {
+		return dataid;
+	}
+	public void setDataid(String dataid) {
+		this.dataid = dataid;
 	}
 }
