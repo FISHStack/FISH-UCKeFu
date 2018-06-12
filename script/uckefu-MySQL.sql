@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-06-07 11:45:24
+Date: 2018-06-12 11:50:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -171,6 +171,35 @@ CREATE TABLE `uk_act_callnames` (
 
 -- ----------------------------
 -- Records of uk_act_callnames
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_act_config`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_act_config`;
+CREATE TABLE `uk_act_config` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `username` varchar(32) DEFAULT NULL COMMENT '创建人用户名',
+  `name` varchar(32) DEFAULT NULL COMMENT '名称',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `enablecallout` tinyint(4) DEFAULT '0' COMMENT '启用自动外呼功能',
+  `countdown` int(11) DEFAULT '0' COMMENT '倒计时时长',
+  `enabletagentthreads` tinyint(4) DEFAULT '0' COMMENT '启用坐席外呼并发控制',
+  `agentthreads` int(11) DEFAULT '0' COMMENT '坐席外呼并发数量',
+  `enabletaithreads` tinyint(4) DEFAULT '0' COMMENT '启用机器人外呼并发控制',
+  `aithreads` int(11) DEFAULT '0' COMMENT '机器人并发数量',
+  `defaultvalue` varchar(100) DEFAULT NULL,
+  `strategy` varchar(100) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `dataid` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_act_config
 -- ----------------------------
 
 -- ----------------------------
@@ -1082,6 +1111,8 @@ CREATE TABLE `uk_callcenter_siptrunk` (
   `protocol` varchar(50) DEFAULT NULL COMMENT '协议',
   `heartbeat` int(11) DEFAULT NULL COMMENT '心跳时长',
   `dtmf` varchar(20) DEFAULT NULL COMMENT 'DTMF协议',
+  `province` varchar(20) DEFAULT NULL COMMENT '省份',
+  `city` varchar(20) DEFAULT NULL COMMENT '城市',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -1500,7 +1531,7 @@ CREATE TABLE `uk_contacts` (
   `website` varchar(255) DEFAULT NULL COMMENT '网址',
   `email` varchar(128) DEFAULT NULL COMMENT '电子邮件',
   `emailalt` varchar(128) DEFAULT NULL COMMENT '备用电子邮件',
-  `mobile` varchar(40) DEFAULT NULL COMMENT '手机号码',
+  `mobileno` varchar(40) DEFAULT NULL COMMENT '手机号码',
   `mobilealt` varchar(40) DEFAULT NULL COMMENT '备用手机号码',
   `phone` varchar(40) DEFAULT NULL COMMENT '办公电话',
   `extension` varchar(40) DEFAULT NULL COMMENT '办公分机',
@@ -2214,6 +2245,7 @@ CREATE TABLE `uk_jobdetail` (
   `exectarget` varchar(50) DEFAULT NULL,
   `exectype` varchar(32) DEFAULT NULL,
   `execto` varchar(32) DEFAULT NULL,
+  `threads` int(11) DEFAULT '0',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -8100,7 +8132,7 @@ CREATE TABLE `uk_user` (
 -- Records of uk_user
 -- ----------------------------
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-05-18 09:54:52', '4028c123616fd2b801616fd425060326', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-05-30 10:05:15', null, null, null, '0', '1', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-06-07 10:41:43', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028c123616fd2b801616fd425060326', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-06-12 09:39:04', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`

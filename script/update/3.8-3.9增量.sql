@@ -167,5 +167,5 @@ CREATE TABLE `uk_act_config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 
-ALTER TABLE uk_callcenter_pbxhost ADD province varchar(20) COMMENT "省份";
-ALTER TABLE uk_callcenter_pbxhost ADD city varchar(20) COMMENT "城市";
+ALTER TABLE uk_callcenter_siptrunk ADD province varchar(20) COMMENT "省份";
+ALTER TABLE uk_callcenter_siptrunk ADD city varchar(20) COMMENT "城市";
