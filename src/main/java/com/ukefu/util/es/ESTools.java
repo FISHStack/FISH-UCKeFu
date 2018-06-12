@@ -36,21 +36,21 @@ public class ESTools {
 				if(!tp.isToken()){
 					builder.field("ignore_above" , "256") ;
 				}
-			}else if(tp.getDatatypename().equalsIgnoreCase("date") ){
+			}else if(tp.getDatatypename().toLowerCase().equals("date") ){
 				builder.field("type", "date").field("index", "not_analyzed") ;
-			}else if(tp.getDatatypename().equalsIgnoreCase("datetime")){
+			}else if(tp.getDatatypename().toLowerCase().equals("datetime")){
 				builder.field("type", "date").field("index", "not_analyzed");
-			}else if(tp.getDatatypename().equalsIgnoreCase("textarea")){
+			}else if(tp.getDatatypename().toLowerCase().equals("textarea")){
 				builder.field("type", "string").field("index", "analyzed") ;
-			}else if(tp.getDatatypename().equalsIgnoreCase("nlp")){
+			}else if(tp.getDatatypename().toLowerCase().equals("nlp")){
 				builder.field("type", "string").field("index", "not_analyzed").field("ignore_above" , "256") ;
-			}else if(tp.getDatatypename().equalsIgnoreCase("url")){
+			}else if(tp.getDatatypename().toLowerCase().equals("url")){
 				builder.field("type", "string").field("index", "not_analyzed") ;
-			}else if(tp.getDatatypename().equalsIgnoreCase("email")){
+			}else if(tp.getDatatypename().toLowerCase().equals("email")){
 				builder.field("type", "string").field("index", "not_analyzed") ;
-			}else if(tp.getDatatypename().equalsIgnoreCase("number") ){
+			}else if(tp.getDatatypename().toLowerCase().equals("number") ){
 				builder.field("type", "float").field("index", "not_analyzed");
-			}else if(tp.getDatatypename().equalsIgnoreCase("boolean") ){
+			}else if(tp.getDatatypename().toLowerCase().equals("boolean") ){
 				builder.field("type", "boolean").field("index", "not_analyzed");
 			}else{
 				builder.field("type", "string").field("index", tp.isToken() ? "analyzed"  : "not_analyzed") ;

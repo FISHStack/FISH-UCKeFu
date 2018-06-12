@@ -1,11 +1,18 @@
 package com.ukefu.webim.web.handler;
 
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
+import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -58,6 +65,24 @@ public class Handler {
 			user.setSessionid(user.getId()) ;
 		}
 		return user ;
+	}
+	
+	/**
+	 * 
+	 * @param queryBuilder
+	 * @param request
+	 */
+	public BoolQueryBuilder search(BoolQueryBuilder queryBuilder , ModelMap map, HttpServletRequest request) {
+		queryBuilder.must(termQuery("orgi", this.getOrgi(request))) ;
+		if(!StringUtils.isBlank(request.getParameter("batid"))) {
+			queryBuilder.must(termQuery("batid", request.getParameter("batid"))) ;
+			map.put("batid", request.getParameter("batid")) ;
+		}
+		if(!StringUtils.isBlank(request.getParameter("q"))) {
+			queryBuilder.must(QueryBuilders.boolQuery().must(new QueryStringQueryBuilder(request.getParameter("q")).defaultOperator(Operator.AND))) ;
+			map.put("q", request.getParameter("q")) ;
+		}
+		return queryBuilder ;
 	}
 	
 	public User getIMUser(HttpServletRequest request , String userid , String nickname){

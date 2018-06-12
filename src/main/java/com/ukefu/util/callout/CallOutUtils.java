@@ -102,6 +102,13 @@ public class CallOutUtils {
 			callOutName.setOrgan((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN));
 			callOutName.setCreatetime(new Date());
 			callOutName.setUpdatetime(new Date());
+			String apstatus = (String) name.getValues().get("apstatus") ;
+			if(!StringUtils.isBlank(apstatus) && apstatus.equals("true")) {
+				callOutName.setReservation(true);
+			}else {
+				callOutName.setReservation(false);
+			}
+			callOutName.setMemo((String) name.getValues().get("apmemo"));
 			
 			callOutName.setOwneruser((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT));
 			callOutName.setOwnerdept((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT));
@@ -128,10 +135,11 @@ public class CallOutUtils {
 			if(disphonenum) {
 				callOutName.setDistype(distype);
 			}
-			
-			NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "preview", callOutName);
-			agent.setNames(callOutName);
-		}else {
+			if(agent!=null) {
+				NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "preview", callOutName);
+				agent.setNames(callOutName);
+			}
+		}else if(agent!=null){
 			agent.setWorkstatus(UKDataContext.WorkStatusEnum.IDLE.toString());
 			NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "error", "nophonenumber");
 			

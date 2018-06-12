@@ -41,6 +41,8 @@ public class CallOutConfig implements java.io.Serializable{
 	private String defaultvalue ;	//默认 allow
 	private String strategy;		//策略
 	
+	private boolean previewautocallout ;	//启用主动预览下的自动外呼功能
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -146,5 +148,11 @@ public class CallOutConfig implements java.io.Serializable{
 	}
 	public void setDataid(String dataid) {
 		this.dataid = dataid;
+	}
+	public boolean isPreviewautocallout() {
+		return previewautocallout;
+	}
+	public void setPreviewautocallout(boolean previewautocallout) {
+		this.previewautocallout = previewautocallout;
 	}
 }

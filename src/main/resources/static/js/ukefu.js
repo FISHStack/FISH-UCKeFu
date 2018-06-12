@@ -48,6 +48,16 @@ $(document).ready(function(){
 			  }
 			}); 	 
 	});
+	$(document).on('click','[data-toggle="tab"]', function ( e ) {
+		var type = $(this).data('type');
+		if(type == "tabAdd"){
+			top.active.tabAdd($(this).data('href') , $(this).data('title'), $(this).data('id'));
+		}else if(type == "tabChange"){
+			top.active.tabChange($(this).data('href') , $(this).data('title'), $(this).data('id'));
+		}
+		
+		return false;
+	});
 	$(document).on('click','[data-toggle="ajax"]', function ( e ) {
 		var url = $(this).attr("href");
 		if(url && url != "javascript:void(0)"){

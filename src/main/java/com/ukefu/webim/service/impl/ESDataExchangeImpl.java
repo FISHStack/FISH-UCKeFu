@@ -2,6 +2,7 @@ package com.ukefu.webim.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,9 +14,11 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Repository;
 
 import com.ukefu.core.UKDataContext;
@@ -120,6 +123,7 @@ public class ESDataExchangeImpl{
 							dataBean.getTable().getTablename(), dataBean.getId())
 					.execute().actionGet();
 			dataBean.setValues(getResponse.getSource());
+			dataBean.setType(getResponse.getType());
 		}else{
 			dataBean.setValues(new HashMap<String,Object>());
 		}
@@ -185,7 +189,14 @@ public class ESDataExchangeImpl{
 		}
 		
 		int start = page.getPageSize() * page.getPageNumber();
-		searchBuilder.setFrom(start).setSize(page.getPageSize()) ;
+		searchBuilder.setFrom(start).setSize(page.getPageSize());
+		if(page!=null && page.getSort()!=null) {
+			Iterator<Order> iterator = page.getSort().iterator();
+			while(iterator.hasNext()) {
+				Order order = iterator.next() ;
+				searchBuilder.addSort(order.getProperty() , order.isDescending() ? SortOrder.DESC : SortOrder.ASC) ;
+			}
+		}
 		
 		SearchResponse response = searchBuilder.setQuery(query).execute().actionGet();
 		List<String> users = new ArrayList<String>() , organs = new ArrayList<String>() , taskList = new ArrayList<String>(),batchList = new ArrayList<String>(),activityList = new ArrayList<String>();
