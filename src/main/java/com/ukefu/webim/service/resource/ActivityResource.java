@@ -222,7 +222,7 @@ public class ActivityResource extends Resource{
 			if(!StringUtils.isBlank(this.jobDetail.getExecto())) {
 				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, null) ;
 //				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, this.jobDetail.getExecto()) ;
-				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_TIME, new Date()) ;
+				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_TIME, System.currentTimeMillis()) ;
 				meta.getDataBean().getValues().put("status", UKDataContext.NamesDisStatusType.DISORGAN.toString()) ;
 			}else {
 				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, null) ;
@@ -236,7 +236,7 @@ public class ActivityResource extends Resource{
 				/**
 				 * 
 				 */
-				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_TIME, new Date()) ;
+				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_TIME, System.currentTimeMillis()) ;
 				
 				meta.getDataBean().getValues().put("actid", this.jobDetail.getId()) ;
 				meta.getDataBean().getValues().put("metaid", this.metadataTable.getTablename()) ;
@@ -260,7 +260,7 @@ public class ActivityResource extends Resource{
 				}
 			}
 		}
-		meta.getDataBean().getValues().put("updatetime", new Date()) ;
+		meta.getDataBean().getValues().put("updatetime", System.currentTimeMillis()) ;
 		
 		/**
 		 * 更新记录（是否同时保存分配信息，以便于查看分配历史？）

@@ -1,6 +1,7 @@
 package com.ukefu.webim.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -127,7 +128,8 @@ public class ESDataExchangeImpl{
 		}else{
 			dataBean.setValues(new HashMap<String,Object>());
 		}
-		return dataBean;
+		
+		return processDate(dataBean);
 	}
 	
 	public UKDataBean getIObjectByPK(String type , String id) {
@@ -206,7 +208,8 @@ public class ESDataExchangeImpl{
 			temp.setTable(metadata);
 			temp.setValues(hit.getSource());
 			temp.setId((String)temp.getValues().get("id"));
-			dataBeanList.add(temp) ;
+			dataBeanList.add(processDate(temp)) ;
+			
 			
 			if(loadRef == true) {
 				if(!StringUtils.isBlank((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT))) {
@@ -271,5 +274,20 @@ public class ESDataExchangeImpl{
 			}
 		}
 		return new PageImpl<UKDataBean>(dataBeanList,page , (int)response.getHits().getTotalHits());
+	}
+	/**
+	 * 
+	 * @param dataBean
+	 */
+	public UKDataBean processDate(UKDataBean dataBean) {
+		Iterator<String> names = dataBean.getValues().keySet().iterator() ;
+		while(names.hasNext()) {
+			String name = names.next() ;
+			Object value = dataBean.getValues().get(name) ;
+			if(value!=null && value instanceof Long) {
+				dataBean.getValues().put(name, new Date((Long)value)) ;
+			}
+		}
+		return dataBean;
 	}
 }

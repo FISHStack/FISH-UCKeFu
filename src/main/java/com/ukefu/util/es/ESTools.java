@@ -37,9 +37,9 @@ public class ESTools {
 					builder.field("ignore_above" , "256") ;
 				}
 			}else if(tp.getDatatypename().toLowerCase().equals("date") ){
-				builder.field("type", "date").field("index", "not_analyzed") ;
+				builder.field("type", "long").field("index", "not_analyzed") ;
 			}else if(tp.getDatatypename().toLowerCase().equals("datetime")){
-				builder.field("type", "date").field("index", "not_analyzed");
+				builder.field("type", "long").field("index", "not_analyzed");
 			}else if(tp.getDatatypename().toLowerCase().equals("textarea")){
 				builder.field("type", "string").field("index", "analyzed") ;
 			}else if(tp.getDatatypename().toLowerCase().equals("nlp")){
