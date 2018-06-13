@@ -71,6 +71,9 @@ public class CallOutNames implements java.io.Serializable{
 	private int previewtimes ;	//预览次数
 	private int previewtime ;	//预览时长
 	
+	private Date firstcalltime ;	//首次拨打时间
+	private String firstcallstatus;	//首次拨打状态
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -337,5 +340,21 @@ public class CallOutNames implements java.io.Serializable{
 
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+
+	public Date getFirstcalltime() {
+		return firstcalltime;
+	}
+
+	public void setFirstcalltime(Date firstcalltime) {
+		this.firstcalltime = firstcalltime;
+	}
+
+	public String getFirstcallstatus() {
+		return firstcallstatus;
+	}
+
+	public void setFirstcallstatus(String firstcallstatus) {
+		this.firstcallstatus = firstcallstatus;
 	}
 }

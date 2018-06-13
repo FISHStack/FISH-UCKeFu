@@ -128,7 +128,12 @@ public class ExcelImportUtils{
 			metaDataTable.getTableproperty().add(initProperties("aptime", "预约时间", "Date", event.getOrgi() , event.getTablename())) ;
 			metaDataTable.getTableproperty().add(initProperties("apmemo", "预约备注", "String", event.getOrgi() , event.getTablename())) ;
 			
+			metaDataTable.getTableproperty().add(initProperties("calltime", "拨打时间", "Date", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("firstcalltimes", "首次拨打次数", "Date", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("firstcallstatus", "首次拨打结果", "String", event.getOrgi() , event.getTablename())) ;
+			
 			metaDataTable.getTableproperty().add(initProperties("calltimes", "拨打次数", "number", event.getOrgi() , event.getTablename())) ;
+			
 			
 			
 			metaDataTable.getTableproperty().add(initProperties("succcall", "拨打成功次数", "number", event.getOrgi() , event.getTablename())) ;
