@@ -557,7 +557,7 @@ public class AgentUser implements Serializable, Comparable<AgentUser> {
 		}else if(o.getLogindate() == null){
 			ret = 1 ;
 		}else{
-			if(this.getLogindate().before(o.getLogindate())){
+			if(this.getLogindate().after(o.getLogindate())){
 				ret = 1 ;
 			}else{
 				ret = -1 ;

@@ -15,6 +15,8 @@ public interface StatusEventRepository extends JpaRepository<StatusEvent, String
 	
 	public Page<StatusEvent> findByAni(String ani , Pageable page) ;
 	
+	public Page<StatusEvent> findByNameid(String nameid , Pageable page) ;
+	
 	public Page<StatusEvent> findByDataid(String dataid , Pageable page) ;
 	
 	public Page<StatusEvent> findByOrgi(String orgi , Pageable page) ;
