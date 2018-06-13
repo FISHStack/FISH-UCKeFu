@@ -100,6 +100,7 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String actid ;			//呼叫ID，电销业务产生的
 	private String batid ;			//呼叫ID，电销业务产生的
 	private String dataid ;			//呼叫ID，电销业务产生的
+	private String nameid ;			//名单ID，电销业务产生的
 	private String statustype = UKDataContext.StatusTypeEnum.INBOUND.toString();		//呼叫类型 ： 电销业务产生的
 	private String disphonenum ;	//是否隐藏号码 
 	private String distype ;		//号码隐藏方式
@@ -594,5 +595,11 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setDistype(String distype) {
 		this.distype = distype;
+	}
+	public String getNameid() {
+		return nameid;
+	}
+	public void setNameid(String nameid) {
+		this.nameid = nameid;
 	}
 }
