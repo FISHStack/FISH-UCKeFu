@@ -169,3 +169,47 @@ CREATE TABLE `uk_act_config` (
 
 ALTER TABLE uk_callcenter_siptrunk ADD province varchar(20) COMMENT "省份";
 ALTER TABLE uk_callcenter_siptrunk ADD city varchar(20) COMMENT "城市";
+
+
+CREATE TABLE `uk_act_callnames` (
+  `ID` varchar(32) NOT NULL,
+  `NAME` varchar(50) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
+  `CREATETIME` datetime DEFAULT NULL,
+  `CREATER` varchar(32) DEFAULT NULL,
+  `UPDATETIME` datetime DEFAULT NULL,
+  `ORGI` varchar(32) DEFAULT NULL,
+  `USERNAME` varchar(50) DEFAULT NULL,
+  `STATUS` varchar(50) DEFAULT NULL,
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '上级ID',
+  `ACTID` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `BATID` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `DATASTATUS` varchar(32) DEFAULT NULL COMMENT '数据状态',
+  `CALLS` int(11) DEFAULT '0' COMMENT '拨打次数',
+  `FAILDCALLS` int(11) DEFAULT '0' COMMENT '拨打失败次数',
+  `invalid` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `failed` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `WORKSTATUS` varchar(32) DEFAULT NULL,
+  `OPTIME` datetime DEFAULT NULL,
+  `ORGAN` varchar(32) DEFAULT NULL,
+  `BATNAME` varchar(100) DEFAULT NULL,
+  `TASKNAME` varchar(100) DEFAULT NULL,
+  `owneruser` varchar(100) DEFAULT NULL,
+  `ownerdept` varchar(100) DEFAULT NULL,
+  `dataid` varchar(100) DEFAULT NULL,
+  `taskid` varchar(100) DEFAULT NULL,
+  `filterid` varchar(100) DEFAULT NULL,
+  `phonenumber` varchar(100) DEFAULT NULL,
+  `leavenum` int(11) DEFAULT '0',
+  `metaname` varchar(100) DEFAULT NULL,
+  `distype` varchar(100) DEFAULT NULL,
+  `previewtime` int(11) DEFAULT '0',
+  `previewtimes` int(11) DEFAULT '0',
+  `servicetype` text,
+  `reservation` tinyint(4) DEFAULT '0',
+  `memo` text,
+  `firstcalltime` datetime DEFAULT NULL,
+  `firstcallstatus` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
