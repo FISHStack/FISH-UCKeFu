@@ -2,7 +2,7 @@
 <script src="/js/ztree/jquery.ztree.all.min.js"></script>
 <script id="message_tpl" type="text/html">
 	<div class="clearfix chat-block" <%if(data.type == 'writing'){%>id="writing"<%}%>>
-		<div class="<% if(data.userid == '${user.id!''}'){%>chat-right<%}else{%>chat-left<%}%>">
+		<div class="<% if(data.calltype == 'out'){%>chat-right<%}else{%>chat-left<%}%>">
 			<img alt="" src="<% if(data.headimgurl && data.headimgurl !=''){%><%=data.headimgurl%><%}else{%>/im/img/user.png<%} %>" class="user-img" style="width:45px;height:45px;">
 			<div class="chat-message">
 				<% if(data.userid == '${user.id!''}') {%>
@@ -14,7 +14,7 @@
 					
 				<%}%>
 			</div>
-			<div class="<% if(data.userid == '${user.id!''}'){%>chatting-right<%}else{%>chatting-left<%}%>">
+			<div class="<% if(data.calltype == 'out'){%>chatting-right<%}else{%>chatting-left<%}%>">
 				<i class="userarrow"></i>
 				<div class="chat-content">
 					<% if(data.msgtype == 'image'){ %>
