@@ -152,6 +152,9 @@ public class ExcelImportUtils{
 					e.printStackTrace();
 				}
 			}
+			if(event.getDSData().getFile()!=null && event.getDSData().getFile().exists()) {
+				event.getDSData().getFile().delete() ;
+			}
 		}
     	return metaDataTable;
 	}

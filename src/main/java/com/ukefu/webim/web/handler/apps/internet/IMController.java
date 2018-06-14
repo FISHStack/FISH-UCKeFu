@@ -291,7 +291,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/index")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String aiid, @Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url,@Valid String mobile ,@Valid String phone ,  @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts) throws Exception {
+    public ModelAndView index(ModelMap map ,HttpServletRequest request , HttpServletResponse response, @Valid String orgi, @Valid String aiid, @Valid String traceid ,@Valid String exchange, @Valid String title ,@Valid String url,@Valid String mobile ,@Valid String phone ,  @Valid String ai , @Valid String client , @Valid String type, @Valid String appid, @Valid String userid, @Valid String sessionid , @Valid String skill, @Valid String agent , @Valid Contacts contacts,@Valid String product,@Valid String description,@Valid String imgurl,@Valid String pid,@Valid String purl) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/index")) ; 
     	BlackEntity black = (BlackEntity) CacheHelper.getSystemCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI) ;
     	if(!StringUtils.isBlank(appid) &&  (black == null || (black.getEndtime()!=null && black.getEndtime().before(new Date()))) ){
@@ -315,6 +315,12 @@ public class IMController extends Handler{
 			map.addAttribute("userid", userid) ;
 			map.addAttribute("schema", request.getScheme()) ;
 			map.addAttribute("sessionid", sessionid) ;
+			
+			view.addObject("product", product) ;
+			view.addObject("description", description) ;
+			view.addObject("imgurl", imgurl) ;
+			view.addObject("pid", pid) ;
+			view.addObject("purl", purl) ;
 			
 			map.addAttribute("ip", UKTools.md5(request.getRemoteAddr())) ;
 			
@@ -534,7 +540,7 @@ public class IMController extends Handler{
     
     @RequestMapping("/text/{appid}")
     @Menu(type = "im" , subtype = "index" , access = true)
-    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid ,@Valid String traceid,@Valid String aiid ,@Valid String exchange, @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String phone,@Valid String ai,@Valid String orgi) throws Exception {
+    public ModelAndView text(HttpServletRequest request , HttpServletResponse response, @PathVariable String appid ,@Valid String traceid,@Valid String aiid ,@Valid String exchange, @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String phone,@Valid String ai,@Valid String orgi ,@Valid String product,@Valid String description,@Valid String imgurl,@Valid String pid,@Valid String purl) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/text")) ; 
     	
     	view.addObject("hostname", request.getServerName()) ;
@@ -567,6 +573,15 @@ public class IMController extends Handler{
 		view.addObject("email", email) ;
 		view.addObject("phone", phone) ;
 		view.addObject("userid", userid) ;
+		
+		view.addObject("product", product) ;
+		view.addObject("description", description) ;
+		view.addObject("imgurl", imgurl) ;
+		view.addObject("pid", pid) ;
+		view.addObject("purl", purl) ;
+		
+		
+		
 		if(!StringUtils.isBlank(traceid)){
 			view.addObject("traceid", traceid) ;
 		}

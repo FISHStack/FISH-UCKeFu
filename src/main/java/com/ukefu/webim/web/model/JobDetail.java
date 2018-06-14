@@ -98,6 +98,11 @@ public class JobDetail implements Serializable{
 	
 	private int disnum ;		//默认分配数量
 	
+	private String siptrunk ;	//线路资源
+	private String province ;	//线路省份
+	private String city ;		//线路地区
+	private boolean prefix ;	//异地号码加拨前缀 0 
+	
 	private Date createtime = new Date();	//创建时间
 	
 	private Date updatetime = new Date();
@@ -745,6 +750,36 @@ public class JobDetail implements Serializable{
 	public void setThreads(int threads) {
 		this.threads = threads;
 	}
-	
-	
+
+	public String getSiptrunk() {
+		return siptrunk;
+	}
+
+	public void setSiptrunk(String siptrunk) {
+		this.siptrunk = siptrunk;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public boolean isPrefix() {
+		return prefix;
+	}
+
+	public void setPrefix(boolean prefix) {
+		this.prefix = prefix;
+	}
 }

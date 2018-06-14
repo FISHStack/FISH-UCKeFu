@@ -126,14 +126,16 @@ public class ActivityResource extends Resource{
 				
 				task.setFilterid(formFilter.getId());
 				task.setActid(this.jobDetail.getId());
-				task.setNamenum((int) this.dataList.getTotalElements());
 				
 				task.setExecnum(this.jobDetail.getExecnum());
 				
 				task.setOrgan(this.jobDetail.getOrgan());
 				
 				task.setCreatetime(new Date());
-				task.setNotassigned((int) this.dataList.getTotalElements());
+				if(this.dataList!=null) {
+					task.setNamenum((int) this.dataList.getTotalElements());
+					task.setNotassigned((int) this.dataList.getTotalElements());
+				}
 				
 				this.callOutTaskRes.save(task) ;
 				
@@ -271,33 +273,35 @@ public class ActivityResource extends Resource{
 	@Override
 	public OutputTextFormat next() throws Exception {
 		OutputTextFormat outputTextFormat = null;
-		synchronized (this.dataList) {
-			if(atomInt.intValue() < this.dataList.getContent().size()) {
-				if(this.isRecovery()) {
-					UKDataBean dataBean = this.dataList.getContent().get(atomInt.intValue()) ;
-					outputTextFormat = new OutputTextFormat(this.jobDetail);
-					if(this.formFilter!=null) {
-						outputTextFormat.setTitle(this.formFilter.getName());
-					}
-					outputTextFormat.setDataBean(dataBean);
-					atomInt.incrementAndGet() ;
-				}else if(this.dataList!=null) {
-					if(this.current.getDisnames().intValue() >= this.current.getDisnum() ) {
-						if(this.callAgentList.size() > 0) {
-							this.current = this.callAgentList.remove(0) ;
-						}else {
-							this.current = null ;
-						}
-					}
-					if(this.current != null) {
+		if(this.dataList!=null) {
+			synchronized (this.dataList) {
+				if(atomInt.intValue() < this.dataList.getContent().size()) {
+					if(this.isRecovery()) {
 						UKDataBean dataBean = this.dataList.getContent().get(atomInt.intValue()) ;
 						outputTextFormat = new OutputTextFormat(this.jobDetail);
 						if(this.formFilter!=null) {
 							outputTextFormat.setTitle(this.formFilter.getName());
 						}
 						outputTextFormat.setDataBean(dataBean);
-	
 						atomInt.incrementAndGet() ;
+					}else if(this.dataList!=null) {
+						if(this.current.getDisnames().intValue() >= this.current.getDisnum() ) {
+							if(this.callAgentList.size() > 0) {
+								this.current = this.callAgentList.remove(0) ;
+							}else {
+								this.current = null ;
+							}
+						}
+						if(this.current != null) {
+							UKDataBean dataBean = this.dataList.getContent().get(atomInt.intValue()) ;
+							outputTextFormat = new OutputTextFormat(this.jobDetail);
+							if(this.formFilter!=null) {
+								outputTextFormat.setTitle(this.formFilter.getName());
+							}
+							outputTextFormat.setDataBean(dataBean);
+		
+							atomInt.incrementAndGet() ;
+						}
 					}
 				}
 			}

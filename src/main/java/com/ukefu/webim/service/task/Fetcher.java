@@ -39,6 +39,7 @@ public class Fetcher implements Runnable {
 			this.job.setLastindex(job.getStartindex()) ;
 			this.pages = new AtomicInteger((int)job.getReport().getPages()); // total pages fetched
 			processpages = this.pages.intValue() ;
+			job.getReport().setDataid(this.job.getId());
 		}catch (Exception e1) {
 			String msg = "TaskID:"+job.getId() + " TaskName:"+job.getName()+" TaskType:"+job.getTasktype()+" Date:"+new Date()+" Exception:"+e1.getMessage() ;
 			job.setExceptionMsg(ExceptionUtils.getMessage(e1));

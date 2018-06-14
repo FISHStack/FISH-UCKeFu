@@ -280,14 +280,6 @@ public class ESDataExchangeImpl{
 	 * @param dataBean
 	 */
 	public UKDataBean processDate(UKDataBean dataBean) {
-		Iterator<String> names = dataBean.getValues().keySet().iterator() ;
-		while(names.hasNext()) {
-			String name = names.next() ;
-			Object value = dataBean.getValues().get(name) ;
-			if(value!=null && value instanceof Long) {
-				dataBean.getValues().put(name, new Date((Long)value)) ;
-			}
-		}
 		return dataBean;
 	}
 }
