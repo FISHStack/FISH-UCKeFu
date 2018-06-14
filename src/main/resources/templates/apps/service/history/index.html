@@ -9,6 +9,70 @@
 			<div class="col-lg-12">
 				<h1 class="site-h1" style="border-top:1px solid #e6e6e6;">
 					历史会话<#if agentServiceList??>（${agentServiceList.totalElements}）</#if>
+					<span style="float:right;">
+						<form class="layui-form" name="search"	action="/service/history/index.html" method="get" style="float: left;margin-right:5px;">
+							<div class="layui-form-item">
+								<div class="layui-inline" style="margin-right:0px;">
+									<div class="layui-input-inline" style="width: auto;margin-right:0px;">
+										<label class="layui-form-label" style="width: auto;">用户名：</label>
+										<div class="layui-input-inline" style="width: auto;margin-right:0px;">
+									      <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" value="${username!''}" class="layui-input ukefu-input">
+									    </div>
+									</div>
+								</div>
+								<div class="layui-inline" style="margin-right:0px;">
+									<div class="layui-input-inline" style="width: auto;margin-right:0px;">
+										<label class="layui-form-label" style="width: auto;">接入渠道：</label>
+										<div class="layui-input-inline" style="width: auto;margin-right:0px;">
+									      <input type="text" name="channel" placeholder="请输入接入渠道" autocomplete="off" value="${channel!''}" class="layui-input ukefu-input">
+									    </div>
+									</div>
+								</div>
+								<div class="layui-inline" style="margin-right:0px;">
+									<div class="layui-input-inline" style="width: auto;margin-right:0px;">
+										<label class="layui-form-label" style="width: auto;">服务座席：</label>
+										<div class="layui-input-inline" style="width: auto;margin-right:0px;">
+									      <input type="text" name="agentusername" placeholder="请输入服务坐席" autocomplete="off" value="${agentusername!''}" class="layui-input ukefu-input">
+									    </div>
+									</div>
+								</div>
+								<div class="layui-inline" style="margin-right:0px;">
+									<div class="layui-input-inline" style="width: auto;margin-right:0px;">
+										<label class="layui-form-label" style="width: auto;"></label>
+											<div class="layui-input-inline" style="width: auto;margin-right:0px;">
+												<select name="servicetimetype" class="layui-input ukefu-input" lay-ignore>
+													<option value="logindate">咨询时间</option>
+													<#if servicetimetype=="servicetime">
+														<option value="servicetime" selected>服务时间</option>
+													<#else>
+														<option value="servicetime">服务时间</option>
+													</#if>
+											        
+											    </select>
+										    </div>
+										<label class="layui-form-label" style="width: auto;">=</label>
+										<div class="layui-input-inline" style="width: auto;margin-right:0px;">
+									      <input name="begin" class="layui-input ukefu-input" placeholder="开始时间" value="${begin!''}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+									    </div>
+										<label class="layui-form-label" style="width: auto;">~</label>
+										<div class="layui-input-inline" style="width: auto;margin-right:0px;">
+									      <input name="end" class="layui-input ukefu-input" placeholder="结束时间" value="${end!''}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+									    </div>
+									</div>
+								</div>
+								<div class="layui-inline" style="margin-right:0px;">
+									<div class="layui-input-inline" style="width: auto;margin-right:0px;">
+										<div class="layui-input-inline" style="width: auto;margin-right:0px;">
+									      <button class="layui-btn layui-btn-small layui-btn-primary" style="color:#ffffff;">
+											  <i class="layui-icon"></i>
+											</button>
+									    </div>
+									</div>
+								</div>
+								
+							</div>
+						</form>
+					</span>
 				</h1>
 				<table class="layui-table" lay-skin="line">
 					<thead>
@@ -88,6 +152,24 @@
 				,jump:function(data , first){
 					if(!first){
 						location.href = "/service/history/index.html?p="+data.curr ;
+					}
+				}
+		   });
+		});
+	
+	layui.use(['laypage', 'layer' , 'laydate'], function(){
+		  var laypage = layui.laypage
+		  ,layer = layui.layer;
+		  var laydate = layui.laydate;
+		  
+		  laypage({
+				cont: 'page'
+				,pages: <#if statusEventList??>${statusEventList.totalPages}<#else>0</#if> //总页数
+				,curr:<#if statusEventList??>${statusEventList.number+1}<#else>0</#if>
+				,groups: 5 //连续显示分页数
+				,jump:function(data , first){
+					if(!first){
+						location.href = "/apps/callcenter/service/index.html?<#if discalled??>discalled=${discalled}&</#if><#if discaller??>discaller=${discaller}&</#if><#if begin??>begin=${begin}&</#if><#if end??>end=${end}&</#if>p="+data.curr ;
 					}
 				}
 		   });

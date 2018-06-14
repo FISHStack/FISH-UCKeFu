@@ -1,9 +1,14 @@
 package com.ukefu.webim.web.handler.apps.service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -12,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.IP;
 import com.ukefu.util.Menu;
+import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
@@ -70,8 +77,44 @@ public class ChatServiceController extends Handler{
 	
 	@RequestMapping("/history/index")
     @Menu(type = "service" , subtype = "history" , admin= true)
-    public ModelAndView index(ModelMap map , HttpServletRequest request) {
-		map.put("agentServiceList", agentServiceRes.findByOrgiAndStatus(super.getOrgi(request), UKDataContext.AgentUserStatusEnum.END.toString() ,new PageRequest(super.getP(request), super.getPs(request), Direction.DESC , "createtime"))) ;
+    public ModelAndView index(ModelMap map , HttpServletRequest request ,final String username,final String channel ,final String agentusername,final String servicetimetype,final String begin,final String end) {
+		Page<AgentService> page = agentServiceRes.findAll(new Specification<AgentService>(){
+			@Override
+			public Predicate toPredicate(Root<AgentService> root, CriteriaQuery<?> query,CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<Predicate>();  
+				if(!StringUtils.isBlank(username)) {
+					list.add(cb.equal(root.get("username").as(String.class), username)) ;
+				}
+				if(!StringUtils.isBlank(channel)) {
+					list.add(cb.equal(root.get("channel").as(String.class), channel)) ;
+				}
+				if(!StringUtils.isBlank(agentusername)) {
+					list.add(cb.equal(root.get("agentusername").as(String.class), agentusername));
+				}
+				if(!StringUtils.isBlank(servicetimetype)) {
+					try {
+						if(!StringUtils.isBlank(begin) && begin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
+							list.add(cb.greaterThanOrEqualTo(root.get(servicetimetype).as(Date.class), UKTools.dateFormate.parse(begin))) ;
+						}
+						if(!StringUtils.isBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
+							list.add(cb.lessThanOrEqualTo(root.get(servicetimetype).as(Date.class), UKTools.dateFormate.parse(end))) ;
+						}
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					
+				}
+				Predicate[] p = new Predicate[list.size()];  
+			    return cb.and(list.toArray(p));   
+			}
+		},new PageRequest(super.getP(request), super.getPs(request), Direction.DESC , "createtime")) ;
+		map.put("agentServiceList", page) ;
+		map.put("username", username) ;
+		map.put("channel", channel) ;
+		map.put("agentusername", agentusername) ;
+		map.put("servicetimetype", servicetimetype) ;
+		map.put("begin", begin) ;
+		map.put("end", end) ;
         return request(super.createAppsTempletResponse("/apps/service/history/index"));
     }
 	

@@ -60,7 +60,8 @@ public class ApiLeavemsgController extends Handler{
 				
 				Predicate[] p = new Predicate[list.size()];  
 			    return cb.and(list.toArray(p));   
-			}}, new PageRequest(super.getP(values.getQuery()), super.getPs(values.getQuery()), Sort.Direction.DESC, "createtime")) ;
+			}
+		}, new PageRequest(super.getP(values.getQuery()), super.getPs(values.getQuery()), Sort.Direction.DESC, "createtime")) ;
         return new ResponseEntity<>(new RestResult(RestResultType.OK,page), HttpStatus.OK);
     }
 }
