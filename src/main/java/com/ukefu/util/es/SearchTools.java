@@ -171,6 +171,20 @@ public class SearchTools {
 	 * @param ps
 	 * @return
 	 */
+	public static PageImpl<UKDataBean> aggregation(BoolQueryBuilder queryBuilder , String aggField, boolean loadRef , int p, int ps){
+		ESDataExchangeImpl esDataExchange = UKDataContext.getContext().getBean(ESDataExchangeImpl.class);
+		return esDataExchange.findAllPageAggResult(queryBuilder , aggField ,  new PageRequest(p, ps , Sort.Direction.ASC, "createtime") , loadRef , null) ;
+	}
+	
+	/**
+	 * 
+	 * @param queryBuilder
+	 * @param metadataTable
+	 * @param loadRef
+	 * @param p
+	 * @param ps
+	 * @return
+	 */
 	public static UKDataBean get(UKDataBean dataBean){
 		ESDataExchangeImpl esDataExchange = UKDataContext.getContext().getBean(ESDataExchangeImpl.class);
 		return esDataExchange.getIObjectByPK(dataBean, dataBean.getId());

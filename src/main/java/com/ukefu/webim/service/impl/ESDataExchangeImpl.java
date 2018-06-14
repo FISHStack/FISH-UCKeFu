@@ -15,6 +15,12 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.histogram.InternalDateHistogram;
+import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
@@ -229,6 +235,125 @@ public class ESDataExchangeImpl{
 				}
 			}
 		}
+		if(loadRef) {
+			if(users.size() > 0) {
+				List<User> userList = userRes.findAll(users) ;
+				for(UKDataBean dataBean : dataBeanList) {
+					String userid = (String)dataBean.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT) ;
+					if(!StringUtils.isBlank(userid)) {
+						for(User user : userList) {
+							if(user.getId().equals(userid)) {
+								dataBean.setUser(user);
+								break ;
+							}
+						}
+					}
+				}
+			}
+			if(organs.size() > 0) {
+				List<Organ> organList = organRes.findAll(organs) ;
+				for(UKDataBean dataBean : dataBeanList) {
+					String organid = (String)dataBean.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN) ;
+					if(!StringUtils.isBlank(organid)) {
+						for(Organ organ : organList) {
+							if(organ.getId().equals(organid)) {
+								dataBean.setOrgan(organ);
+								break ;
+							}
+						}
+					}
+				}
+			}
+			if(taskList.size() > 0) {
+				List<CallOutTask> callOutTaskList = taskRes.findAll(taskList) ;
+				for(UKDataBean dataBean : dataBeanList) {
+					String taskid = (String)dataBean.getValues().get("taskid") ;
+					if(!StringUtils.isBlank(taskid)) {
+						for(CallOutTask task : callOutTaskList) {
+							if(task.getId().equals(taskid)) {
+								dataBean.setTask(task);
+								break ;
+							}
+						}
+					}
+				}
+			}
+		}
+		return new PageImpl<UKDataBean>(dataBeanList,page , (int)response.getHits().getTotalHits());
+	}
+	
+	
+	/**
+	 * 
+	 * @param dataBean
+	 * @param ps
+	 * @param start
+	 * @return
+	 */
+	public PageImpl<UKDataBean> findAllPageAggResult(QueryBuilder query,String aggField,Pageable page , boolean loadRef , String types) {
+		List<UKDataBean> dataBeanList = new ArrayList<UKDataBean>() ;
+		SearchRequestBuilder searchBuilder = UKDataContext.getTemplet().getClient().prepareSearch(UKDataContext.SYSTEM_INDEX);
+		if(!StringUtils.isBlank(types)) {
+			searchBuilder.setTypes(types) ;
+		}
+		
+		int size = page.getPageSize() * (page.getPageNumber() + 1);
+		searchBuilder.setFrom(0).setSize(0);
+		
+		AggregationBuilder<?> aggregition = AggregationBuilders.terms(aggField).field(aggField).size(size) ;
+		aggregition.subAggregation(AggregationBuilders.terms("apstatus").field("apstatus")) ;
+		aggregition.subAggregation(AggregationBuilders.terms("callstatus").field("callstatus")) ;
+		
+		searchBuilder.addAggregation(aggregition) ;
+		
+		
+		SearchResponse response = searchBuilder.setQuery(query).execute().actionGet();
+		List<String> users = new ArrayList<String>() , organs = new ArrayList<String>() , taskList = new ArrayList<String>(),batchList = new ArrayList<String>(),activityList = new ArrayList<String>();
+		
+		if(response.getAggregations().get(aggField) instanceof Terms){
+			Terms agg = response.getAggregations().get(aggField) ;
+			if(agg!=null){
+				if(loadRef == true) {
+					if(aggField.equals(UKDataContext.UKEFU_SYSTEM_DIS_AGENT)) {
+						users.add(agg.getName()) ;
+					}
+					if(aggField.equals(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN)) {
+						organs.add(agg.getName()) ;
+					}
+					if(aggField.equals("taskid")) {
+						taskList.add(agg.getName()) ;
+					}
+					if(aggField.equals("batid")) {
+						batchList.add(agg.getName()) ;
+					}
+					if(aggField.equals("actid")) {
+						activityList.add(agg.getName()) ;
+					}
+				}
+				if(agg.getBuckets()!=null && agg.getBuckets().size()>0){
+					for (Terms.Bucket entry : agg.getBuckets()) {
+						UKDataBean dataBean = new UKDataBean();
+						dataBean.getValues().put("id", entry.getKeyAsString()) ;
+						dataBean.getValues().put(aggField, entry.getKeyAsString()) ;
+						dataBean.setId(agg.getName());
+						dataBean.setType(aggField);
+						dataBean.getValues().put("total", entry.getDocCount()) ;
+						
+						for (Aggregation temp : entry.getAggregations()) {
+							StringTerms agg2  = (StringTerms) temp ;
+							for (Terms.Bucket entry2 : agg2.getBuckets()) {
+								dataBean.getValues().put(temp.getName()+"."+entry2.getKeyAsString(), entry2.getDocCount()) ;
+							}
+						}
+						dataBeanList.add(dataBean) ;
+					}
+				}
+			}
+		}else if(response.getAggregations().get(aggField) instanceof InternalDateHistogram){
+//			InternalDateHistogram agg = response.getAggregations().get(aggField) ;
+//			long total = response.getHits().getTotalHits() ;
+		}
+		
 		if(loadRef) {
 			if(users.size() > 0) {
 				List<User> userList = userRes.findAll(users) ;

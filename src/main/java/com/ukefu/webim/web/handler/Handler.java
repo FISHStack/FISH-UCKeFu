@@ -2,6 +2,9 @@ package com.ukefu.webim.web.handler;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
+
+import java.text.ParseException;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +13,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
+import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,7 +24,12 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.UKView;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.CallOutTaskRepository;
+import com.ukefu.webim.service.repository.FormFilterRepository;
+import com.ukefu.webim.service.repository.JobDetailRepository;
+import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.TenantRepository;
+import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.api.rest.QueryParams;
 import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.Tenant;
@@ -72,16 +81,144 @@ public class Handler {
 	 * @param queryBuilder
 	 * @param request
 	 */
-	public BoolQueryBuilder search(BoolQueryBuilder queryBuilder , ModelMap map, HttpServletRequest request) {
+	public BoolQueryBuilder search(BoolQueryBuilder queryBuilder , ModelMap map, HttpServletRequest request){
 		queryBuilder.must(termQuery("orgi", this.getOrgi(request))) ;
-		if(!StringUtils.isBlank(request.getParameter("batid"))) {
-			queryBuilder.must(termQuery("batid", request.getParameter("batid"))) ;
-			map.put("batid", request.getParameter("batid")) ;
-		}
+		
+		//搜索框
 		if(!StringUtils.isBlank(request.getParameter("q"))) {
 			queryBuilder.must(QueryBuilders.boolQuery().must(new QueryStringQueryBuilder(request.getParameter("q")).defaultOperator(Operator.AND))) ;
 			map.put("q", request.getParameter("q")) ;
 		}
+		
+		//筛选表单
+		if(!StringUtils.isBlank(request.getParameter("filterid"))) {
+			queryBuilder.must(termQuery("filterid", request.getParameter("filterid"))) ;
+			map.put("filterid", request.getParameter("filterid")) ;
+		}
+		
+		//批次
+		if(!StringUtils.isBlank(request.getParameter("batid"))) {
+			queryBuilder.must(termQuery("batid", request.getParameter("batid"))) ;
+			map.put("batid", request.getParameter("batid")) ;
+		}
+		
+		//活动
+		if(!StringUtils.isBlank(request.getParameter("actid"))) {
+			queryBuilder.must(termQuery("actid", request.getParameter("actid"))) ;
+			map.put("actid", request.getParameter("actid")) ;
+		}
+		
+		//业务状态
+		if(!StringUtils.isBlank(request.getParameter("workstatus"))) {
+			queryBuilder.must(termQuery("workstatus", request.getParameter("workstatus"))) ;
+			map.put("workstatus", request.getParameter("workstatus")) ;
+		}
+		
+		//拨打状态
+		if(!StringUtils.isBlank(request.getParameter("callstatus"))) {
+			queryBuilder.must(termQuery("callstatus", request.getParameter("callstatus"))) ;
+			map.put("callstatus", request.getParameter("callstatus")) ;
+		}
+		
+		//预约状态
+		if(!StringUtils.isBlank(request.getParameter("apstatus"))) {
+			queryBuilder.must(termQuery("apstatus", request.getParameter("apstatus"))) ;
+			map.put("apstatus", request.getParameter("apstatus")) ;
+		}
+		
+		RangeQueryBuilder rangeQuery = null ;
+		//拨打时间区间查询
+		if(!StringUtils.isBlank(request.getParameter("callbegin")) || !StringUtils.isBlank(request.getParameter("callend"))){
+			
+			if(!StringUtils.isBlank(request.getParameter("callbegin"))) {
+				try {
+					
+					rangeQuery = QueryBuilders.rangeQuery("calltime").from(UKTools.dateFormate.parse(request.getParameter("callbegin")).getTime()) ;
+				} catch (ParseException e) {
+					
+					e.printStackTrace();
+				}
+			}
+			if(!StringUtils.isBlank(request.getParameter("callend")) ) {
+				
+				try {
+					
+					if(rangeQuery == null) {
+						rangeQuery = QueryBuilders.rangeQuery("calltime").to(UKTools.dateFormate.parse(request.getParameter("callend")).getTime()) ;
+					}else {
+						rangeQuery.to(UKTools.dateFormate.parse(request.getParameter("callend")).getTime()) ;
+					}
+				} catch (ParseException e) {
+					
+					e.printStackTrace();
+				}
+				
+			}
+			map.put("callbegin", request.getParameter("callbegin")) ;
+			map.put("callend", request.getParameter("callend")) ;
+		}
+		//预约时间区间查询
+		if(!StringUtils.isBlank(request.getParameter("apbegin")) || !StringUtils.isBlank(request.getParameter("apend"))){
+			
+			if(!StringUtils.isBlank(request.getParameter("apbegin"))) {
+				try {
+					
+					rangeQuery = QueryBuilders.rangeQuery("aptime").from(UKTools.dateFormate.parse(request.getParameter("apbegin")).getTime()) ;
+				} catch (ParseException e) {
+					
+					e.printStackTrace();
+				}
+			}
+			if(!StringUtils.isBlank(request.getParameter("apend")) ) {
+				
+				try {
+					
+					if(rangeQuery == null) {
+						rangeQuery = QueryBuilders.rangeQuery("aptime").to(UKTools.dateFormate.parse(request.getParameter("apend")).getTime()) ;
+					}else {
+						rangeQuery.to(UKTools.dateFormate.parse(request.getParameter("apend")).getTime()) ;
+					}
+				} catch (ParseException e) {
+					
+					e.printStackTrace();
+				}
+				
+				
+				
+			}
+			map.put("apbegin", request.getParameter("apbegin")) ;
+			map.put("apend", request.getParameter("apend")) ;
+		}
+		
+		if(rangeQuery!=null) {
+			queryBuilder.must(rangeQuery) ;
+		}
+		
+		//外呼任务id
+		if(!StringUtils.isBlank(request.getParameter("taskid"))) {
+			queryBuilder.must(termQuery("taskid", request.getParameter("taskid"))) ;
+			map.put("taskid", request.getParameter("taskid")) ;
+		}
+		//坐席
+		if(!StringUtils.isBlank(request.getParameter("owneruser"))) {
+			queryBuilder.must(termQuery("owneruser", request.getParameter("owneruser"))) ;
+			map.put("owneruser", request.getParameter("owneruser")) ;
+		}
+		//部门
+		if(!StringUtils.isBlank(request.getParameter("ownerdept"))) {
+			queryBuilder.must(termQuery("ownerdept", request.getParameter("ownerdept"))) ;
+			map.put("ownerdept", request.getParameter("ownerdept")) ;
+		}
+		
+		map.put("batchList", UKDataContext.getContext().getBean(JobDetailRepository.class).findByTasktypeAndOrgi(UKDataContext.TaskType.BATCH.toString(), this.getOrgi(request)));
+		map.put("activityList", UKDataContext.getContext().getBean(JobDetailRepository.class).findByTasktypeAndOrgi(UKDataContext.TaskType.ACTIVE.toString(), this.getOrgi(request)));
+		map.put("formFilterList", UKDataContext.getContext().getBean(FormFilterRepository.class).findByOrgi(this.getOrgi(request)));
+		map.addAttribute("userList",UKDataContext.getContext().getBean(UserRepository.class).findByOrganAndDatastatusAndOrgi(request.getParameter("ownerdept"), false, this.getOrgi(request)));
+		map.addAttribute("skillList",UKDataContext.getContext().getBean(OrganRepository.class).findByOrgi(this.getOrgi(request)));
+		
+		map.put("taskList",UKDataContext.getContext().getBean(CallOutTaskRepository.class).findByActidAndOrgi(request.getParameter("actid"), this.getOrgi(request)));
+		
+		
 		return queryBuilder ;
 	}
 	
