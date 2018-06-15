@@ -1,7 +1,6 @@
 package com.ukefu.webim.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +20,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.histogram.InternalDateHistogram;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
@@ -202,10 +202,9 @@ public class ESDataExchangeImpl{
 			Iterator<Order> iterator = page.getSort().iterator();
 			while(iterator.hasNext()) {
 				Order order = iterator.next() ;
-				searchBuilder.addSort(order.getProperty() , order.isDescending() ? SortOrder.DESC : SortOrder.ASC) ;
+				searchBuilder.addSort(new FieldSortBuilder(order.getProperty()).unmappedType(order.getProperty().equals("createtime")? "long" : "string").order( order.isDescending() ? SortOrder.DESC : SortOrder.ASC)) ;
 			}
 		}
-		
 		SearchResponse response = searchBuilder.setQuery(query).execute().actionGet();
 		List<String> users = new ArrayList<String>() , organs = new ArrayList<String>() , taskList = new ArrayList<String>(),batchList = new ArrayList<String>(),activityList = new ArrayList<String>();
 		for(SearchHit hit : response.getHits().getHits()){

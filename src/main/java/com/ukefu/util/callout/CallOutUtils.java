@@ -87,8 +87,6 @@ public class CallOutUtils {
 			callOutName.setActid(task.getActid());
 			callOutName.setBatid(batid);
 			
-			callOutName.setLeavenum(leavenames);
-			
 			callOutName.setTaskid(taskid);
 			
 			callOutName.setMetaname(batch.getActid());
@@ -113,6 +111,8 @@ public class CallOutUtils {
 			callOutName.setOwneruser((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT));
 			callOutName.setOwnerdept((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT));
 		}
+		
+		callOutName.setLeavenum(leavenames);
 		
 		String dial_number = null ;
 		boolean disphonenum = false ;
