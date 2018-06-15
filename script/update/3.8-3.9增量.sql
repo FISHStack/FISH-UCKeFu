@@ -216,5 +216,20 @@ CREATE TABLE `uk_act_callnames` (
 
 
 
+
+
 ALTER TABLE uk_callcenter_event ADD siptrunk varchar(32) COMMENT "线路";
 ALTER TABLE uk_callcenter_event ADD prefix tinyint(4) DEFAULT 0 COMMENT "号码加拨0";
+
+CREATE TABLE `uk_act_role` (
+  `id` varchar(32) NOT NULL,
+  `rolename` varchar(50) DEFAULT NULL COMMENT '角色名称',
+  `roleid` varchar(50) DEFAULT NULL COMMENT '角色id',
+  `bustype` varchar(50) DEFAULT NULL COMMENT '业务类型',
+  `organid` text COMMENT '授权部门id',
+  `createtime` datetime DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
