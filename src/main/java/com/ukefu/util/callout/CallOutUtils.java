@@ -137,7 +137,6 @@ public class CallOutUtils {
 			}
 			if(agent!=null) {
 				NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "preview", callOutName);
-				agent.setNames(callOutName);
 			}
 		}else if(agent!=null){
 			agent.setWorkstatus(UKDataContext.WorkStatusEnum.IDLE.toString());

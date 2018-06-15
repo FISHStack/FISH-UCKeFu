@@ -105,6 +105,10 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String disphonenum ;	//是否隐藏号码 
 	private String distype ;		//号码隐藏方式
 	
+	private String siptrunk ;		//自定义 SIP Trunk
+	private boolean prefix ;		//是否启用加0前缀
+	
+	
 	
 	private boolean record ;//是否录音
 	
@@ -601,5 +605,17 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setNameid(String nameid) {
 		this.nameid = nameid;
+	}
+	public String getSiptrunk() {
+		return siptrunk;
+	}
+	public void setSiptrunk(String siptrunk) {
+		this.siptrunk = siptrunk;
+	}
+	public boolean isPrefix() {
+		return prefix;
+	}
+	public void setPrefix(boolean prefix) {
+		this.prefix = prefix;
 	}
 }

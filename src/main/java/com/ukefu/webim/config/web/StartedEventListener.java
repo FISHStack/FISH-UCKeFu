@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +23,6 @@ import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.SystemConfig;
 
 @Component
-@ImportResource("classpath:config/applicationContext-snaker.xml")
 public class StartedEventListener implements ApplicationListener<ContextRefreshedEvent> {
 	
 	@Value("${web.upload-path}")
