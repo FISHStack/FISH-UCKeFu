@@ -30,10 +30,24 @@
 								</div>
 								<div class="layui-inline" style="margin-right:0px;">
 									<div class="layui-input-inline" style="width: auto;margin-right:0px;">
-										<label class="layui-form-label" style="width: auto;">服务座席：</label>
+									<label class="layui-form-label" style="width: auto;"></label>
 										<div class="layui-input-inline" style="width: auto;margin-right:0px;">
-									      <input type="text" name="agentusername" placeholder="请输入服务坐席" autocomplete="off" value="${agentusername!''}" class="layui-input ukefu-input">
-									    </div>
+											<#assign two=true/>
+											<select name="servicetype" id="servicetype"  onchange="deptorservice(this.value)" class="layui-input ukefu-input"   lay-ignore >
+												<option value="">-请选择-</option>
+												<#if servicetype=="skill">
+													<option value="agentno" >服务坐席 </option>
+													<option value="skill" selected>技能组 </option>
+												<#else>
+													<option value="agentno" selected>服务坐席 </option>
+													<option value="skill" >技能组 </option>
+												</#if>
+										    </select>
+										    <label  >~</label>
+										    <select name="allocation" id="allocation" class="layui-input ukefu-input" lay-ignore>
+										    	
+											</select>
+										</div>
 									</div>
 								</div>
 								<div class="layui-inline" style="margin-right:0px;">
@@ -156,22 +170,13 @@
 				}
 		   });
 		});
-	
-	layui.use(['laypage', 'layer' , 'laydate'], function(){
-		  var laypage = layui.laypage
-		  ,layer = layui.layer;
-		  var laydate = layui.laydate;
-		  
-		  laypage({
-				cont: 'page'
-				,pages: <#if statusEventList??>${statusEventList.totalPages}<#else>0</#if> //总页数
-				,curr:<#if statusEventList??>${statusEventList.number+1}<#else>0</#if>
-				,groups: 5 //连续显示分页数
-				,jump:function(data , first){
-					if(!first){
-						location.href = "/apps/callcenter/service/index.html?<#if discalled??>discalled=${discalled}&</#if><#if discaller??>discaller=${discaller}&</#if><#if begin??>begin=${begin}&</#if><#if end??>end=${end}&</#if>p="+data.curr ;
-					}
-				}
-		   });
-		});
+	function deptorservice(data){
+		$('#allocation').html("");
+		if(data=="agentno"){
+			$("#allocation").append("<#if userlist?? ><#list userlist as user ><#if allocation??><option value=\"${user.id}\" selected>${user.uname}</option><#else><option value=\"${user.id}\">${user.uname}</option></#if> </#list> </#if>");
+		}else if(data=="skill"){
+			$("#allocation").append("<#if deptlist?? ><#list deptlist as dept ><#if allocation??><option value=\"${dept.id}\" selected>${dept.name}</option><#else><option value=\"${dept.id}\">${dept.name}</option> </#if> </#list> </#if>");
+		}
+	}
+
 </script>
