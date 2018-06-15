@@ -205,7 +205,9 @@ $(document).ready(function(){
 					}else{
 						layer.close(layer.index);
 					}
-					if(message){
+					if(message == false){
+						
+					}else if(message){
 						top.layer.alert(message, {icon: 1});
 					}else{
 						top.layer.alert('保存成功', {icon: 1});
