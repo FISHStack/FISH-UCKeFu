@@ -71,13 +71,19 @@ public class ChatServiceController extends Handler{
 	private OrganRepository organRes ;
 	
 	@Autowired
+	private OrganRepository organ ;
+	
+	@Autowired
+	private UserRepository user ;
+	
+	@Autowired
 	private UserRepository userRes ;
 	@Autowired
 	private OrgiSkillRelRepository orgiSkillRelService;
 	
 	@RequestMapping("/history/index")
     @Menu(type = "service" , subtype = "history" , admin= true)
-    public ModelAndView index(ModelMap map , HttpServletRequest request ,final String username,final String channel ,final String agentusername,final String servicetimetype,final String begin,final String end) {
+    public ModelAndView index(ModelMap map , HttpServletRequest request ,final String username,final String channel ,final String servicetype,final String allocation,final String servicetimetype,final String begin,final String end) {
 		Page<AgentService> page = agentServiceRes.findAll(new Specification<AgentService>(){
 			@Override
 			public Predicate toPredicate(Root<AgentService> root, CriteriaQuery<?> query,CriteriaBuilder cb) {
@@ -88,8 +94,8 @@ public class ChatServiceController extends Handler{
 				if(!StringUtils.isBlank(channel)) {
 					list.add(cb.equal(root.get("channel").as(String.class), channel)) ;
 				}
-				if(!StringUtils.isBlank(agentusername)) {
-					list.add(cb.equal(root.get("agentusername").as(String.class), agentusername));
+				if(!StringUtils.isBlank(servicetype)&&!StringUtils.isBlank(allocation)) {  
+					list.add(cb.equal(root.get(servicetype).as(String.class), allocation));
 				}
 				if(!StringUtils.isBlank(servicetimetype)) {
 					try {
@@ -111,10 +117,14 @@ public class ChatServiceController extends Handler{
 		map.put("agentServiceList", page) ;
 		map.put("username", username) ;
 		map.put("channel", channel) ;
-		map.put("agentusername", agentusername) ;
+		map.put("servicetype", servicetype) ;
 		map.put("servicetimetype", servicetimetype) ;
+		map.put("allocation", allocation);
 		map.put("begin", begin) ;
 		map.put("end", end) ;
+		map.put("deptlist",organ.findByOrgi(super.getOrgi(request)));
+		map.put("userlist",user.findByOrgiAndDatastatus(super.getOrgi(request), false));
+		
         return request(super.createAppsTempletResponse("/apps/service/history/index"));
     }
 	
