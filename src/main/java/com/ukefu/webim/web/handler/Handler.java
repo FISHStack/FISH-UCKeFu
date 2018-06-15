@@ -4,6 +4,7 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 
 import java.text.ParseException;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.TenantRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.api.rest.QueryParams;
+import com.ukefu.webim.web.model.FormFilter;
 import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.Tenant;
 import com.ukefu.webim.web.model.User;
@@ -209,10 +211,16 @@ public class Handler {
 			queryBuilder.must(termQuery("ownerdept", request.getParameter("ownerdept"))) ;
 			map.put("ownerdept", request.getParameter("ownerdept")) ;
 		}
+		//分配状态
+		if(!StringUtils.isBlank(request.getParameter("status"))) {
+			queryBuilder.must(termQuery("status", request.getParameter("status"))) ;
+			map.put("status", request.getParameter("status")) ;
+		}
 		
 		map.put("batchList", UKDataContext.getContext().getBean(JobDetailRepository.class).findByTasktypeAndOrgi(UKDataContext.TaskType.BATCH.toString(), this.getOrgi(request)));
 		map.put("activityList", UKDataContext.getContext().getBean(JobDetailRepository.class).findByTasktypeAndOrgi(UKDataContext.TaskType.ACTIVE.toString(), this.getOrgi(request)));
 		map.put("formFilterList", UKDataContext.getContext().getBean(FormFilterRepository.class).findByOrgi(this.getOrgi(request)));
+		
 		map.addAttribute("userList",UKDataContext.getContext().getBean(UserRepository.class).findByOrganAndDatastatusAndOrgi(request.getParameter("ownerdept"), false, this.getOrgi(request)));
 		map.addAttribute("skillList",UKDataContext.getContext().getBean(OrganRepository.class).findByOrgi(this.getOrgi(request)));
 		

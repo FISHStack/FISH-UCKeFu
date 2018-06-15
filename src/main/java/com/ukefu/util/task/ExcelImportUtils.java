@@ -118,6 +118,7 @@ public class ExcelImportUtils{
 			metaDataTable.getTableproperty().add(initProperties("taskid", "任务ID", "String", event.getOrgi() , event.getTablename())) ;
 			metaDataTable.getTableproperty().add(initProperties("filterid", "任务ID", "String", event.getOrgi() , event.getTablename())) ;
 			metaDataTable.getTableproperty().add(initProperties("cusid", "客户ID", "String", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("calloutfilid", "筛选记录ID", "String", event.getOrgi() , event.getTablename())) ;
 			
 			metaDataTable.getTableproperty().add(initProperties("execid", "导入记录ID", "String", event.getOrgi() , event.getTablename())) ;
 			

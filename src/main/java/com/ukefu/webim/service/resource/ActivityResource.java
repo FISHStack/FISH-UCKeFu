@@ -245,7 +245,8 @@ public class ActivityResource extends Resource{
 				meta.getDataBean().getValues().put("batid", this.formFilter.getBatid()) ;
 				
 				meta.getDataBean().getValues().put("taskid", this.task.getId()) ;
-				meta.getDataBean().getValues().put("filterid", this.filter.getId()) ;
+				meta.getDataBean().getValues().put("filterid", this.formFilter.getId()) ;
+				meta.getDataBean().getValues().put("calloutfilid", this.filter.getId()) ;
 				/**
 				 * 任务ID
 				 */
