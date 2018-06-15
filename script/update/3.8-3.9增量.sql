@@ -217,4 +217,4 @@ CREATE TABLE `uk_act_callnames` (
 
 
 ALTER TABLE uk_callcenter_event ADD siptrunk varchar(32) COMMENT "线路";
-ALTER TABLE uk_callcenter_event ADD prefix tinyint(4) COMMENT "号码加拨0";
+ALTER TABLE uk_callcenter_event ADD prefix tinyint(4) DEFAULT 0 COMMENT "号码加拨0";
