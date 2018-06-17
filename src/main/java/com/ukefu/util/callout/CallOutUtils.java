@@ -145,7 +145,9 @@ public class CallOutUtils {
 			NettyClients.getInstance().sendCallCenterMessage(agent.getExtno(), "docallout", agent);
 		}
 		callOutNamesRes.save(callOutName) ;
-		agent.setNameid(callOutName.getId());
+		if(agent!=null) {
+			agent.setNameid(callOutName.getId());
+		}
 		return callOutName ;
 	}
 }
