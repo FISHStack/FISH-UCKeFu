@@ -16,4 +16,9 @@ public class EntCustomerProcess implements JPAProcess{
 		entCustomerRes.save((EntCustomer)data) ;
 	}
 
+	@Override
+	public void end() {
+		
+	}
+
 }

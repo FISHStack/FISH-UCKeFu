@@ -16,4 +16,9 @@ public class ContactsProcess implements JPAProcess{
 		contactsRes.save((Contacts)data) ;
 	}
 
+	@Override
+	public void end() {
+		
+	}
+
 }

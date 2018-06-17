@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -55,15 +56,28 @@ public class ESDataExchangeImpl{
 		if(dataBean.getId() == null) {
 			dataBean.setId((String) dataBean.getValues().get("id"));
 		}
-		if(!StringUtils.isBlank(dataBean.getType())) {
-			UKDataContext.getTemplet().getClient().prepareIndex(UKDataContext.SYSTEM_INDEX,
-					dataBean.getType(), dataBean.getId())
-			.setSource(processValues(dataBean)).execute().actionGet();
-		}else {
-			UKDataContext.getTemplet().getClient().prepareIndex(UKDataContext.SYSTEM_INDEX,
-						dataBean.getTable().getTablename(), dataBean.getId())
-				.setSource(processValues(dataBean)).execute().actionGet();
+		this.saveBulk(dataBean).execute().actionGet() ;
+	}
+	/**
+	 * @param dataBean
+	 * @return
+	 * @throws Exception
+	 */
+	public IndexRequestBuilder saveBulk(UKDataBean dataBean) throws Exception {
+		IndexRequestBuilder indexRequestBuilder ;
+		if(dataBean.getId() == null) {
+			dataBean.setId((String) dataBean.getValues().get("id"));
 		}
+		if(!StringUtils.isBlank(dataBean.getType())) {
+			indexRequestBuilder = UKDataContext.getTemplet().getClient().prepareIndex(UKDataContext.SYSTEM_INDEX,
+					dataBean.getType(), dataBean.getId())
+			.setSource(processValues(dataBean));
+		}else {
+			indexRequestBuilder = UKDataContext.getTemplet().getClient().prepareIndex(UKDataContext.SYSTEM_INDEX,
+						dataBean.getTable().getTablename(), dataBean.getId())
+				.setSource(processValues(dataBean));
+		}
+		return indexRequestBuilder ;
 	}
 	/**
 	 * 处理数据，包含 自然语言处理算法计算 智能处理字段

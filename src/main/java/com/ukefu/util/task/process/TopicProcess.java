@@ -53,4 +53,9 @@ public class TopicProcess implements JPAProcess{
 			}
 		}
 	}
+
+	@Override
+	public void end() {
+		
+	}
 }

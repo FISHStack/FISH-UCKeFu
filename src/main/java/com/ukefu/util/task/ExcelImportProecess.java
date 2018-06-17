@@ -207,7 +207,7 @@ public class ExcelImportProecess extends DataProcess{
 					if(!values.containsKey("orgi")) {
 						skipDataVal = true ;
 					}
-					
+					event.getDSData().getReport().setTotal(pages.intValue());
 					values.put("creater", event.getValues().get("creater")) ;
 					if(data!=null && skipDataVal == false) {
 						UKTools.populate(data, values);
@@ -257,8 +257,10 @@ public class ExcelImportProecess extends DataProcess{
             
             event.setTimes(System.currentTimeMillis() - start);
             event.getDSData().getReport().setEndtime(new Date());
+            event.getDSData().getReport().setAmount(String.valueOf((float)event.getTimes()/1000f));
             event.getDSData().getReport().setStatus(UKDataContext.TaskStatusType.END.getType());
             event.getDSData().getReport().setTotal(pages.intValue());
+            event.getDSData().getReport().setPages(pages.intValue());
             event.getDSData().getReport().setErrors(errors.intValue());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -269,6 +271,9 @@ public class ExcelImportProecess extends DataProcess{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
+			if(event.getDSData().getFile().exists()){
+				event.getDSData().getFile().delete() ;
 			}
 			/**
 			 * 更新数据
@@ -288,9 +293,7 @@ public class ExcelImportProecess extends DataProcess{
 					batchRes.save(batch) ;
 				}
 			}
-			if(event.getDSData().getFile().exists()){
-				event.getDSData().getFile().delete() ;
-			}
+			event.getDSData().getProcess().end();
 		}
 	}
 	

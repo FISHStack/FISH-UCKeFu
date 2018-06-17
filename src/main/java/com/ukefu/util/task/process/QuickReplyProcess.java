@@ -16,4 +16,9 @@ public class QuickReplyProcess implements JPAProcess{
 		quickReplyRes.save((QuickReply)data) ;
 	}
 
+	@Override
+	public void end() {
+		
+	}
+
 }
