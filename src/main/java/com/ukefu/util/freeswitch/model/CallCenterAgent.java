@@ -22,7 +22,7 @@ public class CallCenterAgent implements java.io.Serializable{
 	
 	private Extention extention ;
 	
-	private CallOutNames names ;
+	private String nameid ;
 	
 	public CallCenterAgent(String userid, String extno , String orgi) {
 		this.userid = userid ;
@@ -87,11 +87,11 @@ public class CallCenterAgent implements java.io.Serializable{
 		this.workstatus = workstatus;
 	}
 
-	public CallOutNames getNames() {
-		return names;
+	public String getNameid() {
+		return nameid;
 	}
 
-	public void setNames(CallOutNames names) {
-		this.names = names;
+	public void setNameid(String nameid) {
+		this.nameid = nameid;
 	}
 }

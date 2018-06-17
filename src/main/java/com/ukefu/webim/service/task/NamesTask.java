@@ -35,6 +35,7 @@ public class NamesTask implements Runnable{
 			 */
 			if(names!=null && names.getContent().size() > 0) {
 				UKDataBean name = names.getContent().get(0) ;
+				
 				CallOutUtils.processNames(name, agent, agent.getOrgi(), (int)(names.getTotalElements() - 1)) ;
 			}else {
 				agent.setWorkstatus(UKDataContext.WorkStatusEnum.IDLE.toString());
