@@ -31,9 +31,9 @@ public class BatchDataProcess implements JPAProcess{
 			dataBean = (UKDataBean)data;
 		}else {
 			dataBean.setTable(this.metadata);
+			dataBean.setValues((Map<String, Object>) data);
 		}
 		try {
-			dataBean.setValues((Map<String, Object>) data);
 			if(builder!=null) {
 				builder.add(esDataExchangeImpl.saveBulk(dataBean)) ;
 			}else {
