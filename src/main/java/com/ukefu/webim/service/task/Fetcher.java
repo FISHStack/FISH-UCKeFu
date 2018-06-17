@@ -107,7 +107,7 @@ public class Fetcher implements Runnable {
 	    	this.job.getReport().setUserid(this.job.getCreater());
 			this.job.getReport().setUsername(this.job.getUsername());
 			this.job.getReport().setEndtime(new Date());
-			
+			this.job.getReport().setTotal(this.pages.intValue());
 			this.job.getReport().setAmount(String.valueOf((this.job.getReport().getEndtime().getTime() - this.job.getReport().getStart())/ 1000f));
 			
 			UKDataContext.getContext().getBean(ReporterRepository.class).save(this.job.getReport()) ;
