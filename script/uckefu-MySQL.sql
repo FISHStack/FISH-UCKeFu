@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-06-13 18:12:57
+Date: 2018-06-17 23:03:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -299,6 +299,27 @@ CREATE TABLE `uk_act_formfilter_item` (
 
 -- ----------------------------
 -- Records of uk_act_formfilter_item
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_act_role`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_act_role`;
+CREATE TABLE `uk_act_role` (
+  `id` varchar(32) NOT NULL,
+  `rolename` varchar(50) DEFAULT NULL COMMENT '角色名称',
+  `roleid` varchar(50) DEFAULT NULL COMMENT '角色id',
+  `bustype` varchar(50) DEFAULT NULL COMMENT '业务类型',
+  `organid` text COMMENT '授权部门id',
+  `createtime` datetime DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `updatetime` datetime DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of uk_act_role
 -- ----------------------------
 
 -- ----------------------------
@@ -919,6 +940,8 @@ CREATE TABLE `uk_callcenter_event` (
   `disphonenum` varchar(32) DEFAULT NULL,
   `distype` varchar(32) DEFAULT NULL,
   `nameid` varchar(50) DEFAULT NULL,
+  `siptrunk` varchar(32) DEFAULT NULL,
+  `prefix` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -2184,7 +2207,7 @@ CREATE TABLE `uk_jobdetail` (
   `INVALIDNUM` int(11) DEFAULT '0' COMMENT '批次包含的无效名单总数',
   `ASSIGNED` int(11) DEFAULT '0' COMMENT '已分配名单总数',
   `NOTASSIGNED` int(11) DEFAULT '0' COMMENT '未分配名单总数',
-  `ENABLE` tinyint(4) DEFAULT '0' COMMENT '分类状态',
+  `ENABLE` tinyint(4) NOT NULL DEFAULT '0' COMMENT '分类状态',
   `DATASTATUS` tinyint(4) DEFAULT '0' COMMENT '数据状态',
   `AREA` text COMMENT '分类描述',
   `imptype` varchar(50) DEFAULT NULL,
@@ -2250,7 +2273,12 @@ CREATE TABLE `uk_jobdetail` (
   `exectype` varchar(32) DEFAULT NULL,
   `execto` varchar(32) DEFAULT NULL,
   `threads` int(11) DEFAULT '0',
-  PRIMARY KEY (`ID`) USING BTREE
+  `siptrunk` varchar(32) DEFAULT NULL,
+  `province` varchar(32) DEFAULT NULL,
+  `city` varchar(32) DEFAULT NULL,
+  `prefix` tinyint(4) DEFAULT '0',
+  `reportid` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`ID`,`ENABLE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -8140,7 +8168,7 @@ CREATE TABLE `uk_user` (
 -- Records of uk_user
 -- ----------------------------
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-05-18 09:54:52', '4028811b63b028dc0163b032a8b2058c', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-05-30 10:05:15', null, null, null, '0', '1', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', null, 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-06-13 18:11:28', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028811b63b028dc0163b032c3ed0590', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-06-17 21:53:44', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
