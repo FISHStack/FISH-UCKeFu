@@ -11,6 +11,7 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.es.SearchTools;
 import com.ukefu.util.es.UKDataBean;
+import com.ukefu.webim.service.impl.BatchDataProcess;
 import com.ukefu.webim.service.impl.ESDataExchangeImpl;
 import com.ukefu.webim.service.repository.CallAgentRepository;
 import com.ukefu.webim.service.repository.CallOutFilterRepository;
@@ -37,7 +38,6 @@ public class ActivityResource extends Resource{
 	private FormFilter formFilter = null ;
 	private List<CallAgent> callAgentList ;
 	
-	private ESDataExchangeImpl esDataExchange = null ;
 	
 	private CallAgent current ;
 	
@@ -56,15 +56,17 @@ public class ActivityResource extends Resource{
 	
 	private AtomicInteger assignorganInt = new AtomicInteger() /***分配到坐席***/, assignInt = new AtomicInteger() /***分配到部门***/ , atomInt = new AtomicInteger() ;
 	
+	private BatchDataProcess batchDataProcess ;
+	
 	public ActivityResource(JobDetail jobDetail) {
 		this.jobDetail = jobDetail ;
 		this.formFilterRes = UKDataContext.getContext().getBean(FormFilterRepository.class) ;
 		this.formFilterItemRes = UKDataContext.getContext().getBean(FormFilterItemRepository.class) ;
-		this.esDataExchange = UKDataContext.getContext().getBean(ESDataExchangeImpl.class);
 		this.callOutTaskRes = UKDataContext.getContext().getBean(CallOutTaskRepository.class);
 		this.callOutFilterRes = UKDataContext.getContext().getBean(CallOutFilterRepository.class);
 		this.batchRes = UKDataContext.getContext().getBean(JobDetailRepository.class);
 		this.metadataRes =  UKDataContext.getContext().getBean(MetadataRepository.class);
+		this.batchDataProcess = new BatchDataProcess(null , UKDataContext.getContext().getBean(ESDataExchangeImpl.class)) ;
 	}
 	
 	@Override
@@ -153,6 +155,7 @@ public class ActivityResource extends Resource{
 
 	@Override
 	public void end(boolean clear) throws Exception {
+		this.batchDataProcess.end();
 		//doNothing
 		/**
 		 * FormFilter的执行信息更新，执行次数
@@ -268,7 +271,7 @@ public class ActivityResource extends Resource{
 		/**
 		 * 更新记录（是否同时保存分配信息，以便于查看分配历史？）
 		 */
-		esDataExchange.saveIObject(meta.getDataBean());
+		batchDataProcess.process(meta.getDataBean());
 	}
 
 	@Override

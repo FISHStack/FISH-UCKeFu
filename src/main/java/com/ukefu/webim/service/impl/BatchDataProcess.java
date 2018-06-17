@@ -27,7 +27,11 @@ public class BatchDataProcess implements JPAProcess{
 	@Override
 	public void process(Object data) {
 		UKDataBean dataBean = new UKDataBean();
-		dataBean.setTable(this.metadata);
+		if(data instanceof UKDataBean) {
+			dataBean = (UKDataBean)data;
+		}else {
+			dataBean.setTable(this.metadata);
+		}
 		try {
 			dataBean.setValues((Map<String, Object>) data);
 			if(builder!=null) {
