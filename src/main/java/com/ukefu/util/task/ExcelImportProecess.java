@@ -231,6 +231,10 @@ public class ExcelImportProecess extends DataProcess{
 						values.put("callstatus", UKDataContext.NameStatusTypeEnum.NOTCALL.toString()) ;
 						values.put("execid", event.getDSData().getReport().getId()) ;
 						
+						if(i%500 == 0) {
+							UKDataContext.getContext().getBean(ReporterRepository.class).save(event.getDSData().getReport()) ;
+						}
+						
 						if(values.get("cusid")==null) {
 							/**
 							 * 
@@ -272,7 +276,10 @@ public class ExcelImportProecess extends DataProcess{
 			UKDataContext.getContext().getBean(ReporterRepository.class).save(event.getDSData().getReport()) ;
 			if(event.getDSData().getClazz() == null && !StringUtils.isBlank(event.getBatid())) {
 				JobDetailRepository batchRes = UKDataContext.getContext().getBean(JobDetailRepository.class) ;
-				JobDetail batch = batchRes.findByIdAndOrgi(event.getBatid(), event.getOrgi()) ;
+				JobDetail batch = this.event.getDSData().getJobDetail();
+				if(batch == null) {
+					batch = batchRes.findByIdAndOrgi(event.getBatid(), event.getOrgi()) ;
+				}
 				if(batch!=null) {
 					batch.setNamenum(batch.getNamenum() + pages.intValue());
 					batch.setValidnum(batch.getValidnum() + (pages.intValue() - errors.intValue()));

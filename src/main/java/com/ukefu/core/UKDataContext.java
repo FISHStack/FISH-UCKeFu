@@ -11,6 +11,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 
 import com.ukefu.util.DateConverter;
 import com.ukefu.webim.service.resource.ActivityResource;
+import com.ukefu.webim.service.resource.BatchResource;
 import com.ukefu.webim.web.model.Log;
 
 public class UKDataContext {
@@ -88,6 +89,8 @@ public class UKDataContext {
 		model.put("report", true) ;
 		
 		uKeFuResourceMap.put(TaskType.ACTIVE.toString(), ActivityResource.class) ;
+		
+		uKeFuResourceMap.put(TaskType.BATCH.toString(), BatchResource.class) ;
 	}
 	
 	public enum AskSectionType{

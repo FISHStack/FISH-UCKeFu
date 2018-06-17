@@ -126,6 +126,8 @@ public class JobDetail implements Serializable{
 	
 	private String execto ;		//回收到部门对象
 	
+	private String reportid ;	//当前正在执行的 ReportID
+	
 	private String name;		//导入的批次名称 ， 自动生成， 规则为 yyyyMMdd--ORDER
 	
 	@Transient
@@ -781,5 +783,13 @@ public class JobDetail implements Serializable{
 
 	public void setPrefix(boolean prefix) {
 		this.prefix = prefix;
+	}
+
+	public String getReportid() {
+		return reportid;
+	}
+
+	public void setReportid(String reportid) {
+		this.reportid = reportid;
 	}
 }

@@ -33,6 +33,7 @@ public class Fetcher implements Runnable {
 			/**
 			 * 初始化资源
 			 */
+			
 			if(resource!=null){
 				resource.begin();
 			}

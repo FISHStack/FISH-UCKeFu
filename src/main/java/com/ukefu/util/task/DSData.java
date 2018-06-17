@@ -3,6 +3,7 @@ package com.ukefu.util.task;
 import java.io.File;
 
 import com.ukefu.util.task.process.JPAProcess;
+import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.Reporter;
 import com.ukefu.webim.web.model.User;
@@ -26,6 +27,8 @@ public class DSData {
 	private User user ;
 	
 	private Reporter report = new Reporter();
+	
+	private JobDetail jobDetail ; 
 	
 	public DSData(){}
 	
@@ -90,5 +93,13 @@ public class DSData {
 
 	public void setProcess(JPAProcess process) {
 		this.process = process;
+	}
+
+	public JobDetail getJobDetail() {
+		return jobDetail;
+	}
+
+	public void setJobDetail(JobDetail jobDetail) {
+		this.jobDetail = jobDetail;
 	}
 }

@@ -29,6 +29,7 @@ public class Task implements Runnable{
 				 */
 				jobDetail.setTaskfiretime(new Date());
 				jobDetail.setTaskstatus(UKDataContext.TaskStatusType.RUNNING.getType()) ;
+				jobDetailRes.save(jobDetail) ;
 				/**
 				 * 任务开始执行
 				 */
