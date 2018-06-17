@@ -6,6 +6,7 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.TaskTools;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.JobDetailRepository;
+import com.ukefu.webim.service.repository.ReporterRepository;
 import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.Reporter;
 
@@ -36,6 +37,7 @@ public class Task implements Runnable{
 				if(true){
 					if(jobDetail.getReport()==null){
 						jobDetail.setReport(new Reporter());
+						UKDataContext.getContext().getBean(ReporterRepository.class).save(jobDetail.getReport()) ;
 					}
 					if (jobDetail.isFetcher()) {//while (jobDetail.isFetcher()) {
 						new Fetcher(jobDetail).run();

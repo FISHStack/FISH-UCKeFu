@@ -6,7 +6,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 
+import com.ukefu.core.UKDataContext;
+import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.ReporterRepository;
 import com.ukefu.webim.service.resource.OutputTextFormat;
 import com.ukefu.webim.service.resource.Resource;
 import com.ukefu.webim.web.model.JobDetail;
@@ -20,6 +23,7 @@ public class Fetcher implements Runnable {
 	private AtomicInteger errors = new AtomicInteger(0); // total pages fetched
 	private Resource resource = null ;
 	private int processpages = 0 ;
+	private long start = System.currentTimeMillis();
 	/**
 	 * 构建任务信息
 	 * @param job
@@ -97,6 +101,16 @@ public class Fetcher implements Runnable {
 					e.printStackTrace();
 				}
 			}
+			this.job.getReport().setOrgi(this.job.getOrgi());
+	    	this.job.getReport().setDataid(this.job.getId());
+	    	this.job.getReport().setTitle(this.job.getName() + "_" + UKTools.dateFormate.format(new Date()));
+	    	
+	    	this.job.getReport().setUserid(this.job.getCreater());
+			this.job.getReport().setUsername(this.job.getUsername());
+			
+			this.job.getReport().setAmount(String.valueOf((System.currentTimeMillis() - start)/ 1000f));
+			
+			UKDataContext.getContext().getBean(ReporterRepository.class).save(this.job.getReport()) ;
 			synchronized (activeThreads) {
 				activeThreads.decrementAndGet(); // count threads
 			}

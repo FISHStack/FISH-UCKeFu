@@ -14,13 +14,11 @@ public class BatchDataProcess implements JPAProcess{
 	private MetadataTable metadata;
 	private ESDataExchangeImpl esDataExchangeImpl ;
 	private BulkRequestBuilder builder ;
-	private long start ;
 	
 	public BatchDataProcess(MetadataTable metadata , ESDataExchangeImpl esDataExchangeImpl) {
 		this.metadata = metadata ;
 		this.esDataExchangeImpl = esDataExchangeImpl ;
 		builder = UKDataContext.getTemplet().getClient().prepareBulk() ;
-		start = System.currentTimeMillis() ;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -41,7 +39,6 @@ public class BatchDataProcess implements JPAProcess{
 			}
 			if(builder.numberOfActions() % 1000 ==0) {
 				builder.execute().actionGet();
-				System.out.println(System.currentTimeMillis() - start);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -53,6 +50,5 @@ public class BatchDataProcess implements JPAProcess{
 		if(builder!=null) {
 			builder.execute().actionGet();
 		}
-		System.out.println(System.currentTimeMillis() - start);
 	}
 }
