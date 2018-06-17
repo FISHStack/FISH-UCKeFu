@@ -23,7 +23,6 @@ public class Fetcher implements Runnable {
 	private AtomicInteger errors = new AtomicInteger(0); // total pages fetched
 	private Resource resource = null ;
 	private int processpages = 0 ;
-	private long start = System.currentTimeMillis();
 	/**
 	 * 构建任务信息
 	 * @param job
