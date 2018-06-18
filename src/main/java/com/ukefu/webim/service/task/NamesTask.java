@@ -29,7 +29,10 @@ public class NamesTask implements Runnable{
 			 * 2、允许或禁止拨打
 			 * 3、优先拨打新名单/老名单/预约名单/未拨打成功的名单
 			 */
-			Page<UKDataBean> names = SearchTools.agentsearch(this.agent.getOrgi(), agent.getUserid(), 0, 1) ;
+			Page<UKDataBean> names = SearchTools.agentapsearch(this.agent.getOrgi(), agent.getUserid(), 0, 1) ;
+			if(names.getTotalElements() == 0) {
+				names = SearchTools.agentsearch(this.agent.getOrgi(), agent.getUserid(), 0, 1) ;
+			}
 			/**
 			 * 找到名单，生成拨打任务，工作界面上，坐席只能看到自己的名单
 			 */

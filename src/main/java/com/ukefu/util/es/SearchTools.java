@@ -145,6 +145,26 @@ public class SearchTools {
 	 * @param ps
 	 * @return
 	 */
+	public static PageImpl<UKDataBean> agentapsearch(String orgi , String agent , int p, int ps){
+		BoolQueryBuilder queryBuilder = new BoolQueryBuilder();
+		queryBuilder.must(termQuery("orgi", orgi)) ;
+		queryBuilder.must(termQuery("validresult", "valid")) ;
+		queryBuilder.must(termQuery(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, agent)) ;
+		queryBuilder.must(termQuery("apstatus", true)) ;		//预约状态
+		
+		queryBuilder.must(rangeQuery("aptime").to(System.currentTimeMillis())) ;		//预约状态
+		
+		return search(queryBuilder, p, ps);
+	}
+	
+	/**
+	 * 
+	 * @param orgi
+	 * @param agent
+	 * @param p
+	 * @param ps
+	 * @return
+	 */
 	public static PageImpl<UKDataBean> search(BoolQueryBuilder queryBuilder, int p, int ps){
 		return search(queryBuilder, null, true, p, ps);
 	}
