@@ -413,6 +413,9 @@ public class ESDataExchangeImpl{
 		}
 		return new PageImpl<UKDataBean>(dataBeanList,page , (int)response.getHits().getTotalHits());
 	}
+	
+	
+	
 	/**
 	 * 
 	 * @param dataBean
