@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.util.Menu;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.PbxHostRepository;
 import com.ukefu.webim.service.repository.SipTrunkRepository;
 import com.ukefu.webim.web.handler.Handler;
@@ -54,6 +55,8 @@ public class CallCenterSipTrunkController extends Handler{
 				siptrunk.setOrgi(super.getOrgi(request));
 				siptrunk.setCreater(super.getUser(request).getId());
 				sipTrunkRes.save(siptrunk) ;
+				
+				CacheHelper.getSystemCacheBean().put(siptrunk.getId() ,siptrunk , siptrunk.getOrgi()) ;
 			}
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/siptrunk.html?hostid="+siptrunk.getHostid()));
@@ -78,7 +81,16 @@ public class CallCenterSipTrunkController extends Handler{
 				oldSipTrunk.setPort(siptrunk.getPort());
 				oldSipTrunk.setProtocol(siptrunk.getProtocol());
 				oldSipTrunk.setRegister(siptrunk.isRegister());
+				oldSipTrunk.setDefaultsip(siptrunk.isDefaultsip());
+				oldSipTrunk.setTitle(siptrunk.getTitle());
+				
+				oldSipTrunk.setProvince(siptrunk.getProvince());
+				oldSipTrunk.setCity(siptrunk.getCity());
+				oldSipTrunk.setPrefix(siptrunk.getPrefix());
+				
 				sipTrunkRes.save(oldSipTrunk);
+				
+				CacheHelper.getSystemCacheBean().put(oldSipTrunk.getId() ,oldSipTrunk , oldSipTrunk.getOrgi()) ;
 			}
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/siptrunk.html?hostid="+siptrunk.getHostid()));
@@ -100,6 +112,8 @@ public class CallCenterSipTrunkController extends Handler{
 			if(!StringUtils.isBlank(siptrunk.getSipcontent())){
 				oldSipTrunk.setSipcontent(siptrunk.getSipcontent());
 				sipTrunkRes.save(oldSipTrunk);
+				
+				CacheHelper.getSystemCacheBean().put(oldSipTrunk.getId() ,oldSipTrunk , oldSipTrunk.getOrgi()) ;
 			}
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/siptrunk.html?hostid="+siptrunk.getHostid()));

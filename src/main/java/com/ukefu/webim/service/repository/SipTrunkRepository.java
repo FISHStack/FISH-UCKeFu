@@ -12,4 +12,6 @@ public interface SipTrunkRepository extends JpaRepository<SipTrunk, String> {
 	public List<SipTrunk> findByHostidAndOrgi(String hostid , String orgi);
 	public List<SipTrunk> findByOrgi(String orgi);
 	public int countByNameAndOrgi(String name, String orgi);
+	
+	public List<SipTrunk> findByDefaultsipAndOrgi(boolean def, String orgi);
 }

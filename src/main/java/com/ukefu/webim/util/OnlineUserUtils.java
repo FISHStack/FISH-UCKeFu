@@ -95,6 +95,7 @@ public class OnlineUserUtils {
 		return consultInvite;
 	}
 	
+	
 	/**
 	 * 
 	 * @param user

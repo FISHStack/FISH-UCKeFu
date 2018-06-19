@@ -13,6 +13,8 @@ public interface ExtentionRepository extends JpaRepository<Extention, String> {
 	
 	public List<Extention> findByExtentionAndOrgi(String extention, String orgi);
 	
+	public List<Extention> findByExtention(String extention);
+	
 	public List<Extention> findByHostidAndExtypeAndOrgi(String hostid , String extype, String orgi);
 	
 	public List<Extention> findByHostidAndExtentionAndOrgi(String hostid , String extention, String orgi);

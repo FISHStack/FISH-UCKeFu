@@ -21,6 +21,7 @@
 								<col width="10%">
 								<col width="20%">
 								<col width="10%">
+								<col width="10%">
 								<col width="1%">
 								<col>
 						  </colgroup>
@@ -33,6 +34,7 @@
 							  <th>注册</th>
 							  <th>创建时间</th>
 							  <th>网关内容</th>
+							  <th>默认网关</th>
 							  <th style="white-space:nowrap;" nowrap="nowrap">操作</th>
 							</tr> 
 						  </thead>
@@ -54,12 +56,17 @@
 								</td>
 								  
 								  <td>${siptrunk.createtime?string("yyyy-MM-dd HH:mm:ss")}</td>
-								  <td>
+								 <td>
 									<#if siptrunk.sipcontent?? && siptrunk.sipcontent != ''>
 										<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
 									</#if>
 								</td>
-								  <td style="white-space:nowrap;" nowrap="nowrap">
+								<td>
+									<#if siptrunk.defaultsip?? && siptrunk.defaultsip == true>
+										<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
+									</#if>
+								</td>
+								<td style="white-space:nowrap;" nowrap="nowrap">
 								  		<a href="/admin/callcenter/siptrunk/edit.html?id=${siptrunk.id!''}&hostid=${pbxHost.id!''}" data-toggle="ajax" data-width="750" data-title="编辑SIP网关信息">
 								  			<i class="layui-icon">&#xe642;</i>
 								  			编辑
@@ -68,7 +75,7 @@
 								  			<i class="layui-icon" style="color:red;">&#x1006;</i>
 								  			删除
 								  		</a>
-								  </td>
+								 </td>
 							</tr>
 							</#list>
 							</#if>

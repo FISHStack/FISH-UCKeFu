@@ -44,7 +44,7 @@
 					<option value="">请选择...</option>
 					<#if sipTrunkListList??>
 					<#list sipTrunkListList as sipTrunkInfo>
-					<option value="${sipTrunkInfo.name!''}" <#if extention.siptrunk?? && extention.siptrunk == sipTrunkInfo.name>selected="selected"</#if>>${sipTrunkInfo.name!''}</option>
+					<option value="${sipTrunkInfo.id!''}" <#if extention.siptrunk?? && extention.siptrunk == sipTrunkInfo.id>selected="selected"</#if>>${sipTrunkInfo.name!''}</option>
 					</#list>
 					</#if>
 				</select>    

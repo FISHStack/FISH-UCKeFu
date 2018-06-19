@@ -36,6 +36,10 @@ public class SipTrunk implements java.io.Serializable{
 	private String dtmf ;		//DTMF模式  ， rfc 2833 , inbound ,sip info
 	
 	private boolean register ;	//是否注册
+	
+	private boolean defaultsip ;//是否默认SIP网关
+	private String title ;		//网关标题
+	
 	private String username ;
 	private String authuser;
 	private String password ;
@@ -217,5 +221,17 @@ public class SipTrunk implements java.io.Serializable{
 	}
 	public void setCity(String city) {
 		this.city = city;
+	}
+	public boolean isDefaultsip() {
+		return defaultsip;
+	}
+	public void setDefaultsip(boolean defaultsip) {
+		this.defaultsip = defaultsip;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }
