@@ -33,6 +33,11 @@ public class CallCenterUtils {
 						CacheHelper.getSystemCacheBean().put(sipTrunk.getId() ,sipTrunk , ext.getOrgi()) ;
 					}
 				}
+			}else {
+				List<SipTrunk> sipTrunkList = sipTrunkRes.findByDefaultsipAndOrgi(true, ext.getOrgi()) ;
+				if(sipTrunkList.size() > 0) {
+					sipTrunk = sipTrunkList.get(0) ;
+				}
 			}
 		}
 		return sipTrunk;
