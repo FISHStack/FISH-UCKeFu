@@ -115,6 +115,8 @@ public class CallCenterExtentionController extends Handler{
 		extno.setExtype(src.getExtype());
 		extno.setMediapath(src.getMediapath());
 		
+		extno.setSiptrunk(src.getSiptrunk());
+		
 		int count = extentionRes.countByExtentionAndHostidAndOrgi(extno.getExtention() , hostid, orgi) ;
 		if(count == 0){	
 			extentionRes.save(extno) ;
@@ -151,6 +153,8 @@ public class CallCenterExtentionController extends Handler{
 				ext.setDescription(extention.getDescription());
 				
 				ext.setMediapath(extention.getMediapath());
+				
+				ext.setSiptrunk(extention.getSiptrunk());
 				
 				ext.setUpdatetime(new Date());
 				extentionRes.save(ext) ;

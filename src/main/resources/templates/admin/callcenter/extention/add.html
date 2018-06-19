@@ -36,8 +36,8 @@
             	<select id="siptrunk" name="siptrunk">
 					<option value="">请选择...</option>
 					<#if sipTrunkListList??>
-					<#list sipTrunkListList as sipTrunk>
-					<option value="${sipTrunk.name!''}">${simTrunk.name!''}</option>
+					<#list sipTrunkListList as sipTrunkInfo>
+					<option value="${sipTrunkInfo.name!''}">${sipTrunkInfo.name!''}</option>
 					</#list>
 					</#if>
 				</select>    
