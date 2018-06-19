@@ -37,6 +37,8 @@ public class Extention implements java.io.Serializable{
 	private String description ;	//描述信息·
 	private String mediapath ;		//播报工号录音
 	
+	private String siptrunk ;
+	
 	private String orgi;
 	private String creater ;
 	private Date createtime = new Date();
@@ -143,5 +145,10 @@ public class Extention implements java.io.Serializable{
 	public void setMediapath(String mediapath) {
 		this.mediapath = mediapath;
 	}
-	
+	public String getSiptrunk() {
+		return siptrunk;
+	}
+	public void setSiptrunk(String siptrunk) {
+		this.siptrunk = siptrunk;
+	}
 }

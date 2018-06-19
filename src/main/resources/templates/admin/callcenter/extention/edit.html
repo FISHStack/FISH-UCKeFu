@@ -38,6 +38,19 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">绑定SIP网关：</label>
+            <div class="layui-input-inline">
+            	<select id="siptrunk" name="siptrunk">
+					<option value="">请选择...</option>
+					<#if sipTrunkListList??>
+					<#list sipTrunkListList as sipTrunk>
+					<option value="${sipTrunk.name!''}" <#if extention.siptrunk?? && extention.siptrunk == sipTrunk.name>selected="selected"</#if>>${simTrunk.name!''}</option>
+					</#list>
+					</#if>
+				</select>    
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">播报工号：</label>
             <div class="layui-input-inline" style="width:60px;">
                 <input type="checkbox" name="playnum" lay-skin="switch" lay-text="开启|关闭" lay-filter="median_tip"  <#if extention.playnum>checked="checked"</#if>>

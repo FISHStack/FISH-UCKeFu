@@ -17,6 +17,7 @@ import com.ukefu.util.Menu;
 import com.ukefu.webim.service.repository.ExtentionRepository;
 import com.ukefu.webim.service.repository.MediaRepository;
 import com.ukefu.webim.service.repository.PbxHostRepository;
+import com.ukefu.webim.service.repository.SipTrunkRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Extention;
 import com.ukefu.webim.web.model.PbxHost;
@@ -31,6 +32,9 @@ public class CallCenterExtentionController extends Handler{
 	
 	@Autowired
 	private ExtentionRepository extentionRes;
+	
+	@Autowired
+	private SipTrunkRepository sipTrunkRes ;
 	
 	@Autowired
 	private MediaRepository mediaRes ;
@@ -65,6 +69,9 @@ public class CallCenterExtentionController extends Handler{
     @Menu(type = "callcenter" , subtype = "extention" , access = false , admin = true)
     public ModelAndView extentionadd(ModelMap map , HttpServletRequest request , @Valid String hostid) {
 		map.put("pbxHost", pbxHostRes.findByIdAndOrgi(hostid, super.getOrgi(request))) ;
+		
+		map.addAttribute("sipTrunkListList" , sipTrunkRes.findByHostidAndOrgi(hostid, super.getOrgi(request)));
+		
 		map.put("mediaList" , mediaRes.findByHostidAndOrgi(hostid, super.getOrgi(request)));
     	return request(super.createRequestPageTempletResponse("/admin/callcenter/extention/add"));
     }
@@ -121,6 +128,8 @@ public class CallCenterExtentionController extends Handler{
 		map.addAttribute("extention" , extentionRes.findByIdAndOrgi(id, super.getOrgi(request)));
 		map.put("pbxHost", pbxHostRes.findByIdAndOrgi(hostid, super.getOrgi(request))) ;
 		map.put("mediaList" , mediaRes.findByHostidAndOrgi(hostid, super.getOrgi(request)));
+		map.addAttribute("sipTrunkListList" , sipTrunkRes.findByHostidAndOrgi(hostid, super.getOrgi(request)));
+		
     	return request(super.createRequestPageTempletResponse("/admin/callcenter/extention/edit"));
     }
 	
