@@ -40,6 +40,8 @@ public class FormFilterItem  implements java.io.Serializable{
 	
 	private String itemtype ;	//类型， 
 	
+	private String comp ;		//逻辑条件
+	
 	
 	/**
 	 * @return the id
@@ -142,6 +144,15 @@ public class FormFilterItem  implements java.io.Serializable{
 		this.itemtype = itemtype;
 	}
 
+	public String getComp() {
+		return comp;
+	}
+
+
+	public void setComp(String comp) {
+		this.comp = comp;
+	}
+
 
 	public void setId(String id) {
 		this.id = id;
@@ -156,4 +167,6 @@ public class FormFilterItem  implements java.io.Serializable{
 	public void setFormfilterid(String formfilterid) {
 		this.formfilterid = formfilterid;
 	}
+	
+	
 }

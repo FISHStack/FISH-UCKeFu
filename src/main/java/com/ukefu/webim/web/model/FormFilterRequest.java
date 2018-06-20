@@ -4,6 +4,7 @@ public class FormFilterRequest {
 	private String[] field;
 	private String[] cond;
 	private String[] value;
+	private String[] comp ;	
 	
 	public String[] getField() {
 		return field;
@@ -29,4 +30,11 @@ public class FormFilterRequest {
 		this.cond = cond;
 	}
 
+	public String[] getComp() {
+		return comp;
+	}
+
+	public void setComp(String[] comp) {
+		this.comp = comp;
+	}
 }

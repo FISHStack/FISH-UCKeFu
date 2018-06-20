@@ -6,6 +6,7 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import java.util.List;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.springframework.data.domain.PageImpl;
@@ -24,37 +25,58 @@ public class SearchTools {
 		BoolQueryBuilder queryBuilder = new BoolQueryBuilder();
 		queryBuilder.must(termQuery("orgi", orgi)) ;
 		
+		BoolQueryBuilder orBuilder = new BoolQueryBuilder();
+		int orNums = 0 ;
 		for(FormFilterItem formFilterItem : itemList) {
+			QueryBuilder tempQueryBuilder = null ;
 			if(formFilterItem.getField().equals("q")) {
-				queryBuilder.must(new QueryStringQueryBuilder(formFilterItem.getValue()).defaultOperator(Operator.AND)) ;
+				tempQueryBuilder = new QueryStringQueryBuilder(formFilterItem.getValue()).defaultOperator(Operator.AND) ;
 			}else {
 				switch(formFilterItem.getCond()) {
 					case "01" : 
-						queryBuilder.must(rangeQuery(formFilterItem.getField()).from(formFilterItem.getValue()).includeLower(false)) ;
+						tempQueryBuilder = rangeQuery(formFilterItem.getField()).from(formFilterItem.getValue()).includeLower(false) ;
 						break ;
 					case "02" : 
-						queryBuilder.must(rangeQuery(formFilterItem.getField()).from(formFilterItem.getValue()).includeLower(true)) ;
+						tempQueryBuilder = rangeQuery(formFilterItem.getField()).from(formFilterItem.getValue()).includeLower(true) ;
 						break ;
 					case "03" : 
-						queryBuilder.must(rangeQuery(formFilterItem.getField()).to(formFilterItem.getValue()).includeUpper(false)) ;
+						tempQueryBuilder = rangeQuery(formFilterItem.getField()).to(formFilterItem.getValue()).includeUpper(false) ;
 						break ;
 					case "04" : 
-						queryBuilder.must(rangeQuery(formFilterItem.getField()).to(formFilterItem.getValue()).includeUpper(true)) ;
+						tempQueryBuilder = rangeQuery(formFilterItem.getField()).to(formFilterItem.getValue()).includeUpper(true) ;
 						break ;
 					case "05" : 
-						queryBuilder.must(termQuery(formFilterItem.getField() , formFilterItem.getValue())) ;
+						tempQueryBuilder = termQuery(formFilterItem.getField() , formFilterItem.getValue()) ;
 						break ;
 					case "06" : 
-						queryBuilder.mustNot(termQuery(formFilterItem.getField() , formFilterItem.getValue())) ;
+						tempQueryBuilder = termQuery(formFilterItem.getField() , formFilterItem.getValue()) ;
 						break ;
 					case "07" : 
-						queryBuilder.must(new QueryStringQueryBuilder(formFilterItem.getValue()+"*").field(formFilterItem.getField()).defaultOperator(Operator.AND)) ;
+						tempQueryBuilder = new QueryStringQueryBuilder(formFilterItem.getValue()).field(formFilterItem.getField()).defaultOperator(Operator.AND) ;
 						break ;
 					default :
 						break ;
 				}
 			}
+			if("AND".equalsIgnoreCase(formFilterItem.getComp())) {
+				if("06".equals(formFilterItem.getCond())) {
+					queryBuilder.mustNot(tempQueryBuilder) ;
+				}else {
+					queryBuilder.must(tempQueryBuilder) ;
+				}
+			}else {
+				orNums ++ ;
+				if("06".equals(formFilterItem.getCond())) {
+					orBuilder.mustNot(tempQueryBuilder) ;
+				}else {
+					orBuilder.should(tempQueryBuilder) ;
+				}
+			}
 		}
+		if(orNums > 0) {
+			queryBuilder.must(orBuilder) ;
+		}
+		
 		return search(queryBuilder, metadataTable, loadRef, p, ps);
 	}
 	
@@ -64,36 +86,56 @@ public class SearchTools {
 		queryBuilder.must(termQuery("status", UKDataContext.NamesDisStatusType.NOT.toString())) ;
 		queryBuilder.must(termQuery("validresult", "valid")) ;
 		
+		BoolQueryBuilder orBuilder = new BoolQueryBuilder();
+		int orNums = 0 ;
 		for(FormFilterItem formFilterItem : itemList) {
+			QueryBuilder tempQueryBuilder = null ;
 			if(formFilterItem.getField().equals("q")) {
-				queryBuilder.must(new QueryStringQueryBuilder(formFilterItem.getValue()).defaultOperator(Operator.AND)) ;
+				tempQueryBuilder = new QueryStringQueryBuilder(formFilterItem.getValue()).defaultOperator(Operator.AND) ;
 			}else {
 				switch(formFilterItem.getCond()) {
 					case "01" : 
-						queryBuilder.must(rangeQuery(formFilterItem.getField()).from(formFilterItem.getValue())) ;
+						tempQueryBuilder = rangeQuery(formFilterItem.getField()).from(formFilterItem.getValue()).includeLower(false) ;
 						break ;
 					case "02" : 
-						queryBuilder.must(rangeQuery(formFilterItem.getField()).from(formFilterItem.getValue()).includeLower(true)) ;
+						tempQueryBuilder = rangeQuery(formFilterItem.getField()).from(formFilterItem.getValue()).includeLower(true) ;
 						break ;
 					case "03" : 
-						queryBuilder.must(rangeQuery(formFilterItem.getField()).to(formFilterItem.getValue())) ;
+						tempQueryBuilder = rangeQuery(formFilterItem.getField()).to(formFilterItem.getValue()).includeUpper(false) ;
 						break ;
 					case "04" : 
-						queryBuilder.must(rangeQuery(formFilterItem.getField()).to(formFilterItem.getValue()).includeUpper(true)) ;
+						tempQueryBuilder = rangeQuery(formFilterItem.getField()).to(formFilterItem.getValue()).includeUpper(true) ;
 						break ;
 					case "05" : 
-						queryBuilder.must(termQuery(formFilterItem.getField() , formFilterItem.getValue())) ;
+						tempQueryBuilder = termQuery(formFilterItem.getField() , formFilterItem.getValue()) ;
 						break ;
 					case "06" : 
-						queryBuilder.mustNot(termQuery(formFilterItem.getField() , formFilterItem.getValue())) ;
+						tempQueryBuilder = termQuery(formFilterItem.getField() , formFilterItem.getValue()) ;
 						break ;
 					case "07" : 
-						queryBuilder.must(new QueryStringQueryBuilder(formFilterItem.getValue()).field(formFilterItem.getField()).defaultOperator(Operator.AND)) ;
+						tempQueryBuilder = new QueryStringQueryBuilder(formFilterItem.getValue()).field(formFilterItem.getField()).defaultOperator(Operator.AND) ;
 						break ;
 					default :
 						break ;
 				}
 			}
+			if("AND".equalsIgnoreCase(formFilterItem.getComp())) {
+				if("06".equals(formFilterItem.getCond())) {
+					queryBuilder.mustNot(tempQueryBuilder) ;
+				}else {
+					queryBuilder.must(tempQueryBuilder) ;
+				}
+			}else {
+				orNums ++ ;
+				if("06".equals(formFilterItem.getCond())) {
+					orBuilder.mustNot(tempQueryBuilder) ;
+				}else {
+					orBuilder.should(tempQueryBuilder) ;
+				}
+			}
+		}
+		if(orNums > 0) {
+			queryBuilder.must(orBuilder) ;
 		}
 		return search(queryBuilder, metadataTable, false, p, ps);
 	}
