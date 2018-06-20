@@ -170,6 +170,10 @@ CREATE TABLE `uk_act_config` (
 ALTER TABLE uk_callcenter_siptrunk ADD province varchar(20) COMMENT "省份";
 ALTER TABLE uk_callcenter_siptrunk ADD city varchar(20) COMMENT "城市";
 
+ALTER TABLE uk_workorders ADD dataid varchar(50) COMMENT "业务数据ID";
+ALTER TABLE uk_workorders ADD eventid varchar(50) COMMENT "通话ID";
+ALTER TABLE uk_workorders ADD ani varchar(50) COMMENT "主叫号码";
+
 
 CREATE TABLE `uk_act_callnames` (
   `ID` varchar(32) NOT NULL,
