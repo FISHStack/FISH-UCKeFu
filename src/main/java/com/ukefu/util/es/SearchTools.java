@@ -48,7 +48,7 @@ public class SearchTools {
 						queryBuilder.mustNot(termQuery(formFilterItem.getField() , formFilterItem.getValue())) ;
 						break ;
 					case "07" : 
-						queryBuilder.must(new QueryStringQueryBuilder(formFilterItem.getValue()).field(formFilterItem.getField()).defaultOperator(Operator.AND)) ;
+						queryBuilder.must(new QueryStringQueryBuilder(formFilterItem.getValue()+"*").field(formFilterItem.getField()).defaultOperator(Operator.AND)) ;
 						break ;
 					default :
 						break ;
