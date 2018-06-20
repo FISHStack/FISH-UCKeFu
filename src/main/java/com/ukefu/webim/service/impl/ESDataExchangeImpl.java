@@ -122,11 +122,13 @@ public class ESDataExchangeImpl{
 	            .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)  
 	            .setQuery(query)  
 	            .setFrom(0).setSize(10000).setExplain(true).execute().actionGet();  
-	    for(SearchHit hit : response.getHits()){  
-	        String id = hit.getId();  
-	        bulkRequest.add(UKDataContext.getTemplet().getClient().prepareDelete(UKDataContext.SYSTEM_INDEX, type, id).request());  
-	    }  
-	    bulkRequest.get();  
+	    if(response.getHits().getTotalHits() > 0) {
+		    for(SearchHit hit : response.getHits()){  
+		        String id = hit.getId();  
+		        bulkRequest.add(UKDataContext.getTemplet().getClient().prepareDelete(UKDataContext.SYSTEM_INDEX, type, id).request());  
+		    }  
+		    bulkRequest.get();  
+	    }
 	}
 
 	public void deleteById(String type , String id){

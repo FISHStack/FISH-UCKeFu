@@ -108,6 +108,8 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	private boolean impfield = false ;
 	
 	private boolean reffk = false ; 		//是否外键关联
+	
+	private boolean sysfield ; 				//系统字段
 	/**
 	 * @return the id
 	 */
@@ -483,4 +485,11 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	public void setStyletype(String styletype) {
 		this.styletype = styletype;
 	}
+	public boolean isSysfield() {
+		return sysfield;
+	}
+	public void setSysfield(boolean sysfield) {
+		this.sysfield = sysfield;
+	}
+	
 }

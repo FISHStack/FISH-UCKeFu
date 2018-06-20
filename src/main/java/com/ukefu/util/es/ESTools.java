@@ -40,6 +40,8 @@ public class ESTools {
 				builder.field("type", "long").field("index", "not_analyzed") ;
 			}else if(tp.getDatatypename().toLowerCase().equals("datetime")){
 				builder.field("type", "long").field("index", "not_analyzed");
+			}else if(tp.getDatatypename().toLowerCase().equals("long")){
+				builder.field("type", "long").field("index", "not_analyzed");
 			}else if(tp.getDatatypename().toLowerCase().equals("textarea")){
 				builder.field("type", "string").field("index", "analyzed") ;
 			}else if(tp.getDatatypename().toLowerCase().equals("nlp")){

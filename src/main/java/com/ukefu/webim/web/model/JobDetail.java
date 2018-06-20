@@ -76,6 +76,8 @@ public class JobDetail implements Serializable{
 	private boolean pause = false;
 	private boolean plantaskreadtorun = false ;
 	
+	private boolean mapping ;	//是否已经映射数据结构
+	
 
 	private String memo ;		//任务类型，如果是 cubedata , 则在执行完毕后更新cube信息   , 导出任务时改变用处，用于导出是的 导出格式
 	private long fetchSize ;
@@ -791,5 +793,13 @@ public class JobDetail implements Serializable{
 
 	public void setReportid(String reportid) {
 		this.reportid = reportid;
+	}
+
+	public boolean isMapping() {
+		return mapping;
+	}
+
+	public void setMapping(boolean mapping) {
+		this.mapping = mapping;
 	}
 }

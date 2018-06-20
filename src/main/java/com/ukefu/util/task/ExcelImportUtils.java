@@ -22,7 +22,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
-import com.ukefu.util.es.ESTools;
 import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.TableProperties;
 
@@ -83,7 +82,7 @@ public class ExcelImportUtils{
 							if(titleValue.equalsIgnoreCase("id")) {
 								findId = true ;
 							}
-							TableProperties tp  = initProperties("f"+UKTools.genIDByKey(titleValue) , titleValue, "String", event.getOrgi() , event.getTablename()) ;
+							TableProperties tp  = initProperties("f"+UKTools.genIDByKey(titleValue+"String") , titleValue, "String", event.getOrgi() , event.getTablename() , false) ;
 							tp.setViewtype("list,add,edit,detail");
 							metaDataTable.getTableproperty().add(tp) ;
 						}
@@ -91,58 +90,58 @@ public class ExcelImportUtils{
 	        	}
             }
             if(findId == false) {
-				metaDataTable.getTableproperty().add(initProperties("id", "主键", "String", event.getOrgi() , event.getTablename())) ;
+				metaDataTable.getTableproperty().add(initProperties("id", "主键", "String", event.getOrgi() , event.getTablename() , true)) ;
 			}
-			metaDataTable.getTableproperty().add(initProperties("orgi", "租户ID", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("creater", "创建人", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("createtime", "创建时间", "Datetime", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("orgi", "租户ID", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("creater", "创建人", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("createtime", "创建时间", "Datetime", event.getOrgi() , event.getTablename() , true)) ;
 			
-			metaDataTable.getTableproperty().add(initProperties("validresult", "数据状态", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("validmessage", "数据状态", "String", event.getOrgi() , event.getTablename())) ;
-			
-			
-			
-			metaDataTable.getTableproperty().add(initProperties(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, "分配用户", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, "分配部门", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties(UKDataContext.UKEFU_SYSTEM_DIS_TIME, "分配时间", "Datetime", event.getOrgi() , event.getTablename())) ;
-			
-			metaDataTable.getTableproperty().add(initProperties("status", "状态", "String", event.getOrgi() , event.getTablename())) ;
-			
-			metaDataTable.getTableproperty().add(initProperties("process", "处理状态", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("processtime", "处理时间", "Datetime", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("processmemo", "处理备注", "String", event.getOrgi() , event.getTablename())) ;
-			
-			metaDataTable.getTableproperty().add(initProperties("metaid", "元数据", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("actid", "活动ID", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("batid", "批次ID", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("taskid", "任务ID", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("filterid", "任务ID", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("cusid", "客户ID", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("calloutfilid", "筛选记录ID", "String", event.getOrgi() , event.getTablename())) ;
-			
-			metaDataTable.getTableproperty().add(initProperties("execid", "导入记录ID", "String", event.getOrgi() , event.getTablename())) ;
-			
-			metaDataTable.getTableproperty().add(initProperties("callstatus", "拨打状态", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("workstatus", "业务状态", "String", event.getOrgi() , event.getTablename())) ;
-			
-			metaDataTable.getTableproperty().add(initProperties("apstatus", "是否预约", "String", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("aptime", "预约时间", "Date", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("apmemo", "预约备注", "String", event.getOrgi() , event.getTablename())) ;
-			
-			metaDataTable.getTableproperty().add(initProperties("calltime", "拨打时间", "Date", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("firstcalltimes", "首次拨打次数", "Date", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("firstcallstatus", "首次拨打结果", "String", event.getOrgi() , event.getTablename())) ;
-			
-			metaDataTable.getTableproperty().add(initProperties("calltimes", "拨打次数", "number", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties("validresult", "数据状态", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("validmessage", "数据状态", "String", event.getOrgi() , event.getTablename() , true)) ;
 			
 			
 			
-			metaDataTable.getTableproperty().add(initProperties("succcall", "拨打成功次数", "number", event.getOrgi() , event.getTablename())) ;
-			metaDataTable.getTableproperty().add(initProperties("faildcall", "拨打失败次数", "number", event.getOrgi() , event.getTablename())) ;
+			metaDataTable.getTableproperty().add(initProperties(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, "分配用户", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, "分配部门", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties(UKDataContext.UKEFU_SYSTEM_DIS_TIME, "分配时间", "Datetime", event.getOrgi() , event.getTablename() , true)) ;
+			
+			metaDataTable.getTableproperty().add(initProperties("status", "状态", "String", event.getOrgi() , event.getTablename() , true)) ;
+			
+			metaDataTable.getTableproperty().add(initProperties("process", "处理状态", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("processtime", "处理时间", "Datetime", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("processmemo", "处理备注", "String", event.getOrgi() , event.getTablename() , true)) ;
+			
+			metaDataTable.getTableproperty().add(initProperties("metaid", "元数据", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("actid", "活动ID", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("batid", "批次ID", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("taskid", "任务ID", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("filterid", "任务ID", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("cusid", "客户ID", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("calloutfilid", "筛选记录ID", "String", event.getOrgi() , event.getTablename() , true)) ;
+			
+			metaDataTable.getTableproperty().add(initProperties("execid", "导入记录ID", "String", event.getOrgi() , event.getTablename() , true)) ;
+			
+			metaDataTable.getTableproperty().add(initProperties("callstatus", "拨打状态", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("workstatus", "业务状态", "String", event.getOrgi() , event.getTablename() , true)) ;
+			
+			metaDataTable.getTableproperty().add(initProperties("apstatus", "是否预约", "String", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("aptime", "预约时间", "Date", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("apmemo", "预约备注", "String", event.getOrgi() , event.getTablename() , true)) ;
+			
+			metaDataTable.getTableproperty().add(initProperties("calltime", "拨打时间", "Date", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("firstcalltimes", "首次拨打次数", "Date", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("firstcallstatus", "首次拨打结果", "String", event.getOrgi() , event.getTablename() , true)) ;
+			
+			metaDataTable.getTableproperty().add(initProperties("calltimes", "拨打次数", "Long", event.getOrgi() , event.getTablename() , true)) ;
+			
+			
+			
+			metaDataTable.getTableproperty().add(initProperties("succcall", "拨打成功次数", "Long", event.getOrgi() , event.getTablename() , true)) ;
+			metaDataTable.getTableproperty().add(initProperties("faildcall", "拨打失败次数", "Long", event.getOrgi() , event.getTablename() , true)) ;
             /**
-			 * 映射 Mapping
+			 * 映射 Mapping , 已修正，增加了一个手动映射的步骤，上传数据结构以后，允许手动映射
 			 */
-			ESTools.mapping(metaDataTable, UKDataContext.SYSTEM_INDEX);
+			//ESTools.mapping(metaDataTable, UKDataContext.SYSTEM_INDEX);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{
@@ -160,7 +159,7 @@ public class ExcelImportUtils{
     	return metaDataTable;
 	}
 	
-	private TableProperties initProperties(String name ,String title, String type ,String orgi ,String tableName) {
+	private TableProperties initProperties(String name ,String title, String type ,String orgi ,String tableName , boolean sysfield) {
 		TableProperties tablePorperties = new TableProperties(name, type, 255 , tableName) ;
 		tablePorperties.setOrgi(orgi) ;
 		
@@ -169,6 +168,7 @@ public class ExcelImportUtils{
 		tablePorperties.setDatatypename(type);
 		tablePorperties.setName(title);
 		
+		tablePorperties.setSysfield(sysfield);
 		return tablePorperties;
 	}
 	
