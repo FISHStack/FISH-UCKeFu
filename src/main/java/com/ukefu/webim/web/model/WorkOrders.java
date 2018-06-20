@@ -64,6 +64,11 @@ public class WorkOrders extends ESBean implements UKAgg{
 	private String taskid ;
 	private String orderid ;
 	
+	private String dataid ;
+	private String eventid ;
+	
+	private String ani ;
+	
 	private String cate ;	//工单分类
 	
 	private String priority ;	//优先级
@@ -519,5 +524,29 @@ public class WorkOrders extends ESBean implements UKAgg{
 
 	public void setOrderid(String orderid) {
 		this.orderid = orderid;
+	}
+
+	public String getDataid() {
+		return dataid;
+	}
+
+	public void setDataid(String dataid) {
+		this.dataid = dataid;
+	}
+
+	public String getEventid() {
+		return eventid;
+	}
+
+	public void setEventid(String eventid) {
+		this.eventid = eventid;
+	}
+
+	public String getAni() {
+		return ani;
+	}
+
+	public void setAni(String ani) {
+		this.ani = ani;
 	}
 }
