@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ukefu.webim.web.model.CallOutRole;
-import com.ukefu.webim.web.model.Product;
+
 
 public abstract interface CallOutRoleRepository extends JpaRepository<CallOutRole, String> {
 	
