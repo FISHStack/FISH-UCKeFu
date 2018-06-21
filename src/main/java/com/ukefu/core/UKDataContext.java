@@ -33,6 +33,8 @@ public class UKDataContext {
 	public static final String UKEFU_SYSTEM_COOKIES_FLAG = "uk_flagid" ;
 	public static final String UKEFU_SYSTEM_NO_AI_CONFIG = "NOTEXIST" ;
 	
+	public static final String UKEFU_SYSTEM_NO_DAT = "NOTEXIST" ;
+	
 	public static final String SYSTEM_INDEX = "uckefu" ;
 	
 	

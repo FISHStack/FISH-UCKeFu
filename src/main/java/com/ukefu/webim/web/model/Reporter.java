@@ -71,6 +71,8 @@ public class Reporter implements java.io.Serializable{
 	private long start = System.currentTimeMillis() ;
 	private AtomicInteger atompages = new AtomicInteger() ;
 	
+	private String organ;
+	
 	/**
 	 * @return the id
 	 */
@@ -326,4 +328,11 @@ public class Reporter implements java.io.Serializable{
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	public String getOrgan() {
+		return organ;
+	}
+	public void setOrgan(String organ) {
+		this.organ = organ;
+	}
+	
 }

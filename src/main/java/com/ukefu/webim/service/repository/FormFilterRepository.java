@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ukefu.webim.web.model.FormFilter;
+import com.ukefu.webim.web.model.JobDetail;
 
 public abstract interface FormFilterRepository extends JpaRepository<FormFilter, String> {
 	
@@ -17,4 +19,6 @@ public abstract interface FormFilterRepository extends JpaRepository<FormFilter,
 	public abstract Page<FormFilter> findByOrgi(String orgi , Pageable page) ;
 	
 	public abstract List<FormFilter> findByOrgi(String orgi) ;
+	
+	public abstract Page<FormFilter> findAll(Specification<FormFilter> spec, Pageable page) ;
 }
