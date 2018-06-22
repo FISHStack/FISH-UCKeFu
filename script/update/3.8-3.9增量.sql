@@ -249,6 +249,19 @@ ALTER TABLE uk_act_formfilter_item ADD comp varchar(50) COMMENT "逻辑条件";
 
 ALTER TABLE uk_historyreport ADD organ varchar(50) COMMENT "组织机构";
 
+ALTER TABLE uk_xiaoe_config ADD enableother tinyint(4) DEFAULT 0 COMMENT "启用外部机器人";
+ALTER TABLE uk_xiaoe_config ADD otherfirst tinyint(4) DEFAULT 0 COMMENT "外部机器人优先";
+ALTER TABLE uk_xiaoe_config ADD otherurl varchar(255) COMMENT "外部机器人URL";
+ALTER TABLE uk_xiaoe_config ADD otherlogin tinyint(4) DEFAULT 0 COMMENT "外部机器人是否需要登录";
+
+ALTER TABLE uk_xiaoe_config ADD otherappkey varchar(255) COMMENT "外部机器人APPKey";
+ALTER TABLE uk_xiaoe_config ADD otherappsec varchar(255) COMMENT "外部机器人APPSec";
+ALTER TABLE uk_xiaoe_config ADD otherparam text COMMENT "外部机器人参数";
+
+ALTER TABLE uk_xiaoe_config ADD othertempletinput varchar(32) COMMENT "外部机器人提交参数模板";
+ALTER TABLE uk_xiaoe_config ADD othertempletoutput varchar(32) COMMENT "外部机器人回复参数解析模板";
+
+
 
 INSERT INTO `uk_sysdic` (`ID`, `NAME`, `TITLE`, `CODE`, `ORGI`, `CTYPE`, `PARENTID`, `DESCRIPTION`, `MEMO`, `ICONSTR`, `ICONSKIN`, `CATETYPE`, `CREATER`, `CREATETIME`, `UPDATETIME`, `HASCHILD`, `SORTINDEX`, `DICID`, `DEFAULTVALUE`, `DISCODE`, `URL`, `MODULE`, `MLEVEL`, `RULES`, `MENUTYPE`) VALUES ('4028888163ffe467016400f640f30646', '外呼系统', 'pub', 'A11', NULL, 'auth', '402888815d2fe37f015d2fe75cc80002', NULL, NULL, '', NULL, NULL, '4028cac3614cd2f901614cf8be1f0324', '2018-6-15 09:01:35', NULL, 0, 0, '402888815d2fe37f015d2fe75cc80002', 0, 0, '/apps/callout/index.html', 'webim', '1', NULL, 'left');
 INSERT INTO `uk_sysdic` (`ID`, `NAME`, `TITLE`, `CODE`, `ORGI`, `CTYPE`, `PARENTID`, `DESCRIPTION`, `MEMO`, `ICONSTR`, `ICONSKIN`, `CATETYPE`, `CREATER`, `CREATETIME`, `UPDATETIME`, `HASCHILD`, `SORTINDEX`, `DICID`, `DEFAULTVALUE`, `DISCODE`, `URL`, `MODULE`, `MLEVEL`, `RULES`, `MENUTYPE`) VALUES ('4028888163ffe467016400f692c7064b', '坐席监控', 'pub', 'A12', NULL, 'auth', '402888815d2fe37f015d2fe75cc80002', NULL, NULL, '', NULL, NULL, '4028cac3614cd2f901614cf8be1f0324', '2018-6-15 09:01:56', NULL, 0, 0, '402888815d2fe37f015d2fe75cc80002', 0, 0, '/apps/callcenter/service/monitor/allcall.html', 'webim', '1', NULL, 'left');

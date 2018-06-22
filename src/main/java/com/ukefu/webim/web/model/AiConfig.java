@@ -29,6 +29,17 @@ public class AiConfig implements java.io.Serializable{
 	private String welcomemsg ;
 	private String waitmsg ;
 	
+	private boolean enableother ;	//启用外部机器人
+	private boolean otherfirst ;	//外部机器人优先
+	private String otherurl ;		//外部机器人URL
+	private boolean otherlogin;		//需要登录
+	private String otherappkey;		//外部机器人APPKey
+	private String otherappsec;		//外部机器人AppSec
+	private String otherparam ;		//外部机器人参数
+	private String othermethod ;		//外部机器人请求方式  ， GET/POST
+	private String othertempletinput ;	//外部机器人输入格式化模板
+	private String othertempletoutput ;	//外部机器人输出格式化模板
+	
 	private boolean enableask = false;
 	private boolean askfirst = false;
 	private boolean enablescene = false;
@@ -204,5 +215,65 @@ public class AiConfig implements java.io.Serializable{
 	}
 	public void setWaitmsg(String waitmsg) {
 		this.waitmsg = waitmsg;
+	}
+	public boolean isEnableother() {
+		return enableother;
+	}
+	public void setEnableother(boolean enableother) {
+		this.enableother = enableother;
+	}
+	public boolean isOtherfirst() {
+		return otherfirst;
+	}
+	public void setOtherfirst(boolean otherfirst) {
+		this.otherfirst = otherfirst;
+	}
+	public String getOtherurl() {
+		return otherurl;
+	}
+	public void setOtherurl(String otherurl) {
+		this.otherurl = otherurl;
+	}
+	public boolean isOtherlogin() {
+		return otherlogin;
+	}
+	public void setOtherlogin(boolean otherlogin) {
+		this.otherlogin = otherlogin;
+	}
+	public String getOtherappkey() {
+		return otherappkey;
+	}
+	public void setOtherappkey(String otherappkey) {
+		this.otherappkey = otherappkey;
+	}
+	public String getOtherappsec() {
+		return otherappsec;
+	}
+	public void setOtherappsec(String otherappsec) {
+		this.otherappsec = otherappsec;
+	}
+	public String getOtherparam() {
+		return otherparam;
+	}
+	public void setOtherparam(String otherparam) {
+		this.otherparam = otherparam;
+	}
+	public String getOthermethod() {
+		return othermethod;
+	}
+	public void setOthermethod(String othermethod) {
+		this.othermethod = othermethod;
+	}
+	public String getOthertempletinput() {
+		return othertempletinput;
+	}
+	public void setOthertempletinput(String othertempletinput) {
+		this.othertempletinput = othertempletinput;
+	}
+	public String getOthertempletoutput() {
+		return othertempletoutput;
+	}
+	public void setOthertempletoutput(String othertempletoutput) {
+		this.othertempletoutput = othertempletoutput;
 	}
 }
