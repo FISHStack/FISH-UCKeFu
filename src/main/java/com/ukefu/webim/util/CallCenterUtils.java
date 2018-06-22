@@ -1,16 +1,40 @@
 package com.ukefu.webim.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaBuilder.In;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.ui.ModelMap;
+
+import com.ukefu.core.UKDataContext;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.CallOutRoleRepository;
+import com.ukefu.webim.service.repository.CallOutTaskRepository;
 import com.ukefu.webim.service.repository.ExtentionRepository;
+import com.ukefu.webim.service.repository.FormFilterRepository;
+import com.ukefu.webim.service.repository.JobDetailRepository;
+import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.SipTrunkRepository;
+import com.ukefu.webim.service.repository.UserRepository;
+import com.ukefu.webim.service.repository.UserRoleRepository;
+import com.ukefu.webim.web.model.CallOutRole;
 import com.ukefu.webim.web.model.Extention;
+import com.ukefu.webim.web.model.FormFilter;
+import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.SipTrunk;
+import com.ukefu.webim.web.model.User;
+import com.ukefu.webim.web.model.UserRole;
 
 public class CallCenterUtils {
+	
 	/**
 	 * 
 	 * @param user
@@ -41,5 +65,138 @@ public class CallCenterUtils {
 			}
 		}
 		return sipTrunk;
+	}
+	
+	public static List<String> getAuthOrgan(UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes,User user){
+		List<UserRole> userRole = userRoleRes.findByOrgiAndUser(user.getOrgi(), user);
+		ArrayList<String> organList = new ArrayList<String>();
+		if (userRole.size() > 0) {
+			for (UserRole userTemp : userRole) {
+				CallOutRole roleOrgan = callOutRoleRes.findByOrgiAndRoleid(user.getOrgi(),
+						userTemp.getRole().getId());
+				if (roleOrgan != null) {
+					if (!StringUtils.isBlank(roleOrgan.getOrganid())) {
+						String[] organ = roleOrgan.getOrganid().split(",");
+						for (int i = 0; i < organ.length; i++) {
+							organList.add(organ[i]);
+						}
+						
+					}
+				}
+			}
+		}
+		
+		if(user!=null && !StringUtils.isBlank(user.getOrgan())) {
+			organList.add(user.getOrgan()) ;
+		}
+		return organList ;
+	}
+	
+	public static List<JobDetail> getBatchList(JobDetailRepository batchRes,UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes, final User user){
+		
+		final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
+		List<JobDetail> batchList = batchRes.findAll(new Specification<JobDetail>(){
+			@Override
+			public Predicate toPredicate(Root<JobDetail> root, CriteriaQuery<?> query,
+					CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<Predicate>();  
+				In<Object> in = cb.in(root.get("organ"));
+				
+				list.add(cb.equal(root.get("orgi").as(String.class), user.getOrgi()));
+				list.add(cb.equal(root.get("tasktype").as(String.class), UKDataContext.TaskType.BATCH.toString()));
+				
+				if(organList.size() > 0){
+					
+					for(String id : organList){
+						in.value(id) ;
+					}
+				}else{
+					in.value(UKDataContext.UKEFU_SYSTEM_NO_DAT) ;
+				}
+				list.add(in) ;
+				
+				Predicate[] p = new Predicate[list.size()];  
+				return cb.and(list.toArray(p));   
+			}});
+		
+		return batchList;
+	}
+	
+	public static List<FormFilter> getFormFilterList(FormFilterRepository filterRes,UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes, final User user){
+		
+		final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
+		List<FormFilter> formFilterList = filterRes.findAll(new Specification<FormFilter>(){
+			@Override
+			public Predicate toPredicate(Root<FormFilter> root, CriteriaQuery<?> query,
+					CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<Predicate>();  
+				In<Object> in = cb.in(root.get("organ"));
+				
+				list.add(cb.equal(root.get("orgi").as(String.class), user.getOrgi()));
+				
+				if(organList.size() > 0){
+					
+					for(String id : organList){
+						in.value(id) ;
+					}
+				}else{
+					in.value(UKDataContext.UKEFU_SYSTEM_NO_DAT) ;
+				}
+				list.add(in) ;
+				
+				Predicate[] p = new Predicate[list.size()];  
+				return cb.and(list.toArray(p));   
+			}});
+		
+		return formFilterList;
+	}
+
+	
+	
+	public static List<JobDetail> getActivityList(JobDetailRepository batchRes,UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes,final User user){
+		
+		final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
+		List<JobDetail> activityList = batchRes.findAll(new Specification<JobDetail>(){
+			@Override
+			public Predicate toPredicate(Root<JobDetail> root, CriteriaQuery<?> query,
+					CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<Predicate>();  
+				In<Object> in = cb.in(root.get("organ"));
+				
+				list.add(cb.equal(root.get("orgi").as(String.class), user.getOrgi()));
+				list.add(cb.equal(root.get("tasktype").as(String.class), UKDataContext.TaskType.ACTIVE.toString()));
+				
+				if(organList.size() > 0){
+					
+					for(String id : organList){
+						in.value(id) ;
+					}
+				}else{
+					in.value(UKDataContext.UKEFU_SYSTEM_NO_DAT) ;
+				}
+				list.add(in) ;
+				
+				Predicate[] p = new Predicate[list.size()];  
+				return cb.and(list.toArray(p));   
+			}});
+		
+		return activityList;
+	}
+	
+	public static void getAllCallOutList(ModelMap map, User user,String ownerdept, String actid){
+		JobDetailRepository batchRes = UKDataContext.getContext().getBean(JobDetailRepository.class) ;
+		UserRoleRepository userRoleRes = UKDataContext.getContext().getBean(UserRoleRepository.class) ;
+		CallOutRoleRepository callOutRoleRes = UKDataContext.getContext().getBean(CallOutRoleRepository.class) ;
+		FormFilterRepository filterRes = UKDataContext.getContext().getBean(FormFilterRepository.class) ;
+		OrganRepository organRes = UKDataContext.getContext().getBean(OrganRepository.class) ;
+		
+		map.put("batchList", CallCenterUtils.getBatchList(batchRes, userRoleRes, callOutRoleRes,user));
+		map.put("activityList", CallCenterUtils.getActivityList(batchRes,userRoleRes, callOutRoleRes,user));
+		map.put("formFilterList", CallCenterUtils.getFormFilterList(filterRes,userRoleRes, callOutRoleRes,user));
+		
+		map.addAttribute("userList",UKDataContext.getContext().getBean(UserRepository.class).findByOrganAndDatastatusAndOrgi(ownerdept, false, user.getOrgi()));
+		map.addAttribute("skillList", organRes.findAll(CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user)));
+		map.put("taskList",UKDataContext.getContext().getBean(CallOutTaskRepository.class).findByActidAndOrgi(actid, user.getOrgi()));
+		
 	}
 }

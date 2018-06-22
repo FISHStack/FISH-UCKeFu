@@ -21,4 +21,6 @@ public abstract interface FormFilterRepository extends JpaRepository<FormFilter,
 	public abstract List<FormFilter> findByOrgi(String orgi) ;
 	
 	public abstract Page<FormFilter> findAll(Specification<FormFilter> spec, Pageable page) ;
+	
+	public abstract List<FormFilter> findAll(Specification<FormFilter> spec) ;
 }

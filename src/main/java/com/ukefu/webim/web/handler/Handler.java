@@ -6,6 +6,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,6 +21,10 @@ import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -33,8 +42,11 @@ import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.TenantRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
+import com.ukefu.webim.util.CallCenterUtils;
 import com.ukefu.webim.web.handler.api.rest.QueryParams;
 import com.ukefu.webim.web.model.CallOutRole;
+import com.ukefu.webim.web.model.FormFilter;
+import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.Tenant;
 import com.ukefu.webim.web.model.User;
@@ -219,17 +231,7 @@ public class Handler {
 			queryBuilder.must(termQuery("status", request.getParameter("status"))) ;
 			map.put("status", request.getParameter("status")) ;
 		}
-		
-		map.put("batchList", UKDataContext.getContext().getBean(JobDetailRepository.class).findByTasktypeAndOrgi(UKDataContext.TaskType.BATCH.toString(), this.getOrgi(request)));
-		map.put("activityList", UKDataContext.getContext().getBean(JobDetailRepository.class).findByTasktypeAndOrgi(UKDataContext.TaskType.ACTIVE.toString(), this.getOrgi(request)));
-		map.put("formFilterList", UKDataContext.getContext().getBean(FormFilterRepository.class).findByOrgi(this.getOrgi(request)));
-		
-		map.addAttribute("userList",UKDataContext.getContext().getBean(UserRepository.class).findByOrganAndDatastatusAndOrgi(request.getParameter("ownerdept"), false, this.getOrgi(request)));
-		map.addAttribute("skillList",UKDataContext.getContext().getBean(OrganRepository.class).findByOrgi(this.getOrgi(request)));
-		
-		map.put("taskList",UKDataContext.getContext().getBean(CallOutTaskRepository.class).findByActidAndOrgi(request.getParameter("actid"), this.getOrgi(request)));
-		
-		
+
 		return queryBuilder ;
 	}
 	
@@ -255,30 +257,6 @@ public class Handler {
 	}
 	
 	
-	protected List<String> getAuthOrgan(UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes, HttpServletRequest request){
-		List<UserRole> userRole = userRoleRes.findByOrgiAndUser(this.getOrgi(request), this.getUser(request));
-		ArrayList<String> organList = new ArrayList<String>();
-		if (userRole.size() > 0) {
-			for (UserRole user : userRole) {
-				CallOutRole roleOrgan = callOutRoleRes.findByOrgiAndRoleid(this.getOrgi(request),
-						user.getRole().getId());
-				if (roleOrgan != null) {
-					if (!StringUtils.isBlank(roleOrgan.getOrganid())) {
-						String[] organ = roleOrgan.getOrganid().split(",");
-						for (int i = 0; i < organ.length; i++) {
-							organList.add(organ[i]);
-						}
-						
-					}
-				}
-			}
-		}
-		
-		if(this.getUser(request)!=null && !StringUtils.isBlank(this.getUser(request).getOrgan())) {
-			organList.add(this.getUser(request).getOrgan()) ;
-		}
-		return organList ;
-	}
 	
 	public void setUser(HttpServletRequest request , User user){
 		request.getSession(true).removeAttribute(UKDataContext.USER_SESSION_NAME) ;

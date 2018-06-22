@@ -24,4 +24,8 @@ public abstract interface JobDetailRepository extends JpaRepository<JobDetail, S
 	public abstract Page<JobDetail> findByPlantaskAndTaskstatusAndNextfiretimeLessThan(boolean plantask ,String taskstatus,Date time , Pageable page) ;
 	
 	public abstract Page<JobDetail> findAll(Specification<JobDetail> spec, Pageable page) ;
+	
+	public abstract List<JobDetail> findAll(Specification<JobDetail> spec) ;
+	
+	public abstract List<JobDetail> findByOrgiAndTasktypeAndOrganLike(String orgi, String tasktype, String organ);
 }
