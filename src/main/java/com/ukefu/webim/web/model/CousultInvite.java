@@ -113,6 +113,8 @@ public class CousultInvite implements java.io.Serializable{
 	private boolean consult_info_resion;	//填写咨询问题
 	private String consult_info_message;	//咨询窗口显示的欢迎语
 	
+	private String agentshortcutkey ;		//坐席回复快捷键
+	private String usershortcutkey  ;		//访客快捷键
 	
 	private boolean ai ;		//是否启用 AI
 	private boolean aifirst ;	//AI优先接入
@@ -684,5 +686,16 @@ public class CousultInvite implements java.io.Serializable{
 	public void setMaxwordsnum(int maxwordsnum) {
 		this.maxwordsnum = maxwordsnum;
 	}
-	
+	public String getAgentshortcutkey() {
+		return agentshortcutkey;
+	}
+	public void setAgentshortcutkey(String agentshortcutkey) {
+		this.agentshortcutkey = agentshortcutkey;
+	}
+	public String getUsershortcutkey() {
+		return usershortcutkey;
+	}
+	public void setUsershortcutkey(String usershortcutkey) {
+		this.usershortcutkey = usershortcutkey;
+	}
 }

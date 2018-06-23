@@ -41,6 +41,8 @@ public class UKDataContext {
 	public static final String UKEFU_SYSTEM_CALLCENTER = "callcenter";
 	public static final String UKEFU_SYSTEM_WORKORDEREMAIL = "workordermail";
 	public static final String UKEFU_SYSTEM_SMSEMAIL = "callcenter";
+	public static final String UKEFU_SYSTEM_AI_INPUT = "inputparam";
+	public static final String UKEFU_SYSTEM_AI_OUTPUT = "outputparam";
 	
 	public static final String UKEFU_SYSTEM_INFOACQ = "infoacq";		//数据采集模式
 	public static final String GUEST_USER_ID_CODE = "R3GUESTUSEKEY" ;
