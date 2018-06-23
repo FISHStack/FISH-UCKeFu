@@ -254,12 +254,18 @@ ALTER TABLE uk_xiaoe_config ADD otherfirst tinyint(4) DEFAULT 0 COMMENT "外部�
 ALTER TABLE uk_xiaoe_config ADD otherurl varchar(255) COMMENT "外部机器人URL";
 ALTER TABLE uk_xiaoe_config ADD otherlogin tinyint(4) DEFAULT 0 COMMENT "外部机器人是否需要登录";
 
+ALTER TABLE uk_xiaoe_config ADD othermethod varchar(20) COMMENT "外部机器人提交方式";
+
 ALTER TABLE uk_xiaoe_config ADD otherappkey varchar(255) COMMENT "外部机器人APPKey";
 ALTER TABLE uk_xiaoe_config ADD otherappsec varchar(255) COMMENT "外部机器人APPSec";
 ALTER TABLE uk_xiaoe_config ADD otherparam text COMMENT "外部机器人参数";
 
 ALTER TABLE uk_xiaoe_config ADD othertempletinput varchar(32) COMMENT "外部机器人提交参数模板";
 ALTER TABLE uk_xiaoe_config ADD othertempletoutput varchar(32) COMMENT "外部机器人回复参数解析模板";
+
+
+ALTER TABLE uk_consult_invite ADD agentshortcutkey varchar(32) COMMENT "坐席默认回复消息快捷键";
+ALTER TABLE uk_consult_invite ADD usershortcutkey varchar(32) COMMENT "访客默认回复消息快捷键";
 
 
 
