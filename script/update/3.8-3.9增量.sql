@@ -251,6 +251,7 @@ ALTER TABLE uk_historyreport ADD organ varchar(50) COMMENT "组织机构";
 
 ALTER TABLE uk_xiaoe_config ADD enableother tinyint(4) DEFAULT 0 COMMENT "启用外部机器人";
 ALTER TABLE uk_xiaoe_config ADD otherfirst tinyint(4) DEFAULT 0 COMMENT "外部机器人优先";
+ALTER TABLE uk_xiaoe_config ADD otherssl tinyint(4) DEFAULT 0 COMMENT "外部机器人启用SSL";
 ALTER TABLE uk_xiaoe_config ADD otherurl varchar(255) COMMENT "外部机器人URL";
 ALTER TABLE uk_xiaoe_config ADD otherlogin tinyint(4) DEFAULT 0 COMMENT "外部机器人是否需要登录";
 
