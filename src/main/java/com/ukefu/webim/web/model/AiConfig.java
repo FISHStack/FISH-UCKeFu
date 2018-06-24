@@ -32,6 +32,7 @@ public class AiConfig implements java.io.Serializable{
 	private boolean enableother ;	//启用外部机器人
 	private boolean otherfirst ;	//外部机器人优先
 	private String otherurl ;		//外部机器人URL
+	private boolean otherssl ;		//外部机器人启用SSL
 	private boolean otherlogin;		//需要登录
 	private String otherappkey;		//外部机器人APPKey
 	private String otherappsec;		//外部机器人AppSec
@@ -276,4 +277,11 @@ public class AiConfig implements java.io.Serializable{
 	public void setOthertempletoutput(String othertempletoutput) {
 		this.othertempletoutput = othertempletoutput;
 	}
+	public boolean isOtherssl() {
+		return otherssl;
+	}
+	public void setOtherssl(boolean otherssl) {
+		this.otherssl = otherssl;
+	}
+	
 }

@@ -89,6 +89,9 @@ public class UserInterceptorHandler extends HandlerInterceptorAdapter {
 				view.addObject("msg", arg0.getParameter("msg")) ;
 			}
 			view.addObject("uKeFuDic", UKeFuDic.getInstance()) ;	//处理系统 字典数据 ， 通过 字典code 获取
+			
+			view.addObject("uKeFuSecField", CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.UKEFU_SYSTEM_SECFIELD, UKDataContext.SYSTEM_ORGI)) ;	//处理系统 需要隐藏号码的字段， 启动的时候加载
+			
 			SystemConfig systemConfig = (SystemConfig) CacheHelper.getSystemCacheBean().getCacheObject("systemConfig", UKDataContext.SYSTEM_ORGI) ; 
 			if(systemConfig != null){
 				view.addObject("systemConfig", systemConfig)  ;

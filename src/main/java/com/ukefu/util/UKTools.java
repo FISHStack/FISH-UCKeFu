@@ -79,6 +79,7 @@ import com.ukefu.webim.service.repository.AttachmentRepository;
 import com.ukefu.webim.service.repository.SecretRepository;
 import com.ukefu.webim.service.repository.SystemConfigRepository;
 import com.ukefu.webim.service.repository.SystemMessageRepository;
+import com.ukefu.webim.service.repository.TablePropertiesRepository;
 import com.ukefu.webim.service.repository.TemplateRepository;
 import com.ukefu.webim.web.model.AdType;
 import com.ukefu.webim.web.model.AttachmentFile;
@@ -88,6 +89,7 @@ import com.ukefu.webim.web.model.Secret;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.SystemMessage;
+import com.ukefu.webim.web.model.TableProperties;
 import com.ukefu.webim.web.model.Template;
 import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
@@ -919,8 +921,16 @@ public class UKTools {
 		}
 		return systemConfig;
 	}
-	
-	
+	/**
+	 * 初始化呼叫中心功能里需要隐藏号码的字段
+	 * @param tpRes
+	 */
+	public static void initSystemSecField(TablePropertiesRepository tpRes) {
+		if(tpRes!= null) {
+			List<TableProperties> tpList = tpRes.findBySecfield(true) ;
+			CacheHelper.getSystemCacheBean().put(UKDataContext.UKEFU_SYSTEM_SECFIELD, tpList, UKDataContext.SYSTEM_ORGI) ;
+		}
+	}
 	/**
 	 * 获取系统地区配置
 	 * @return

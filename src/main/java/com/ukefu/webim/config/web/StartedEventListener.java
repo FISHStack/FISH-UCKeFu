@@ -17,6 +17,7 @@ import com.ukefu.webim.service.repository.BlackListRepository;
 import com.ukefu.webim.service.repository.GenerationRepository;
 import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.SystemConfigRepository;
+import com.ukefu.webim.service.repository.TablePropertiesRepository;
 import com.ukefu.webim.web.model.BlackEntity;
 import com.ukefu.webim.web.model.Generation;
 import com.ukefu.webim.web.model.SysDic;
@@ -76,6 +77,7 @@ public class StartedEventListener implements ApplicationListener<ContextRefreshe
     	
     	UKTools.initSystemArea();
     	
+    	UKTools.initSystemSecField(event.getApplicationContext().getBean(TablePropertiesRepository.class));
     	//UKTools.initAdv();//初始化广告位
     }
 }

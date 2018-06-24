@@ -3,14 +3,7 @@ package com.ukefu.webim.web.handler;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,10 +14,6 @@ import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder.Operator;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -34,23 +23,11 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.UKView;
 import com.ukefu.webim.service.cache.CacheHelper;
-import com.ukefu.webim.service.repository.CallOutRoleRepository;
-import com.ukefu.webim.service.repository.CallOutTaskRepository;
-import com.ukefu.webim.service.repository.FormFilterRepository;
-import com.ukefu.webim.service.repository.JobDetailRepository;
-import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.TenantRepository;
-import com.ukefu.webim.service.repository.UserRepository;
-import com.ukefu.webim.service.repository.UserRoleRepository;
-import com.ukefu.webim.util.CallCenterUtils;
 import com.ukefu.webim.web.handler.api.rest.QueryParams;
-import com.ukefu.webim.web.model.CallOutRole;
-import com.ukefu.webim.web.model.FormFilter;
-import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.Tenant;
 import com.ukefu.webim.web.model.User;
-import com.ukefu.webim.web.model.UserRole;
 
 
 @Controller

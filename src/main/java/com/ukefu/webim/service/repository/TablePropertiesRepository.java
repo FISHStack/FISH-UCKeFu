@@ -14,5 +14,7 @@ public abstract interface TablePropertiesRepository extends JpaRepository<TableP
 	
 	public abstract List<TableProperties> findByTablename(String tablename) ;
 	
+	public abstract List<TableProperties> findBySecfield(boolean secfield) ;
+	
 	public abstract TableProperties findByTablenameAndFieldname(String tablename,String fieldname) ;
 }
