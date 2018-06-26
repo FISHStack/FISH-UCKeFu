@@ -321,7 +321,7 @@ public class WebIMTask {
 		}
 	}
 	
-	@Scheduled(fixedDelay= 3000) // 每三秒 , 加载 标记为执行中的任务何 即将执行的 计划任务
+	@Scheduled(fixedDelay= 3000 , initialDelay = 20000) // 每三秒 , 加载 标记为执行中的任务何 即将执行的 计划任务
     public void callOut() {
 		if(UKDataContext.model.get("sales")!=null) {
 			/**

@@ -77,7 +77,7 @@ public class ActivityResource extends Resource{
 			if(formFilter!=null && !StringUtils.isBlank(formFilter.getFiltertype())) {
 				if(formFilter.getFiltertype().equals(UKDataContext.FormFilterTypeEnum.BATCH.toString())) {
 					batch = batchRes.findByIdAndOrgi(formFilter.getBatid(), this.jobDetail.getOrgi()) ;
-					if(!StringUtils.isBlank(batch.getActid())) {
+					if(batch!=null && !StringUtils.isBlank(batch.getActid())) {
 						metadataTable = metadataRes.findByTablename(batch.getActid()) ;
 					}
 				}else {	//业务表
@@ -155,7 +155,9 @@ public class ActivityResource extends Resource{
 
 	@Override
 	public void end(boolean clear) throws Exception {
-		this.batchDataProcess.end();
+		if(this.atomInt.intValue() > 0) {
+			this.batchDataProcess.end();
+		}
 		//doNothing
 		/**
 		 * FormFilter的执行信息更新，执行次数
@@ -277,7 +279,7 @@ public class ActivityResource extends Resource{
 	@Override
 	public OutputTextFormat next() throws Exception {
 		OutputTextFormat outputTextFormat = null;
-		if(this.dataList!=null) {
+		if(this.dataList!=null && this.current!=null) {
 			synchronized (this.dataList) {
 				if(atomInt.intValue() < this.dataList.getContent().size()) {
 					if(this.isRecovery()) {

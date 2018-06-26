@@ -41,6 +41,9 @@ public class AiConfig implements java.io.Serializable{
 	private String othertempletinput ;	//外部机器人输入格式化模板
 	private String othertempletoutput ;	//外部机器人输出格式化模板
 	
+	private boolean enablesuggest ;		//启用推荐
+	private String suggestmsg ;			//推荐的提示消息
+	
 	private boolean enableask = false;
 	private boolean askfirst = false;
 	private boolean enablescene = false;
@@ -283,5 +286,16 @@ public class AiConfig implements java.io.Serializable{
 	public void setOtherssl(boolean otherssl) {
 		this.otherssl = otherssl;
 	}
-	
+	public boolean isEnablesuggest() {
+		return enablesuggest;
+	}
+	public void setEnablesuggest(boolean enablesuggest) {
+		this.enablesuggest = enablesuggest;
+	}
+	public String getSuggestmsg() {
+		return suggestmsg;
+	}
+	public void setSuggestmsg(String suggestmsg) {
+		this.suggestmsg = suggestmsg;
+	}
 }

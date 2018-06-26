@@ -268,6 +268,9 @@ ALTER TABLE uk_xiaoe_config ADD othertempletoutput varchar(32) COMMENT "外部�
 ALTER TABLE uk_consult_invite ADD agentshortcutkey varchar(32) COMMENT "坐席默认回复消息快捷键";
 ALTER TABLE uk_consult_invite ADD usershortcutkey varchar(32) COMMENT "访客默认回复消息快捷键";
 
+ALTER TABLE uk_xiaoe_config ADD enablesuggest tinyint(4) DEFAULT 0 COMMENT "启用推荐功能";
+ALTER TABLE uk_xiaoe_config ADD suggestmsg text COMMENT "推荐的提示信息";
+ALTER TABLE uk_chat_message ADD suggestmsg text COMMENT "推荐的提示信息";
 
 
 INSERT INTO `uk_sysdic` (`ID`, `NAME`, `TITLE`, `CODE`, `ORGI`, `CTYPE`, `PARENTID`, `DESCRIPTION`, `MEMO`, `ICONSTR`, `ICONSKIN`, `CATETYPE`, `CREATER`, `CREATETIME`, `UPDATETIME`, `HASCHILD`, `SORTINDEX`, `DICID`, `DEFAULTVALUE`, `DISCODE`, `URL`, `MODULE`, `MLEVEL`, `RULES`, `MENUTYPE`) VALUES ('4028888163ffe467016400f640f30646', '外呼系统', 'pub', 'A11', NULL, 'auth', '402888815d2fe37f015d2fe75cc80002', NULL, NULL, '', NULL, NULL, '4028cac3614cd2f901614cf8be1f0324', '2018-6-15 09:01:35', NULL, 0, 0, '402888815d2fe37f015d2fe75cc80002', 0, 0, '/apps/callout/index.html', 'webim', '1', NULL, 'left');

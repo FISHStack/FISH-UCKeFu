@@ -79,7 +79,8 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	
 	private int duration ;	//音频时长
 	
-	private String scale ;		//地图级别
+	private String scale ;		//地图级别 
+	private String suggestmsg ;	//推荐消息
 	
 	private int tokenum ; 	//当前未读消息数量
 	private String agentuser ;	
@@ -382,5 +383,11 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	}
 	public void setExpmsg(String expmsg) {
 		this.expmsg = expmsg;
+	}
+	public String getSuggestmsg() {
+		return suggestmsg;
+	}
+	public void setSuggestmsg(String suggestmsg) {
+		this.suggestmsg = suggestmsg;
 	}
 }

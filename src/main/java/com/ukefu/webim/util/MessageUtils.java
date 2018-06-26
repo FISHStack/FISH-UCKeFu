@@ -12,6 +12,7 @@ import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.util.server.message.ChatMessage;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.AgentUserTask;
+import com.ukefu.webim.web.model.AiUser;
 import com.ukefu.webim.web.model.MessageOutContent;
 
 public class MessageUtils {
@@ -44,21 +45,25 @@ public class MessageUtils {
 		if(agentUser != null){
 			data.setUserid(agentUser.getUserid());
 			data.setUsername(agentUser.getUsername());
-			
-			data.setFilesize(length);
-			data.setFilename(name);
-			data.setAttachmentid(attachid);
-			
 			data.setTouser(agentUser.getAgentno());
 			data.setAppid(agentUser.getAppid());
-			data.setOrgi(agentUser.getOrgi());
-			data.setMessage(message);
-			
-			data.setMsgtype(msgtype);
-			
-			data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
-			createMessage(data, msgtype, userid);
+		}else {
+			AiUser aiUser = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(userid,UKDataContext.SYSTEM_ORGI) ;
+			data.setUserid(userid);
+			data.setAppid(aiUser.getAppid());
+			data.setUsername(aiUser.getUsername());
 		}
+		data.setFilesize(length);
+		data.setFilename(name);
+		data.setAttachmentid(attachid);
+		
+		data.setOrgi(agentUser.getOrgi());
+		data.setMessage(message);
+		
+		data.setMsgtype(msgtype);
+		
+		data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
+		createMessage(data, msgtype, userid);
 		return data ;
 	}
 	

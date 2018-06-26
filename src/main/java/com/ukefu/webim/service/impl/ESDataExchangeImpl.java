@@ -355,9 +355,11 @@ public class ESDataExchangeImpl{
 						dataBean.getValues().put("total", entry.getDocCount()) ;
 						
 						for (Aggregation temp : entry.getAggregations()) {
-							StringTerms agg2  = (StringTerms) temp ;
-							for (Terms.Bucket entry2 : agg2.getBuckets()) {
-								dataBean.getValues().put(temp.getName()+"."+entry2.getKeyAsString(), entry2.getDocCount()) ;
+							if(temp instanceof StringTerms) {
+								StringTerms agg2  = (StringTerms) temp ;
+								for (Terms.Bucket entry2 : agg2.getBuckets()) {
+									dataBean.getValues().put(temp.getName()+"."+entry2.getKeyAsString(), entry2.getDocCount()) ;
+								}
 							}
 						}
 						dataBeanList.add(dataBean) ;
