@@ -1,6 +1,7 @@
 package com.ukefu.webim.util;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -8,7 +9,6 @@ import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.CallAgentRepository;
 import com.ukefu.webim.service.repository.CallOutRoleRepository;
 import com.ukefu.webim.service.repository.CallOutTaskRepository;
 import com.ukefu.webim.service.repository.ExtentionRepository;
@@ -25,6 +26,7 @@ import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.SipTrunkRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
+import com.ukefu.webim.web.model.CallAgent;
 import com.ukefu.webim.web.model.CallOutRole;
 import com.ukefu.webim.web.model.Extention;
 import com.ukefu.webim.web.model.FormFilter;
@@ -198,5 +200,21 @@ public class CallCenterUtils {
 		map.addAttribute("skillList", organRes.findAll(CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user)));
 		map.put("taskList",UKDataContext.getContext().getBean(CallOutTaskRepository.class).findByActidAndOrgi(actid, user.getOrgi()));
 		
+	}
+	
+	public static void getNamenum(ModelMap map,String activityid,User user){
+		
+		CallAgentRepository callAgentRes = UKDataContext.getContext().getBean(CallAgentRepository.class);
+		
+		List<CallAgent> actList = callAgentRes.findByOrgiAndActid(user.getOrgi(), activityid);
+    	int namenum = 0;
+    	if(actList.size() > 0 ){
+    		for(CallAgent callAgent : actList){
+    			if(callAgent.getDisnum() > 0){
+    				namenum = namenum + callAgent.getDisnum();
+    			}
+    		}
+    	}
+    	map.put("namenum", namenum);
 	}
 }
