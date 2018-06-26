@@ -290,6 +290,7 @@ public class ExcelImportProecess extends DataProcess{
 					batch.setValidnum(batch.getValidnum() + (pages.intValue() - errors.intValue()));
 					batch.setInvalidnum(batch.getInvalidnum() + errors.intValue());
 					batch.setExecnum(batch.getExecnum() + 1);
+					batch.setNotassigned(batch.getNotassigned() + (pages.intValue() - errors.intValue()));
 					batchRes.save(batch) ;
 				}
 			}
