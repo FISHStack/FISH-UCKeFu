@@ -141,7 +141,6 @@ public class HttpClientUtil {
             }  
             httpPost.setEntity(new UrlEncodedFormEntity(pairList, Charset.forName("UTF-8")));  
             response = httpClient.execute(httpPost);  
-            System.out.println(response.toString());  
             HttpEntity entity = response.getEntity();  
             httpStr = EntityUtils.toString(entity, "UTF-8");  
         } catch (IOException e) {  
@@ -179,7 +178,6 @@ public class HttpClientUtil {
             httpPost.setEntity(stringEntity);  
             response = httpClient.execute(httpPost);  
             HttpEntity entity = response.getEntity();  
-            System.out.println(response.getStatusLine().getStatusCode());  
             httpStr = EntityUtils.toString(entity, "UTF-8");  
         } catch (IOException e) {  
             e.printStackTrace();  

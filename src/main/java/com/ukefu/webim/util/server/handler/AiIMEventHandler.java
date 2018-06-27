@@ -74,7 +74,7 @@ public class AiIMEventHandler
 				
 				InetSocketAddress address = (InetSocketAddress) client.getRemoteAddress()  ;
 				String ip = UKTools.getIpAddr(client.getHandshakeData().getHttpHeaders(), address.getHostString()) ;
-				AiUser aiUser = new AiUser(UKTools.getContextID(client.getSessionId().toString()), user, System.currentTimeMillis() , orgi,IPTools.getInstance().findGeography(ip)) ;
+				AiUser aiUser = new AiUser(user, user, System.currentTimeMillis() , orgi,IPTools.getInstance().findGeography(ip)) ;
 				aiUser.setSessionid(UKTools.getContextID(client.getSessionId().toString()));
 				aiUser.setAppid(appid);
 				aiUser.setAiid(aiid);
@@ -84,7 +84,7 @@ public class AiIMEventHandler
 				AgentService agentService = ServiceQuene.processAiService(aiUser, orgi) ;
 				aiUser.setAgentserviceid(agentService.getId());
 				
-				CacheHelper.getOnlineUserCacheBean().put(UKTools.getContextID(client.getSessionId().toString()), aiUser, UKDataContext.SYSTEM_ORGI);
+				CacheHelper.getOnlineUserCacheBean().put(user, aiUser, UKDataContext.SYSTEM_ORGI);
 				
 			}
 		} catch (Exception e) {
@@ -101,10 +101,10 @@ public class AiIMEventHandler
     	String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
     	if(!StringUtils.isBlank(user)){
 	    	NettyClients.getInstance().removeIMEventClient(user , UKTools.getContextID(client.getSessionId().toString()));
-	    	AiUser aiUser = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(UKTools.getContextID(client.getSessionId().toString()), orgi) ;
+	    	AiUser aiUser = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(user, orgi) ;
 	    	if(aiUser!=null) {
 		    	ServiceQuene.processAiService(aiUser, orgi) ;
-		    	CacheHelper.getOnlineUserCacheBean().delete(UKTools.getContextID(client.getSessionId().toString()),UKDataContext.SYSTEM_ORGI) ;
+		    	CacheHelper.getOnlineUserCacheBean().delete(user,UKDataContext.SYSTEM_ORGI) ;
 	    	}
     	}
     	client.disconnect();
@@ -130,6 +130,7 @@ public class AiIMEventHandler
     {
     	String orgi = client.getHandshakeData().getSingleUrlParam("orgi") ;
 		String aiid = client.getHandshakeData().getSingleUrlParam("aiid") ;
+		String user = client.getHandshakeData().getSingleUrlParam("userid") ;
     	if(data.getType() == null){
     		data.setType("message");
     	}
@@ -153,7 +154,7 @@ public class AiIMEventHandler
     	
     	data.setAiid(aiid);
     	
-    	Object cacheData = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(UKTools.getContextID(client.getSessionId().toString()),orgi) ;
+    	Object cacheData = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(user,orgi) ;
     	if(cacheData!=null && cacheData instanceof AiUser){
 			AiUser aiUser = (AiUser)cacheData ;
 			data.setAgentserviceid(aiUser.getAgentserviceid());
@@ -175,7 +176,7 @@ public class AiIMEventHandler
     		if(cacheData!=null && cacheData instanceof AiUser){
     			AiUser aiUser = (AiUser)cacheData ;
     			aiUser.setTime(System.currentTimeMillis());
-    			CacheHelper.getOnlineUserCacheBean().put(UKTools.getContextID(client.getSessionId().toString()), aiUser, UKDataContext.SYSTEM_ORGI);
+    			CacheHelper.getOnlineUserCacheBean().put(user, aiUser, UKDataContext.SYSTEM_ORGI);
     		}
     	}
     	UKTools.ai(data);

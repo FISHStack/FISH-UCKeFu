@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 
 import com.ukefu.core.UKDataContext;
+import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AgentUserTaskRepository;
@@ -42,29 +43,63 @@ public class MessageUtils {
 	public static ChatMessage createMessage(String message , int length , String name , String msgtype , String userid , String attachid){
 		AgentUser agentUser = (AgentUser) CacheHelper.getAgentUserCacheBean().getCacheObject(userid, UKDataContext.SYSTEM_ORGI);
 		ChatMessage data = new ChatMessage() ;
-		if(agentUser != null){
-			data.setUserid(agentUser.getUserid());
-			data.setUsername(agentUser.getUsername());
-			data.setTouser(agentUser.getAgentno());
-			data.setAppid(agentUser.getAppid());
-		}else {
-			AiUser aiUser = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(userid,UKDataContext.SYSTEM_ORGI) ;
-			data.setUserid(userid);
-			data.setAppid(aiUser.getAppid());
-			data.setUsername(aiUser.getUsername());
-		}
 		data.setFilesize(length);
 		data.setFilename(name);
 		data.setAttachmentid(attachid);
 		
-		data.setOrgi(agentUser.getOrgi());
 		data.setMessage(message);
 		
 		data.setMsgtype(msgtype);
 		
 		data.setType(UKDataContext.MessageTypeEnum.MESSAGE.toString());
-		createMessage(data, msgtype, userid);
+		
+		if(agentUser != null){
+			data.setUserid(agentUser.getUserid());
+			data.setUsername(agentUser.getUsername());
+			data.setTouser(agentUser.getAgentno());
+			data.setAppid(agentUser.getAppid());
+			data.setOrgi(agentUser.getOrgi());
+			createMessage(data, msgtype, userid);
+		}else {
+			AiUser aiUser = (AiUser) CacheHelper.getOnlineUserCacheBean().getCacheObject(userid,UKDataContext.SYSTEM_ORGI) ;
+			data.setUserid(userid);
+			data.setAppid(aiUser.getAppid());
+			data.setAiid(aiUser.getAiid());
+			data.setUsername(aiUser.getUsername());
+			data.setOrgi(aiUser.getOrgi());
+			createAiMessage(data , data.getAppid() , aiUser.getChannel() , UKDataContext.CallTypeEnum.IN.toString() , UKDataContext.AiItemType.USERINPUT.toString() , UKDataContext.MediaTypeEnum.IMAGE.toString(), data.getUserid());
+			sendMessage(data, msgtype);
+			UKTools.ai(data);
+		}
 		return data ;
+	}
+	/**
+	 * 发送消息
+	 * @param data
+	 * @param msgtype
+	 */
+	private static void sendMessage(ChatMessage data , String msgtype) {
+		MessageOutContent outMessage = new MessageOutContent() ;
+    	
+    	outMessage.setMessage(data.getMessage());
+    	outMessage.setFilename(data.getFilename());
+    	outMessage.setFilesize(data.getFilesize());
+    	
+    	
+    	outMessage.setMessageType(msgtype);
+    	outMessage.setCalltype(UKDataContext.CallTypeEnum.IN.toString());
+    	outMessage.setSnsAccount(null);
+    	
+    	outMessage.setContextid(data.getContextid());
+		outMessage.setFromUser(data.getUserid());
+		outMessage.setToUser(data.getTouser());
+		outMessage.setChannelMessage(data);
+		outMessage.setNickName(data.getUsername());
+		outMessage.setCreatetime(data.getCreatetime());
+    	
+		if(!StringUtils.isBlank(data.getUserid()) && UKDataContext.MessageTypeEnum.MESSAGE.toString().equals(data.getType())){
+    		NettyClients.getInstance().sendIMEventMessage(data.getUserid(), UKDataContext.MessageTypeEnum.MESSAGE.toString(), outMessage);
+    	}
 	}
 	
 	public static ChatMessage createMessage(String message , int length , String name ,String channel ,String msgtype , String userid , String username , String appid , String orgi , String attachid){
