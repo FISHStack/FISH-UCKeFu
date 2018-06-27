@@ -31,6 +31,7 @@ import com.ukefu.webim.web.model.CallOutRole;
 import com.ukefu.webim.web.model.Extention;
 import com.ukefu.webim.web.model.FormFilter;
 import com.ukefu.webim.web.model.JobDetail;
+import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.SipTrunk;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
@@ -96,7 +97,10 @@ public class CallCenterUtils {
 	
 	public static List<JobDetail> getBatchList(JobDetailRepository batchRes,UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes, final User user){
 		
-		final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
+		//final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
+		
+		final List<String> organList = CallCenterUtils.getExistOrgan(user);
+		
 		List<JobDetail> batchList = batchRes.findAll(new Specification<JobDetail>(){
 			@Override
 			public Predicate toPredicate(Root<JobDetail> root, CriteriaQuery<?> query,
@@ -126,7 +130,10 @@ public class CallCenterUtils {
 	
 	public static List<FormFilter> getFormFilterList(FormFilterRepository filterRes,UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes, final User user){
 		
-		final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
+		//final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
+		
+		final List<String> organList = CallCenterUtils.getExistOrgan(user);
+		
 		List<FormFilter> formFilterList = filterRes.findAll(new Specification<FormFilter>(){
 			@Override
 			public Predicate toPredicate(Root<FormFilter> root, CriteriaQuery<?> query,
@@ -157,7 +164,10 @@ public class CallCenterUtils {
 	
 	public static List<JobDetail> getActivityList(JobDetailRepository batchRes,UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes,final User user){
 		
-		final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
+		//final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
+		
+		final List<String> organList = CallCenterUtils.getExistOrgan(user);
+		
 		List<JobDetail> activityList = batchRes.findAll(new Specification<JobDetail>(){
 			@Override
 			public Predicate toPredicate(Root<JobDetail> root, CriteriaQuery<?> query,
@@ -216,5 +226,27 @@ public class CallCenterUtils {
     		}
     	}
     	map.put("namenum", namenum);
+	}
+	
+	public static List<String> getExistOrgan(User user){
+		
+		UserRoleRepository userRoleRes = UKDataContext.getContext().getBean(UserRoleRepository.class) ;
+		CallOutRoleRepository callOutRoleRes = UKDataContext.getContext().getBean(CallOutRoleRepository.class) ;
+		OrganRepository organRes = UKDataContext.getContext().getBean(OrganRepository.class) ;
+		
+		final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
+		
+		List<Organ> organAllList = organRes.findByOrgi(user.getOrgi());
+		
+		final List<String> tempList = new ArrayList<String>();
+		
+		for(String organid : organList){
+			for(Organ organ : organAllList){
+				if(organid.equals(organ.getId())){
+					tempList.add(organid);
+				}
+			}
+		}
+		return tempList ;
 	}
 }
