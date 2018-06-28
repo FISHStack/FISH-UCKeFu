@@ -284,7 +284,7 @@ public class ReportController extends Handler{
     			values.add(UKTools.transBean2Map(topic)) ;
     		}
     		
-    		response.setHeader("content-disposition", "attachment;filename=UCKeFu-Report-"+new SimpleDateFormat("yyyy-MM-dd").format(new Date())+".xlsx");  
+    		response.setHeader("content-disposition", "attachment;filename=UCKeFu-Report-"+new SimpleDateFormat("yyyy-MM-dd").format(new Date())+".xls");  
     		if(table!=null){
     			ExcelExporterProcess excelProcess = new ExcelExporterProcess( values, table, response.getOutputStream()) ;
     			excelProcess.process();
