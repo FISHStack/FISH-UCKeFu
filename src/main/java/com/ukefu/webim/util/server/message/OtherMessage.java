@@ -11,6 +11,7 @@ public class OtherMessage implements java.io.Serializable{
 	private String msgtype ;
 	private String title;
 	private String message ;
+	private String id ;
 	
 	private List<OtherMessageItem> items ;
 	
@@ -37,5 +38,11 @@ public class OtherMessage implements java.io.Serializable{
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 }

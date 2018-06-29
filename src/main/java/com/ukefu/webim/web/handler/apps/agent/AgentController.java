@@ -82,6 +82,8 @@ import com.ukefu.webim.web.model.UploadStatus;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.WeiXinUser;
 
+import freemarker.template.TemplateException;
+
 @Controller
 @RequestMapping("/agent")
 public class AgentController extends Handler {
@@ -157,7 +159,7 @@ public class AgentController extends Handler {
 	
 	@RequestMapping("/index")
 	@Menu(type = "apps", subtype = "agent")
-	public ModelAndView index(ModelMap map , HttpServletRequest request ,HttpServletResponse response , @Valid String sort) {
+	public ModelAndView index(ModelMap map , HttpServletRequest request ,HttpServletResponse response , @Valid String sort) throws IOException, TemplateException {
 		ModelAndView view = request(super.createAppsTempletResponse("/apps/agent/index")) ; 
 		User user = super.getUser(request) ;
 		Sort defaultSort = null ;
@@ -197,6 +199,13 @@ public class AgentController extends Handler {
 		}
 		List<AgentUser> agentUserList = agentUserRepository.findByAgentnoAndOrgi(user.getId() , super.getOrgi(request) , defaultSort);
 		view.addObject("agentUserList", agentUserList) ;
+		
+		SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
+		
+		view.addObject("sessionConfig", sessionConfig) ;
+		if(sessionConfig.isOtherquickplay()) {
+			view.addObject("topicList", OnlineUserUtils.search(null, super.getOrgi(request), super.getUser(request))) ;
+		}
 		
 		if(agentUserList.size() > 0){
 			AgentUser agentUser = agentUserList.get(0) ;
@@ -309,7 +318,7 @@ public class AgentController extends Handler {
 	
 	@RequestMapping("/agentuser")
 	@Menu(type = "apps", subtype = "agent")
-	public ModelAndView agentuser(ModelMap map , HttpServletRequest request , String id) {
+	public ModelAndView agentuser(ModelMap map , HttpServletRequest request , String id) throws IOException, TemplateException {
 		ModelAndView view = request(super.createRequestPageTempletResponse("/apps/agent/mainagentuser")) ;
 		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(id, super.getOrgi(request));
 		if(agentUser!=null){
@@ -383,6 +392,14 @@ public class AgentController extends Handler {
 			view.addObject("tagRelationList", tagRelationRes.findByUserid(agentUser.getUserid())) ;
 		}
 		
+		SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
+		
+		view.addObject("sessionConfig", sessionConfig) ;
+		if(sessionConfig.isOtherquickplay()) {
+			view.addObject("topicList", OnlineUserUtils.search(null, super.getOrgi(request), super.getUser(request))) ;
+		}
+		
+		
 		view.addObject("tags", tagRes.findByOrgiAndTagtype(super.getOrgi(request) , UKDataContext.ModelType.USER.toString())) ;
 		view.addObject("quickReplyList", quickReplyRes.findByOrgiAndCreater(super.getOrgi(request) , super.getUser(request).getId() , null)) ;
 		List<QuickType> quickTypeList = quickTypeRes.findByOrgiAndQuicktype(super.getOrgi(request), UKDataContext.QuickTypeEnum.PUB.toString()) ;
@@ -392,6 +409,34 @@ public class AgentController extends Handler {
 
 		return view ;
 	}
+	
+	@RequestMapping("/other/topic")
+	@Menu(type = "apps", subtype = "othertopic")
+	public ModelAndView othertopic(ModelMap map ,HttpServletRequest request , String q) throws IOException, TemplateException {
+		SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
+		
+		map.put("sessionConfig", sessionConfig) ;
+		if(sessionConfig.isOtherquickplay()) {
+			map.put("topicList", OnlineUserUtils.search(q, super.getOrgi(request), super.getUser(request))) ;
+		}
+		
+		return request(super.createRequestPageTempletResponse("/apps/agent/othertopic")) ;
+	}
+	
+	@RequestMapping("/other/topic/detail")
+	@Menu(type = "apps", subtype = "othertopicdetail")
+	public ModelAndView othertopicdetail(ModelMap map ,HttpServletRequest request , String id) throws IOException, TemplateException {
+		SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
+		
+		map.put("sessionConfig", sessionConfig) ;
+		if(sessionConfig.isOtherquickplay()) {
+			map.put("topic", OnlineUserUtils.detail(id, super.getOrgi(request), super.getUser(request))) ;
+		}
+		
+		return request(super.createRequestPageTempletResponse("/apps/agent/topicdetail")) ;
+	}
+	
+	
 	
 	@RequestMapping("/workorders/list")
 	@Menu(type = "apps", subtype = "workorderslist")

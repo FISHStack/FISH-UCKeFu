@@ -37,6 +37,8 @@ public class CousultInvite implements java.io.Serializable{
 	private int consult_invite_delay ;			//延时弹出邀请框
 	private String consult_invite_bg ;			//邀请框背景图片
 	
+	private boolean ctrlenter ;					//启用 CTRL+Enter发送消息
+	
 	private String consult_invite_position;
 	private String consult_invite_color;
 	private String consult_invite_right;
@@ -697,5 +699,11 @@ public class CousultInvite implements java.io.Serializable{
 	}
 	public void setUsershortcutkey(String usershortcutkey) {
 		this.usershortcutkey = usershortcutkey;
+	}
+	public boolean isCtrlenter() {
+		return ctrlenter;
+	}
+	public void setCtrlenter(boolean ctrlenter) {
+		this.ctrlenter = ctrlenter;
 	}
 }

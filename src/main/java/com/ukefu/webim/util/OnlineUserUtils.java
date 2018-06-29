@@ -1,5 +1,6 @@
 package com.ukefu.webim.util;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.BrowserClient;
 import com.ukefu.util.CheckMobile;
@@ -36,6 +39,7 @@ import com.ukefu.webim.service.repository.TenantRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.router.RouterHelper;
 import com.ukefu.webim.util.server.message.NewRequestMessage;
+import com.ukefu.webim.util.server.message.OtherMessageItem;
 import com.ukefu.webim.web.model.AgentReport;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.AreaType;
@@ -51,13 +55,17 @@ import com.ukefu.webim.web.model.OrgiSkillRel;
 import com.ukefu.webim.web.model.SceneType;
 import com.ukefu.webim.web.model.SessionConfig;
 import com.ukefu.webim.web.model.SystemConfig;
+import com.ukefu.webim.web.model.Template;
 import com.ukefu.webim.web.model.Tenant;
 import com.ukefu.webim.web.model.Topic;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserTraceHistory;
 
+import freemarker.template.TemplateException;
+
 public class OnlineUserUtils {
 	public static WebSseEmitterClient webIMClients = new WebSseEmitterClient();
+	private static ObjectMapper objectMapper = new ObjectMapper();
 	/**
 	 * 
 	 * @param user
@@ -1034,5 +1042,66 @@ public class OnlineUserUtils {
 			result = true; 
 		}
 		return result;
+	}
+	
+	public static List<OtherMessageItem> search(String q , String orgi , User user) throws IOException, TemplateException {
+		List<OtherMessageItem> otherMessageItemList = null ;
+		String param = "" ;
+		SessionConfig sessionConfig = ServiceQuene.initSessionConfig(orgi) ;
+		if(!StringUtils.isBlank(sessionConfig.getOqrsearchurl())) {
+			Template templet = UKTools.getTemplate(sessionConfig.getOqrsearchinput()) ;
+			Map<String,Object> values = new HashMap<String,Object>();
+			values.put("q", q) ;
+			values.put("user", user) ;
+			param = UKTools.getTemplet(templet.getTemplettext(), values) ;
+		}
+		String result = HttpClientUtil.doPost(sessionConfig.getOqrsearchurl(), param)  , text = null;
+		if(!StringUtils.isBlank(sessionConfig.getOqrsearchoutput()) && !result.equals("error")) {
+			Template templet = UKTools.getTemplate(sessionConfig.getOqrsearchoutput()) ;
+			@SuppressWarnings("unchecked")
+			Map<String,Object> jsonData = objectMapper.readValue(result, Map.class) ;
+			Map<String,Object> values = new HashMap<String,Object>();
+			values.put("q", q) ;
+			values.put("user", user) ;
+			values.put("data", jsonData) ;
+			text = UKTools.getTemplet(templet.getTemplettext(), values) ;
+		}
+		if(!StringUtils.isBlank(text)){
+			JavaType javaType = getCollectionType(ArrayList.class, OtherMessageItem.class); 
+			otherMessageItemList = objectMapper.readValue(text, javaType) ;
+		}
+		return otherMessageItemList ;
+	}
+	
+	public static OtherMessageItem detail(String id , String orgi , User user) throws IOException, TemplateException {
+		OtherMessageItem otherMessageItem = null ;
+		String param = "" ;
+		SessionConfig sessionConfig = ServiceQuene.initSessionConfig(orgi) ;
+		if(!StringUtils.isBlank(sessionConfig.getOqrdetailinput())) {
+			Template templet = UKTools.getTemplate(sessionConfig.getOqrdetailinput()) ;
+			Map<String,Object> values = new HashMap<String,Object>();
+			values.put("id", id) ;
+			values.put("user", user) ;
+			param = UKTools.getTemplet(templet.getTemplettext(), values) ;
+		}
+		String result = HttpClientUtil.doPost(sessionConfig.getOqrdetailurl(), param)  , text = null;
+		if(!StringUtils.isBlank(sessionConfig.getOqrdetailoutput()) && !result.equals("error")) {
+			Template templet = UKTools.getTemplate(sessionConfig.getOqrdetailoutput()) ;
+			@SuppressWarnings("unchecked")
+			Map<String,Object> jsonData = objectMapper.readValue(result, Map.class) ;
+			Map<String,Object> values = new HashMap<String,Object>();
+			values.put("id",id) ;
+			values.put("user", user) ;
+			values.put("data", jsonData) ;
+			text = UKTools.getTemplet(templet.getTemplettext(), values) ;
+		}
+		if(!StringUtils.isBlank(text)){
+			otherMessageItem = objectMapper.readValue(text, OtherMessageItem.class) ;
+		}
+		return otherMessageItem ;
+	}
+	
+	public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {   
+		return objectMapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);   
 	}
 }

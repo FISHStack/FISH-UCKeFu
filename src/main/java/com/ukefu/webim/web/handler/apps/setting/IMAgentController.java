@@ -30,6 +30,7 @@ import com.ukefu.webim.service.repository.AdTypeRepository;
 import com.ukefu.webim.service.repository.BlackListRepository;
 import com.ukefu.webim.service.repository.SessionConfigRepository;
 import com.ukefu.webim.service.repository.TagRepository;
+import com.ukefu.webim.service.repository.TemplateRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.AdType;
 import com.ukefu.webim.web.model.BlackEntity;
@@ -54,6 +55,8 @@ public class IMAgentController extends Handler{
 	@Autowired
 	private AdTypeRepository adTypeRes;
 	
+	@Autowired
+	private TemplateRepository templateRes ;
 	
 	@Value("${web.upload-path}")
     private String path;
@@ -66,6 +69,24 @@ public class IMAgentController extends Handler{
     		sessionConfig = new SessionConfig() ;
     	}
     	map.put("sessionConfig", sessionConfig) ;
+    	
+    	
+    	List<SysDic> dicList = UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_DIC) ;
+    	SysDic inputDic = null , outputDic = null ;
+    	for(SysDic dic : dicList){
+    		if(dic.getCode().equals(UKDataContext.UKEFU_SYSTEM_AI_INPUT)){
+    			inputDic = dic ;
+    		}
+    		if(dic.getCode().equals(UKDataContext.UKEFU_SYSTEM_AI_OUTPUT)){
+    			outputDic = dic ;
+    		}
+    	}
+    	if(inputDic!=null){
+    		map.addAttribute("innputtemlet", templateRes.findByTemplettypeAndOrgi(inputDic.getId(), super.getOrgi(request))) ;
+    	}
+    	if(outputDic!=null){
+    		map.addAttribute("outputtemlet", templateRes.findByTemplettypeAndOrgi(outputDic.getId(), super.getOrgi(request))) ;
+    	}
     	
         return request(super.createAppsTempletResponse("/apps/setting/agent/index"));
     }
@@ -89,7 +110,10 @@ public class IMAgentController extends Handler{
     	
     	ServiceQuene.initSessionConfigList() ;
     	map.put("sessionConfig", tempSessionConfig) ;
-        return request(super.createAppsTempletResponse("/apps/setting/agent/index"));
+    	
+    	
+    	
+        return request(super.createRequestPageTempletResponse("redirect:/setting/agent/index.html"));
     }
     
     @RequestMapping("/blacklist")

@@ -103,7 +103,9 @@ $(document).ready(function(){
 			url:url,
 			cache:false,
 			success: function(data){
-				$(target).empty().html(data);
+				if(target){
+					$(target).empty().html(data);
+				}
 				top.layer.close(index);
 				if(callback){
 					eval(callback);

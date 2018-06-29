@@ -43,12 +43,28 @@ public class SessionConfig implements java.io.Serializable{
 	private String noagentmsg ;		//无客服在线提示信息
 	private String agentbusymsg ;	//坐席忙提示信息
 	
+	private boolean agentautoleave;	//坐席关闭浏览器后自动离线
+	
 	private String successmsg ;		//坐席分配成功提示消息
 	private String finessmsg ;		//服务结束提示消息
 	
 	private boolean agentreplaytimeout ;	//启用坐席回复超时
 	private int agenttimeout;
 	private String agenttimeoutmsg ;
+	
+	private boolean agentctrlenter ;		//坐席端启用 CTRL+Enter回复消息
+	private boolean ctrlenter  ;			//访客端启用CTRL+Enter回复消息
+	
+	private boolean enablequick ;		//坐席工作界面的输入框中启用快捷输入
+	
+	private boolean otherquickplay ;	//启用外部快捷回复功能
+	private String oqrsearchurl ;	//外部快捷回复搜索地址
+	private String oqrsearchinput ;	//外部快捷回复搜索输入参数
+	private String oqrsearchoutput ;	//外部快捷回复搜索输出参数
+	
+	private String oqrdetailurl ;	//外部快捷回复内容URL
+	private String oqrdetailinput ;	//外部快捷回复详情输入参数
+	private String oqrdetailoutput ;	//外部快捷回复详情输出参数
 	
 	private boolean hourcheck ;		//启用工作时间段检查
 	private String workinghours ;	//工作时间段，格式   9:00-12:00,13:30-15:30
@@ -288,5 +304,71 @@ public class SessionConfig implements java.io.Serializable{
 	}
 	public void setServicename(String servicename) {
 		this.servicename = servicename;
+	}
+	public boolean isAgentautoleave() {
+		return agentautoleave;
+	}
+	public void setAgentautoleave(boolean agentautoleave) {
+		this.agentautoleave = agentautoleave;
+	}
+	public boolean isOtherquickplay() {
+		return otherquickplay;
+	}
+	public void setOtherquickplay(boolean otherquickplay) {
+		this.otherquickplay = otherquickplay;
+	}
+	public String getOqrsearchurl() {
+		return oqrsearchurl;
+	}
+	public void setOqrsearchurl(String oqrsearchurl) {
+		this.oqrsearchurl = oqrsearchurl;
+	}
+	public String getOqrsearchinput() {
+		return oqrsearchinput;
+	}
+	public void setOqrsearchinput(String oqrsearchinput) {
+		this.oqrsearchinput = oqrsearchinput;
+	}
+	public String getOqrsearchoutput() {
+		return oqrsearchoutput;
+	}
+	public void setOqrsearchoutput(String oqrsearchoutput) {
+		this.oqrsearchoutput = oqrsearchoutput;
+	}
+	public String getOqrdetailurl() {
+		return oqrdetailurl;
+	}
+	public void setOqrdetailurl(String oqrdetailurl) {
+		this.oqrdetailurl = oqrdetailurl;
+	}
+	public String getOqrdetailinput() {
+		return oqrdetailinput;
+	}
+	public void setOqrdetailinput(String oqrdetailinput) {
+		this.oqrdetailinput = oqrdetailinput;
+	}
+	public String getOqrdetailoutput() {
+		return oqrdetailoutput;
+	}
+	public void setOqrdetailoutput(String oqrdetailoutput) {
+		this.oqrdetailoutput = oqrdetailoutput;
+	}
+	public boolean isAgentctrlenter() {
+		return agentctrlenter;
+	}
+	public void setAgentctrlenter(boolean agentctrlenter) {
+		this.agentctrlenter = agentctrlenter;
+	}
+	public boolean isCtrlenter() {
+		return ctrlenter;
+	}
+	public void setCtrlenter(boolean ctrlenter) {
+		this.ctrlenter = ctrlenter;
+	}
+	public boolean isEnablequick() {
+		return enablequick;
+	}
+	public void setEnablequick(boolean enablequick) {
+		this.enablequick = enablequick;
 	}
 }

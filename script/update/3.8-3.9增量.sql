@@ -272,6 +272,29 @@ ALTER TABLE uk_xiaoe_config ADD enablesuggest tinyint(4) DEFAULT 0 COMMENT "启�
 ALTER TABLE uk_xiaoe_config ADD suggestmsg text COMMENT "推荐的提示信息";
 ALTER TABLE uk_chat_message ADD suggestmsg text COMMENT "推荐的提示信息";
 
+ALTER TABLE uk_sessionconfig ADD agentautoleave tinyint(4) DEFAULT 0 COMMENT "关闭浏览器自动离线";
+
+ALTER TABLE uk_sessionconfig ADD otherquickplay tinyint(4) DEFAULT 0 COMMENT "启用外部快捷回复功能";
+
+ALTER TABLE uk_sessionconfig ADD oqrsearchurl varchar(255) COMMENT "外部快捷回复搜索地址";
+ALTER TABLE uk_sessionconfig ADD oqrsearchinput varchar(32) COMMENT "外部快捷回复搜索输入参数";
+ALTER TABLE uk_sessionconfig ADD oqrsearchoutput varchar(32) COMMENT "外部快捷回复搜索输出参数";
+
+ALTER TABLE uk_sessionconfig ADD oqrdetailurl varchar(255) COMMENT "外部快捷回复内容URL";
+ALTER TABLE uk_sessionconfig ADD oqrdetailinput varchar(32) COMMENT "外部快捷回复详情输入参数";
+ALTER TABLE uk_sessionconfig ADD oqrdetailoutput varchar(32) COMMENT "外部快捷回复详情输出参数";
+
+ALTER TABLE uk_sessionconfig ADD enablequick tinyint(32) DEFAULT 0 COMMENT "启用快捷回复功能";
+
+
+
+ALTER TABLE uk_consult_invite ADD agentctrlenter tinyint(4) DEFAULT 0 COMMENT "启用坐席端CTRL+Enter发送消息";
+ALTER TABLE uk_consult_invite ADD ctrlenter tinyint(4) DEFAULT 0 COMMENT "启用访客端CTRL+Enter发送消息";
+
+
+ALTER TABLE uk_sessionconfig ADD agentctrlenter tinyint(4) DEFAULT 0 COMMENT "启用坐席端CTRL+Enter发送消息";
+ALTER TABLE uk_sessionconfig ADD ctrlenter tinyint(4) DEFAULT 0 COMMENT "启用访客端CTRL+Enter发送消息";
+
 
 INSERT INTO `uk_sysdic` (`ID`, `NAME`, `TITLE`, `CODE`, `ORGI`, `CTYPE`, `PARENTID`, `DESCRIPTION`, `MEMO`, `ICONSTR`, `ICONSKIN`, `CATETYPE`, `CREATER`, `CREATETIME`, `UPDATETIME`, `HASCHILD`, `SORTINDEX`, `DICID`, `DEFAULTVALUE`, `DISCODE`, `URL`, `MODULE`, `MLEVEL`, `RULES`, `MENUTYPE`) VALUES ('4028888163ffe467016400f640f30646', '外呼系统', 'pub', 'A11', NULL, 'auth', '402888815d2fe37f015d2fe75cc80002', NULL, NULL, '', NULL, NULL, '4028cac3614cd2f901614cf8be1f0324', '2018-6-15 09:01:35', NULL, 0, 0, '402888815d2fe37f015d2fe75cc80002', 0, 0, '/apps/callout/index.html', 'webim', '1', NULL, 'left');
 INSERT INTO `uk_sysdic` (`ID`, `NAME`, `TITLE`, `CODE`, `ORGI`, `CTYPE`, `PARENTID`, `DESCRIPTION`, `MEMO`, `ICONSTR`, `ICONSKIN`, `CATETYPE`, `CREATER`, `CREATETIME`, `UPDATETIME`, `HASCHILD`, `SORTINDEX`, `DICID`, `DEFAULTVALUE`, `DISCODE`, `URL`, `MODULE`, `MLEVEL`, `RULES`, `MENUTYPE`) VALUES ('4028888163ffe467016400f692c7064b', '坐席监控', 'pub', 'A12', NULL, 'auth', '402888815d2fe37f015d2fe75cc80002', NULL, NULL, '', NULL, NULL, '4028cac3614cd2f901614cf8be1f0324', '2018-6-15 09:01:56', NULL, 0, 0, '402888815d2fe37f015d2fe75cc80002', 0, 0, '/apps/callcenter/service/monitor/allcall.html', 'webim', '1', NULL, 'left');

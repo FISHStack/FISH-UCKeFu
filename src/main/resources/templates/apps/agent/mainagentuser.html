@@ -79,16 +79,54 @@
 							    	return false;  
 							    },  
 								afterCreate : function() { //设置编辑器创建后执行的回调函数
-						            var self = this;
-						            //Ctrl+Enter提交表单
-						            K.ctrl(document, 13, function() {
-						                self.sync();
-						                sendMessage();
-						            });
-						            K.ctrl(self.edit.doc, 13, function() {
-						                self.sync();
-						                sendMessage();
-						            });
+						           		var self = this;
+									<#if sessionConfig?? && sessionConfig.agentctrlenter?? && sessionConfig.agentctrlenter == true>
+							            //Ctrl+Enter提交表单
+							            K.ctrl(document, 13, function() {
+							                self.sync();
+							                sendMessage();
+							            });
+							            K.ctrl(self.edit.doc, 13, function() {
+							                self.sync();
+							                sendMessage();
+							            });
+						            <#else>
+										var kindEditorIframe = $("iframe").contents().find("body");  
+									    kindEditorIframe.keydown(function (event) {  
+										if(event.keyCode==13 && !event.ctrlKey){  
+										    self.sync();
+											sendMessage();
+											return false;
+										}else if(event.keyCode==13 && event.ctrlKey){
+											editor.insertHtml('<br/>');
+										}
+									    });  
+							    		//Ctrl+Enter提交表单
+										K.ctrl(document, 13, function() {
+											editor.insertHtml('<br/>');
+										});
+										K.ctrl(self.edit.doc, 13, function() {
+											editor.insertHtml('<br/>');
+										});
+						            </#if>
+						            <#if sessionConfig?? && sessionConfig.enablequick>
+						            	/**
+							            var _self = this;
+							            loadURL("/res/quickreply.html" , null , function(data){
+							            	$(_self).suggest('@', {
+												data : eval(data),
+												mapkey : ['title','id'],
+												map : function(topic) {
+													console.log(topic) ;
+													return {
+														value : topic.text,
+														text : '<p>' + topic.text+ '</p>'
+													}
+												}
+											});
+							            });
+							            **/
+						            </#if>
 						        }
 							});
 						});
@@ -111,9 +149,9 @@
 			    <#if models?? && models["workorders"]?? && models["workorders"] == true>
 			    <li>工单</li>
 			    </#if>
-			    <!-- 
+			    <#if sessionConfig?? && sessionConfig.otherquickplay?? && sessionConfig.otherquickplay == true>
 			    <li>知识库</li>
-			     -->
+			    </#if>
 			  </ul>
 			  <div class="layui-tab-content" style="padding: 5px 0px 0px;">
 			    <div class="layui-tab-item layui-show">
@@ -293,6 +331,26 @@
 			    	<#if workOrdersList?? && workOrdersList?size gt 0>
 			    	<#include "/apps/agent/workorders.html">
 			    	</#if>
+			    </div>
+			    </#if>
+			    <#if sessionConfig?? && sessionConfig.otherquickplay?? && sessionConfig.otherquickplay == true>
+			    <div class="layui-tab-item" id="km">
+			    	<div class="box">
+						<div class="box-title">
+							<h1 class="site-h1" style="background-color:#EEEEEE;">
+								知识列表
+								<span style="float:right;margin-top:-3px;">
+									<div class="layui-input-inline">
+										<input type="text" name="q" id="otherSearchQuery" onKeyPress="otherTopicEnter()" style="height: 30px;width:120px;line-height: 30px;padding-right:30px;border: 1px solid #32c24d;" placeholder="请输入查询条件" autocomplete="off" class="layui-input">
+										<i class="layui-icon" onclick="otherTopicSearch();" style="position: absolute;cursor: pointer;right: 3px;top: 0px;font-size: 20px;color:#32c24d;"></i>
+									</div>
+								</span>
+							</h1>
+						</div>
+						<div class="box-body" style="padding:0px 10px;" id="topiclist">
+							<#include "/apps/agent/othertopic.html">
+						</div>
+					</div>
 			    </div>
 			    </#if>
 			  </div>
