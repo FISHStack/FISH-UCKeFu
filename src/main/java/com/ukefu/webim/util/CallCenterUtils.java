@@ -229,7 +229,8 @@ public class CallCenterUtils {
     	map.put("namenum", namenum);
 	}
 	/**
-	 * 已分配部门的坐席，部门被删之后，这个方法可以把这些用户过滤掉
+	 * 查询目前存在的部门
+	 * 已分配部门的坐席，如果部门被删之后，这个方法可以把这些用户过滤掉
 	 * @param user
 	 * @return
 	 */
