@@ -248,6 +248,9 @@ public class ESDataExchangeImpl{
 				if(!StringUtils.isBlank((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT))) {
 					users.add((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT)) ;
 				}
+				if(!StringUtils.isBlank((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_ASSUSER))) {
+					users.add((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_ASSUSER)) ;
+				}
 				if(!StringUtils.isBlank((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN))) {
 					organs.add((String)temp.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN)) ;
 				}
@@ -271,6 +274,15 @@ public class ESDataExchangeImpl{
 						for(User user : userList) {
 							if(user.getId().equals(userid)) {
 								dataBean.setUser(user);
+								break ;
+							}
+						}
+					}
+					String assuer = (String)dataBean.getValues().get(UKDataContext.UKEFU_SYSTEM_ASSUSER) ;
+					if(!StringUtils.isBlank(assuer)) {
+						for(User user : userList) {
+							if(user.getId().equals(assuer)) {
+								dataBean.setAssuser(user);
 								break ;
 							}
 						}

@@ -28,6 +28,7 @@ public class UKDataBean implements java.io.Serializable{
 	private String type ;
 	
 	private User user ;
+	private User assuser;
 	private Organ organ;
 	
 	private CallOutTask task ;
@@ -147,5 +148,12 @@ public class UKDataBean implements java.io.Serializable{
 	public void setBatch(JobDetail batch) {
 		this.batch = batch;
 	}
-	
+
+	public User getAssuser() {
+		return assuser;
+	}
+
+	public void setAssuser(User assuser) {
+		this.assuser = assuser;
+	}
 }

@@ -27,6 +27,7 @@ public class UKDataContext {
 	public static final String UKEFU_SYSTEM_COMMENT_ITEM_DIC = "com.dic.webim.comment.item" ;
 	
 	public static final String UKEFU_SYSTEM_DIS_AGENT = "owneruser" ;
+	public static final String UKEFU_SYSTEM_ASSUSER = "assuser" ;
 	public static final String UKEFU_SYSTEM_DIS_ORGAN = "ownerdept" ;
 	public static final String UKEFU_SYSTEM_DIS_TIME = "distime" ;
 	
