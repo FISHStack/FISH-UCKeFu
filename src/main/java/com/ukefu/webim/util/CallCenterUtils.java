@@ -2,6 +2,7 @@ package com.ukefu.webim.util;
 
 import java.util.ArrayList;
 
+
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -206,7 +207,7 @@ public class CallCenterUtils {
 		map.put("activityList", CallCenterUtils.getActivityList(batchRes,userRoleRes, callOutRoleRes,user));
 		map.put("formFilterList", CallCenterUtils.getFormFilterList(filterRes,userRoleRes, callOutRoleRes,user));
 		
-		map.addAttribute("userList",UKDataContext.getContext().getBean(UserRepository.class).findByOrganAndDatastatusAndOrgi(ownerdept, false, user.getOrgi()));
+		map.addAttribute("owneruserList",UKDataContext.getContext().getBean(UserRepository.class).findByOrganAndDatastatusAndOrgi(ownerdept, false, user.getOrgi()));
 		map.addAttribute("skillList", organRes.findAll(CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user)));
 		map.put("taskList",UKDataContext.getContext().getBean(CallOutTaskRepository.class).findByActidAndOrgi(actid, user.getOrgi()));
 		
@@ -227,7 +228,11 @@ public class CallCenterUtils {
     	}
     	map.put("namenum", namenum);
 	}
-	
+	/**
+	 * 已分配部门的坐席，部门被删之后，这个方法可以把这些用户过滤掉
+	 * @param user
+	 * @return
+	 */
 	public static List<String> getExistOrgan(User user){
 		
 		UserRoleRepository userRoleRes = UKDataContext.getContext().getBean(UserRoleRepository.class) ;
