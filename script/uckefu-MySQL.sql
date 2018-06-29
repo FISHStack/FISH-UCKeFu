@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-06-25 08:52:13
+Date: 2018-06-30 00:45:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1388,6 +1388,7 @@ CREATE TABLE `uk_chat_message` (
   `topicid` varchar(32) DEFAULT NULL COMMENT '命中知识库ID',
   `topicatid` varchar(32) DEFAULT NULL COMMENT '命中知识库分类ID',
   `aichat` tinyint(4) DEFAULT '0' COMMENT '是否在和AI对话',
+  `suggestmsg` text COMMENT '推荐的提示信息',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `sessionid` (`usession`) USING BTREE,
   KEY `orgi` (`orgi`) USING BTREE
@@ -1534,6 +1535,8 @@ CREATE TABLE `uk_consult_invite` (
   `maxwordsnum` int(11) DEFAULT '300' COMMENT '访客端允许输入的最大字数',
   `agentshortcutkey` varchar(32) DEFAULT NULL COMMENT '坐席默认回复消息快捷键',
   `usershortcutkey` varchar(32) DEFAULT NULL COMMENT '访客默认回复消息快捷键',
+  `agentctrlenter` tinyint(4) DEFAULT '0' COMMENT '启用坐席端CTRL+Enter发送消息',
+  `ctrlenter` tinyint(4) DEFAULT '0' COMMENT '启用访客端CTRL+Enter发送消息',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -3408,6 +3411,18 @@ CREATE TABLE `uk_sessionconfig` (
   `quenetimeoutmsg` varchar(255) DEFAULT NULL COMMENT '访客排队超市提示消息',
   `quene` tinyint(4) DEFAULT '0' COMMENT '坐席姓名',
   `servicename` varchar(50) DEFAULT NULL COMMENT '无坐席的时候回复昵称',
+  `agentautoleave` tinyint(4) DEFAULT '0' COMMENT '关闭浏览器自动离线',
+  `otherquickplay` tinyint(4) DEFAULT '0' COMMENT '启用外部快捷回复功能',
+  `oqrsearchurl` varchar(255) DEFAULT NULL COMMENT '外部快捷回复搜索地址',
+  `oqrsearchinput` varchar(32) DEFAULT NULL COMMENT '外部快捷回复搜索输入参数',
+  `oqrsearchoutput` varchar(32) DEFAULT NULL COMMENT '外部快捷回复搜索输出参数',
+  `oqrdetailurl` varchar(255) DEFAULT NULL COMMENT '外部快捷回复内容URL',
+  `oqrdetailinput` varchar(32) DEFAULT NULL COMMENT '外部快捷回复详情输入参数',
+  `oqrdetailoutput` varchar(32) DEFAULT NULL COMMENT '外部快捷回复详情输出参数',
+  `agentctrlenter` tinyint(4) DEFAULT '0' COMMENT '启用坐席端CTRL+Enter发送消息',
+  `ctrlenter` tinyint(4) DEFAULT '0' COMMENT '启用访客端CTRL+Enter发送消息',
+  `enablequick` tinyint(32) DEFAULT '0' COMMENT '启用快捷回复功能',
+  `otherssl` tinyint(4) DEFAULT '0' COMMENT '外部知识库启用SSL',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -8085,8 +8100,12 @@ INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191ed97a80347', '点状图'
 INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191edc7b50348', '雷达图', null, 'report', null, '2018-02-14 09:28:54', null, null, '	<script>\r\n	<#if reportData??>\r\n	var data_${element.mid!\'\'} = [];\r\n	var mea_${element.mid!\'\'} = [];\r\n		<#if reportData.row??>\r\n			<#list reportData.row.title as title>\r\n				<#if (title_index+1) == reportData.row.title?size>\r\n					<#if reportData.col??>\r\n						<#list reportData.col.title as coltlist>\r\n							<#list coltlist as coltl>\r\n									var obj_${element.mid!\'\'} = new Object();\r\n									obj_${element.mid!\'\'}[\"_name\"] = \"${coltl.rename!coltl.name!\'\'}\";\r\n									<#list title as rowtl2>							\r\n									<#if reportData?? && reportData.data??>\r\n										<#list reportData.data as values>\r\n											<#if rowtl2_index == values_index>\r\n												<#list values as val>	\r\n													<#if coltl_index == val_index>\r\n														obj_${element.mid!\'\'}[\"${rowtl2.rename!rowtl2.name!\'\'}\"] = ${val.valueStyle!val.foramatValue!\'\'}\r\n													</#if>\r\n												</#list>\r\n											</#if>\r\n										</#list>\r\n									</#if>\r\n									</#list>\r\n									data_${element.mid!\'\'}.push(obj_${element.mid!\'\'});						\r\n							</#list>\r\n						</#list>\r\n					</#if>\r\n					<#list title as rowtl>						\r\n						mea_${element.mid!\'\'}.push(\'${rowtl.rename!rowtl.name!\'\'}\');						\r\n					</#list>\r\n				</#if>\r\n			</#list>\r\n		</#if>\r\n	<#else>\r\n		const data_${element.mid!\'\'} = [\r\n			{ _name:\'London\', \'Jan.\': 18.9, \'Feb.\': 28.8, \'Mar.\' :39.3, \'Apr.\': 81.4, \'May\': 47, \'Jun.\': 20.3, \'Jul.\': 24, \'Aug.\': 35.6 },\r\n			{ _name:\'Berlin\', \'Jan.\': 12.4, \'Feb.\': 23.2, \'Mar.\' :34.5, \'Apr.\': 99.7, \'May\': 52.6, \'Jun.\': 35.5, \'Jul.\': 37.4, \'Aug.\': 42.4}\r\n		  ];\r\n		const mea_${element.mid!\'\'} =  [ \'Jan.\',\'Feb.\',\'Mar.\',\'Apr.\',\'May\',\'Jun.\',\'Jul.\',\'Aug.\' ];\r\n	</#if>\r\n	const ds_${element.mid!\'\'} = new DataSet();\r\n	const dv_${element.mid!\'\'} = ds_${element.mid!\'\'}.createView().source(data_${element.mid!\'\'});\r\n	  dv_${element.mid!\'\'}.transform({\r\n		type: \'fold\',\r\n		fields: mea_${element.mid!\'\'}, // 展开字段集\r\n		key: \'key\', // key字段\r\n		value: \'value\', // value字段\r\n	  });\r\n	   var json_${element.mid!\'\'} =  $.parseJSON( $(\"#json_${element.mid!\'\'}\").text() );\r\n	  $(\"#json_${element.mid!\'\'}\").remove();\r\n	  ChartAction.renderChart(\'${element.mid!\'\'}\',dv_${element.mid!\'\'},json_${element.mid!\'\'})\r\n	</script>\r\n', '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/radar.gif', null, null, null, null, '0', null, 'radar');
 INSERT INTO `uk_templet` VALUES ('4028811b6191e289016191ee589c0349', 'KPI图', null, 'report', null, '2018-02-14 09:29:32', null, null, '<div id=\"element_${reportModel.id!\'\'}\" class=\"r3-data-element\" style=\"min-width:100px;min-height:65px;\">\r\n\r\n    <#if reportModel.reportData?? && reportModel.reportData.data??>\r\n    	<#list reportModel.reportData.data as values>\r\n    		<#if values_index == 0>\r\n    			<#list values as value>\r\n    				<#if value_index ==0>\r\n    				<h1 class=\"no-margins\" <#if value.value lt 0>style=\"color:red;\"</#if>>\r\n                		${value.foramatValue!\'\'}\r\n                	</h1>\r\n                	<div class=\"stat-percent font-bold text-success\">\r\n                		<#if value.row?? && value.row.name?? && value.row.name!= \'root\' >${value.row.name!\'\'}</#if>\r\n                	</div>\r\n                	<small>\r\n                		<#if value.name??>${value.name!\'\'}</#if>\r\n                	</small>\r\n    				</#if>\r\n    			</#list>\r\n    		</#if>\r\n    	</#list>\r\n    </#if> 	\r\n</div>', '4028811b618d0dca01618d5a5fe6034a', 'ukewo', '/images/design/kpi.png', null, null, null, null, '0', null, null);
 INSERT INTO `uk_templet` VALUES ('4028811b6418c59701641b65e21c075b', 'sff', null, 'ffff', null, '2018-06-20 12:13:39', null, null, 'asdfasdf', '4028811b6109050201610928ed6a030d', 'ukewo', null, null, null, null, null, '0', null, null);
-INSERT INTO `uk_templet` VALUES ('4028811b642af06f01642afa426804cd', '外部机器人输入参数', null, 'otheraiinput', null, '2018-06-23 12:50:01', null, null, 'test', '4028811b642af06f01642af9cfa304c6', 'ukewo', null, null, null, null, null, '0', null, null);
-INSERT INTO `uk_templet` VALUES ('4028811b642af06f01642afaae4f04d3', '外部机器人输出参数', null, 'otheraioutputparam', null, '2018-06-23 12:50:29', null, null, 'test', '4028811b642af06f01642af9cfaf04c7', 'ukewo', null, null, null, null, null, '0', null, null);
+INSERT INTO `uk_templet` VALUES ('4028811b642af06f01642afa426804cd', '外部机器人输入参数', null, 'otheraiinput', null, '2018-06-23 12:50:01', null, null, '{\r\n	\"service_type\": \"query\",\r\n	\"data_type\": \"${chat.msgtype!\'text\'}\",\r\n	\"app_key\": \"gamutsoft\",\r\n	\"user_id\": \"${chat.userid!\'\'}\",\r\n	\"label\": \"\",\r\n	\"data\": \"${chat.message!\'\'}\",\r\n	\"timeout\": 10\r\n}', '4028811b642af06f01642af9cfa304c6', 'ukewo', null, null, null, null, null, '0', null, null);
+INSERT INTO `uk_templet` VALUES ('4028811b642af06f01642afaae4f04d3', '外部机器人输出参数', null, 'otheraioutputparam', null, '2018-06-23 12:50:29', null, null, '{\r\n\"msgtype\":\"${data.data_type!\'text\'}\"\r\n<#if data?? && data.candidates?? && data.candidates?size gt 0>\r\n	<#assign suggest = \"[\">\r\n	<#list data.candidates as item>\r\n		<#if suggest?length gt 1>\r\n			<#assign suggest = suggest + \",\">\r\n		</#if>\r\n		<#if item.question??>\r\n			<#assign suggest = suggest + \'{\"id\":\"\'+item.kbid+\'\",\"title\":\"\'+item.question + \'\"}\'>\r\n		</#if>\r\n	</#list>\r\n	<#assign suggest = suggest + \"]\">\r\n	,\"items\":${suggest}\r\n</#if>\r\n<#if data?? && data.data?? && data.data.answer??>\r\n	,\"message\":\"${data.data.answer!\'\'}\"\r\n<#elseif data?? && data.data?? && data.data.kbid??>\r\n	,\"id\":\"${data.data.kbid!\'\'}\"\r\n	,\"detail\":true\r\n<#else>\r\n	,\"message\":\"${data.message!\'\'}\"\r\n</#if>\r\n}', '4028811b642af06f01642af9cfaf04c7', 'ukewo', null, null, null, null, null, '0', null, null);
+INSERT INTO `uk_templet` VALUES ('4028811b644983b60164498da54a040f', '搜索输入接口', null, 'opsearh', null, '2018-06-29 11:19:37', null, null, '{\r\n	\"keyword\": \"${q!\'\'}\",\r\n	\"label\":\"\"\r\n}\r\n', '4028811b642af06f01642af9cfa304c6', 'ukewo', null, null, null, null, null, '0', null, null);
+INSERT INTO `uk_templet` VALUES ('4028811b644983b60164498e06570416', '详情输入接口', null, 'oqrdetail', null, '2018-06-29 11:20:01', null, null, '{\r\n	\"kbid\": \"${id!\'\'}\",\r\n}', '4028811b642af06f01642af9cfa304c6', 'ukewo', null, null, null, null, null, '0', null, null);
+INSERT INTO `uk_templet` VALUES ('4028811b644a2d2e01644a2ea6770400', '搜索输出接口', null, 'searchoutput', null, '2018-06-29 14:15:28', null, null, '[<#if data?? && data.data??><#list data.data as kb><#if kb_index gt 0>,</#if>\r\n{\r\n	\"id\":\"${kb.kbid!\'\'}\",\r\n	\"title\":\"${(kb.title!\'\')?replace(\'\\n\',\'\')}\"\r\n}</#list></#if>\r\n]', '4028811b642af06f01642af9cfaf04c7', 'ukewo', null, null, null, null, null, '0', null, null);
+INSERT INTO `uk_templet` VALUES ('4028811b644a2d2e01644a334a650422', '详情输出接口', null, 'detailinput', null, '2018-06-29 14:20:32', null, null, '<#if data?? && data.data??>\r\n{\r\n	\"id\":\"${data.data.kbid!\'\'}\",\r\n	\"title\":\"${(data.data.title!\'\')?replace(\'\\n\',\'\')}\",\r\n	\"content\":\"${((data.data.content!\'\')?replace(\'\\n\',\'\'))?replace(\'\"\' , \'\\\\\"\')}\"\r\n}</#if>', '4028811b642af06f01642af9cfaf04c7', 'ukewo', null, null, null, null, null, '0', null, null);
 INSERT INTO `uk_templet` VALUES ('402881e861da4c960161da74a89e0386', '报表XML模板', null, 'reportquery', null, '2018-02-28 11:28:53', null, null, '<?xml version=\'1.0\' ?>\r\n<Schema name=\'ukefu\'>\r\n    <#if !cube.modeltype?? || cube.modeltype!=\"1\">\r\n    <Cube name=\'${cube.name}\'>\r\n		<#if cube.sql?? && cube.sql?length gt 0>\r\n		<View alias=\'${cube.table}\'>\r\n                        <SQL>                              \r\n							${(cube.sql!\'\')?html}\r\n                        </SQL>\r\n                </View>\r\n		<#else>\r\n		<Table name=\'${cube.table}\' />\r\n                </#if>\r\n		\r\n		<#if reportModel.properties?? && reportModel.properties?size gt 0 >\r\n			<Dimension name=\'${reportModel.name}\'>\r\n				<Hierarchy hasAll=\'true\' allMemberName=\'\'>						\r\n					<#list reportModel.properties as property>\r\n						<#list cube.dimension as dimension>\r\n							<#list dimension.cubeLevel as level>\r\n							<#if property.dataid == level.id>\r\n							<Level name=\'${level.name}\'  column=\'${level.nameAlias}\' uniqueMembers=\'${level.uniquemembers?string}\'  <#if level.parameters??>${level.parameters!\"\"}</#if>>\r\n								<#if level.attribue?? && level.attribue?length gt 0>${level.attribue!\"\"}</#if>\r\n								</Level>	\r\n							</#if>						\r\n							</#list>	\r\n						</#list>					\r\n					</#list>			\r\n				</Hierarchy>\r\n			</Dimension>        \r\n		</#if>\r\n		<#if istable?? && istable && reportModel.colproperties?? && reportModel.colproperties?size gt 0>\r\n			<Dimension name=\'${reportModel.name}_col\'>\r\n				<Hierarchy hasAll=\'true\' allMemberName=\'\'>\r\n					<#if reportModel.colproperties??>\r\n					<#list reportModel.colproperties as property>\r\n						<#list cube.dimension as dimension>\r\n							<#list dimension.cubeLevel as level>\r\n							<#if property.dataid == level.id>\r\n							<Level name=\'${level.name}\'  column=\'${level.nameAlias}\' uniqueMembers=\'${level.uniquemembers?string}\'  <#if level.parameters??>${level.parameters!\"\"}</#if>>\r\n								<#if level.attribue?? && level.attribue?length gt 0>${level.attribue!\"\"}</#if>\r\n								</Level>	\r\n							</#if>						\r\n							</#list>	\r\n						</#list>					\r\n					</#list>\r\n					</#if>\r\n				</Hierarchy>\r\n			</Dimension>\r\n		</#if>\r\n\r\n		<#if cube.measure??>\r\n			<#list cube.measure as measure>				\r\n				<#if measure.calculatedmember != true>\r\n				<Measure name=\'${measure.name}\' <#if measure.attribue?? && measure.attribue?length gt 0><#else>column=\'${measure.nameAlias}\'</#if> aggregator=\'${measure.aggregator}\' <#if measure.formatstring != \'\'>formatString=\'${measure.formatstring!\"####\"}\'<#else>formatString=\'####\'</#if>>\r\n						<#if measure.attribue?? && measure.attribue?length gt 0>\r\n						${measure.attribue!\"\"}\r\n						</#if>\r\n				</Measure>\r\n				</#if>\r\n			</#list>\r\n        </#if>\r\n		\r\n\r\n		<#if cube.measure??>\r\n			<#list cube.measure as measure>				\r\n				<#if measure.calculatedmember == true>\r\n					<CalculatedMember name=\'${measure.name}\' dimension=\'Measures\' <#if measure.parameters??>${measure.parameters!\"\"}</#if> <#if measure.formatstring?? && measure.formatstring?length gt 0>formatString=\"${measure.formatstring!\"\"}\"</#if>>\r\n                             <#if measure.attribue?? && measure.attribue?length gt 0>${measure.attribue!\"\"}</#if>\r\n                        </CalculatedMember>\r\n				</#if>\r\n			</#list>\r\n		</#if>\r\n\r\n		</Cube>	\r\n	</#if>\r\n</Schema>\r\n', '402881e861da4c960161da7040bc0385', 'ukewo', null, null, null, null, null, '0', null, null);
 INSERT INTO `uk_templet` VALUES ('402881e861da4c960161da74a89e0387', '过滤器XML模板', '', 'filterquery', '', '2018-02-28 11:28:53', '', null, '<?xml version=\'1.0\' ?>\r\n<Schema name=\'ukefu\'>\r\n    <Cube name=\'filterquery\'>\r\n		<#if sql?? && sql?length gt 0>\r\n		<View alias=\'filter\'>\r\n                        <SQL>                              \r\n							${(sql!\'\')?html}\r\n                        </SQL>\r\n                </View>\r\n		</#if>		\r\n		<Dimension name=\'KEYVAL\'>\r\n			<Hierarchy hasAll=\'true\' allMemberName=\'\'>						\r\n				<Level name=\'KEYVAL\'  column=\'KEYVAL\' uniqueMembers=\'\' />	\r\n				<Level name=\'VAL\'  column=\'VAL\' uniqueMembers=\'\' />						\r\n			</Hierarchy>\r\n		</Dimension>		\r\n		</Cube>	\r\n</Schema>\r\n', '402881e861da4c960161da7040bc0385', 'ukewo', null, '', null, '', null, '0', null, null);
 INSERT INTO `uk_templet` VALUES ('402881fb62084b98016208652dea0393', '文本框', null, 'text', null, '2018-03-09 09:34:31', null, null, '<#if filter?? && filter.modeltype == \'text\'>\r\n	<#if filter.valuefiltertype ==\'range\'>\r\n		<div class=\"layui-inline\">\r\n		    <div class=\"layui-input-inline\" style=\"width: 80px;\">\r\n		      <input type=\"text\" name=\"${filter.code!\'\'}_startvalue\" id=\"${filter.code!\'\'}_startvalue\"  class=\"layui-input\" value=\"${filter.requeststartvalue!\'\'}\" <#if filter.mustvalue?? && filter.mustvalue==\'mustvalue\'>lay-verify=required</#if> >\r\n		    </div>\r\n		    <div class=\"layui-form-mid\">-</div>\r\n		    <div class=\"layui-input-inline\" style=\"width: 80px;\">\r\n		      <input type=\"text\" name=\"${filter.code!\'\'}_endvalue\" id=\"${filter.code!\'\'}_endvalue\"  class=\"layui-input\"  value=\"${filter.requestendvalue!\'\'}\" <#if filter.mustvalue?? && filter.mustvalue==\'mustvalue\'>lay-verify=required</#if>>\r\n		    </div>\r\n		  </div>\r\n	<#else>\r\n		<div class=\"layui-input-inline\" >\r\n		      <input type=\"text\" name=\"${filter.code!\'\'}\"  id=\"${filter.code!\'\'}\"  class=\"layui-input\" value=\"${filter.requestvalue!\'\'}\" <#if filter.mustvalue?? && filter.mustvalue==\'mustvalue\'>lay-verify=required</#if>>\r\n		    </div>\r\n	</#if>\r\n</#if>\r\n<#if filter?? && filter.modeltype == \'date\'>\r\n	<#if filter.valuefiltertype ==\'range\'>\r\n		<div class=\"layui-inline\" style=\"margin-right:0px;\">\r\n		    <div class=\"layui-input-inline\" style=\"width: 98px;\">\r\n		      <input type=\"text\" name=\"${filter.code!\'\'}\" class=\"layui-input\" value=\"${filter.requeststartvalue!\'\'}\" id=\"${filter.code!\'\'}_startvalue\" >\r\n		    </div>\r\n		    <div class=\"layui-form-mid\">-</div>\r\n		    <div class=\"layui-input-inline\" style=\"width: 98px;\">\r\n		      <input type=\"text\" name=\"${filter.code!\'\'}_endvalue\"  class=\"layui-input\"  value=\"${filter.requestendvalue!\'\'}\" id=\"${filter.code!\'\'}_endvalue\" >\r\n		    </div>\r\n		  </div>\r\n		  <script>\r\n			   	layui.use(\'laydate\', function(){\r\n			  	  	var laydate = layui.laydate;\r\n			  		laydate.render({ \r\n			   	  		elem: document.getElementById(\'${filter.code!\'\'}_startvalue\'),\r\n			   		  	value: \'${filter.startvalue!\'\'}\',\r\n			   		  	type:UKHelper.getLayDateType(\'${filter.formatstr!\'\'}\'),\r\n			   		 	format: \'${filter.formatstr!\'\'}\'\r\n			   		});\r\n			  		laydate.render({ \r\n			   	  		elem: document.getElementById(\'${filter.code!\'\'}_endvalue\'),\r\n			   		  	value: \'${filter.endvalue!\'\'}\',\r\n			   		  	type:UKHelper.getLayDateType(\'${filter.formatstr!\'\'}\'),\r\n			   		 	format: \'${filter.formatstr!\'\'}\'\r\n			   		});\r\n			  	});\r\n		   	</script>\r\n	<#else>\r\n		<div class=\"layui-input-inline\" >\r\n		      <input type=\"text\" name=\"${filter.code!\'\'}\" id=\"${filter.code!\'\'}\"  class=\"layui-input\" >\r\n		    </div>\r\n		   	<script>\r\n			   	layui.use(\'laydate\', function(){\r\n			  	  	var laydate = layui.laydate;\r\n			  		laydate.render({ \r\n			   	  		elem: document.getElementById(\'${filter.code!\'\'}\'),\r\n			   		  	value: \'${filter.requestvalue!\'\'}\',\r\n			   		  	type:UKHelper.getLayDateType(\'${filter.formatstr!\'\'}\'),\r\n			   		 	format: \'${filter.formatstr!\'\'}\'\r\n			   		});\r\n			  	});\r\n		   	</script>\r\n	</#if>\r\n</#if>\r\n<#if filter?? && filter.modeltype == \'sigsel\'>\r\n	<#if filter.valuefiltertype ==\'range\'>\r\n	<#else>\r\n		<div class=\"layui-input-inline\" >\r\n		 	<select  <#if filter.mustvalue?? && filter.mustvalue==\'mustvalue\'>lay-verify=required</#if>  name=\"${filter.code!\'\'}\" lay-filter=${filter.code!\'\'} id=\"${filter.code!\'\'}\">\r\n				<option value=\"\" <#if !(filter.requestvalue??)>selected=selected</#if> >请选择</option>\r\n				  <#if  filter.reportData.col?? && filter.reportData.col.childeren ??>\r\n					<#list filter.reportData.col.childeren as val>\r\n		  				<option value=\"${val.name!\'\'}\" <#if filter.requestvalue == val.name>selected=selected</#if> ><#list val.childeren as key><#if key_index ==1>${key.name!\'\'}</#if></#list></option>\r\n			  		</#list>\r\n				  </#if>\r\n			</select>\r\n		 </div>\r\n		 <script>\r\n			layui.use(\'form\', function(){\r\n			  var form = layui.form;\r\n			  <#if filter?? && filter.childFilter??>\r\n			  form.on(\'select(${filter.code!\'\'})\', function(data){\r\n				  if($(\'#item_${filter.childFilter.code}\')){\r\n					  loadURL(\'/apps/report/design/filtervalchange.html?id=${filter.modelid}&fid=${filter.childFilter.id!\'\'}&publishedid=<#if publishedReport??>${publishedReport.id!\'\'}<#else></#if>&${filter.code!\'\'}=\'+data.value, \'#item_${filter.childFilter.code}\'); \r\n				  }\r\n			  });\r\n			  </#if>\r\n			  form.render();\r\n			});\r\n			</script>\r\n	</#if>\r\n</#if>\r\n', '4028811b618d0dca01618d5a5ff6034b', 'ukewo', '/images/design/table.png', null, null, null, null, '0', null, null);
@@ -8181,9 +8200,9 @@ CREATE TABLE `uk_user` (
 -- ----------------------------
 -- Records of uk_user
 -- ----------------------------
-INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-05-18 09:54:52', '4028811b63b028dc0163b032a8b2058c', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '1', null, null, null, '0', '0', '0', '2018-05-30 10:05:15', null, null, null, '0', '1', '0', '0', null);
+INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-06-29 17:40:30', '4028811b63b028dc0163b032a8b2058c', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '0', null, null, null, '0', '0', '0', '2018-06-29 17:40:37', null, null, null, '0', '0', '0', '0', null);
 INSERT INTO `uk_user` VALUES ('4028811b642f5f8c01642f60ed440683', null, 'test1', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'ad@te.com', null, null, null, null, null, null, null, null, '0', null, null, 'ukewo', 'ukewo', null, '2018-06-24 09:20:38', null, '2018-06-24 09:20:38', '4028811b63b028dc0163b032a8b2058c', '18510129433', '2018-06-24 09:20:38', null, '0', 'test1', null, '0', null, null, null, '0', '0', '0', '2018-06-24 22:32:41', null, null, null, '0', '0', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028811b63b028dc0163b032c3ed0590', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-06-24 22:43:21', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2017-11-05 10:15:07', '4028811b63b028dc0163b032c3ed0590', 'admin', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-06-30 00:18:17', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -8585,6 +8604,12 @@ CREATE TABLE `uk_xiaoe_config` (
   `othertempletoutput` varchar(32) DEFAULT NULL COMMENT '外部机器人回复参数解析模板',
   `othermethod` varchar(20) DEFAULT NULL COMMENT '外部机器人提交方式',
   `otherssl` tinyint(4) DEFAULT '0' COMMENT '外部机器人启用SSL',
+  `enablesuggest` tinyint(4) DEFAULT '0' COMMENT '启用推荐功能',
+  `suggestmsg` text COMMENT '推荐的提示信息',
+  `oqrdetailurl` varchar(255) DEFAULT NULL COMMENT '外部机器人内容URL',
+  `oqrdetailinput` varchar(32) DEFAULT NULL COMMENT '外部机器人详情输入参数',
+  `oqrdetailoutput` varchar(32) DEFAULT NULL COMMENT '外部机器人详情输出参数',
+  `othersuggestmsg` text COMMENT '命中结果的推荐的提示信息',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -8817,247 +8842,4 @@ CREATE TABLE `uk_xiaoe_words_type` (
 
 -- ----------------------------
 -- Records of uk_xiaoe_words_type
--- ----------------------------
-
--- ----------------------------
--- Table structure for `wf_cc_order`
--- ----------------------------
-DROP TABLE IF EXISTS `wf_cc_order`;
-CREATE TABLE `wf_cc_order` (
-  `order_Id` varchar(32) DEFAULT NULL COMMENT '流程实例ID',
-  `actor_Id` varchar(50) DEFAULT NULL COMMENT '参与者ID',
-  `creator` varchar(50) DEFAULT NULL COMMENT '发起人',
-  `create_Time` varchar(50) DEFAULT NULL COMMENT '抄送时间',
-  `finish_Time` varchar(50) DEFAULT NULL COMMENT '完成时间',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
-  KEY `IDX_CCORDER_ORDER` (`order_Id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='抄送实例表';
-
--- ----------------------------
--- Records of wf_cc_order
--- ----------------------------
-
--- ----------------------------
--- Table structure for `wf_hist_order`
--- ----------------------------
-DROP TABLE IF EXISTS `wf_hist_order`;
-CREATE TABLE `wf_hist_order` (
-  `id` varchar(32) NOT NULL COMMENT '主键ID',
-  `process_Id` varchar(32) NOT NULL COMMENT '流程定义ID',
-  `order_State` tinyint(1) NOT NULL COMMENT '状态',
-  `creator` varchar(50) DEFAULT NULL COMMENT '发起人',
-  `create_Time` varchar(50) NOT NULL COMMENT '发起时间',
-  `end_Time` varchar(50) DEFAULT NULL COMMENT '完成时间',
-  `expire_Time` varchar(50) DEFAULT NULL COMMENT '期望完成时间',
-  `priority` tinyint(1) DEFAULT NULL COMMENT '优先级',
-  `parent_Id` varchar(32) DEFAULT NULL COMMENT '父流程ID',
-  `order_No` varchar(50) DEFAULT NULL COMMENT '流程实例编号',
-  `variable` varchar(2000) DEFAULT NULL COMMENT '附属变量json存储',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `IDX_HIST_ORDER_PROCESSID` (`process_Id`) USING BTREE,
-  KEY `IDX_HIST_ORDER_NO` (`order_No`) USING BTREE,
-  KEY `FK_HIST_ORDER_PARENTID` (`parent_Id`) USING BTREE,
-  CONSTRAINT `wf_hist_order_ibfk_1` FOREIGN KEY (`parent_Id`) REFERENCES `wf_hist_order` (`id`),
-  CONSTRAINT `wf_hist_order_ibfk_2` FOREIGN KEY (`process_Id`) REFERENCES `wf_process` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='历史流程实例表';
-
--- ----------------------------
--- Records of wf_hist_order
--- ----------------------------
-
--- ----------------------------
--- Table structure for `wf_hist_task`
--- ----------------------------
-DROP TABLE IF EXISTS `wf_hist_task`;
-CREATE TABLE `wf_hist_task` (
-  `id` varchar(32) NOT NULL COMMENT '主键ID',
-  `order_Id` varchar(32) NOT NULL COMMENT '流程实例ID',
-  `task_Name` varchar(100) NOT NULL COMMENT '任务名称',
-  `display_Name` varchar(200) NOT NULL COMMENT '任务显示名称',
-  `task_Type` tinyint(1) NOT NULL COMMENT '任务类型',
-  `perform_Type` tinyint(1) DEFAULT NULL COMMENT '参与类型',
-  `task_State` tinyint(1) NOT NULL COMMENT '任务状态',
-  `operator` varchar(50) DEFAULT NULL COMMENT '任务处理人',
-  `create_Time` varchar(50) NOT NULL COMMENT '任务创建时间',
-  `finish_Time` varchar(50) DEFAULT NULL COMMENT '任务完成时间',
-  `expire_Time` varchar(50) DEFAULT NULL COMMENT '任务期望完成时间',
-  `action_Url` varchar(200) DEFAULT NULL COMMENT '任务处理url',
-  `parent_Task_Id` varchar(32) DEFAULT NULL COMMENT '父任务ID',
-  `variable` varchar(2000) DEFAULT NULL COMMENT '附属变量json存储',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `IDX_HIST_TASK_ORDER` (`order_Id`) USING BTREE,
-  KEY `IDX_HIST_TASK_TASKNAME` (`task_Name`) USING BTREE,
-  KEY `IDX_HIST_TASK_PARENTTASK` (`parent_Task_Id`) USING BTREE,
-  CONSTRAINT `wf_hist_task_ibfk_1` FOREIGN KEY (`order_Id`) REFERENCES `wf_hist_order` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='历史任务表';
-
--- ----------------------------
--- Records of wf_hist_task
--- ----------------------------
-
--- ----------------------------
--- Table structure for `wf_hist_task_actor`
--- ----------------------------
-DROP TABLE IF EXISTS `wf_hist_task_actor`;
-CREATE TABLE `wf_hist_task_actor` (
-  `task_Id` varchar(32) NOT NULL COMMENT '任务ID',
-  `actor_Id` varchar(50) NOT NULL COMMENT '参与者ID',
-  KEY `IDX_HIST_TASKACTOR_TASK` (`task_Id`) USING BTREE,
-  CONSTRAINT `wf_hist_task_actor_ibfk_1` FOREIGN KEY (`task_Id`) REFERENCES `wf_hist_task` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='历史任务参与者表';
-
--- ----------------------------
--- Records of wf_hist_task_actor
--- ----------------------------
-
--- ----------------------------
--- Table structure for `wf_order`
--- ----------------------------
-DROP TABLE IF EXISTS `wf_order`;
-CREATE TABLE `wf_order` (
-  `id` varchar(32) NOT NULL COMMENT '主键ID',
-  `parent_Id` varchar(32) DEFAULT NULL COMMENT '父流程ID',
-  `process_Id` varchar(32) NOT NULL COMMENT '流程定义ID',
-  `creator` varchar(50) DEFAULT NULL COMMENT '发起人',
-  `create_Time` varchar(50) NOT NULL COMMENT '发起时间',
-  `expire_Time` varchar(50) DEFAULT NULL COMMENT '期望完成时间',
-  `last_Update_Time` varchar(50) DEFAULT NULL COMMENT '上次更新时间',
-  `last_Updator` varchar(50) DEFAULT NULL COMMENT '上次更新人',
-  `priority` tinyint(1) DEFAULT NULL COMMENT '优先级',
-  `parent_Node_Name` varchar(100) DEFAULT NULL COMMENT '父流程依赖的节点名称',
-  `order_No` varchar(50) DEFAULT NULL COMMENT '流程实例编号',
-  `variable` varchar(2000) DEFAULT NULL COMMENT '附属变量json存储',
-  `version` int(3) DEFAULT NULL COMMENT '版本',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `IDX_ORDER_PROCESSID` (`process_Id`) USING BTREE,
-  KEY `IDX_ORDER_NO` (`order_No`) USING BTREE,
-  KEY `FK_ORDER_PARENTID` (`parent_Id`) USING BTREE,
-  CONSTRAINT `wf_order_ibfk_1` FOREIGN KEY (`parent_Id`) REFERENCES `wf_order` (`id`),
-  CONSTRAINT `wf_order_ibfk_2` FOREIGN KEY (`process_Id`) REFERENCES `wf_process` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='流程实例表';
-
--- ----------------------------
--- Records of wf_order
--- ----------------------------
-
--- ----------------------------
--- Table structure for `wf_process`
--- ----------------------------
-DROP TABLE IF EXISTS `wf_process`;
-CREATE TABLE `wf_process` (
-  `id` varchar(32) NOT NULL COMMENT '主键ID',
-  `name` varchar(100) DEFAULT NULL COMMENT '流程名称',
-  `display_Name` varchar(200) DEFAULT NULL COMMENT '流程显示名称',
-  `type` varchar(100) DEFAULT NULL COMMENT '流程类型',
-  `instance_Url` varchar(200) DEFAULT NULL COMMENT '实例url',
-  `state` tinyint(1) DEFAULT NULL COMMENT '流程是否可用',
-  `content` longblob COMMENT '流程模型定义',
-  `version` int(2) DEFAULT NULL COMMENT '版本',
-  `create_Time` varchar(50) DEFAULT NULL COMMENT '创建时间',
-  `creator` varchar(50) DEFAULT NULL COMMENT '创建人',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `IDX_PROCESS_NAME` (`name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='流程定义表';
-
--- ----------------------------
--- Records of wf_process
--- ----------------------------
-
--- ----------------------------
--- Table structure for `wf_surrogate`
--- ----------------------------
-DROP TABLE IF EXISTS `wf_surrogate`;
-CREATE TABLE `wf_surrogate` (
-  `id` varchar(32) NOT NULL COMMENT '主键ID',
-  `process_Name` varchar(100) DEFAULT NULL COMMENT '流程名称',
-  `operator` varchar(50) DEFAULT NULL COMMENT '授权人',
-  `surrogate` varchar(50) DEFAULT NULL COMMENT '代理人',
-  `odate` varchar(64) DEFAULT NULL COMMENT '操作时间',
-  `sdate` varchar(64) DEFAULT NULL COMMENT '开始时间',
-  `edate` varchar(64) DEFAULT NULL COMMENT '结束时间',
-  `state` tinyint(1) DEFAULT NULL COMMENT '状态',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `IDX_SURROGATE_OPERATOR` (`operator`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='委托代理表';
-
--- ----------------------------
--- Records of wf_surrogate
--- ----------------------------
-
--- ----------------------------
--- Table structure for `wf_task`
--- ----------------------------
-DROP TABLE IF EXISTS `wf_task`;
-CREATE TABLE `wf_task` (
-  `id` varchar(32) NOT NULL COMMENT '主键ID',
-  `order_Id` varchar(32) NOT NULL COMMENT '流程实例ID',
-  `task_Name` varchar(100) NOT NULL COMMENT '任务名称',
-  `display_Name` varchar(200) NOT NULL COMMENT '任务显示名称',
-  `task_Type` tinyint(1) NOT NULL COMMENT '任务类型',
-  `perform_Type` tinyint(1) DEFAULT NULL COMMENT '参与类型',
-  `operator` varchar(50) DEFAULT NULL COMMENT '任务处理人',
-  `create_Time` varchar(50) DEFAULT NULL COMMENT '任务创建时间',
-  `finish_Time` varchar(50) DEFAULT NULL COMMENT '任务完成时间',
-  `expire_Time` varchar(50) DEFAULT NULL COMMENT '任务期望完成时间',
-  `action_Url` varchar(200) DEFAULT NULL COMMENT '任务处理的url',
-  `parent_Task_Id` varchar(32) DEFAULT NULL COMMENT '父任务ID',
-  `variable` varchar(2000) DEFAULT NULL COMMENT '附属变量json存储',
-  `version` tinyint(1) DEFAULT NULL COMMENT '版本',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `IDX_TASK_ORDER` (`order_Id`) USING BTREE,
-  KEY `IDX_TASK_TASKNAME` (`task_Name`) USING BTREE,
-  KEY `IDX_TASK_PARENTTASK` (`parent_Task_Id`) USING BTREE,
-  CONSTRAINT `wf_task_ibfk_1` FOREIGN KEY (`order_Id`) REFERENCES `wf_order` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='任务表';
-
--- ----------------------------
--- Records of wf_task
--- ----------------------------
-
--- ----------------------------
--- Table structure for `wf_task_actor`
--- ----------------------------
-DROP TABLE IF EXISTS `wf_task_actor`;
-CREATE TABLE `wf_task_actor` (
-  `task_Id` varchar(32) NOT NULL COMMENT '任务ID',
-  `actor_Id` varchar(50) NOT NULL COMMENT '参与者ID',
-  KEY `IDX_TASKACTOR_TASK` (`task_Id`) USING BTREE,
-  CONSTRAINT `wf_task_actor_ibfk_1` FOREIGN KEY (`task_Id`) REFERENCES `wf_task` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='任务参与者表';
-
--- ----------------------------
--- Records of wf_task_actor
--- ----------------------------
-
--- ----------------------------
--- Table structure for `wf_workitem`
--- ----------------------------
-DROP TABLE IF EXISTS `wf_workitem`;
-CREATE TABLE `wf_workitem` (
-  `task_id` varchar(255) NOT NULL,
-  `process_id` varchar(255) DEFAULT NULL,
-  `order_id` varchar(255) DEFAULT NULL,
-  `order_no` varchar(255) DEFAULT NULL,
-  `process_name` varchar(255) DEFAULT NULL,
-  `instance_url` varchar(255) DEFAULT NULL,
-  `parent_id` varchar(255) DEFAULT NULL,
-  `creator` varchar(255) DEFAULT NULL,
-  `order_create_time` varchar(255) DEFAULT NULL,
-  `order_expire_time` varchar(255) DEFAULT NULL,
-  `order_variable` varchar(255) DEFAULT NULL,
-  `task_name` varchar(255) DEFAULT NULL,
-  `task_key` varchar(255) DEFAULT NULL,
-  `operator` varchar(255) DEFAULT NULL,
-  `task_create_time` varchar(255) DEFAULT NULL,
-  `task_end_time` varchar(255) DEFAULT NULL,
-  `task_expire_time` varchar(255) DEFAULT NULL,
-  `action_url` varchar(255) DEFAULT NULL,
-  `task_type` int(11) DEFAULT NULL,
-  `perform_type` int(11) DEFAULT NULL,
-  `task_variable` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`task_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-
--- ----------------------------
--- Records of wf_workitem
 -- ----------------------------
