@@ -16,4 +16,15 @@
 </div>
 <#else>
 	${(chatMessage.message!'')?no_esc}
+	<#if chatMessage.suggestmsg?? && chatMessage.suggestmsg!="">
+	<ul class="info-list">
+		<#list chatMessage.suggest as item>
+		<li class="ukefu-suggest-item">
+			<a href="javascript:void(0)" class="suggestitem" onclick="sendMessageTextWithID('${item.title!''}' , '${item.id!''}')">
+				${item.title!''}
+			</a>
+		</li>
+		</#list>
+	</ul>
+	</#if>
 </#if>

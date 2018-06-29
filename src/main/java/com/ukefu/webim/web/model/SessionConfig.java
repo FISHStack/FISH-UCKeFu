@@ -57,6 +57,7 @@ public class SessionConfig implements java.io.Serializable{
 	
 	private boolean enablequick ;		//坐席工作界面的输入框中启用快捷输入
 	
+	private boolean otherssl ;		//外部知识库访问启用SSL
 	private boolean otherquickplay ;	//启用外部快捷回复功能
 	private String oqrsearchurl ;	//外部快捷回复搜索地址
 	private String oqrsearchinput ;	//外部快捷回复搜索输入参数
@@ -371,4 +372,11 @@ public class SessionConfig implements java.io.Serializable{
 	public void setEnablequick(boolean enablequick) {
 		this.enablequick = enablequick;
 	}
+	public boolean isOtherssl() {
+		return otherssl;
+	}
+	public void setOtherssl(boolean otherssl) {
+		this.otherssl = otherssl;
+	}
+	
 }

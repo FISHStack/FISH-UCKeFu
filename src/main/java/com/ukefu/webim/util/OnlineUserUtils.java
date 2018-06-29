@@ -65,7 +65,7 @@ import freemarker.template.TemplateException;
 
 public class OnlineUserUtils {
 	public static WebSseEmitterClient webIMClients = new WebSseEmitterClient();
-	private static ObjectMapper objectMapper = new ObjectMapper();
+	public static ObjectMapper objectMapper = new ObjectMapper();
 	/**
 	 * 
 	 * @param user

@@ -1133,4 +1133,12 @@ p.submitBtnWrap{
     padding: 0 15px 0 10px;
     background-color: #f2f2f2;
 }
-
+.info-list{
+	margin-top:10px;
+}
+.info-list .ukefu-suggest-item {
+    font-size: 14px;
+    padding: 0 0 11px 18px;
+    color: rgba(35, 39, 50, 0.8);
+    background: url(/images/circle.png) no-repeat left 8px;
+}

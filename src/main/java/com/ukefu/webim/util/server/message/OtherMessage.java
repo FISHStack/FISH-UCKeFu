@@ -12,6 +12,7 @@ public class OtherMessage implements java.io.Serializable{
 	private String title;
 	private String message ;
 	private String id ;
+	private boolean detail ;
 	
 	private List<OtherMessageItem> items ;
 	
@@ -44,5 +45,11 @@ public class OtherMessage implements java.io.Serializable{
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public boolean isDetail() {
+		return detail;
+	}
+	public void setDetail(boolean detail) {
+		this.detail = detail;
 	}
 }

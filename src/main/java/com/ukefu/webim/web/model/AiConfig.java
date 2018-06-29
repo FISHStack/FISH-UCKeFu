@@ -41,8 +41,14 @@ public class AiConfig implements java.io.Serializable{
 	private String othertempletinput ;	//外部机器人输入格式化模板
 	private String othertempletoutput ;	//外部机器人输出格式化模板
 	
+	private String oqrdetailurl ;		//外部机器人内容URL
+	private String oqrdetailinput ;	//外部机器人详情输入格式化模板
+	private String oqrdetailoutput ;	//外部机器人详情输出格式化模板
+	
 	private boolean enablesuggest ;		//启用推荐
 	private String suggestmsg ;			//推荐的提示消息
+	
+	private String othersuggestmsg ;			//成功命中结果以后的 推荐消息
 	
 	private boolean enableask = false;
 	private boolean askfirst = false;
@@ -297,5 +303,29 @@ public class AiConfig implements java.io.Serializable{
 	}
 	public void setSuggestmsg(String suggestmsg) {
 		this.suggestmsg = suggestmsg;
+	}
+	public String getOqrdetailurl() {
+		return oqrdetailurl;
+	}
+	public void setOqrdetailurl(String oqrdetailurl) {
+		this.oqrdetailurl = oqrdetailurl;
+	}
+	public String getOqrdetailinput() {
+		return oqrdetailinput;
+	}
+	public void setOqrdetailinput(String oqrdetailinput) {
+		this.oqrdetailinput = oqrdetailinput;
+	}
+	public String getOqrdetailoutput() {
+		return oqrdetailoutput;
+	}
+	public void setOqrdetailoutput(String oqrdetailoutput) {
+		this.oqrdetailoutput = oqrdetailoutput;
+	}
+	public String getOthersuggestmsg() {
+		return othersuggestmsg;
+	}
+	public void setOthersuggestmsg(String othersuggestmsg) {
+		this.othersuggestmsg = othersuggestmsg;
 	}
 }

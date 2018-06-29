@@ -1,7 +1,9 @@
 package com.ukefu.webim.util.server.message;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,10 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.ukefu.util.UKTools;
 import com.ukefu.util.event.UserEvent;
+import com.ukefu.webim.util.OnlineUserUtils;
 
 @Entity
 @Table(name = "uk_chat_message")
@@ -389,5 +393,17 @@ public class ChatMessage implements java.io.Serializable ,UserEvent{
 	}
 	public void setSuggestmsg(String suggestmsg) {
 		this.suggestmsg = suggestmsg;
+	}
+	@Transient
+	public List<OtherMessageItem> getSuggest(){
+		List<OtherMessageItem> otherMessageItemList = null ;
+		if(!StringUtils.isBlank(this.getSuggestmsg())) {
+			try {
+				otherMessageItemList = OnlineUserUtils.objectMapper.readValue(this.getSuggestmsg(), OnlineUserUtils.getCollectionType(ArrayList.class, OtherMessageItem.class))  ;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return otherMessageItemList ;
 	}
 }

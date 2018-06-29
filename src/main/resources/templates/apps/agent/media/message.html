@@ -52,4 +52,15 @@
 	</script>
 <#else>
 	${(chatmessage.message!'')?no_esc}
+	<#if chatmessage.suggestmsg?? && chatmessage.suggestmsg!="">
+	<ul class="agent-info-list">
+		<#list chatmessage.suggest as item>
+		<li class="ukefu-suggest-item">
+			<a href="javascript:void(0)" class="suggestitem">
+				${item.title!''}
+			</a>
+		</li>
+		</#list>
+	</ul>
+	</#if>
 </#if>

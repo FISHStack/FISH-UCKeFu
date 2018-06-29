@@ -293,6 +293,10 @@ public class MessageUtils {
     		outMessage.setNickName(data.getUsername());
     		outMessage.setCreatetime(data.getCreatetime());
     		
+    		if(!StringUtils.isBlank(data.getSuggestmsg())) {
+    			outMessage.setSuggest(data.getSuggest());
+    		}
+    		
     		data.setUpdatetime(System.currentTimeMillis());
     		
     		

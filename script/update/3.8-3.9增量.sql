@@ -264,12 +264,20 @@ ALTER TABLE uk_xiaoe_config ADD otherparam text COMMENT "外部机器人参数";
 ALTER TABLE uk_xiaoe_config ADD othertempletinput varchar(32) COMMENT "外部机器人提交参数模板";
 ALTER TABLE uk_xiaoe_config ADD othertempletoutput varchar(32) COMMENT "外部机器人回复参数解析模板";
 
+ALTER TABLE uk_xiaoe_config ADD oqrdetailurl varchar(255) COMMENT "外部机器人内容URL";
+ALTER TABLE uk_xiaoe_config ADD oqrdetailinput varchar(32) COMMENT "外部机器人详情输入参数";
+ALTER TABLE uk_xiaoe_config ADD oqrdetailoutput varchar(32) COMMENT "外部机器人详情输出参数";
+
+
+
 
 ALTER TABLE uk_consult_invite ADD agentshortcutkey varchar(32) COMMENT "坐席默认回复消息快捷键";
 ALTER TABLE uk_consult_invite ADD usershortcutkey varchar(32) COMMENT "访客默认回复消息快捷键";
 
 ALTER TABLE uk_xiaoe_config ADD enablesuggest tinyint(4) DEFAULT 0 COMMENT "启用推荐功能";
 ALTER TABLE uk_xiaoe_config ADD suggestmsg text COMMENT "推荐的提示信息";
+ALTER TABLE uk_xiaoe_config ADD othersuggestmsg text COMMENT "命中结果的推荐的提示信息";
+
 ALTER TABLE uk_chat_message ADD suggestmsg text COMMENT "推荐的提示信息";
 
 ALTER TABLE uk_sessionconfig ADD agentautoleave tinyint(4) DEFAULT 0 COMMENT "关闭浏览器自动离线";
@@ -285,6 +293,8 @@ ALTER TABLE uk_sessionconfig ADD oqrdetailinput varchar(32) COMMENT "外部快�
 ALTER TABLE uk_sessionconfig ADD oqrdetailoutput varchar(32) COMMENT "外部快捷回复详情输出参数";
 
 ALTER TABLE uk_sessionconfig ADD enablequick tinyint(32) DEFAULT 0 COMMENT "启用快捷回复功能";
+
+ALTER TABLE uk_sessionconfig ADD otherssl tinyint(4) DEFAULT 0 COMMENT "外部知识库启用SSL";
 
 
 

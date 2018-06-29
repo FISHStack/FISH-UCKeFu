@@ -518,9 +518,17 @@
 													</div>
 												</div>
 												<div class="box-item" id="otherquickplay_op" style="<#if sessionConfig?? && sessionConfig.otherquickplay == false>display:none;</#if>">	
+													<div class="row"  style="margin-bottom:20px;">
+														<div class="col-lg-8">
+															<p>a、外部机器人启用HTTPS访问</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="checkbox" id="otherssl" name="otherssl" title="启用" <#if sessionConfig?? && sessionConfig.otherssl == true>checked="checked"</#if>>
+														</div>
+													</div>
 													<div class="row">
 														<div class="col-lg-8">
-															<p>a、外部快捷回复的搜索接口地址</p>
+															<p>b、外部快捷回复的搜索接口地址</p>
 														</div>
 														<div class="col-lg-4" style="text-align:right;">
 															<input type="text" name="oqrsearchurl" id="oqrsearchurl" value="<#if sessionConfig??>${sessionConfig.oqrsearchurl!''}</#if>" autocomplete="off" class="layui-input" style="display:inline;">
@@ -528,7 +536,7 @@
 													</div>
 													<div class="row" style="margin-top:10px;">
 														<div class="col-lg-8">
-															<p>b、外部快捷回复的搜索输入参数</p>
+															<p>c、外部快捷回复的搜索输入参数</p>
 														</div>
 														<div class="col-lg-4">
 															<select name="oqrsearchinput">
@@ -543,7 +551,7 @@
 													</div>
 													<div class="row" style="margin-top:10px;">
 														<div class="col-lg-8">
-															<p>c、外部快捷回复的搜索输出参数</p>
+															<p>d、外部快捷回复的搜索输出参数</p>
 														</div>
 														<div class="col-lg-4">
 															<select name="oqrsearchoutput">
@@ -559,7 +567,7 @@
 													
 													<div class="row" style="margin-top:10px;">
 														<div class="col-lg-8">
-															<p>d、外部快捷回复的详情接口地址</p>
+															<p>e、外部快捷回复的详情接口地址</p>
 														</div>
 														<div class="col-lg-4" style="text-align:right;">
 															<input type="text" name="oqrdetailurl" id="oqrdetailurl" value="<#if sessionConfig??>${sessionConfig.oqrdetailurl!''}</#if>" autocomplete="off" class="layui-input" style="display:inline;">
@@ -567,7 +575,7 @@
 													</div>
 													<div class="row" style="margin-top:10px;">
 														<div class="col-lg-8">
-															<p>e、外部快捷回复的详情输入参数</p>
+															<p>f、外部快捷回复的详情输入参数</p>
 														</div>
 														<div class="col-lg-4">
 															<select name="oqrdetailinput">
@@ -582,7 +590,7 @@
 													</div>
 													<div class="row" style="margin-top:10px;">
 														<div class="col-lg-8">
-															<p>f、外部快捷回复的详情输出参数</p>
+															<p>g、外部快捷回复的详情输出参数</p>
 														</div>
 														<div class="col-lg-4">
 															<select name="oqrdetailoutput">
