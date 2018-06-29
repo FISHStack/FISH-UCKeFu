@@ -59,6 +59,18 @@ public class ESDataExchangeImpl{
 		this.saveBulk(dataBean).execute().actionGet() ;
 	}
 	/**
+	 * 实时刷新，仅限于 回收到部门和回收到 公共使用，其他地方禁用
+	 * @param dataBean
+	 * @param refresh
+	 * @throws Exception
+	 */
+	public void saveIObject(UKDataBean dataBean , boolean refresh) throws Exception {
+		if(dataBean.getId() == null) {
+			dataBean.setId((String) dataBean.getValues().get("id"));
+		}
+		this.saveBulk(dataBean).setRefresh(refresh).execute().actionGet() ;
+	}
+	/**
 	 * @param dataBean
 	 * @return
 	 * @throws Exception

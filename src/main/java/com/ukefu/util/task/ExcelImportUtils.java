@@ -99,6 +99,8 @@ public class ExcelImportUtils{
 			metaDataTable.getTableproperty().add(initProperties("validresult", "数据状态", "String", event.getOrgi() , event.getTablename() , true)) ;
 			metaDataTable.getTableproperty().add(initProperties("validmessage", "数据状态", "String", event.getOrgi() , event.getTablename() , true)) ;
 			
+			metaDataTable.getTableproperty().add(initProperties("assuser", "分配执行人", "String", event.getOrgi() , event.getTablename() , true)) ;
+			
 			
 			
 			metaDataTable.getTableproperty().add(initProperties(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, "分配用户", "String", event.getOrgi() , event.getTablename() , true)) ;
@@ -138,6 +140,7 @@ public class ExcelImportUtils{
 			
 			metaDataTable.getTableproperty().add(initProperties("succcall", "拨打成功次数", "Long", event.getOrgi() , event.getTablename() , true)) ;
 			metaDataTable.getTableproperty().add(initProperties("faildcall", "拨打失败次数", "Long", event.getOrgi() , event.getTablename() , true)) ;
+			
             /**
 			 * 映射 Mapping , 已修正，增加了一个手动映射的步骤，上传数据结构以后，允许手动映射
 			 */
