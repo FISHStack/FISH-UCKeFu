@@ -319,7 +319,7 @@ public class ActivityResource extends Resource{
 							 */
 							this.callAgentList.add(this.current) ;
 							if(this.callAgentList.size() > 0) {
-								this.current = this.callAgentList.get(0) ;
+								this.current = this.callAgentList.remove(0) ;
 							}
 						}
 					}
