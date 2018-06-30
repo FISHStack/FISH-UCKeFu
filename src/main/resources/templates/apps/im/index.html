@@ -77,15 +77,35 @@
 				},
 				afterCreate : function() { //设置编辑器创建后执行的回调函数
 		            var self = this;
-		            //Ctrl+Enter提交表单
-		            K.ctrl(document, 13, function() {
-		                self.sync();
-		                sendMessage();
-		            });
-		            K.ctrl(self.edit.doc, 13, function() {
-		                self.sync();
-		                sendMessage();
-		            });
+		            <#if sessionConfig?? && sessionConfig.agentctrlenter?? && sessionConfig.agentctrlenter == true>
+			            //Ctrl+Enter提交表单
+			            K.ctrl(document, 13, function() {
+			                self.sync();
+			                sendMessage();
+			            });
+			            K.ctrl(self.edit.doc, 13, function() {
+			                self.sync();
+			                sendMessage();
+			            });
+		            <#else>
+						var kindEditorIframe = $("iframe").contents().find("body");  
+					    kindEditorIframe.keydown(function (event) {  
+						if(event.keyCode==13 && !event.ctrlKey){  
+						    self.sync();
+							sendMessage();
+							return false;
+						}else if(event.keyCode==13 && event.ctrlKey){
+							editor.insertHtml('<br/>');
+						}
+					    });  
+			    		//Ctrl+Enter提交表单
+						K.ctrl(document, 13, function() {
+							editor.insertHtml('<br/>');
+						});
+						K.ctrl(self.edit.doc, 13, function() {
+							editor.insertHtml('<br/>');
+						});
+		            </#if>
 		        }
             });
         });

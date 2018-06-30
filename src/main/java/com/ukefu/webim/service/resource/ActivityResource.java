@@ -313,6 +313,14 @@ public class ActivityResource extends Resource{
 							outputTextFormat.setDataBean(dataBean);
 		
 							atomInt.incrementAndGet() ;
+							
+							/**
+							 * 修改为平均分配的方式 ， 每个坐席或者部门评价分配
+							 */
+							this.callAgentList.add(this.current) ;
+							if(this.callAgentList.size() > 0) {
+								this.current = this.callAgentList.get(0) ;
+							}
 						}
 					}
 				}
