@@ -168,10 +168,12 @@ public class SearchTools {
 	 * @param ps
 	 * @return
 	 */
-	public static PageImpl<UKDataBean> agentsearch(String orgi , String agent , int p, int ps){
+	public static PageImpl<UKDataBean> agentsearch(String orgi ,boolean excludeCalled ,  String agent , int p, int ps){
 		BoolQueryBuilder queryBuilder = new BoolQueryBuilder();
 		queryBuilder.must(termQuery("orgi", orgi)) ;
-		queryBuilder.must(termQuery("callstatus", UKDataContext.NameStatusTypeEnum.NOTCALL.toString())) ;
+		if(excludeCalled){
+			queryBuilder.must(termQuery("callstatus", UKDataContext.NameStatusTypeEnum.NOTCALL.toString())) ;
+		}
 		queryBuilder.must(termQuery("validresult", "valid")) ;
 		queryBuilder.must(termQuery(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, agent)) ;
 		queryBuilder.must(termQuery("status", UKDataContext.NamesDisStatusType.DISAGENT.toString())) ;
