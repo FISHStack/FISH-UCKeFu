@@ -163,6 +163,7 @@ public class ActivityResource extends Resource{
 		 * FormFilter的执行信息更新，执行次数
 		 */
 		if(formFilterRes!=null && this.formFilter != null) {
+			this.formFilter.setFilternum(this.formFilter.getFilternum()+1);
 			formFilterRes.save(this.formFilter) ;
 		}
 		/**
