@@ -77,7 +77,7 @@
 				},
 				afterCreate : function() { //设置编辑器创建后执行的回调函数
 		            var self = this;
-		            <#if sessionConfig?? && sessionConfig.agentctrlenter?? && sessionConfig.agentctrlenter == true>
+		            <#if inviteData?? && inviteData.ctrlenter?? && inviteData.ctrlenter == true>
 			            //Ctrl+Enter提交表单
 			            K.ctrl(document, 13, function() {
 			                self.sync();
