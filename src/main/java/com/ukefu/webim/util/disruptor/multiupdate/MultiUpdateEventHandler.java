@@ -9,7 +9,6 @@ import com.ukefu.util.task.ESData;
 @SuppressWarnings("rawtypes")
 public class MultiUpdateEventHandler implements EventHandler<UserDataEvent>{
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onEvent(UserDataEvent event, long arg1, boolean arg2)
 			throws Exception {

@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
+import com.ukefu.util.UKeFuList;
 import com.ukefu.util.metadata.DatabaseMetaDataHandler;
 import com.ukefu.util.metadata.UKColumnMetadata;
 import com.ukefu.util.metadata.UKTableMetaData;
@@ -301,9 +302,13 @@ public class MetadataController extends Handler{
 	    				ElasticsearchRepository jpa = (ElasticsearchRepository)bean ;
 	    				if(!StringUtils.isBlank(table.getPreviewtemplet())) {
 	    					SysDic jpaDic = UKeFuDic.getInstance().getDicItem(table.getPreviewtemplet()) ;
-	    					List<Object> dataList = service.list(jpaDic.getCode()) ;
+	    					List dataList = service.list(jpaDic.getCode()) ;
+	    					List values = new UKeFuList();
+	    					for(Object object : dataList) {
+	    						values.add(object) ;
+	    					}
 	    					if(dataList.size() > 0) {
-	    						jpa.save(dataList) ;
+	    						jpa.save(values) ;
 	    					}
 	    				}
 	    			}
@@ -329,6 +334,7 @@ public class MetadataController extends Handler{
 	    				if(!StringUtils.isBlank(table.getPreviewtemplet())) {
 	    					Iterable dataList = jpa.findAll();
 	    					for(Object object : dataList) {
+	    						service.delete(object);
 	    						service.save(object);
 	    					}
 	    				}

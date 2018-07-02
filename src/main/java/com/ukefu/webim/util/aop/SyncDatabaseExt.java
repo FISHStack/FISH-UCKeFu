@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
+import com.ukefu.util.UKeFuList;
 import com.ukefu.util.event.MultiUpdateEvent;
 import com.ukefu.webim.service.hibernate.BaseService;
 import com.ukefu.webim.web.model.ESBean;
@@ -40,7 +41,9 @@ public class SyncDatabaseExt {
     	if(args.length == 1){
     		Object data = args[0] ;
     		if(data!=null){
-	    		if(data instanceof List){
+	    		if(data instanceof UKeFuList){
+	    			/**只有一个地方用到，从DB同步数据到ES**/
+	    		}else if(data instanceof List){
 	    			List<Object> dataList = (List<Object>)data ;
 	    			for(Object dbData : dataList){
 	    				UKTools.multiupdate(new MultiUpdateEvent<Object>(dbData , dbDataRes, UKDataContext.MultiUpdateType.SAVE.toString()));

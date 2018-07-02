@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +35,10 @@ public class BaseService<T> {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void delete(T t){
+	public void delete(Object object){
 		Session session = hibernateFactory.openSession() ; 
 		try{
-			t = (T) session.get(t.getClass(), BeanUtils.getProperty(t, "id")) ;
-			if(t!=null){
-				session.delete(t);
-			}
+			session.delete(session.merge(object));
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}finally{
@@ -53,11 +48,11 @@ public class BaseService<T> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object> list(String bean){
-		List<Object> dataList = null ;
+	public List<T> list(String bean){
+		List<T> dataList = null ;
 		Session session = hibernateFactory.openSession() ; 
 		try{
-			dataList = session.createQuery("from "+bean).list() ;
+			dataList = session.createCriteria(Class.forName(bean)).list() ;
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}finally{

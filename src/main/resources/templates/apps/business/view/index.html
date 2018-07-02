@@ -1,0 +1,24 @@
+<div class="layui-layout layui-layout-content"  style="height: 100%;">
+	<div class="box default-box" style="height: 100%;">
+		<div class="box-body">
+			<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+				<ul class="layui-tab-title">
+					<#if dataDicList??>
+				    <#list dataDicList as dataDic>
+				    <li <#if dataDic_index == 0>class="layui-this"</#if>>${dataDic.name!''}</li>
+				    </#list>
+				    </#if>
+				</ul>
+				<div class="layui-tab-content" style="padding-top:0px;padding-bottom:0px;">
+					<ul class="layui-tab-title ukefu-report-title">
+						<#if reportList?? && reportList.content??>
+						<#list reportList.content as rpt>
+						<li <#if rpt.id == report.id>class="ukefu-report-this"</#if>>${rpt.name!''}</li>
+						</#list>
+						</#if>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

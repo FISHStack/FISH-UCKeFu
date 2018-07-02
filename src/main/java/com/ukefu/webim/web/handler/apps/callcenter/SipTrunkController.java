@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -37,6 +38,18 @@ public class SipTrunkController extends Handler{
 		SipTrunk sipTrunk = CallCenterUtils.siptrunk(extno, sipTrunkRes, extentionRes) ;
 		map.addAttribute("siptrunk" , sipTrunk);
 		response.setContentType("Content-type: text/plain; charset=utf-8"); 
+    	return request(super.createRequestPageTempletResponse("/apps/business/callcenter/extention/siptrunk"));
+    }
+	
+	@RequestMapping(value = "/agent")
+    @Menu(type = "callcenter" , subtype = "agent" , access = true)
+    public ModelAndView agent(ModelMap map , HttpServletRequest request , HttpServletResponse response ,@Valid String ani ,@Valid String called,@Valid String extno) throws IOException, TemplateException {
+		SipTrunk sipTrunk = CallCenterUtils.siptrunk(extno, sipTrunkRes, extentionRes) ;
+		map.addAttribute("siptrunk" , sipTrunk);
+		response.setContentType("Content-type: text/plain; charset=utf-8"); 
+		if(sipTrunk!=null) {
+			
+		}
     	return request(super.createRequestPageTempletResponse("/apps/business/callcenter/extention/siptrunk"));
     }
 }
