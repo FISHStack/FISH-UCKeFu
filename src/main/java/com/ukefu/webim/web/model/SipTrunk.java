@@ -52,6 +52,9 @@ public class SipTrunk implements java.io.Serializable{
 	
 	private String sipcontent ;		//SIP配置代码
 	
+	private String busyext ;	//坐席忙的时候转入号码
+	private String notready ;	//坐席不在线的的时候转入号码
+	
 	
 	private String province ;		//号码省份
 	private String city ;			//号码城市
@@ -233,5 +236,17 @@ public class SipTrunk implements java.io.Serializable{
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getBusyext() {
+		return busyext;
+	}
+	public void setBusyext(String busyext) {
+		this.busyext = busyext;
+	}
+	public String getNotready() {
+		return notready;
+	}
+	public void setNotready(String notready) {
+		this.notready = notready;
 	}
 }

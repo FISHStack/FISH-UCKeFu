@@ -84,6 +84,10 @@ public class CallCenterSipTrunkController extends Handler{
 				oldSipTrunk.setDefaultsip(siptrunk.isDefaultsip());
 				oldSipTrunk.setTitle(siptrunk.getTitle());
 				
+				oldSipTrunk.setOutnumber(siptrunk.getOutnumber());
+				oldSipTrunk.setBusyext(siptrunk.getBusyext());
+				oldSipTrunk.setNotready(siptrunk.getNotready());
+				
 				oldSipTrunk.setProvince(siptrunk.getProvince());
 				oldSipTrunk.setCity(siptrunk.getCity());
 				oldSipTrunk.setPrefix(siptrunk.getPrefix());

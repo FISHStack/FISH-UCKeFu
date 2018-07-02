@@ -246,14 +246,14 @@
 								</#if> -->
 							</#if>
 							<#if user?? && (user.roleAuthMap["A09_A02_A01"]?? || user.usertype == "0") >
-							
+							<!-- 
 							<dd class="ukefu-left-menu" data-tooltip="知识库">
 								<a href="javascript:void(0)" data-title="知识库" data-href="/apps/kbs/index.html" class="iframe_btn" data-id="maincontent" data-type="tabChange"> 
 									<i class="kfont" style="position: relative;">&#xe62a;</i>
 								</a>
 							</dd>
+							 -->
 							</#if>
-
 							<#if models?? && models["xiaoe"]?? && models["xiaoe"] == false>
 								<#if user?? && (user.roleAuthMap["A09_A02_A01"]?? || user.usertype == "0") >
 									<a href="javascript:void(0)" data-title="知识库" data-href="/apps/topic.html" class="iframe_btn" data-id="maincontent" data-type="tabChange"> 
@@ -317,6 +317,7 @@
 										<i class="kfont" style="position: relative;">&#xe625;</i>
 										</a>
 									</dd>
+									<!-- 
 									<#if user?? &&( user.roleAuthMap["A12"]?? || user.usertype == "0") >
 									<dd class="ukefu-left-menu" data-tooltip="坐席监控">
 										<a href="javascript:void(0)" data-title="坐席监控" data-href="/apps/callcenter/service/monitor/allcall.html" class="iframe_btn" data-id="maincontent" data-type="tabChange"> 
@@ -324,6 +325,7 @@
 										</a>
 									</dd>
 									</#if>
+									 -->
 								</#if>
 							</#if>
 							<!-- 

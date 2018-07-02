@@ -66,6 +66,27 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">网关号码：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="outnumber" value="${siptrunk.outnumber!''}" required lay-verify="required" placeholder="接入的网关号码" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+            	<font color="red">*</font> 
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">坐席忙转号码：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="busyext" placeholder="坐席忙的时候转入的号码" value="${siptrunk.busyext!''}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">坐席不在线转号码：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="notready" placeholder="坐席不在线的时候转入的号码" value="${siptrunk.notready!''}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
 			<div class="layui-inline">
 				<label class="layui-form-label">归属地：</label>
 				<div class="layui-input-inline">
