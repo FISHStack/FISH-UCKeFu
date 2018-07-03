@@ -33,9 +33,6 @@ public class CallAgentResourceController extends Handler{
 	@Autowired
 	private UserRepository userRes ;
 	
-	@Autowired
-	private OnlineUserRepository onlineUserRes ;
-	
 	@RequestMapping("/res/agent")
     @Menu(type = "res" , subtype = "agent")
     public ModelAndView add(ModelMap map , HttpServletRequest request , @Valid String q) {
@@ -45,7 +42,6 @@ public class CallAgentResourceController extends Handler{
 		final String search = q;
 		final String orgi = super.getOrgi(request);
 		final List<String> organList = CallCenterUtils.getExistOrgan(super.getUser(request));
-    	//map.addAttribute("owneruserList",onlineUserRes.findByUser(super.getOrgi(request), false, q, new PageRequest(0, 5)) ) ;
 		map.put("owneruserList", userRes.findAll(new Specification<User>(){
 			@Override
 			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query,
