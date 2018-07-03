@@ -2,7 +2,6 @@ package com.ukefu.util.freeswitch.model;
 
 import java.util.Date;
 
-import com.ukefu.webim.web.model.CallOutNames;
 import com.ukefu.webim.web.model.Extention;
 
 public class CallCenterAgent implements java.io.Serializable{
@@ -17,6 +16,7 @@ public class CallCenterAgent implements java.io.Serializable{
 	private Date updatetime ;
 	private String status ;
 	private String workstatus ;
+	private String siptrunk ;
 	
 	private String eventid ;
 	
@@ -93,5 +93,13 @@ public class CallCenterAgent implements java.io.Serializable{
 
 	public void setNameid(String nameid) {
 		this.nameid = nameid;
+	}
+
+	public String getSiptrunk() {
+		return siptrunk;
+	}
+
+	public void setSiptrunk(String siptrunk) {
+		this.siptrunk = siptrunk;
 	}
 }

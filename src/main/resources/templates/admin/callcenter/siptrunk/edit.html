@@ -81,9 +81,21 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">坐席不在线转号码：</label>
+            <label class="layui-form-label">坐席离线转手机：</label>
             <div class="layui-input-inline">
-                <input type="text" name="notready" placeholder="坐席不在线的时候转入的号码" value="${siptrunk.notready!''}" autocomplete="off" class="layui-input">
+                <input type="checkbox" name="enablecallagent" lay-skin="switch" <#if siptrunk.enablecallagent>checked="checked"</#if> lay-text="启用|禁用">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">无坐席在线转号码：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="notready" placeholder="无坐席在线的时候转入号码" value="${siptrunk.notready!''}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">无名单或未分配：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="noname" value="${siptrunk.noname!''}" placeholder="无名单或未分配的时候转入号码" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">

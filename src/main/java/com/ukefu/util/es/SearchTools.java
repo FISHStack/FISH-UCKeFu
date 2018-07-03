@@ -209,6 +209,24 @@ public class SearchTools {
 	 * @param ps
 	 * @return
 	 */
+	public static PageImpl<UKDataBean> namesearch(String orgi , String phonenum){
+		BoolQueryBuilder queryBuilder = new BoolQueryBuilder();
+		queryBuilder.must(termQuery("orgi", orgi)) ;
+		queryBuilder.must(termQuery("validresult", "valid")) ;
+		queryBuilder.must(termQuery("status", UKDataContext.NamesDisStatusType.DISAGENT.toString())) ;
+		
+		queryBuilder.must(new QueryStringQueryBuilder(phonenum).defaultOperator(Operator.AND) );
+		return search(queryBuilder,0, 1);
+	}
+	
+	/**
+	 * 
+	 * @param orgi
+	 * @param agent
+	 * @param p
+	 * @param ps
+	 * @return
+	 */
 	public static PageImpl<UKDataBean> search(BoolQueryBuilder queryBuilder, int p, int ps){
 		return search(queryBuilder, null, true, p, ps);
 	}

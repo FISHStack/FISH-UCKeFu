@@ -26,4 +26,18 @@ public class CallOutQuene {
 		}
 		return agentList ;
 	}
+	
+	/**
+	 * 为外呼坐席分配名单
+	 * @param agentStatus
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<CallCenterAgent> service(String sip){
+		List<CallCenterAgent> agentList = new ArrayList<CallCenterAgent>();
+		if(CacheHelper.getCallCenterAgentCacheBean()!=null && CacheHelper.getCallCenterAgentCacheBean().getCache()!=null) {
+			PagingPredicate<String, CallCenterAgent> pagingPredicate = new PagingPredicate<String, CallCenterAgent>(  new SqlPredicate( "siptrunk = '"+sip+"'") , 10 ) ;
+			agentList.addAll(((IMap<String , CallCenterAgent>) CacheHelper.getCallCenterAgentCacheBean().getCache()).values(pagingPredicate)) ;
+		}
+		return agentList ;
+	}
 }

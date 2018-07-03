@@ -54,7 +54,8 @@ public class SipTrunk implements java.io.Serializable{
 	
 	private String busyext ;	//坐席忙的时候转入号码
 	private String notready ;	//坐席不在线的的时候转入号码
-	
+	private String noname ;		//无名单或未分配的时候转入号码
+	private boolean enablecallagent ;	//坐席不在线的时候，转坐席手机号
 	
 	private String province ;		//号码省份
 	private String city ;			//号码城市
@@ -248,5 +249,17 @@ public class SipTrunk implements java.io.Serializable{
 	}
 	public void setNotready(String notready) {
 		this.notready = notready;
+	}
+	public String getNoname() {
+		return noname;
+	}
+	public void setNoname(String noname) {
+		this.noname = noname;
+	}
+	public boolean isEnablecallagent() {
+		return enablecallagent;
+	}
+	public void setEnablecallagent(boolean enablecallagent) {
+		this.enablecallagent = enablecallagent;
 	}
 }
