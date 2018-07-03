@@ -206,8 +206,13 @@ public class CallCenterUtils {
 		map.put("batchList", CallCenterUtils.getBatchList(batchRes, userRoleRes, callOutRoleRes,user));
 		map.put("activityList", CallCenterUtils.getActivityList(batchRes,userRoleRes, callOutRoleRes,user));
 		map.put("formFilterList", CallCenterUtils.getFormFilterList(filterRes,userRoleRes, callOutRoleRes,user));
-		
-		map.addAttribute("owneruserList",UKDataContext.getContext().getBean(UserRepository.class).findByOrganAndDatastatusAndOrgi(ownerdept, false, user.getOrgi()));
+		if(StringUtils.isBlank(ownerdept)){
+			
+			map.addAttribute("owneruserList",UKDataContext.getContext().getBean(UserRepository.class).findByOrganAndDatastatusAndOrgi(UKDataContext.UKEFU_SYSTEM_NO_DAT, false, user.getOrgi()));
+		}else{
+			map.addAttribute("owneruserList",UKDataContext.getContext().getBean(UserRepository.class).findByOrganAndDatastatusAndOrgi(ownerdept, false, user.getOrgi()));
+			
+		}
 		map.addAttribute("skillList", organRes.findAll(CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user)));
 		map.put("taskList",UKDataContext.getContext().getBean(CallOutTaskRepository.class).findByActidAndOrgi(actid, user.getOrgi()));
 		

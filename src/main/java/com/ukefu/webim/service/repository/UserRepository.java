@@ -53,7 +53,7 @@ public abstract interface UserRepository extends JpaRepository<User, String>
   public abstract long countByOrgiAndAgent(String orgi , boolean agent) ;
   
   public abstract List<User> findAll(Specification<User> spec) ;
-
+  
 
 	public abstract Page<User> findByDatastatusAndOrgiAndOrgid(boolean b, String orgi, String orgid,
 			Pageable pageRequest);
@@ -106,6 +106,4 @@ public abstract interface UserRepository extends JpaRepository<User, String>
 	
 	public abstract List<User> findByOrgiAndCallcenterAndDatastatus(String orgi, boolean callcenter, boolean datastatus);
 
-	public abstract Page<User> findByOrganInAndDatastatusAndUsernameLikeOrUnameLike(List<String> organIdList, boolean b,
-			String username,String uname, Pageable pageRequest);
 }
