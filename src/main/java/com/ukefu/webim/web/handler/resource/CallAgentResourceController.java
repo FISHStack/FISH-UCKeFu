@@ -56,8 +56,6 @@ public class CallAgentResourceController extends Handler{
 				list.add(cb.equal(root.get("orgi").as(String.class),orgi ));
 				
 				list.add(cb.or(cb.like(root.get("username").as(String.class),"%"+search+"%" ),cb.like(root.get("uname").as(String.class),"%"+search+"%" )));
-				//list.add(cb.like(root.get("username").as(String.class),"%"+search+"%" ));
-				//list.add(cb.like(root.get("uname").as(String.class),"%"+search+"%" ));
 				
 				if(organList.size() > 0){
 					
