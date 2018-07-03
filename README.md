@@ -33,7 +33,7 @@ DEMO访问地址：[优客服（UCKeFu-WebIM）](http://uk.ukewo.cn/) ， 访问
 ### 1.  将代码拉取下来
 
 ### 1. 编译pom.xml文件，下载好jar包
-本项目有三个依赖包，jave 和Mondrian，aliyun-java-sdk-core、aliyun-java-sdk-dysmsapi通过以下指令加入到本地Mavenue仓库：
+本项目有四个依赖包，jave 和Mondrian，aliyun-java-sdk-core、aliyun-java-sdk-dysmsapi通过以下指令加入到本地Mavenue仓库：
 
 
 1、mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/jave-1.0.2.jar -DgroupId=lt.jave -DartifactId=jave -Dversion=1.0.2 -Dpackaging=jar
