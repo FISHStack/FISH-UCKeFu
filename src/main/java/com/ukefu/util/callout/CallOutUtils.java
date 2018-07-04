@@ -74,7 +74,8 @@ public class CallOutUtils {
 		List<CallOutNames> callNamesList = callOutNamesRes.findByDataidAndCreaterAndOrgi((String)name.getValues().get("id"), (String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT), orgi) ;
 		if(callNamesList.size() > 0) {
 			callOutName = callNamesList.get(0) ;
-		}else {
+		}
+		if(callOutName!=null){
 			callOutName.setOrgi(orgi);
 			if(task!=null) {
 				callOutName.setName(task.getName());	//任务名称

@@ -92,6 +92,6 @@ public abstract interface OnlineUserRepository extends JpaRepository<OnlineUser,
 	@Query("select s from StatusEvent s  where startrecord<= ?1 AND ORGI = ?2 AND (discalled = ?3 OR discaller= ?4 )")
 	List<Object> findByOrgiAndStartrecord(Date startrecord, String orgi, String discalled, String discaller);
 	
-	@Query("delete from CallOutNames where actid<= ?2 AND ORGI = ?1")
+	@Query("delete from CallOutNames where actid = ?2 AND ORGI = ?1")
 	void deleteByOrgiAndActid(String orgi, String actid);
 }
