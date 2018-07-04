@@ -201,6 +201,27 @@ public class SearchTools {
 		return search(queryBuilder, p, ps);
 	}
 	
+
+	/**
+	 * 
+	 * @param orgi
+	 * @param agent
+	 * @param p
+	 * @param ps
+	 * @return
+	 */
+	public static UKDataBean idsearch(String orgi , String id){
+		BoolQueryBuilder queryBuilder = new BoolQueryBuilder();
+		queryBuilder.must(termQuery("orgi", orgi)) ;
+		queryBuilder.must(termQuery("id", id)) ;
+		PageImpl<UKDataBean> ukDataBeanList = search(queryBuilder, 0, 1) ; 
+		UKDataBean ukDataBean = null ;
+		if(ukDataBeanList!=null && ukDataBeanList.getContent()!=null && ukDataBeanList.getSize() > 0) {
+			ukDataBean = ukDataBeanList.getContent().get(0) ;
+		}
+		return ukDataBean;
+	}
+	
 	/**
 	 * 
 	 * @param orgi
