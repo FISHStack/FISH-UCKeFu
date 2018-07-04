@@ -64,7 +64,9 @@ public class TopicRepositoryImpl implements TopicEsCommonRepository{
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		boolQueryBuilder.must(termQuery("top" , top)) ;
 		boolQueryBuilder.must(termQuery("orgi" , orgi)) ;
-		boolQueryBuilder.must(termQuery("aiid" , aiid)) ;
+		if(!StringUtils.isBlank(aiid)) {
+			boolQueryBuilder.must(termQuery("aiid" , aiid)) ;
+		}
 		
 		QueryBuilder beginFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("begintime")).should(QueryBuilders.rangeQuery("begintime").to(new Date().getTime())) ;
 		QueryBuilder endFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("endtime")).should(QueryBuilders.rangeQuery("endtime").from(new Date().getTime())) ;
