@@ -71,6 +71,33 @@ public class CallCenterUtils {
 		return sipTrunk;
 	}
 	
+	/**
+	 * 
+	 * @param user
+	 * @param orgi
+	 * @param id
+	 * @param service
+	 * @return
+	 * @throws Exception
+	 */
+	public static SipTrunk siptrunk(String name , SipTrunkRepository sipTrunkRes){
+		SipTrunk sipTrunk = null;
+		List<SipTrunk> sipTrunkList = sipTrunkRes.findByName(name) ;
+		if(sipTrunkList.size() > 0){
+			sipTrunk = sipTrunkList.get(0) ;
+		}else {
+			sipTrunkList = sipTrunkRes.findByDefaultsip(true) ;
+			if(sipTrunkList.size() > 0) {
+				sipTrunk = sipTrunkList.get(0) ;
+			}
+		}
+		if(sipTrunk != null) {
+			CacheHelper.getSystemCacheBean().put(sipTrunk.getId() ,sipTrunk , sipTrunk.getOrgi()) ;
+		}
+		return sipTrunk;
+	}
+	
+	
 	public static List<String> getAuthOrgan(UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes,User user){
 		List<UserRole> userRole = userRoleRes.findByOrgiAndUser(user.getOrgi(), user);
 		ArrayList<String> organList = new ArrayList<String>();
