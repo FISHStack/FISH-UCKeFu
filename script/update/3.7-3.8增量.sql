@@ -590,10 +590,13 @@ ALTER TABLE uk_agentuser ADD satistime datetime default 0;
 ALTER TABLE uk_agentuser ADD satislevel varchar(50) default 0;
 ALTER TABLE uk_agentuser ADD satiscomment varchar(255) default 0;
 
+ALTER TABLE uk_xiaoe_topic ADD  aiid varchar(32)  COMMENT '机器人ID';
 ALTER TABLE uk_xiaoe_topic ADD visualangle varchar(20) default 0;
 ALTER TABLE uk_xiaoe_topic ADD knowpoint varchar(50) default 0;
 ALTER TABLE uk_xiaoe_topic ADD knowpoints varchar(20) default 0;
 ALTER TABLE uk_xiaoe_topic ADD knowllimit varchar(20) default 0;
+ALTER TABLE uk_xiaoe_topic CHANGE views sviews varchar(32);
+
 
 CREATE TABLE `uk_log_request` (
   `id` varchar(32) NOT NULL,
@@ -728,7 +731,6 @@ ALTER TABLE uk_sessionconfig ADD servicename varchar(50) COMMENT '无坐席的�
 
 
 
-ALTER TABLE uk_xiaoe_topic ADD  aiid varchar(32)  COMMENT '机器人ID';
 ALTER TABLE uk_chat_message ADD aiid varchar(32) default 0 COMMENT '机器人ID';
 
 
@@ -754,7 +756,6 @@ ALTER TABLE uk_consult_invite ADD aiid varchar(32) COMMENT '默认的AI';
 ALTER TABLE uk_consult_invite ADD maxwordsnum int DEFAULT 300 COMMENT '访客端允许输入的最大字数';
 
 
-ALTER TABLE uk_xiaoe_topic CHANGE views sviews varchar(32);
 ALTER TABLE uk_callcenter_event CHANGE current scurrent tinyint;
 ALTER TABLE uk_callcenter_event CHANGE record srecord tinyint;
 
