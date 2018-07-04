@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
-import com.ukefu.webim.service.repository.OnlineUserRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.util.CallCenterUtils;
 import com.ukefu.webim.web.handler.Handler;

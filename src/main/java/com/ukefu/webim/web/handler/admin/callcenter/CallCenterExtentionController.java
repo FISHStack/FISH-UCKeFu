@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.util.Menu;
+import com.ukefu.util.freeswitch.model.CallCenterAgent;
+import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.impl.CallOutQuene;
 import com.ukefu.webim.service.repository.ExtentionRepository;
 import com.ukefu.webim.service.repository.MediaRepository;
 import com.ukefu.webim.service.repository.PbxHostRepository;
@@ -141,7 +144,7 @@ public class CallCenterExtentionController extends Handler{
 		if(!StringUtils.isBlank(extention.getId())){
 			Extention ext = extentionRes.findByIdAndOrgi(extention.getId(), super.getOrgi(request)) ;
 			if(ext!=null && !StringUtils.isBlank(ext.getExtention()) && ext.getExtention().matches("[\\d]{3,8}")){
-				ext.setExtention(extention.getExtention());
+//				ext.setExtention(extention.getExtention());//分机号不能修改
 				if(!StringUtils.isBlank(extention.getPassword())){
 					ext.setPassword(extention.getPassword());
 				}
@@ -158,6 +161,12 @@ public class CallCenterExtentionController extends Handler{
 				
 				ext.setUpdatetime(new Date());
 				extentionRes.save(ext) ;
+				
+				List<CallCenterAgent> callOutAgentList = CallOutQuene.extention(ext.getExtention()) ;
+				for(CallCenterAgent callOutAgent : callOutAgentList) {
+					callOutAgent.setSiptrunk(ext.getSiptrunk());
+					CacheHelper.getCallCenterAgentCacheBean().put(callOutAgent.getUserid(), callOutAgent, callOutAgent.getOrgi());
+				}
 			}
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/extention.html?hostid="+extention.getHostid()));
