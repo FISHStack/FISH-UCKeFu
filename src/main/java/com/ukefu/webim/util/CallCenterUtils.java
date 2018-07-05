@@ -1,6 +1,10 @@
 package com.ukefu.webim.util;
 
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+
+
 import java.util.ArrayList;
+
 
 
 import java.util.List;
@@ -10,30 +14,42 @@ import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.validation.Valid;
 
 import org.apache.commons.lang.StringUtils;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.ui.ModelMap;
 
 import com.ukefu.core.UKDataContext;
+import com.ukefu.util.es.SearchTools;
+import com.ukefu.util.es.UKDataBean;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.CallAgentRepository;
+import com.ukefu.webim.service.repository.CallOutFilterRepository;
 import com.ukefu.webim.service.repository.CallOutRoleRepository;
 import com.ukefu.webim.service.repository.CallOutTaskRepository;
 import com.ukefu.webim.service.repository.ExtentionRepository;
 import com.ukefu.webim.service.repository.FormFilterRepository;
 import com.ukefu.webim.service.repository.JobDetailRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.SaleStatusRepository;
 import com.ukefu.webim.service.repository.SipTrunkRepository;
+import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
 import com.ukefu.webim.web.model.CallAgent;
+import com.ukefu.webim.web.model.CallOutFilter;
 import com.ukefu.webim.web.model.CallOutRole;
+import com.ukefu.webim.web.model.CallOutTask;
 import com.ukefu.webim.web.model.Extention;
 import com.ukefu.webim.web.model.FormFilter;
 import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.SipTrunk;
+import com.ukefu.webim.web.model.SysDic;
+import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
 
@@ -229,6 +245,7 @@ public class CallCenterUtils {
 		CallOutRoleRepository callOutRoleRes = UKDataContext.getContext().getBean(CallOutRoleRepository.class) ;
 		FormFilterRepository filterRes = UKDataContext.getContext().getBean(FormFilterRepository.class) ;
 		OrganRepository organRes = UKDataContext.getContext().getBean(OrganRepository.class) ;
+		SaleStatusRepository saleStatusRes = UKDataContext.getContext().getBean(SaleStatusRepository.class) ;
 		
 		map.put("batchList", CallCenterUtils.getBatchList(batchRes, userRoleRes, callOutRoleRes,user));
 		map.put("activityList", CallCenterUtils.getActivityList(batchRes,userRoleRes, callOutRoleRes,user));
@@ -243,7 +260,11 @@ public class CallCenterUtils {
 		map.addAttribute("skillList", organRes.findAll(CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user)));
 		map.put("taskList",UKDataContext.getContext().getBean(CallOutTaskRepository.class).findByActidAndOrgi(actid, user.getOrgi()));
 		map.put("allUserList",UKDataContext.getContext().getBean(UserRepository.class).findByOrgiAndDatastatus(user.getOrgi(), false));
-		
+		JobDetail act = batchRes.findByIdAndOrgi(actid, user.getOrgi());
+		if(act != null){
+			map.put("salestatusList",UKDataContext.getContext().getBean(SaleStatusRepository.class).findByOrgiAndActivityid(user.getOrgi(), act.getDicid()));
+		}
+		map.addAttribute("statusList",UKeFuDic.getInstance().getDic("com.dic.callout.activity"));
 	}
 	
 	public static void getNamenum(ModelMap map,String activityid,User user){
@@ -287,5 +308,117 @@ public class CallCenterUtils {
 			}
 		}
 		return tempList ;
+	}
+	/**
+	 * 分配给坐席的名单，单个名单，回收到池子
+	 * @param task
+	 * @param batch
+	 * @param callOutFilter
+	 */
+	public static void getAgentRenum(CallOutTask task, JobDetail batch, CallOutFilter callOutFilter){
+		
+		CallOutTaskRepository callOutTaskRes = UKDataContext.getContext().getBean(CallOutTaskRepository.class) ;
+		JobDetailRepository batchRes = UKDataContext.getContext().getBean(JobDetailRepository.class) ;
+		CallOutFilterRepository callOutFilterRes = UKDataContext.getContext().getBean(CallOutFilterRepository.class) ;
+		
+		//修改，拨打任务
+		if(task != null){
+			task.setAssigned(task.getAssigned() - 1);//分配到坐席数
+			task.setNotassigned(task.getNotassigned() + 1);//未分配数 
+			task.setRenum(task.getRenum() + 1);//回收到池子数
+			callOutTaskRes.save(task);
+		}
+		
+		//修改，批次
+		if(batch != null){
+			batch.setAssigned(batch.getAssigned() - 1);//已分配
+			batch.setNotassigned(batch.getNotassigned() + 1);//未分配
+			batchRes.save(batch);
+		}
+		
+		//修改，筛选记录
+		if(callOutFilter != null){
+			callOutFilter.setAssigned(callOutFilter.getAssigned() - 1);//分配给坐席数
+			callOutFilter.setRenum(callOutFilter.getRenum() + 1);//回收到池子数
+			callOutFilter.setNotassigned(callOutFilter.getNotassigned() + 1);//未分配数
+			callOutFilterRes.save(callOutFilter);
+		}
+	} 
+	
+	/**
+	 * 分配给坐席的名单，单个名单，回收到部门
+	 * @param task
+	 * @param callOutFilter
+	 */
+	public static void getAgentReorgannum(CallOutTask task, CallOutFilter callOutFilter){
+		
+		CallOutTaskRepository callOutTaskRes = UKDataContext.getContext().getBean(CallOutTaskRepository.class) ;
+		CallOutFilterRepository callOutFilterRes = UKDataContext.getContext().getBean(CallOutFilterRepository.class) ;
+		
+		//修改，拨打任务
+		if(task != null){
+			task.setNotassigned(task.getNotassigned() + 1);//未分配数 
+			task.setAssignedorgan(task.getAssignedorgan() - 1);//分配到部门数
+			task.setReorgannum(task.getReorgannum() + 1);//回收到部门数
+			callOutTaskRes.save(task);
+		}
+		
+		
+		//修改，筛选记录
+		if(callOutFilter != null){
+			callOutFilter.setAssigned(callOutFilter.getAssigned() - 1);//分配给坐席数
+			callOutFilter.setReorgannum(callOutFilter.getReorgannum() + 1);//回收到部门数
+			callOutFilterRes.save(callOutFilter);
+		}
+	}
+	
+	/**
+	 * 分配给部门的名单，单个名单，回收到池子
+	 * @param task
+	 * @param batch
+	 * @param callOutFilter
+	 */
+	public static void getOrganRenum(CallOutTask task, JobDetail batch, CallOutFilter callOutFilter){
+		
+		CallOutTaskRepository callOutTaskRes = UKDataContext.getContext().getBean(CallOutTaskRepository.class) ;
+		JobDetailRepository batchRes = UKDataContext.getContext().getBean(JobDetailRepository.class) ;
+		CallOutFilterRepository callOutFilterRes = UKDataContext.getContext().getBean(CallOutFilterRepository.class) ;
+		
+		//修改，拨打任务
+		if(task != null){
+			task.setAssignedorgan(task.getAssignedorgan() - 1);//分配到部门数
+			task.setNotassigned(task.getNotassigned() + 1);//未分配数 
+			task.setRenum(task.getRenum() + 1);//回收到池子数
+			callOutTaskRes.save(task);
+		}
+		
+		//修改，批次
+		if(batch != null){
+			batch.setAssigned(batch.getAssigned() - 1);//已分配
+			batch.setNotassigned(batch.getNotassigned() + 1);//未分配
+			batchRes.save(batch);
+		}
+		
+		//修改，筛选记录
+		if(callOutFilter != null){
+			callOutFilter.setAssignedorgan(callOutFilter.getAssignedorgan() - 1);//分配到部门数
+			callOutFilter.setRenum(callOutFilter.getRenum() + 1);//回收到池子数
+			callOutFilter.setNotassigned(callOutFilter.getNotassigned() + 1);//未分配数
+			callOutFilterRes.save(callOutFilter);
+		}
+	} 
+	
+	/**
+	 * 获取指定活动，已分配的名单数
+	 * @param actid
+	 * @param user
+	 * @return
+	 */
+	public static int getActDisnum(@Valid String actid,User user, @Valid int p, @Valid int ps){
+		BoolQueryBuilder queryBuilder = new BoolQueryBuilder();
+		queryBuilder.must(termQuery("actid", actid));// 活动ID
+		queryBuilder.mustNot(termQuery("status", UKDataContext.NamesDisStatusType.NOT.toString()));
+		PageImpl<UKDataBean> dataList = SearchTools.search(queryBuilder,p, ps);
+		return dataList.getContent().size();
 	}
 }
