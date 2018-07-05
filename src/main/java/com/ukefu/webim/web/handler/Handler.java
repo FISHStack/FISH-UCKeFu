@@ -80,8 +80,12 @@ public class Handler {
 		
 		//搜索框
 		if(!StringUtils.isBlank(request.getParameter("q"))) {
-			queryBuilder.must(QueryBuilders.boolQuery().must(new QueryStringQueryBuilder(request.getParameter("q")).defaultOperator(Operator.AND))) ;
-			map.put("q", request.getParameter("q")) ;
+			String q = request.getParameter("q") ;
+			q = q.replaceAll("(OR|AND|NOT|:|\\(|\\))", "") ;
+			if(!StringUtils.isBlank(q)){
+				queryBuilder.must(QueryBuilders.boolQuery().must(new QueryStringQueryBuilder(q).defaultOperator(Operator.AND))) ;
+				map.put("q", q) ;
+			}
 		}
 		
 		//筛选表单
