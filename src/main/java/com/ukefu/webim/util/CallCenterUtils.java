@@ -4,9 +4,7 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 
 import java.util.ArrayList;
-
-
-
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -47,6 +45,7 @@ import com.ukefu.webim.web.model.Extention;
 import com.ukefu.webim.web.model.FormFilter;
 import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.Organ;
+import com.ukefu.webim.web.model.SaleStatus;
 import com.ukefu.webim.web.model.SipTrunk;
 import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.UKeFuDic;
@@ -247,6 +246,18 @@ public class CallCenterUtils {
 		OrganRepository organRes = UKDataContext.getContext().getBean(OrganRepository.class) ;
 		SaleStatusRepository saleStatusRes = UKDataContext.getContext().getBean(SaleStatusRepository.class) ;
 		
+		List<JobDetail> activityList = CallCenterUtils.getActivityList(batchRes,userRoleRes, callOutRoleRes,user);
+		List<SaleStatus> salestatusList = new ArrayList<>();
+		for(JobDetail act :activityList){
+			List<SaleStatus> salestastus = UKDataContext.getContext().getBean(SaleStatusRepository.class).findByOrgiAndActivityid(user.getOrgi(), act.getDicid());
+			salestatusList.addAll(salestastus);
+			
+		}
+		LinkedHashSet<SaleStatus> set = new LinkedHashSet<SaleStatus>(salestatusList.size());
+	    set.addAll(salestatusList);
+	    salestatusList.clear();
+	    salestatusList.addAll(set);
+		map.put("salestatusList", salestatusList);
 		map.put("batchList", CallCenterUtils.getBatchList(batchRes, userRoleRes, callOutRoleRes,user));
 		map.put("activityList", CallCenterUtils.getActivityList(batchRes,userRoleRes, callOutRoleRes,user));
 		map.put("formFilterList", CallCenterUtils.getFormFilterList(filterRes,userRoleRes, callOutRoleRes,user));
@@ -260,10 +271,10 @@ public class CallCenterUtils {
 		map.addAttribute("skillList", organRes.findAll(CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user)));
 		map.put("taskList",UKDataContext.getContext().getBean(CallOutTaskRepository.class).findByActidAndOrgi(actid, user.getOrgi()));
 		map.put("allUserList",UKDataContext.getContext().getBean(UserRepository.class).findByOrgiAndDatastatus(user.getOrgi(), false));
-		JobDetail act = batchRes.findByIdAndOrgi(actid, user.getOrgi());
-		if(act != null){
-			map.put("salestatusList",UKDataContext.getContext().getBean(SaleStatusRepository.class).findByOrgiAndActivityid(user.getOrgi(), act.getDicid()));
-		}
+		//JobDetail act = batchRes.findByIdAndOrgi(actid, user.getOrgi());
+		//if(act != null){
+		//	map.put("salestatusList",UKDataContext.getContext().getBean(SaleStatusRepository.class).findByOrgiAndActivityid(user.getOrgi(), act.getDicid()));
+		//}
 		map.addAttribute("statusList",UKeFuDic.getInstance().getDic("com.dic.callout.activity"));
 	}
 	
