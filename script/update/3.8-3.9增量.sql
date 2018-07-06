@@ -348,3 +348,16 @@ INSERT INTO `uk_sysdic` (`ID`, `NAME`, `TITLE`, `CODE`, `ORGI`, `CTYPE`, `PARENT
 INSERT INTO `uk_sysdic` (`ID`, `NAME`, `TITLE`, `CODE`, `ORGI`, `CTYPE`, `PARENTID`, `DESCRIPTION`, `MEMO`, `ICONSTR`, `ICONSKIN`, `CATETYPE`, `CREATER`, `CREATETIME`, `UPDATETIME`, `HASCHILD`, `SORTINDEX`, `DICID`, `DEFAULTVALUE`, `DISCODE`, `URL`, `MODULE`, `MLEVEL`, `RULES`, `MENUTYPE`) VALUES ('40288881640eba2a01640f85f8af07f0', '坐席状态', 'pub', 'A12_A02', NULL, 'auth', '4028888163ffe467016400f692c7064b', NULL, NULL, ' ', NULL, NULL, '4028cac3614cd2f901614cf8be1f0324', '2018-6-18 04:53:15', NULL, 0, 0, '402888815d2fe37f015d2fe75cc80002', 0, 0, 'javascript:;', 'webim', '2', NULL, 'left');
 
 
+
+
+ALTER TABLE uk_callcenter_extention ADD enableai tinyint DEFAULT 0  COMMENT '启用AI机器人';
+ALTER TABLE uk_callcenter_extention ADD aiid varchar(32) COMMENT 'AI机器人';
+ALTER TABLE uk_callcenter_extention ADD sceneid varchar(32) COMMENT '启用场景配置';
+ALTER TABLE uk_callcenter_extention ADD welcomemsg text  COMMENT '机器人欢迎语';
+ALTER TABLE uk_callcenter_extention ADD waitmsg text  COMMENT '机器人等待提示语';
+ALTER TABLE uk_callcenter_extention ADD tipmessage text  COMMENT '机器人提示客户说话';
+
+
+ALTER TABLE uk_callcenter_extention ADD asrrecordpath varchar(255)  COMMENT 'ASR结果路径';
+ALTER TABLE uk_callcenter_extention ADD ttsrecordpath varchar(255)  COMMENT 'ASR结果路径';
+ALTER TABLE uk_callcenter_extention ADD errormessage varchar(255)  COMMENT '异常提示消息';

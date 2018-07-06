@@ -39,9 +39,6 @@ public class PbxHost implements java.io.Serializable{
 	private String fspath ;		//FreeSwitch安装路径
 	private String device ;	//设备厂商
 	
-	private String welcomemsg ;		//欢迎提示语
-	private String waitmsg ;		//等待提示语
-	private String tipmessage ;		//识别完成提示语
 	
 	private boolean afterprocess ;	//启用坐席后处理功能
 	
@@ -61,6 +58,11 @@ public class PbxHost implements java.io.Serializable{
 	private String enableai ;
 	private String aiid ;
 	private String sceneid ;
+	
+	private String welcomemsg ;		//欢迎提示语
+	private String waitmsg ;		//等待提示语
+	private String tipmessage ;		//识别完成提示语
+	
 	
 	private Date createtime = new Date();
 	private Date updatetime = new Date();

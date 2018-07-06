@@ -5,6 +5,7 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
@@ -235,8 +236,16 @@ public class SearchTools {
 		queryBuilder.must(termQuery("orgi", orgi)) ;
 		queryBuilder.must(termQuery("validresult", "valid")) ;
 		queryBuilder.must(termQuery("status", UKDataContext.NamesDisStatusType.DISAGENT.toString())) ;
-		
-		queryBuilder.must(new QueryStringQueryBuilder(phonenum).defaultOperator(Operator.AND) );
+		StringBuffer strb = new StringBuffer();
+		if(!StringUtils.isBlank(phonenum)) {
+			strb.append(phonenum) ;
+			if(phonenum.startsWith("0")) {
+				strb.append(" ").append(phonenum.substring(1)) ;
+			}
+		}else {
+			strb.append(UKDataContext.UKEFU_SYSTEM_NO_DAT) ;
+		}
+		queryBuilder.must(new QueryStringQueryBuilder(strb.toString()).defaultOperator(Operator.OR) );
 		return search(queryBuilder,0, 1);
 	}
 	

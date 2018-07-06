@@ -49,8 +49,6 @@ public class IvrMenu implements java.io.Serializable{
 	private String param;
 	private String parentid ;
 
-	
-	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")

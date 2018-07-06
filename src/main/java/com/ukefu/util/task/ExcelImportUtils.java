@@ -109,6 +109,8 @@ public class ExcelImportUtils{
 			
 			metaDataTable.getTableproperty().add(initProperties("status", "状态", "String", event.getOrgi() , event.getTablename() , true)) ;
 			
+			metaDataTable.getTableproperty().add(initProperties("calltype", "外呼类型", "String", event.getOrgi() , event.getTablename() , true)) ;
+			
 			metaDataTable.getTableproperty().add(initProperties("process", "处理状态", "String", event.getOrgi() , event.getTablename() , true)) ;
 			metaDataTable.getTableproperty().add(initProperties("processtime", "处理时间", "Datetime", event.getOrgi() , event.getTablename() , true)) ;
 			metaDataTable.getTableproperty().add(initProperties("processmemo", "处理备注", "String", event.getOrgi() , event.getTablename() , true)) ;

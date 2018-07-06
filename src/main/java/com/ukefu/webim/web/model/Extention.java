@@ -39,6 +39,18 @@ public class Extention implements java.io.Serializable{
 	
 	private String siptrunk ;
 	
+
+	private String enableai ;
+	private String aiid ;
+	private String sceneid ;
+	
+	private String welcomemsg ;		//欢迎提示语
+	private String waitmsg ;		//等待提示语
+	private String tipmessage ;		//识别完成提示语
+	
+	private String errormessage ;		//异常完成提示语
+	 
+	
 	private String orgi;
 	private String creater ;
 	private Date createtime = new Date();
@@ -150,5 +162,47 @@ public class Extention implements java.io.Serializable{
 	}
 	public void setSiptrunk(String siptrunk) {
 		this.siptrunk = siptrunk;
+	}
+	public String getEnableai() {
+		return enableai;
+	}
+	public void setEnableai(String enableai) {
+		this.enableai = enableai;
+	}
+	public String getAiid() {
+		return aiid;
+	}
+	public void setAiid(String aiid) {
+		this.aiid = aiid;
+	}
+	public String getSceneid() {
+		return sceneid;
+	}
+	public void setSceneid(String sceneid) {
+		this.sceneid = sceneid;
+	}
+	public String getWelcomemsg() {
+		return welcomemsg;
+	}
+	public void setWelcomemsg(String welcomemsg) {
+		this.welcomemsg = welcomemsg;
+	}
+	public String getWaitmsg() {
+		return waitmsg;
+	}
+	public void setWaitmsg(String waitmsg) {
+		this.waitmsg = waitmsg;
+	}
+	public String getTipmessage() {
+		return tipmessage;
+	}
+	public void setTipmessage(String tipmessage) {
+		this.tipmessage = tipmessage;
+	}
+	public String getErrormessage() {
+		return errormessage;
+	}
+	public void setErrormessage(String errormessage) {
+		this.errormessage = errormessage;
 	}
 }

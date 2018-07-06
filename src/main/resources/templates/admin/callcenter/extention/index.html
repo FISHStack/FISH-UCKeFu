@@ -60,7 +60,14 @@
 							  </td>
 							  <td>
 									<#if extention.extype?? && extention.extype == "line">直线</#if>
-									<#if extention.extype?? && extention.extype == "ivr">IVR</#if>
+									<#if extention.extype?? && extention.extype == "ivr">
+										
+										<#if extention.enableai?? && extention.enableai == "1">
+										智能IVR<i class="kfont" style="position: relative;" title="启用智能 机器人">&#xe63a;</i>
+										<#else>
+										IVR
+										</#if>
+									</#if>
 									<#if extention.extype?? && extention.extype == "skill">技能组</#if>
 									<#if extention.extype?? && extention.extype == "conference">会议</#if>
 									<#if extention.extype?? && extention.extype == "quene">队列</#if>
@@ -75,6 +82,13 @@
 							  			<i class="layui-icon">&#xe642;</i>
 							  			编辑
 							  		</a>
+							  		<#if extention.extype?? && extention.extype == "ivr">
+							  		<a href="/admin/callcenter/extention/ivr.html?id=${extention.id!''}&hostid=${pbxHost.id!''}" style="margin-left:10px;" data-toggle="ajax" data-width="700" data-height="450" data-title="编辑IVR配置信息">
+							  			<i class="kfont">&#xe66f;</i>
+							  			IVR配置
+							  		</a>
+							  		
+							  		</#if>
 							  		<a href="/admin/callcenter/extention/delete.html?id=${extention.id!''}&hostid=${pbxHost.id!''}" style="margin-left:10px;" data-toggle="tip" data-callback="loadURL" data-target="#callCenterContent" data-title="请确认是否删除分机号？">
 							  			<i class="layui-icon" style="color:red;">&#x1006;</i>
 							  			删除

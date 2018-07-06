@@ -20,6 +20,7 @@ import com.ukefu.webim.service.impl.CallOutQuene;
 import com.ukefu.webim.service.repository.ExtentionRepository;
 import com.ukefu.webim.service.repository.MediaRepository;
 import com.ukefu.webim.service.repository.PbxHostRepository;
+import com.ukefu.webim.service.repository.ServiceAiRepository;
 import com.ukefu.webim.service.repository.SipTrunkRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Extention;
@@ -41,6 +42,9 @@ public class CallCenterExtentionController extends Handler{
 	
 	@Autowired
 	private MediaRepository mediaRes ;
+	
+	@Autowired
+	private ServiceAiRepository serviceAiRes ;
 	
 	
 	@RequestMapping(value = "/extention")
@@ -143,7 +147,7 @@ public class CallCenterExtentionController extends Handler{
     public ModelAndView extentionupdate(ModelMap map , HttpServletRequest request , @Valid Extention extention) {
 		if(!StringUtils.isBlank(extention.getId())){
 			Extention ext = extentionRes.findByIdAndOrgi(extention.getId(), super.getOrgi(request)) ;
-			if(ext!=null && !StringUtils.isBlank(ext.getExtention()) && ext.getExtention().matches("[\\d]{3,8}")){
+			if(ext!=null){
 //				ext.setExtention(extention.getExtention());//分机号不能修改
 				if(!StringUtils.isBlank(extention.getPassword())){
 					ext.setPassword(extention.getPassword());
@@ -167,6 +171,39 @@ public class CallCenterExtentionController extends Handler{
 					callOutAgent.setSiptrunk(ext.getSiptrunk());
 					CacheHelper.getCallCenterAgentCacheBean().put(callOutAgent.getUserid(), callOutAgent, callOutAgent.getOrgi());
 				}
+			}
+		}
+		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/extention.html?hostid="+extention.getHostid()));
+    }
+	
+	@RequestMapping(value = "/extention/ivr")
+    @Menu(type = "callcenter" , subtype = "extention" , access = false , admin = true)
+    public ModelAndView ivr(ModelMap map , HttpServletRequest request , @Valid String id , @Valid String hostid) {
+		map.addAttribute("extention" , extentionRes.findByIdAndOrgi(id, super.getOrgi(request)));
+		map.put("pbxHost", pbxHostRes.findByIdAndOrgi(hostid, super.getOrgi(request))) ;
+		map.put("mediaList" , mediaRes.findByHostidAndOrgi(hostid, super.getOrgi(request)));
+		map.addAttribute("sipTrunkListList" , sipTrunkRes.findByHostidAndOrgi(hostid, super.getOrgi(request)));
+		
+		map.put("serviceAiList",serviceAiRes.findByOrgi(super.getOrgi(request)) ) ;
+		
+    	return request(super.createRequestPageTempletResponse("/admin/callcenter/extention/ivr"));
+    }
+	
+	@RequestMapping(value = "/extention/ivr/update")
+    @Menu(type = "callcenter" , subtype = "extention" , access = false , admin = true)
+    public ModelAndView ivrupdate(ModelMap map , HttpServletRequest request , @Valid Extention extention) {
+		if(!StringUtils.isBlank(extention.getId())){
+			Extention ext = extentionRes.findByIdAndOrgi(extention.getId(), super.getOrgi(request)) ;
+			if(ext!=null){
+				
+				ext.setEnableai(extention.getEnableai());
+				ext.setAiid(extention.getAiid());
+				ext.setSceneid(extention.getSceneid());           
+				ext.setWelcomemsg(extention.getWelcomemsg()) ;        
+				ext.setWaitmsg(extention.getWaitmsg())       ;     
+				ext.setTipmessage(extention.getTipmessage());        
+				
+				extentionRes.save(ext) ;
 			}
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/extention.html?hostid="+extention.getHostid()));
