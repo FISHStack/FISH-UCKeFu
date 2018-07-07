@@ -361,3 +361,5 @@ ALTER TABLE uk_callcenter_extention ADD tipmessage text  COMMENT '机器人提�
 ALTER TABLE uk_callcenter_extention ADD asrrecordpath varchar(255)  COMMENT 'ASR结果路径';
 ALTER TABLE uk_callcenter_extention ADD ttsrecordpath varchar(255)  COMMENT 'ASR结果路径';
 ALTER TABLE uk_callcenter_extention ADD errormessage varchar(255)  COMMENT '异常提示消息';
+
+ALTER TABLE uk_act_task ADD assignedai int default 0  COMMENT '分配到AI的名单数量';

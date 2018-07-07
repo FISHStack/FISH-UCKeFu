@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-07-03 21:25:12
+Date: 2018-07-07 13:52:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -391,6 +391,7 @@ CREATE TABLE `uk_act_task` (
   `exectype` varchar(32) DEFAULT NULL,
   `renum` int(11) DEFAULT '0',
   `reorgannum` int(11) DEFAULT '0',
+  `assignedai` int(11) DEFAULT '0' COMMENT '分配到AI的名单数量',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -973,6 +974,15 @@ CREATE TABLE `uk_callcenter_extention` (
   `mediapath` varchar(255) DEFAULT NULL COMMENT '播报工号语音文件',
   `afterprocess` tinyint(4) DEFAULT '0' COMMENT '坐席通话后启用后处理功能',
   `siptrunk` varchar(50) DEFAULT NULL,
+  `enableai` tinyint(4) DEFAULT '0' COMMENT '启用AI机器人',
+  `aiid` varchar(32) DEFAULT NULL COMMENT 'AI机器人',
+  `sceneid` varchar(32) DEFAULT NULL COMMENT '启用场景配置',
+  `welcomemsg` text COMMENT '机器人欢迎语',
+  `waitmsg` text COMMENT '机器人等待提示语',
+  `tipmessage` text COMMENT '机器人提示客户说话',
+  `asrrecordpath` varchar(255) DEFAULT NULL COMMENT 'ASR结果路径',
+  `ttsrecordpath` varchar(255) DEFAULT NULL COMMENT 'ASR结果路径',
+  `errormessage` varchar(255) DEFAULT NULL COMMENT '异常提示消息',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -1013,6 +1023,14 @@ CREATE TABLE `uk_callcenter_ivr` (
   `param` varchar(255) DEFAULT NULL,
   `parentid` varchar(32) DEFAULT NULL,
   `extentionid` varchar(32) DEFAULT NULL,
+  `enableai` tinyint(4) DEFAULT '0' COMMENT '启用AI机器人',
+  `aiid` varchar(32) DEFAULT NULL COMMENT 'AI机器人',
+  `sceneid` varchar(32) DEFAULT NULL COMMENT '启用场景配置',
+  `welcomemsg` text COMMENT '机器人欢迎语',
+  `waitmsg` text COMMENT '机器人等待提示语',
+  `tipmessage` text COMMENT '机器人提示客户说话',
+  `asrrecordpath` varchar(255) DEFAULT NULL COMMENT 'ASR结果路径',
+  `ttsrecordpath` varchar(255) DEFAULT NULL COMMENT 'ASR结果路径',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -8207,7 +8225,7 @@ CREATE TABLE `uk_user` (
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-06-29 17:40:30', '4028811b645dc08f01645e0bf45c099f', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '0', null, null, null, '0', '0', '0', '2018-06-29 17:40:37', null, null, null, '0', '0', '0', '0', null);
 INSERT INTO `uk_user` VALUES ('4028811b642f5f8c01642f60ed440683', null, 'test1', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'ad@te.com', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-06-24 09:20:38', null, '2018-07-03 10:51:17', '4028811b645dc08f01645e0bf45c099f', '18510129433', '2018-06-24 09:20:38', null, '0', 'test1', null, '1', null, null, null, '0', '0', '0', '2018-07-03 10:51:25', null, null, null, '0', '0', '0', '0', null);
 INSERT INTO `uk_user` VALUES ('4028811b645dc08f01645e0512ce0935', null, 'yiliao', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'asd@ac.com', null, null, null, null, null, null, null, null, null, null, null, '4028811b645dc08f01645e005f3d08dd', 'ukewo', null, '2018-07-03 10:42:28', null, '2018-07-03 10:43:31', '4028811b645dc08f01645e057eab0945', '18512212955', '2018-07-03 10:42:28', null, '0', '医疗', null, '0', null, null, null, '0', '0', '0', '2018-07-03 10:43:39', null, null, null, '0', '0', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2018-07-02 20:23:24', '4028811b63b028dc0163b032c3ed0590', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-07-03 19:06:37', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2018-07-02 20:23:24', '4028811b63b028dc0163b032c3ed0590', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-07-07 11:44:19', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
