@@ -26,6 +26,7 @@ public class UKDataContext {
 	public static final String UKEFU_SYSTEM_COMMENT_DIC = "com.dic.webim.comment" ;
 	public static final String UKEFU_SYSTEM_COMMENT_ITEM_DIC = "com.dic.webim.comment.item" ;
 	
+	public static final String UKEFU_SYSTEM_DIS_AI = "ownerai" ;
 	public static final String UKEFU_SYSTEM_DIS_AGENT = "owneruser" ;
 	public static final String UKEFU_SYSTEM_ASSUSER = "assuser" ;
 	public static final String UKEFU_SYSTEM_DIS_ORGAN = "ownerdept" ;
@@ -134,7 +135,7 @@ public class UKDataContext {
 	 *
 	 */
 	public enum NamesDisStatusType{
-		NOT,DISAGENT,DISORGAN;
+		NOT,DISAGENT,DISORGAN,DISAI;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}
@@ -742,6 +743,15 @@ public class UKDataContext {
 	public enum FilteFunType{
 		FILTER,
 		RANK;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+	public enum CallType{
+		AI,
+		AGENT;
 		
 		public String toString(){
 			return super.toString().toLowerCase() ;

@@ -41,8 +41,8 @@ public class CallAgent implements java.io.Serializable{
 	private String filtertype ;	//筛选表单使用导入批次模板
 	private String tableid ;	//筛选表单使用元数据
 	
-	private String distype ;	//f分配类型 ： 技能组 |坐席
-	private String distarget ;	//分配对象， 技能组|坐席
+	private String distype ;	//f分配类型 ： 技能组 |坐席|机器人
+	private String distarget ;	//分配对象， 技能组|坐席|智能IVR的ID
 	private int disnum ;		//分配数量
 	
 

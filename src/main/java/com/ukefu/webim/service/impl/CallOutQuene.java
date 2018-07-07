@@ -6,11 +6,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.hazelcast.core.IMap;
+import com.hazelcast.mapreduce.aggregation.Aggregations;
+import com.hazelcast.mapreduce.aggregation.Supplier;
 import com.hazelcast.query.PagingPredicate;
 import com.hazelcast.query.SqlPredicate;
 import com.ukefu.util.freeswitch.model.CallCenterAgent;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.quene.AgentStatusOrgiFilter;
 
+@SuppressWarnings("deprecation")
 @Service("calloutquene")
 public class CallOutQuene {
 	/**
@@ -53,5 +57,15 @@ public class CallOutQuene {
 			agentList.addAll(((IMap<String , CallCenterAgent>) CacheHelper.getCallCenterAgentCacheBean().getCache()).values(pagingPredicate)) ;
 		}
 		return agentList ;
+	}
+	
+	public static int countOrgiCallOut(String orgi) {
+		/**
+		 * 统计当前在线的坐席数量
+		 */
+		IMap callOutMap = (IMap<String, Object>) CacheHelper.getCallOutCacheBean().getCache() ;
+		AgentStatusOrgiFilter filter = new AgentStatusOrgiFilter(orgi) ;
+		Long names = (Long) callOutMap.aggregate(Supplier.fromKeyPredicate(filter), Aggregations.count()) ;
+		return names!=null ? names.intValue() : 0 ;
 	}
 }

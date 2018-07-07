@@ -2,7 +2,6 @@ package com.ukefu.webim.util;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
-
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -34,7 +33,6 @@ import com.ukefu.webim.service.repository.JobDetailRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.SaleStatusRepository;
 import com.ukefu.webim.service.repository.SipTrunkRepository;
-import com.ukefu.webim.service.repository.SysDicRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
 import com.ukefu.webim.web.model.CallAgent;
@@ -47,7 +45,6 @@ import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.SaleStatus;
 import com.ukefu.webim.web.model.SipTrunk;
-import com.ukefu.webim.web.model.SysDic;
 import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;

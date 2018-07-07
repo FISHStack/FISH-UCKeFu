@@ -54,7 +54,7 @@ public class ActivityResource extends Resource{
 	
 	private JobDetail batch ;
 	
-	private AtomicInteger assignorganInt = new AtomicInteger() /***分配到坐席***/, assignInt = new AtomicInteger() /***分配到部门***/ , atomInt = new AtomicInteger() ;
+	private AtomicInteger assignorganInt = new AtomicInteger() /***分配到坐席***/, assignInt = new AtomicInteger() /***分配到部门***/ , assignAiInt = new AtomicInteger() /***分配到AI***/ ,atomInt = new AtomicInteger() ;
 	
 	private BatchDataProcess batchDataProcess ;
 	
@@ -188,7 +188,8 @@ public class ActivityResource extends Resource{
 			}else {
 				this.task.setAssigned(this.assignInt.intValue());
 				this.task.setAssignedorgan(this.assignorganInt.intValue());
-				this.task.setNotassigned(this.task.getNamenum() - this.assignInt.intValue() - this.assignorganInt.intValue());
+				this.task.setAssignedai(this.assignAiInt.intValue());
+				this.task.setNotassigned(this.task.getNamenum() - this.assignInt.intValue() - this.assignorganInt.intValue() - this.assignAiInt.intValue());
 			}
 			this.callOutTaskRes.save(this.task) ;
 		}
@@ -229,10 +230,12 @@ public class ActivityResource extends Resource{
 		if(this.isRecovery()) {
 			if(!StringUtils.isBlank(this.jobDetail.getExecto())) {
 				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, null) ;
+				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_AI, null) ;
 //				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, this.jobDetail.getExecto()) ;
 				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_TIME, System.currentTimeMillis()) ;
 				meta.getDataBean().getValues().put("status", UKDataContext.NamesDisStatusType.DISORGAN.toString()) ;
 			}else {
+				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_AI, null) ;
 				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_AGENT, null) ;
 				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, null) ;
 				meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_TIME, null) ;
@@ -254,6 +257,9 @@ public class ActivityResource extends Resource{
 				meta.getDataBean().getValues().put("filterid", this.formFilter.getId()) ;
 				meta.getDataBean().getValues().put("calloutfilid", this.filter.getId()) ;
 				
+				meta.getDataBean().getValues().put("taskid", this.task.getId()) ;
+				
+				
 				if(!StringUtils.isBlank(this.jobDetail.getUserid())){
 					meta.getDataBean().getValues().put("assuser", this.jobDetail.getUserid()) ;
 				}else{
@@ -272,6 +278,11 @@ public class ActivityResource extends Resource{
 					meta.getDataBean().getValues().put("status", UKDataContext.NamesDisStatusType.DISORGAN.toString()) ;
 					meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, this.current.getDistarget()) ;
 					this.assignorganInt.incrementAndGet() ;
+				}else if("ai".equals(this.current.getDistype())) {
+					meta.getDataBean().getValues().put("status", UKDataContext.NamesDisStatusType.DISAI.toString()) ;
+					meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_AI, this.current.getDistarget()) ;
+					meta.getDataBean().getValues().put(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN, this.current.getOrgan()) ;
+					this.assignAiInt.incrementAndGet() ;
 				}
 			}
 		}

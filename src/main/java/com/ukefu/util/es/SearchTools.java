@@ -202,6 +202,25 @@ public class SearchTools {
 		return search(queryBuilder, p, ps);
 	}
 	
+	/**
+	 * 
+	 * @param orgi
+	 * @param agent
+	 * @param p
+	 * @param ps
+	 * @return
+	 */
+	public static PageImpl<UKDataBean> aisearch(String orgi , int p, int ps){
+		BoolQueryBuilder queryBuilder = new BoolQueryBuilder();
+		queryBuilder.must(termQuery("orgi", orgi)) ;
+		queryBuilder.must(termQuery("callstatus", UKDataContext.NameStatusTypeEnum.NOTCALL.toString())) ;
+		
+		queryBuilder.must(termQuery("validresult", "valid")) ;
+		queryBuilder.must(termQuery("status", UKDataContext.NamesDisStatusType.DISAI.toString())) ;
+		
+		return search(queryBuilder, p, ps);
+	}
+	
 
 	/**
 	 * 

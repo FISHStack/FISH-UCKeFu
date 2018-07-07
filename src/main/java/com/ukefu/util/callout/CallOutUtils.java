@@ -63,6 +63,17 @@ public class CallOutUtils {
 		return callOutConfig ;
 	}
 	
+	/**
+	 * AI配置
+	 * @param orgi
+	 * @return
+	 */
+	public static List<CallOutConfig> initCallOutConfig(){
+		CallOutConfigRepository callOutConfigRepository = UKDataContext.getContext().getBean(CallOutConfigRepository.class) ;
+		return callOutConfigRepository.findAll()  ;
+	}
+	
+	
 	public static CallOutNames processNames(UKDataBean name, CallCenterAgent agent , String orgi , int leavenames) {
 		String batid = (String) name.getValues().get("batid") ;
 		String taskid = (String) name.getValues().get("taskid") ;
@@ -149,6 +160,84 @@ public class CallOutUtils {
 		if(agent!=null) {
 			agent.setNameid(callOutName.getId());
 		}
+		return callOutName ;
+	}
+	
+	public static CallOutNames processNames(UKDataBean name, String orgi , int leavenames , CallOutNamesRepository callOutNamesRes) {
+		String batid = (String) name.getValues().get("batid") ;
+		String taskid = (String) name.getValues().get("taskid") ;
+		JobDetail batch = UKDataContext.getContext().getBean(JobDetailRepository.class).findByIdAndOrgi(batid, orgi) ;
+		CallOutTask task = UKDataContext.getContext().getBean(CallOutTaskRepository.class).findByIdAndOrgi(taskid, orgi) ;
+		CallOutNames callOutName = new CallOutNames() ; 
+		
+		List<CallOutNames> callNamesList = callOutNamesRes.findByDataidAndCreaterAndOrgi((String)name.getValues().get("id"), (String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT), orgi) ;
+		if(callNamesList.size() > 0) {
+			callOutName = callNamesList.get(0) ;
+		}
+		if(callOutName!=null){
+			callOutName.setOrgi(orgi);
+			if(task!=null) {
+				callOutName.setName(task.getName());	//任务名称
+			}
+			if(batch!=null) {
+				callOutName.setBatname(batch.getName());
+			}
+			
+			
+			callOutName.setActid(task.getActid());
+			callOutName.setBatid(batid);
+			
+			callOutName.setTaskid(taskid);
+			
+			callOutName.setMetaname(batch.getActid());
+			
+			callOutName.setFilterid((String) name.getValues().get("filterid"));
+			callOutName.setDataid((String)name.getValues().get("id"));
+			
+			callOutName.setStatus(UKDataContext.NamesProcessStatus.DIS.toString());
+			
+			callOutName.setCreater((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT));
+			callOutName.setOrgan((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN));
+			callOutName.setCreatetime(new Date());
+			callOutName.setUpdatetime(new Date());
+			String apstatus = (String) name.getValues().get("apstatus") ;
+			if(!StringUtils.isBlank(apstatus) && apstatus.equals("true")) {
+				callOutName.setReservation(true);
+			}else {
+				callOutName.setReservation(false);
+			}
+			callOutName.setMemo((String) name.getValues().get("apmemo"));
+			
+			callOutName.setOwneruser((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT));
+			callOutName.setOwnerdept((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_AGENT));
+		}
+		
+		callOutName.setLeavenum(leavenames);
+		
+		String dial_number = null ;
+		boolean disphonenum = false ;
+		String distype = null;
+		
+		if(batch!=null && !StringUtils.isBlank(batch.getActid())) {
+			MetadataTable table = UKDataContext.getContext().getBean(MetadataRepository.class).findByTablename(batch.getActid()) ;
+			for(TableProperties tp : table.getTableproperty()) {
+				if(tp.isPhonenumber()) {
+					dial_number = (String) name.getValues().get(tp.getFieldname()) ; 
+					disphonenum = tp.isSecfield() ;
+					distype = tp.getSecdistype() ;
+					break ;
+				}
+			}
+		}
+		
+		if(!StringUtils.isBlank(dial_number)) {
+			callOutName.setPhonenumber(dial_number);
+			if(disphonenum) {
+				callOutName.setDistype(distype);
+			}
+			
+		}
+		callOutNamesRes.save(callOutName) ;
 		return callOutName ;
 	}
 }

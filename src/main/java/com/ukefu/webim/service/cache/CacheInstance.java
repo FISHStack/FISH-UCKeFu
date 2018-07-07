@@ -59,4 +59,10 @@ public interface CacheInstance {
 	 */
 	public CacheBean getJobCacheBean();
 	
+	/**
+	 * 外呼
+	 * @return
+	 */
+	public CacheBean getCallOutCacheBean();
+	
 }

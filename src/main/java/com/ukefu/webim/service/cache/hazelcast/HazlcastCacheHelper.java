@@ -23,7 +23,7 @@ public class HazlcastCacheHelper implements CacheInstance{
 	 *
 	 */
 	public enum CacheServiceEnum{
-		HAZLCAST_CLUSTER_AGENT_USER_CACHE, HAZLCAST_CLUSTER_AGENT_STATUS_CACHE, HAZLCAST_CLUSTER_QUENE_USER_CACHE,HAZLCAST_ONLINE_CACHE , HAZLCAST_CULUSTER_SYSTEM , HAZLCAST_IMR_CACHE , API_USER_CACHE , CALLCENTER_CURRENT_CALL ,CALLCENTER_AGENT,JOB_CACHE;
+		HAZLCAST_CLUSTER_AGENT_USER_CACHE, HAZLCAST_CLUSTER_AGENT_STATUS_CACHE, HAZLCAST_CLUSTER_QUENE_USER_CACHE,HAZLCAST_ONLINE_CACHE , HAZLCAST_CULUSTER_SYSTEM , HAZLCAST_IMR_CACHE , API_USER_CACHE , CALLCENTER_CURRENT_CALL ,CALLCENTER_AGENT,JOB_CACHE,HAZLCAST_CALLOUT_CACHE;
 		public String toString(){
 			return super.toString().toLowerCase();
 		}
@@ -66,5 +66,10 @@ public class HazlcastCacheHelper implements CacheInstance{
 	@Override
 	public CacheBean getJobCacheBean() {
 		return UKDataContext.getContext().getBean(JobCache.class).getCacheInstance(CacheServiceEnum.JOB_CACHE.toString()) ;
+	}
+	@Override
+	public CacheBean getCallOutCacheBean() {
+		// TODO Auto-generated method stub
+		return UKDataContext.getContext().getBean(JobCache.class).getCacheInstance(CacheServiceEnum.HAZLCAST_CALLOUT_CACHE.toString()) ;
 	}
 }
