@@ -363,3 +363,14 @@ ALTER TABLE uk_callcenter_extention ADD ttsrecordpath varchar(255)  COMMENT 'ASR
 ALTER TABLE uk_callcenter_extention ADD errormessage varchar(255)  COMMENT '异常提示消息';
 
 ALTER TABLE uk_act_task ADD assignedai int default 0  COMMENT '分配到AI的名单数量';
+
+
+
+
+ALTER TABLE uk_callcenter_extention ADD enablewebrtc tinyint default 0  COMMENT '启用WebRTC';
+
+ALTER TABLE uk_callcenter_pbxhost ADD enablewebrtc tinyint default 0  COMMENT '启用WebRTC';
+ALTER TABLE uk_callcenter_pbxhost ADD webrtcaddress varchar(100) COMMENT 'WebRTC地址';
+ALTER TABLE uk_callcenter_pbxhost ADD webrtcport varchar(100) COMMENT 'WebRTC端口';
+ALTER TABLE uk_callcenter_pbxhost ADD webrtcssl tinyint default 0  COMMENT 'WebRTC启用SSL';
+
