@@ -365,6 +365,10 @@ ALTER TABLE uk_callcenter_extention ADD errormessage varchar(255)  COMMENT '异�
 ALTER TABLE uk_act_task ADD assignedai int default 0  COMMENT '分配到AI的名单数量';
 
 
+ALTER TABLE uk_act_filter_his ADD assignedai int(11) default 0  COMMENT '分配到AI的名单数量';||||||| .r967
+
+
+
 
 
 ALTER TABLE uk_callcenter_extention ADD enablewebrtc tinyint default 0  COMMENT '启用WebRTC';
@@ -374,3 +378,63 @@ ALTER TABLE uk_callcenter_pbxhost ADD webrtcaddress varchar(100) COMMENT 'WebRTC
 ALTER TABLE uk_callcenter_pbxhost ADD webrtcport varchar(100) COMMENT 'WebRTC端口';
 ALTER TABLE uk_callcenter_pbxhost ADD webrtcssl tinyint default 0  COMMENT 'WebRTC启用SSL';
 
+//QueSurveyProcess
+CREATE TABLE `uk_que_survey_process` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(32) DEFAULT NULL COMMENT '问卷名称',
+  `scene` varchar(32) DEFAULT NULL COMMENT '问卷适用场景（机器人呼出/坐席手动）',
+  `welword` varchar(32) DEFAULT NULL COMMENT '问卷欢迎语（文字）',
+  `welvoice` varchar(32) DEFAULT NULL COMMENT '问卷欢迎语ID（语音）',
+  `weltype` varchar(32) DEFAULT NULL COMMENT '问卷欢迎语类型',
+  `endword` varchar(32) DEFAULT NULL COMMENT '问卷结束语（文字）',
+  `endvoice` varchar(32) DEFAULT NULL COMMENT '问卷结束语ID（语音）',
+  `endtype` varchar(32) DEFAULT NULL COMMENT '问卷结束语类型',
+  `totalscore` varchar(32) DEFAULT NULL COMMENT '参考评分值',
+  `score` varchar(32) DEFAULT '0' COMMENT '是否评分（0否1是）',
+  `memo` text COMMENT '备注',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `prostatus` varchar(32) DEFAULT '0' COMMENT '问卷状态（0未发布1发布）',
+  `sumscore` varchar(32) DEFAULT NULL COMMENT '总评分值',
+  `description` text COMMENT '描述',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查表';
+
+
+//QueSurveyQuestion
+CREATE TABLE `uk_que_survey_question` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(32) DEFAULT NULL COMMENT '问题名称',
+  `sortindex` int(11) DEFAULT '0' COMMENT '问题序号',
+  `quetype` int(11) DEFAULT '0' COMMENT '问题类型（0选择题1问答题）',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `description` text COMMENT '描述',
+  `memo` text COMMENT '备注',
+  `score` int(11) DEFAULT NULL COMMENT '问题分值',
+  `processid`` varchar(32) DEFAULT NULL COMMENT '问卷ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题表';
+
+
+//QueSurveyAnswer
+CREATE TABLE `uk_que_survey_answer` (
+  `id` varchar(32) NOT NULL,
+  `questionid` varchar(32) DEFAULT NULL COMMENT '问题ID',
+  `questionname` varchar(32) DEFAULT NULL COMMENT '问题名称',
+  `answer` text COMMENT '问题答案',
+  `queid` varchar(32) DEFAULT NULL COMMENT '跳转问题ID',
+  `answerscore` int(11) DEFAULT '0' COMMENT '答案评分',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `processid`` varchar(32) DEFAULT NULL COMMENT '问卷ID',
+  `correct`  varchar(32) DEFAULT NULL COMMENT '是否是正确答案（0正确1不正确）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题答案表';
