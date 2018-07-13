@@ -203,7 +203,8 @@ public class ActivityResource extends Resource{
 			}else {
 				this.filter.setAssigned(this.assignInt.intValue());
 				this.filter.setAssignedorgan(this.assignorganInt.intValue());
-				this.filter.setNotassigned(this.task.getNamenum() - this.assignInt.intValue() - this.assignorganInt.intValue());
+				this.filter.setAssignedai(this.assignAiInt.intValue());
+				this.filter.setNotassigned(this.task.getNamenum() - this.assignInt.intValue() - this.assignorganInt.intValue() - this.assignAiInt.intValue());
 			}
 			this.callOutFilterRes.save(this.filter) ;
 		}

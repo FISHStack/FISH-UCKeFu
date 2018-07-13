@@ -11,4 +11,6 @@ public interface MediaRepository extends JpaRepository<Media, String> {
 	public Media findByIdAndOrgi(String id , String orgi);
 	public List<Media> findByHostidAndOrgi(String hostid , String orgi);
 	public int countByNameAndOrgi(String name, String orgi);
+	
+	public List<Media> findByOrgi(String orgi);
 }

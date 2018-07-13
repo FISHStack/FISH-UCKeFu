@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaBuilder.In;
+import javax.servlet.http.HttpServletRequest;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -42,6 +43,7 @@ import com.ukefu.webim.web.model.CallOutTask;
 import com.ukefu.webim.web.model.Extention;
 import com.ukefu.webim.web.model.FormFilter;
 import com.ukefu.webim.web.model.JobDetail;
+import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.SaleStatus;
 import com.ukefu.webim.web.model.SipTrunk;
@@ -109,7 +111,13 @@ public class CallCenterUtils {
 		return sipTrunk;
 	}
 	
-	
+	/**
+	 * 我的部门以及授权给我的部门
+	 * @param userRoleRes
+	 * @param callOutRoleRes
+	 * @param user
+	 * @return
+	 */
 	public static List<String> getAuthOrgan(UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes,User user){
 		List<UserRole> userRole = userRoleRes.findByOrgiAndUser(user.getOrgi(), user);
 		ArrayList<String> organList = new ArrayList<String>();
@@ -134,7 +142,14 @@ public class CallCenterUtils {
 		}
 		return organList ;
 	}
-	
+	/**
+	 * 我的部门以及授权给我的部门 - 批次
+	 * @param batchRes
+	 * @param userRoleRes
+	 * @param callOutRoleRes
+	 * @param user
+	 * @return
+	 */
 	public static List<JobDetail> getBatchList(JobDetailRepository batchRes,UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes, final User user){
 		
 		//final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
@@ -167,7 +182,14 @@ public class CallCenterUtils {
 		
 		return batchList;
 	}
-	
+	/**
+	 * 我的部门以及授权给我的部门 - 筛选表单
+	 * @param filterRes
+	 * @param userRoleRes
+	 * @param callOutRoleRes
+	 * @param user
+	 * @return
+	 */
 	public static List<FormFilter> getFormFilterList(FormFilterRepository filterRes,UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes, final User user){
 		
 		//final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
@@ -199,9 +221,15 @@ public class CallCenterUtils {
 		
 		return formFilterList;
 	}
-
 	
-	
+	/**
+	 * 我的部门以及授权给我的部门 - 活动
+	 * @param batchRes
+	 * @param userRoleRes
+	 * @param callOutRoleRes
+	 * @param user
+	 * @return
+	 */
 	public static List<JobDetail> getActivityList(JobDetailRepository batchRes,UserRoleRepository userRoleRes , CallOutRoleRepository callOutRoleRes,final User user){
 		
 		//final List<String> organList = CallCenterUtils.getAuthOrgan(userRoleRes, callOutRoleRes, user);
@@ -234,14 +262,19 @@ public class CallCenterUtils {
 		
 		return activityList;
 	}
-	
+	/**
+	 * 查询条件，下拉信息返回
+	 * @param map
+	 * @param user
+	 * @param ownerdept
+	 * @param actid
+	 */
 	public static void getAllCallOutList(ModelMap map, User user,String ownerdept, String actid){
 		JobDetailRepository batchRes = UKDataContext.getContext().getBean(JobDetailRepository.class) ;
 		UserRoleRepository userRoleRes = UKDataContext.getContext().getBean(UserRoleRepository.class) ;
 		CallOutRoleRepository callOutRoleRes = UKDataContext.getContext().getBean(CallOutRoleRepository.class) ;
 		FormFilterRepository filterRes = UKDataContext.getContext().getBean(FormFilterRepository.class) ;
 		OrganRepository organRes = UKDataContext.getContext().getBean(OrganRepository.class) ;
-		SaleStatusRepository saleStatusRes = UKDataContext.getContext().getBean(SaleStatusRepository.class) ;
 		
 		List<JobDetail> activityList = CallCenterUtils.getActivityList(batchRes,userRoleRes, callOutRoleRes,user);
 		List<SaleStatus> salestatusList = new ArrayList<>();
@@ -274,7 +307,12 @@ public class CallCenterUtils {
 		//}
 		map.addAttribute("statusList",UKeFuDic.getInstance().getDic("com.dic.callout.activity"));
 	}
-	
+	/**
+	 * 指定活动，已设置的分配数
+	 * @param map
+	 * @param activityid
+	 * @param user
+	 */
 	public static void getNamenum(ModelMap map,String activityid,User user){
 		
 		CallAgentRepository callAgentRes = UKDataContext.getContext().getBean(CallAgentRepository.class);
@@ -429,4 +467,6 @@ public class CallCenterUtils {
 		PageImpl<UKDataBean> dataList = SearchTools.search(queryBuilder,p, ps);
 		return dataList.getContent().size();
 	}
+	
+	
 }

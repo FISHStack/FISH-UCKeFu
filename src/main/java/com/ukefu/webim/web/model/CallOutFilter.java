@@ -57,6 +57,8 @@ public class CallOutFilter implements Serializable{
 	private String description ;//备注
 	
 	private String name;		//导入的任务名称 ， 自动生成， 规则为 yyyyMMdd--ORDER
+	
+	private int assignedai;	//已分配到AI
 
 	@Id
 	@Column(length = 32)
@@ -227,6 +229,14 @@ public class CallOutFilter implements Serializable{
 
 	public void setReorgannum(int reorgannum) {
 		this.reorgannum = reorgannum;
+	}
+
+	public int getAssignedai() {
+		return assignedai;
+	}
+
+	public void setAssignedai(int assignedai) {
+		this.assignedai = assignedai;
 	}
 	
 }
