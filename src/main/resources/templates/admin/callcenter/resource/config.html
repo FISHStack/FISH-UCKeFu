@@ -120,7 +120,7 @@
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
-												<p>FreeSwitch的录音文件访问URL</p>
+												<p>FreeSwitch的录音文件访问URL（远程录音文件需要添加http://或https://）</p>
 												<p style="color:#888888;font-size:13px;margin-top:10px;">默认为空，表示从Freeswitch安装路径下读取，填写后从URL读取</p>
 											</div>
 											<div class="col-lg-4" style="text-align:right;">
@@ -222,6 +222,48 @@
 										</div>
 									</div>
 								</div>
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">8、启用WebRTC</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>启用此功能后，可以使用网页上的WebRTC功能拨打和接听电话</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">WebRTC功能支持网页端接听和拨打电话，无需SIP话机</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<input type="checkbox" title="启用" name="enablewebrtc" id="enablewebrtc" lay-filter="webrtc" <#if pbxHost?? && pbxHost.enablewebrtc == true>checked="checked"</#if>>
+											</div>
+										</div>
+									</div>
+									<div class="box-item" id="webrtc" style="<#if pbxHost?? && pbxHost.enablewebrtc == false>display:none;</#if>">	
+										<div class="row">
+											<div class="col-lg-8">
+												<p>WebRTC访问地址</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<input type="text" name="webrtcaddress" id="webrtcaddress" value="${pbxHost.webrtcaddress!''}" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+										<div class="row" style="margin-top:20px;">
+											<div class="col-lg-8">
+												<p>访问端口</p>
+											</div>
+											<div class="col-lg-4">
+												<input type="text" name="webrtcport" id="webrtcport" lay-verify="port" value="${pbxHost.webrtcport!''}" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+										
+										<div class="row" style="margin-top:20px;">
+											<div class="col-lg-8">
+												<p>WebRTC启用SSL</p>
+											</div>
+											<div class="col-lg-4">
+												
+												<input type="checkbox" title="启用" name="webrtcssl" id="webrtcssl" <#if pbxHost?? && pbxHost.webrtcssl == true>checked="checked"</#if>>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -245,6 +287,19 @@
 	layui.use('form', function(){
 		var form = layui.form();
 		form.render("select"); //刷新select选择框渲染
+		form.on("checkbox(webrtc)" , function(data){
+			if(data.elem.checked == true){
+				$('#webrtc').show();		
+			}else{
+				$('#webrtc').hide();
+			}
+		});
+		form.verify({
+			port: [
+			    /^[\d]{0,5}$/
+			    ,'WebRTC端口只能输入数字'
+			] 
+		});      
 	});
 	
 </script>

@@ -87,6 +87,13 @@
             </div>
         </div>
         
+        <div class="layui-form-item">
+            <label class="layui-form-label">启用WebRTC：</label>
+            <div class="layui-input-inline">
+                <input type="checkbox" name="enablewebrtc" lay-skin="switch" lay-text="开启|关闭" <#if extention.enablewebrtc>checked="checked"</#if>>
+            </div>
+        </div>
+        
         <div class="layui-form-button">
             <div class="layui-button-block">
                 <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>

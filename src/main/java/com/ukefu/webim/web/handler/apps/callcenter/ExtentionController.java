@@ -157,7 +157,14 @@ public class ExtentionController extends Handler{
     public ModelAndView detail(ModelMap map , HttpServletRequest request , HttpServletResponse response ,@Valid String extno) {
 		List<Extention> extentionList = extentionRes.findByExtentionAndOrgi(extno, super.getOrgi(request)) ;
 		if(extentionList!=null && extentionList.size() == 1){
-			map.addAttribute("extention" , extentionList.get(0));
+			Extention extention = extentionList.get(0) ;
+			if(!StringUtils.isBlank(extention.getHostid())) {
+				PbxHost pbxHost = pbxHostRes.findById(extention.getHostid()) ;
+				if(pbxHost!=null) {
+					map.addAttribute("pbxhost" , pbxHost);
+				}
+			}
+			map.addAttribute("extention" , extention);
 		}
 		response.setContentType("Content-type: text/json; charset=utf-8"); 
     	return request(super.createRequestPageTempletResponse("/apps/business/callcenter/extention/detail"));

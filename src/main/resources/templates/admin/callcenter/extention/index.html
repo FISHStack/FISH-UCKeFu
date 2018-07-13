@@ -15,12 +15,13 @@
 					<div class="col-lg-12">
 						<table class="layui-table" lay-skin="line">
 						  <colgroup>
-								<col width="30%">
+								<col width="20%">
 								<col width="10%">
 								<col width="10%">
 								<col width="20%">
 								<col width="10%">
 								<col width="10%">
+								<col width="12%">
 								<col width="1%">
 								<col>
 						  </colgroup>
@@ -32,6 +33,7 @@
 							  <th>播报工号</th>
 							  <th>类型</th>
 							  <th>SIP网关</th>
+							  <th>启用WebRTC</th>
 							  <th style="white-space:nowrap;" nowrap="nowrap">操作</th>
 							</tr> 
 						  </thead>
@@ -74,6 +76,11 @@
 							  </td>
 							  <td>
 									<#if extention.siptrunk?? && extention.siptrunk!="">
+									<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
+									</#if>
+							  </td>
+							  <td>
+									<#if extention.enablewebrtc?? && extention.enablewebrtc == true>
 									<i class="layui-icon" style="color:#19a55d;">&#xe618;</i>
 									</#if>
 							  </td>

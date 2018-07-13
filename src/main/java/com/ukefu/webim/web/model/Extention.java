@@ -49,6 +49,8 @@ public class Extention implements java.io.Serializable{
 	private String tipmessage ;		//识别完成提示语
 	
 	private String errormessage ;		//异常完成提示语
+	
+	private boolean enablewebrtc ;	//启用WEBRTC
 	 
 	
 	private String orgi;
@@ -204,5 +206,11 @@ public class Extention implements java.io.Serializable{
 	}
 	public void setErrormessage(String errormessage) {
 		this.errormessage = errormessage;
+	}
+	public boolean isEnablewebrtc() {
+		return enablewebrtc;
+	}
+	public void setEnablewebrtc(boolean enablewebrtc) {
+		this.enablewebrtc = enablewebrtc;
 	}
 }

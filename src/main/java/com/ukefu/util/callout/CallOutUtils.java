@@ -93,6 +93,7 @@ public class CallOutUtils {
 			}
 			if(batch!=null) {
 				callOutName.setBatname(batch.getName());
+				callOutName.setMetaname(batch.getActid());
 			}
 			
 			
@@ -100,8 +101,6 @@ public class CallOutUtils {
 			callOutName.setBatid(batid);
 			
 			callOutName.setTaskid(taskid);
-			
-			callOutName.setMetaname(batch.getActid());
 			
 			callOutName.setFilterid((String) name.getValues().get("filterid"));
 			callOutName.setDataid((String)name.getValues().get("id"));
@@ -112,8 +111,8 @@ public class CallOutUtils {
 			callOutName.setOrgan((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN));
 			callOutName.setCreatetime(new Date());
 			callOutName.setUpdatetime(new Date());
-			String apstatus = (String) name.getValues().get("apstatus") ;
-			if(!StringUtils.isBlank(apstatus) && apstatus.equals("true")) {
+			Object apstatus = name.getValues().get("apstatus") ;
+			if(apstatus!=null && apstatus.toString().equals("true")) {
 				callOutName.setReservation(true);
 			}else {
 				callOutName.setReservation(false);

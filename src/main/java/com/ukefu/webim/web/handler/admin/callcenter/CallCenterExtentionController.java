@@ -163,6 +163,8 @@ public class CallCenterExtentionController extends Handler{
 				
 				ext.setSiptrunk(extention.getSiptrunk());
 				
+				ext.setEnablewebrtc(extention.isEnablewebrtc());
+				
 				ext.setUpdatetime(new Date());
 				extentionRes.save(ext) ;
 				

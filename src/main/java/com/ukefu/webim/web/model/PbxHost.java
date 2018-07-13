@@ -63,6 +63,11 @@ public class PbxHost implements java.io.Serializable{
 	private String waitmsg ;		//等待提示语
 	private String tipmessage ;		//识别完成提示语
 	
+	private boolean enablewebrtc ;	//启用WEBRTC
+	private String webrtcaddress; 	//WebRTC访问地址
+	private String webrtcport; 		//WebRTC端口
+	private boolean webrtcssl;		//启用SSL
+	
 	
 	private Date createtime = new Date();
 	private Date updatetime = new Date();
@@ -250,5 +255,29 @@ public class PbxHost implements java.io.Serializable{
 	}
 	public void setAfterprocess(boolean afterprocess) {
 		this.afterprocess = afterprocess;
+	}
+	public boolean isEnablewebrtc() {
+		return enablewebrtc;
+	}
+	public void setEnablewebrtc(boolean enablewebrtc) {
+		this.enablewebrtc = enablewebrtc;
+	}
+	public String getWebrtcaddress() {
+		return webrtcaddress;
+	}
+	public void setWebrtcaddress(String webrtcaddress) {
+		this.webrtcaddress = webrtcaddress;
+	}
+	public String getWebrtcport() {
+		return webrtcport;
+	}
+	public void setWebrtcport(String webrtcport) {
+		this.webrtcport = webrtcport;
+	}
+	public boolean isWebrtcssl() {
+		return webrtcssl;
+	}
+	public void setWebrtcssl(boolean webrtcssl) {
+		this.webrtcssl = webrtcssl;
 	}
 }
