@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-07-13 16:51:44
+Date: 2018-07-13 17:31:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -7914,6 +7914,9 @@ CREATE TABLE `uk_systemconfig` (
   `namealias` varchar(100) DEFAULT NULL COMMENT '别称',
   `enableregorgi` tinyint(4) DEFAULT '0' COMMENT '启用注册租户',
   `tenantconsole` tinyint(4) DEFAULT '0' COMMENT '登录跳转到租户切换页面',
+  `loginlogo` varchar(255) DEFAULT NULL COMMENT '登陆页面Logo',
+  `consolelogo` varchar(255) DEFAULT NULL COMMENT '后台页面Logo',
+  `favlogo` varchar(255) DEFAULT NULL COMMENT '系统Fav图标Logo',
   UNIQUE KEY `SQL121227155532210` (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统设置表';
 

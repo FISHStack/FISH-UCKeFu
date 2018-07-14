@@ -8,8 +8,8 @@
 <meta name="viewport"
 	content="width=device-width, maximum-scale=1.0, initial-scale=1.0,initial-scale=1.0,user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<title>UCKeFu-全渠道客服系统</title>
-<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?t=${.now?long}"/>
+<title><#if systemConfig?? && systemConfig.title?? && systemConfig.title != ''>${systemConfig.title}<#else>UCKeFu-全渠道客服系统</#if></title>
+<link rel="shortcut icon" type="image/x-icon" href="<#if systemConfig?? && systemConfig.favlogo?? && systemConfig.favlogo != ''>/res/image.html?id=${systemConfig.favlogo?url}<#else>/images/favicon.ico</#if>?t=${.now?long}"/>
 <link rel="stylesheet" href="/css/flexboxgrid.min.css">
 <link rel="stylesheet" type="text/css" href="/css/darktooltip.css" />
 <link rel="stylesheet" href="css/layui.css">
@@ -142,7 +142,7 @@
 	<div class="layui-layout layui-layout-admin">
 		<div class="layui-header header header-ukefu">
 			<div class="layui-main">
-				<a class="logo" href="/"><img src="images/logo.png"></a>
+				<a class="logo" href="/"><img src="<#if systemConfig?? && systemConfig.consolelogo?? && systemConfig.consolelogo != ''>/res/image.html?id=${systemConfig.consolelogo?url}<#else>images/logo.png</#if>"></a>
 				<#if models?? && models["callcenter"]?? && models["callcenter"] == true && user.callcenter == true>
 				<#include "/apps/include/softphone.html">
 				</#if>

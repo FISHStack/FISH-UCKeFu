@@ -26,6 +26,10 @@ public class SystemConfig implements java.io.Serializable{
 	
 	private String theme = "01";	//默认绿色
 	
+	private String loginlogo ;		//登录页 LOGO
+	private String consolelogo ;	//后台页面LOGO
+	private String favlogo ;		//系统Fav图片，icon格式，小图标
+	
 	private String code ;
 	private String orgi ;
 	private String description;
@@ -391,6 +395,24 @@ public class SystemConfig implements java.io.Serializable{
 	}
 	public void setEnableregorgi(boolean enableregorgi) {
 		this.enableregorgi = enableregorgi;
+	}
+	public String getLoginlogo() {
+		return loginlogo;
+	}
+	public void setLoginlogo(String loginlogo) {
+		this.loginlogo = loginlogo;
+	}
+	public String getConsolelogo() {
+		return consolelogo;
+	}
+	public void setConsolelogo(String consolelogo) {
+		this.consolelogo = consolelogo;
+	}
+	public String getFavlogo() {
+		return favlogo;
+	}
+	public void setFavlogo(String favlogo) {
+		this.favlogo = favlogo;
 	}
 	@Transient
 	public String getBackgroundColor(){

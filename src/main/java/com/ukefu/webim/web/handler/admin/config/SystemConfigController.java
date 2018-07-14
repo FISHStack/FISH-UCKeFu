@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -161,7 +162,7 @@ public class SystemConfigController extends Handler{
     
     @RequestMapping("/save")
     @Menu(type = "admin" , subtype = "save" , admin = true)
-    public ModelAndView save(ModelMap map , HttpServletRequest request , @Valid SystemConfig config , @RequestParam(value = "keyfile", required = false) MultipartFile keyfile , @Valid Secret secret) throws SQLException, IOException, NoSuchAlgorithmException {
+    public ModelAndView save(ModelMap map , HttpServletRequest request , @Valid SystemConfig config ,BindingResult result , @RequestParam(value = "keyfile", required = false) MultipartFile keyfile , @RequestParam(value = "loginlogo", required = false) MultipartFile loginlogo , @RequestParam(value = "consolelogo", required = false) MultipartFile consolelogo , @RequestParam(value = "favlogo", required = false) MultipartFile favlogo , @Valid Secret secret) throws SQLException, IOException, NoSuchAlgorithmException {
     	/*SystemConfig systemConfig = systemConfigRes.findByOrgi(super.getOrgi(request)) ;
     	config.setOrgi(super.getOrgi(request));*/
     	SystemConfig systemConfig = systemConfigRes.findByOrgi(UKDataContext.SYSTEM_ORGI) ;
@@ -193,6 +194,22 @@ public class SystemConfigController extends Handler{
     		for(File sslFile : sslFiles){
     			sslFile.delete();
     		}
+    	}
+    	
+    	if(loginlogo!=null && !StringUtils.isBlank(loginlogo.getOriginalFilename()) && loginlogo.getOriginalFilename().lastIndexOf(".") > 0) {
+    		String logoFileName = "logo/"+UKTools.md5(loginlogo.getOriginalFilename())+loginlogo.getOriginalFilename().substring(loginlogo.getOriginalFilename().lastIndexOf(".")) ;
+    		FileUtils.writeByteArrayToFile(new File(path ,logoFileName), loginlogo.getBytes());
+    		systemConfig.setLoginlogo(logoFileName);
+    	}
+    	if(consolelogo!=null && !StringUtils.isBlank(consolelogo.getOriginalFilename()) && consolelogo.getOriginalFilename().lastIndexOf(".") > 0) {
+    		String consoleLogoFileName = "logo/"+UKTools.md5(consolelogo.getOriginalFilename())+consolelogo.getOriginalFilename().substring(consolelogo.getOriginalFilename().lastIndexOf(".")) ;
+    		FileUtils.writeByteArrayToFile(new File(path ,consoleLogoFileName), consolelogo.getBytes());
+    		systemConfig.setConsolelogo(consoleLogoFileName);
+    	}
+    	if(favlogo!=null && !StringUtils.isBlank(favlogo.getOriginalFilename()) && consolelogo.getOriginalFilename().lastIndexOf(".") > 0) {
+    		String favLogoFileName = "logo/"+UKTools.md5(favlogo.getOriginalFilename())+favlogo.getOriginalFilename().substring(favlogo.getOriginalFilename().lastIndexOf(".")) ;
+    		FileUtils.writeByteArrayToFile(new File(path ,favLogoFileName), favlogo.getBytes());
+    		systemConfig.setFavlogo(favLogoFileName);
     	}
     	
     	if(secret!=null && !StringUtils.isBlank(secret.getPassword())){

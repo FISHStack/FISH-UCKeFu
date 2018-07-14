@@ -100,6 +100,9 @@ public class LoginController extends Handler{
     	if(systemConfig!=null&&systemConfig.isEnableregorgi()) {
     		view.addObject("show", true);
     	}
+		if(systemConfig != null){
+			view.addObject("systemConfig", systemConfig)  ;
+		}
         return view;
     }
     

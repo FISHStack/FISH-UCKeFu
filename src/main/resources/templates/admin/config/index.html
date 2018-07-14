@@ -47,7 +47,97 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">3、重启或停止对话服务</div>
+									<div class="ukefu-webim-tl" style="clear:both;">3、产品登录界面和后台管理界面标题</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>登录页和产品后台页面显示标题</p>
+												
+											</div>
+											<div class="col-lg-4" style="text-align:right;position: relative;">
+												<input type="text" name="title" value="${systemConfig.title!'UCKeFu-全渠道客服系统'}" autocomplete="off" class="layui-input">
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">4、登录页欢迎Logo图片</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>登录页显示的Logo图片，建议尺寸220*60。</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">
+													<span class="ukefu-logo">
+														<img src="<#if systemConfig?? && systemConfig.loginlogo?? && systemConfig.loginlogo != ''>/res/image.html?id=${systemConfig.loginlogo?url}<#else>/images/logo2.png</#if>" style="height:60px;">
+													</span>
+												</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;position: relative;">
+												<div class="layui-input-block">
+													<div class="layui-box layui-upload-button">
+														<input type="file" name="loginlogo" accept="image/gif, image/jpeg, image/png" lay-ext="jpg|png|gif"  class="layui-upload-file" onchange="$('#logo_img').html($(this).val());">
+														<span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span>
+													</div>
+												</div>
+												<div id="logo_img" style="position:absolute;right: 20px;"></div>	
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">5、产品后台管理界面Logo图片</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>登录页显示的Logo图片，建议尺寸280*80。</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">
+													<div class="ukefu-console-logo <#if systemConfig?? && systemConfig.theme?? && systemConfig.theme == '01'>ukefu-system-theme1</#if><#if systemConfig?? && systemConfig.theme?? && systemConfig.theme == '02'>ukefu-system-theme2</#if><#if systemConfig?? && systemConfig.theme?? && systemConfig.theme == '03'>ukefu-system-theme3</#if>" style="width:140px;height:40px;padding:5px;">
+														<img src="<#if systemConfig?? && systemConfig.consolelogo?? && systemConfig.consolelogo != ''>/res/image.html?id=${systemConfig.consolelogo?url}<#else>/images/logo.png</#if>" style="height:40px;">
+													</div>
+												</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;position: relative;">
+												<div class="layui-input-block">
+													<div class="layui-box layui-upload-button">
+														<input type="file" name="consolelogo" accept="image/gif, image/jpeg, image/png" lay-ext="jpg|png|gif"  class="layui-upload-file" onchange="$('#consolelogo_img').html($(this).val());">
+														<span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span>
+													</div>
+												</div>
+												<div id="consolelogo_img" style="position:absolute;right: 20px;"></div>	
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">6、产品标题栏缩略小图</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>产品登录页和后台管理页面的标题栏小缩略图，文件扩展名是ico格式</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">
+													<div class="ukefu-console-logo" style="width:140px;height:40px;padding:5px;">
+														<img src="<#if systemConfig?? && systemConfig.favlogo?? && systemConfig.favlogo != ''>/res/image.html?id=${systemConfig.favlogo?url}<#else>/images/favicon.ico</#if>" style="height:40px;">
+													</div>
+												</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;position: relative;">
+												<div class="layui-input-block">
+													<div class="layui-box layui-upload-button">
+														<input type="file" name="favlogo" accept="image/ico, image/gif, image/jpeg, image/png" lay-ext="jpg|png|gif"  class="layui-upload-file" onchange="$('#favlogo_img').html($(this).val());">
+														<span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span>
+													</div>
+												</div>
+												<div id="favlogo_img" style="position:absolute;right: 20px;"></div>	
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">7、重启或停止对话服务</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -64,7 +154,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">4、启用EntIM内部IM功能</div>
+									<div class="ukefu-webim-tl" style="clear:both;">8、启用EntIM内部IM功能</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -83,7 +173,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">5、启用权限数据采集功能功能</div>
+									<div class="ukefu-webim-tl" style="clear:both;">9、启用权限数据采集功能功能</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -102,7 +192,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">6、停止优客服系统</div>
+									<div class="ukefu-webim-tl" style="clear:both;">10、停止优客服系统</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -117,7 +207,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">7、修改微信接收消息的日志级别</div>
+									<div class="ukefu-webim-tl" style="clear:both;">11、修改微信接收消息的日志级别</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -134,7 +224,7 @@
 									</div>
 								</div>
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">8、启用服务SSL安全访问</div>
+									<div class="ukefu-webim-tl" style="clear:both;">12、启用服务SSL安全访问</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -176,7 +266,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">9、启用涉及重要操作的二次验证密码</div>
+									<div class="ukefu-webim-tl" style="clear:both;">13、启用涉及重要操作的二次验证密码</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -219,7 +309,7 @@
 									</div>
 								</div>
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">10、百度地图的Key代码（AK）</div>
+									<div class="ukefu-webim-tl" style="clear:both;">14、百度地图的Key代码（AK）</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -234,7 +324,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">11、工单系统布局方式</div>
+									<div class="ukefu-webim-tl" style="clear:both;">15、工单系统布局方式</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -249,7 +339,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">12、启用权限控制</div>
+									<div class="ukefu-webim-tl" style="clear:both;">16、启用权限控制</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -264,7 +354,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">13、启用语音平台模板配置</div>
+									<div class="ukefu-webim-tl" style="clear:both;">17、启用语音平台模板配置</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -403,7 +493,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">14、启用工单系统的邮件通知</div>
+									<div class="ukefu-webim-tl" style="clear:both;">18、启用工单系统的邮件通知</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -538,7 +628,7 @@
 								</div>
 								
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">15、启用多${systemConfig.namealias!'租户'}管理模式</div>
+									<div class="ukefu-webim-tl" style="clear:both;">19、启用多${systemConfig.namealias!'租户'}管理模式</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
