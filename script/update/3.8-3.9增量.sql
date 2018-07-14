@@ -365,7 +365,7 @@ ALTER TABLE uk_callcenter_extention ADD errormessage varchar(255)  COMMENT '异�
 ALTER TABLE uk_act_task ADD assignedai int default 0  COMMENT '分配到AI的名单数量';
 
 
-ALTER TABLE uk_act_filter_his ADD assignedai int(11) default 0  COMMENT '分配到AI的名单数量';||||||| .r967
+ALTER TABLE uk_act_filter_his ADD assignedai int(11) default 0  COMMENT '分配到AI的名单数量';
 
 
 
@@ -378,7 +378,11 @@ ALTER TABLE uk_callcenter_pbxhost ADD webrtcaddress varchar(100) COMMENT 'WebRTC
 ALTER TABLE uk_callcenter_pbxhost ADD webrtcport varchar(100) COMMENT 'WebRTC端口';
 ALTER TABLE uk_callcenter_pbxhost ADD webrtcssl tinyint default 0  COMMENT 'WebRTC启用SSL';
 
-//QueSurveyProcess
+
+ALTER TABLE uk_systemconfig ADD loginlogo varchar(255) COMMENT '登陆页面Logo';
+ALTER TABLE uk_systemconfig ADD consolelogo varchar(255) COMMENT '后台页面Logo';
+ALTER TABLE uk_systemconfig ADD favlogo varchar(255) COMMENT '系统Fav图标Logo';
+
 CREATE TABLE `uk_que_survey_process` (
   `id` varchar(32) NOT NULL,
   `name` varchar(32) DEFAULT NULL COMMENT '问卷名称',
@@ -404,7 +408,6 @@ CREATE TABLE `uk_que_survey_process` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查表';
 
 
-//QueSurveyQuestion
 CREATE TABLE `uk_que_survey_question` (
   `id` varchar(32) NOT NULL,
   `name` varchar(32) DEFAULT NULL COMMENT '问题名称',
@@ -417,12 +420,11 @@ CREATE TABLE `uk_que_survey_question` (
   `description` text COMMENT '描述',
   `memo` text COMMENT '备注',
   `score` int(11) DEFAULT NULL COMMENT '问题分值',
-  `processid`` varchar(32) DEFAULT NULL COMMENT '问卷ID',
+  `processid` varchar(32) DEFAULT NULL COMMENT '问卷ID',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题表';
 
 
-//QueSurveyAnswer
 CREATE TABLE `uk_que_survey_answer` (
   `id` varchar(32) NOT NULL,
   `questionid` varchar(32) DEFAULT NULL COMMENT '问题ID',
@@ -434,7 +436,7 @@ CREATE TABLE `uk_que_survey_answer` (
   `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
   `createtime` datetime DEFAULT NULL COMMENT '创建时间',
   `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
-  `processid`` varchar(32) DEFAULT NULL COMMENT '问卷ID',
+  `processid` varchar(32) DEFAULT NULL COMMENT '问卷ID',
   `correct`  varchar(32) DEFAULT NULL COMMENT '是否是正确答案（0正确1不正确）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题答案表';
