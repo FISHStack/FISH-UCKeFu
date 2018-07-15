@@ -67,6 +67,7 @@ import com.ukefu.webim.web.model.KnowledgeType;
 import com.ukefu.webim.web.model.LeaveMsg;
 import com.ukefu.webim.web.model.SNSAccount;
 import com.ukefu.webim.web.model.SessionConfig;
+import com.ukefu.webim.web.model.SystemConfig;
 import com.ukefu.webim.web.model.Topic;
 import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.UploadStatus;
@@ -122,8 +123,19 @@ public class IMController extends Handler{
     	String sessionid = request.getSession().getId() ;
     	if(!StringUtils.isBlank(id)){
 	    	view.addObject("hostname", request.getServerName()) ;
-			view.addObject("port", request.getServerPort()) ;
-			view.addObject("schema", request.getScheme()) ;
+	    	
+			SystemConfig systemConfig = UKTools.getSystemConfig();
+			if(systemConfig!=null && systemConfig.isEnablessl()) {
+				view.addObject("schema","https") ;
+				if(request.getServerPort() == 80) {
+					view.addObject("port", 443) ;
+				}else {
+					view.addObject("port", request.getServerPort()) ;
+				}
+			}else {
+				view.addObject("schema",request.getScheme()) ;
+				view.addObject("port", request.getServerPort()) ;
+			}
 			view.addObject("appid", id) ;
 			
 			

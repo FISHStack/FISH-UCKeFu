@@ -46,12 +46,23 @@ public class UserInterceptorHandler extends HandlerInterceptorAdapter {
             ModelAndView view) throws Exception {
     	User user = (User) arg0.getSession().getAttribute(UKDataContext.USER_SESSION_NAME) ;
     	String infoace = (String) arg0.getSession().getAttribute(UKDataContext.UKEFU_SYSTEM_INFOACQ) ;		//进入信息采集模式
+    	SystemConfig systemConfig = UKTools.getSystemConfig();
     	if( view!=null){
 	    	if(user!=null){
 				view.addObject("user", user) ;
-				view.addObject("schema",arg0.getScheme()) ;
+				
+				if(systemConfig!=null && systemConfig.isEnablessl()) {
+					view.addObject("schema","https") ;
+					if(arg0.getServerPort() == 80) {
+						view.addObject("port", 443) ;
+					}else {
+						view.addObject("port", arg0.getServerPort()) ;
+					}
+				}else {
+					view.addObject("schema",arg0.getScheme()) ;
+					view.addObject("port",arg0.getServerPort()) ;
+				}
 				view.addObject("hostname",arg0.getServerName()) ;
-				view.addObject("port",arg0.getServerPort()) ;
 				
 				HandlerMethod  handlerMethod = (HandlerMethod ) arg2 ;
 				Menu menu = handlerMethod.getMethod().getAnnotation(Menu.class) ;
@@ -92,7 +103,6 @@ public class UserInterceptorHandler extends HandlerInterceptorAdapter {
 			
 			view.addObject("uKeFuSecField", CacheHelper.getSystemCacheBean().getCacheObject(UKDataContext.UKEFU_SYSTEM_SECFIELD, UKDataContext.SYSTEM_ORGI)) ;	//处理系统 需要隐藏号码的字段， 启动的时候加载
 			
-			SystemConfig systemConfig = (SystemConfig) CacheHelper.getSystemCacheBean().getCacheObject("systemConfig", UKDataContext.SYSTEM_ORGI) ; 
 			if(systemConfig != null){
 				view.addObject("systemConfig", systemConfig)  ;
 			}else{
