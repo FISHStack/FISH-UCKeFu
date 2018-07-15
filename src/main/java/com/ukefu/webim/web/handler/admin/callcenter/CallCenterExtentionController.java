@@ -124,6 +124,8 @@ public class CallCenterExtentionController extends Handler{
 		
 		extno.setSiptrunk(src.getSiptrunk());
 		
+		extno.setEnablewebrtc(src.isEnablewebrtc());
+		
 		int count = extentionRes.countByExtentionAndHostidAndOrgi(extno.getExtention() , hostid, orgi) ;
 		if(count == 0){	
 			extentionRes.save(extno) ;
