@@ -182,13 +182,17 @@ public class SystemConfigController extends Handler{
 	    	if(keyfile!=null && keyfile.getBytes()!=null && keyfile.getBytes().length > 0 && keyfile.getOriginalFilename()!=null && keyfile.getOriginalFilename().length() > 0){
 		    	FileUtils.writeByteArrayToFile(new File(path , "ssl/"+keyfile.getOriginalFilename()), keyfile.getBytes());
 		    	systemConfig.setJksfile(keyfile.getOriginalFilename());
+		    	File sslFilePath = new File(path , "ssl/https.properties") ;
+		    	if(!sslFilePath.getParentFile().exists()) {
+		    		sslFilePath.getParentFile().mkdirs() ;
+		    	}
+		    	Properties prop = new Properties();     
+		    	FileOutputStream oFile = new FileOutputStream(sslFilePath);//true表示追加打开
+		    	prop.setProperty("key-store-password", UKTools.encryption(systemConfig.getJkspassword())) ;
+		    	prop.setProperty("key-store",systemConfig.getJksfile()) ;
+		    	prop.store(oFile , "SSL Properties File");
+		    	oFile.close();
 	    	}
-	    	Properties prop = new Properties();     
-	    	FileOutputStream oFile = new FileOutputStream(new File(path , "ssl/https.properties"));//true表示追加打开
-	    	prop.setProperty("key-store-password", UKTools.encryption(systemConfig.getJkspassword())) ;
-	    	prop.setProperty("key-store",systemConfig.getJksfile()) ;
-	    	prop.store(oFile , "SSL Properties File");
-	    	oFile.close();
     	}else if(new File(path , "ssl").exists()){
     		File[] sslFiles = new File(path , "ssl").listFiles() ;
     		for(File sslFile : sslFiles){
