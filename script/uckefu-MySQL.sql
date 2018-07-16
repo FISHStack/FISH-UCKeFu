@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-07-15 20:14:25
+Date: 2018-07-16 09:52:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -239,6 +239,7 @@ CREATE TABLE `uk_act_filter_his` (
   `exectype` varchar(32) DEFAULT NULL COMMENT '执行类型',
   `renum` int(11) DEFAULT '0' COMMENT '分配数量',
   `reorgannum` int(11) DEFAULT '0' COMMENT '部门分配数量',
+  `assignedai` int(11) DEFAULT '0' COMMENT '分配到AI的名单数量',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='筛选记录表';
 
