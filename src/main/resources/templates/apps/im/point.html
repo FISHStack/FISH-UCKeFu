@@ -340,17 +340,17 @@ var ukefu = {
 function openAgentChatDialog(url){
 	return ukefu.openChatDialogWithURL(url) ;	
 }
-
-ukefu.ajax(ukefu.in+"&userid="+result+"&t="+new Date().getTime() , function(data){
-	if(data == "in"){}else{
-		new Fingerprint2().get(function(data, components){
-		    result = data ;
-		    ukefu.display();
+new Fingerprint2().get(function(data, components){
+    result = data ;
+    ukefu.ajax(ukefu.in+"&userid="+result+"&t="+new Date().getTime() , function(data){
+		if(data == "in"){}else{
+			ukefu.display();
 			ukefu.ping();
 			ukefu.check();
-		});
-	}
+		}
+	});
 });
+
 </#if>
 
 

@@ -1402,4 +1402,39 @@ public class UKTools {
 		}
 		return nextFireDate ;
 	}
+    /**
+     * 
+     * @param dialNum
+     * @param distype
+     * @return
+     */
+    public static String processSecField(String dialNum , String distype) {
+    	StringBuilder strb = new StringBuilder(dialNum) ;
+		if(distype.equals("01")) {
+			if(strb.length() > 4) {
+				strb.replace(strb.length()/2 - 2, strb.length()/2 + 2, "****") ;
+			}else {
+				strb.replace(0, strb.length(), "****") ;
+			}
+		}else if(distype.equals("02")) {
+			if(strb.length() > 4) {
+				strb.replace(strb.length()-4 , strb.length(), "****") ;
+			}else {
+				strb.replace(0, strb.length(), "****") ;
+			}
+		}else if(distype.equals("03")) {
+			if(strb.length() > 4) {
+				strb.replace(0 , 4, "****") ;
+			}else {
+				strb.replace(0, strb.length(), "****") ;
+			}
+		}else if(distype.equals("04")) {
+			int length = strb.length() ;
+			strb.setLength(0);
+			for(int i=0 ; i<length ; i++) {
+				strb.append("*") ;
+			}
+		}
+		return strb.toString();
+    }
 }
