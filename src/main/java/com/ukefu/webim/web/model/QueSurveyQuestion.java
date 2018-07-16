@@ -22,7 +22,7 @@ public class QueSurveyQuestion implements java.io.Serializable{
 	private String id ;
 	private String name;//问题名称
 	private String sortindex;//问题序号
-	private int quetype;//问题类型
+	private int quetype;//问题类型（选择题/问答题）
 	private String orgi;//租户ID
 	private String creater;//创建人
 	private Date createtime;//创建时间
@@ -32,6 +32,8 @@ public class QueSurveyQuestion implements java.io.Serializable{
 	private String memo;//备注
 	private int score;//问题分值
 	private String processid;//问卷ID
+	private String wvtype;//类型（文字/语音）
+	private String quevoice;//问题语音ID
 
 	
 	@Id
@@ -111,6 +113,19 @@ public class QueSurveyQuestion implements java.io.Serializable{
 	}
 	public void setProcessid(String processid) {
 		this.processid = processid;
+	}
+	
+	public String getWvtype() {
+		return wvtype;
+	}
+	public void setWvtype(String wvtype) {
+		this.wvtype = wvtype;
+	}
+	public String getQuevoice() {
+		return quevoice;
+	}
+	public void setQuevoice(String quevoice) {
+		this.quevoice = quevoice;
 	}
 	
 	

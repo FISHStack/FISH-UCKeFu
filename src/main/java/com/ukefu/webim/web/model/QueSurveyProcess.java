@@ -38,7 +38,7 @@ public class QueSurveyProcess implements java.io.Serializable{
 	private String updater;   //更新人
 	private Date updatetime;  //更新时间
 	
-	private String prostatus;//问卷状态
+	private String prostatus;//问卷状态（0未发布/1发布）
 	private String sumscore;//总评分
 	private String description;//描述
 

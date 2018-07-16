@@ -20,6 +20,6 @@ public abstract interface QueSurveyQuestionRepository extends JpaRepository<QueS
   
   public abstract QueSurveyQuestion findById(String id);
   
-  public abstract Page<QueSurveyQuestion> findByOrgiAndProcessid(String orgi ,String processid,Pageable paramPageable);
+  public abstract List<QueSurveyQuestion> findByOrgiAndProcessid(String orgi ,String processid);
   
 }
