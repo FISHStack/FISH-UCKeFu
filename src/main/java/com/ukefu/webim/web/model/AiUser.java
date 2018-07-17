@@ -21,6 +21,12 @@ public class AiUser implements java.io.Serializable{
 	private String username ;
 	private String aiid ;
 	
+	private String busstype ;
+	private String aitype ;
+	private String bussid ;
+	private String dataid ;
+	private boolean bussend;
+	
 	private int userask ;	//访客提问数量
 	private boolean agent ; //直接转人工
 	
@@ -138,5 +144,44 @@ public class AiUser implements java.io.Serializable{
 	public void setContextid(String contextid) {
 		this.contextid = contextid;
 	}
-	
+
+	public String getBusstype() {
+		return busstype;
+	}
+
+	public void setBusstype(String busstype) {
+		this.busstype = busstype;
+	}
+
+	public String getAitype() {
+		return aitype;
+	}
+
+	public void setAitype(String aitype) {
+		this.aitype = aitype;
+	}
+
+	public String getBussid() {
+		return bussid;
+	}
+
+	public void setBussid(String bussid) {
+		this.bussid = bussid;
+	}
+
+	public String getDataid() {
+		return dataid;
+	}
+
+	public void setDataid(String dataid) {
+		this.dataid = dataid;
+	}
+
+	public boolean isBussend() {
+		return bussend;
+	}
+
+	public void setBussend(boolean bussend) {
+		this.bussend = bussend;
+	}
 }

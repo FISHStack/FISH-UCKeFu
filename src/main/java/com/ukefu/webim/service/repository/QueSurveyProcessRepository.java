@@ -15,8 +15,5 @@ public abstract interface QueSurveyProcessRepository extends JpaRepository<QueSu
 
   public abstract List<QueSurveyProcess> findByOrgi(String orgi);
   
-  public abstract List<QueSurveyProcess> findByOrgiAndId(String orgi, String id);
-  
-  public abstract QueSurveyProcess findById(String id);
-  
+  public abstract QueSurveyProcess findByIdAndOrgi(String id , String orgi);
 }

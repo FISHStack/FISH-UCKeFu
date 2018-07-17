@@ -757,6 +757,26 @@ public class UKDataContext {
 			return super.toString().toLowerCase() ;
 		}
 	}
+	
+	public enum AiType{
+		SMARTAI,
+		BUSINESSAI;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
+
+	public enum AiBussType{
+		SALE,
+		QUESURVEY;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+
 
 	/**
 	 * 
