@@ -383,6 +383,46 @@ ALTER TABLE uk_systemconfig ADD loginlogo varchar(255) COMMENT '登陆页面Logo
 ALTER TABLE uk_systemconfig ADD consolelogo varchar(255) COMMENT '后台页面Logo';
 ALTER TABLE uk_systemconfig ADD favlogo varchar(255) COMMENT '系统Fav图标Logo';
 
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : UCKeFu
+Source Server Version : 50717
+Source Host           : localhost:3306
+Source Database       : uckefu
+
+Target Server Type    : MYSQL
+Target Server Version : 50717
+File Encoding         : 65001
+
+Date: 2018-07-17 22:00:23
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `uk_que_survey_answer`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_que_survey_answer`;
+CREATE TABLE `uk_que_survey_answer` (
+  `id` varchar(32) NOT NULL,
+  `questionid` varchar(32) DEFAULT NULL COMMENT '问题ID',
+  `questionname` varchar(255) DEFAULT NULL COMMENT '问题名称',
+  `answer` text COMMENT '问题答案',
+  `queid` varchar(32) DEFAULT NULL COMMENT '跳转问题ID',
+  `answerscore` int(11) DEFAULT '0' COMMENT '答案评分',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `processid` varchar(32) DEFAULT NULL COMMENT '问卷ID',
+  `correct` varchar(32) DEFAULT NULL COMMENT '是否是正确答案（0正确1不正确）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题答案表';
+-- ----------------------------
+-- Table structure for `uk_que_survey_process`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_que_survey_process`;
 CREATE TABLE `uk_que_survey_process` (
   `id` varchar(32) NOT NULL,
   `name` varchar(32) DEFAULT NULL COMMENT '问卷名称',
@@ -407,10 +447,13 @@ CREATE TABLE `uk_que_survey_process` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查表';
 
-
+-- ----------------------------
+-- Table structure for `uk_que_survey_question`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_que_survey_question`;
 CREATE TABLE `uk_que_survey_question` (
   `id` varchar(32) NOT NULL,
-  `name` varchar(32) DEFAULT NULL COMMENT '问题名称',
+  `name` varchar(255) DEFAULT NULL COMMENT '问题名称',
   `sortindex` int(11) DEFAULT '0' COMMENT '问题序号',
   `quetype` int(11) DEFAULT '0' COMMENT '问题类型（0选择题1问答题）',
   `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
@@ -421,30 +464,29 @@ CREATE TABLE `uk_que_survey_question` (
   `memo` text COMMENT '备注',
   `score` int(11) DEFAULT NULL COMMENT '问题分值',
   `processid` varchar(32) DEFAULT NULL COMMENT '问卷ID',
+  `wvtype` varchar(32) DEFAULT NULL COMMENT '类型（文字/语音）',
+  `quevoice` varchar(32) DEFAULT NULL COMMENT '语音ID',
+  `confirmtype` varchar(32) DEFAULT NULL COMMENT '答案确认语类型',
+  `confirmword` varchar(255) DEFAULT NULL COMMENT '答案确认语文字',
+  `confirmvoice` varchar(255) DEFAULT NULL COMMENT '答案确认语语音',
+  `overtimetype` varchar(255) DEFAULT NULL COMMENT '回答超时语',
+  `overtimeword` varchar(255) DEFAULT NULL COMMENT '回答超时语文字',
+  `overtimevoice` varchar(255) DEFAULT NULL COMMENT '回答超时语语音',
+  `errortype` varchar(255) DEFAULT NULL COMMENT '回答错误语',
+  `errorword` varchar(255) DEFAULT NULL COMMENT '回答错误语文字',
+  `errorvoice` varchar(255) DEFAULT NULL COMMENT '回答错误语语音',
+  `replykeyword` varchar(255) DEFAULT NULL COMMENT '关键词重复',
+  `replytype` varchar(255) DEFAULT NULL COMMENT '重复提示类型',
+  `replyword` varchar(255) DEFAULT NULL COMMENT '重复提示语文字',
+  `replyvoice` varchar(255) DEFAULT NULL COMMENT '重复提示语语音',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题表';
-
-
-CREATE TABLE `uk_que_survey_answer` (
-  `id` varchar(32) NOT NULL,
-  `questionid` varchar(32) DEFAULT NULL COMMENT '问题ID',
-  `questionname` varchar(32) DEFAULT NULL COMMENT '问题名称',
-  `answer` text COMMENT '问题答案',
-  `queid` varchar(32) DEFAULT NULL COMMENT '跳转问题ID',
-  `answerscore` int(11) DEFAULT '0' COMMENT '答案评分',
-  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
-  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
-  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
-  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
-  `processid` varchar(32) DEFAULT NULL COMMENT '问卷ID',
-  `correct`  varchar(32) DEFAULT NULL COMMENT '是否是正确答案（0正确1不正确）',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题答案表';
 
 
 ALTER TABLE uk_callcenter_extention ADD bustype varchar(32) default null  COMMENT '业务类型（电销sale/问卷quesurvey）';
 ALTER TABLE uk_callcenter_extention ADD proid varchar(32) default null  COMMENT '（产品ID）';
 ALTER TABLE uk_callcenter_extention ADD queid varchar(32) default null  COMMENT '（问卷ID）';
 ALTER TABLE uk_callcenter_extention ADD aitype varchar(32) default null  COMMENT '机器人类型（smartai/quesurvey）';
-ALTER TABLE uk_que_survey_question ADD wvtype varchar(32) default null  COMMENT '类型（文字/语音）';
-ALTER TABLE uk_que_survey_question ADD quevoice varchar(32) default null  COMMENT '语音ID';
+
+
+ALTER TABLE uk_sales_product ADD provoice varchar(255) default null  COMMENT '语音介绍';
