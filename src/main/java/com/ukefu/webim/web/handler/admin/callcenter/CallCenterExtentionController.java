@@ -20,11 +20,14 @@ import com.ukefu.webim.service.impl.CallOutQuene;
 import com.ukefu.webim.service.repository.ExtentionRepository;
 import com.ukefu.webim.service.repository.MediaRepository;
 import com.ukefu.webim.service.repository.PbxHostRepository;
+import com.ukefu.webim.service.repository.ProductRepository;
+import com.ukefu.webim.service.repository.QueSurveyProcessRepository;
 import com.ukefu.webim.service.repository.ServiceAiRepository;
 import com.ukefu.webim.service.repository.SipTrunkRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Extention;
 import com.ukefu.webim.web.model.PbxHost;
+import com.ukefu.webim.web.model.Product;
 import com.ukefu.webim.web.model.User;
 
 @Controller
@@ -45,6 +48,12 @@ public class CallCenterExtentionController extends Handler{
 	
 	@Autowired
 	private ServiceAiRepository serviceAiRes ;
+	
+	@Autowired
+	private ProductRepository productRes ;
+	
+	@Autowired
+	private QueSurveyProcessRepository queSurveyProcessRes ;
 	
 	
 	@RequestMapping(value = "/extention")
@@ -124,8 +133,6 @@ public class CallCenterExtentionController extends Handler{
 		
 		extno.setSiptrunk(src.getSiptrunk());
 		
-		extno.setEnablewebrtc(src.isEnablewebrtc());
-		
 		int count = extentionRes.countByExtentionAndHostidAndOrgi(extno.getExtention() , hostid, orgi) ;
 		if(count == 0){	
 			extentionRes.save(extno) ;
@@ -165,8 +172,6 @@ public class CallCenterExtentionController extends Handler{
 				
 				ext.setSiptrunk(extention.getSiptrunk());
 				
-				ext.setEnablewebrtc(extention.isEnablewebrtc());
-				
 				ext.setUpdatetime(new Date());
 				extentionRes.save(ext) ;
 				
@@ -189,6 +194,8 @@ public class CallCenterExtentionController extends Handler{
 		map.addAttribute("sipTrunkListList" , sipTrunkRes.findByHostidAndOrgi(hostid, super.getOrgi(request)));
 		
 		map.put("serviceAiList",serviceAiRes.findByOrgi(super.getOrgi(request)) ) ;
+		map.put("queList",queSurveyProcessRes.findByOrgi(super.getOrgi(request)) ) ;
+		map.put("productList",productRes.findByOrgi(super.getOrgi(request)) ) ;
 		
     	return request(super.createRequestPageTempletResponse("/admin/callcenter/extention/ivr"));
     }
@@ -205,7 +212,12 @@ public class CallCenterExtentionController extends Handler{
 				ext.setSceneid(extention.getSceneid());           
 				ext.setWelcomemsg(extention.getWelcomemsg()) ;        
 				ext.setWaitmsg(extention.getWaitmsg())       ;     
-				ext.setTipmessage(extention.getTipmessage());        
+				ext.setTipmessage(extention.getTipmessage());     
+				
+				ext.setAitype(extention.getAitype());
+				ext.setBustype(extention.getBustype());
+				ext.setProid(extention.getProid());
+				ext.setQueid(extention.getQueid());
 				
 				extentionRes.save(ext) ;
 			}

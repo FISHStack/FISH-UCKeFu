@@ -50,8 +50,10 @@ public class Extention implements java.io.Serializable{
 	
 	private String errormessage ;		//异常完成提示语
 	
-	private boolean enablewebrtc ;	//启用WEBRTC
-	 
+	private String bustype;//业务类型（电销/问卷）
+	private String proid;//（产品ID）
+	private String queid;//（问卷ID）
+	private String aitype;//机器人类型（smartai/businessai）
 	
 	private String orgi;
 	private String creater ;
@@ -207,10 +209,29 @@ public class Extention implements java.io.Serializable{
 	public void setErrormessage(String errormessage) {
 		this.errormessage = errormessage;
 	}
-	public boolean isEnablewebrtc() {
-		return enablewebrtc;
+	public String getBustype() {
+		return bustype;
 	}
-	public void setEnablewebrtc(boolean enablewebrtc) {
-		this.enablewebrtc = enablewebrtc;
+	public void setBustype(String bustype) {
+		this.bustype = bustype;
 	}
+	public String getProid() {
+		return proid;
+	}
+	public void setProid(String proid) {
+		this.proid = proid;
+	}
+	public String getQueid() {
+		return queid;
+	}
+	public void setQueid(String queid) {
+		this.queid = queid;
+	}
+	public String getAitype() {
+		return aitype;
+	}
+	public void setAitype(String aitype) {
+		this.aitype = aitype;
+	}
+	
 }
