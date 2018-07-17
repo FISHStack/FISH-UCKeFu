@@ -66,6 +66,8 @@ public class Product implements java.io.Serializable{
 	private Date begintime; 	//有效期开始时间
 	private Date endtime; 		//有效期结束时间
 	
+	private String provoice;//语音介绍
+	
 	
 	/**
 	 * @return the id
@@ -233,4 +235,13 @@ public class Product implements java.io.Serializable{
 	public void setQuota(int quota) {
 		this.quota = quota;
 	}
+
+	public String getProvoice() {
+		return provoice;
+	}
+
+	public void setProvoice(String provoice) {
+		this.provoice = provoice;
+	}
+	
 }
