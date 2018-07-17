@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-07-16 09:52:11
+Date: 2018-07-17 09:14:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -985,6 +985,10 @@ CREATE TABLE `uk_callcenter_extention` (
   `ttsrecordpath` varchar(255) DEFAULT NULL COMMENT 'ASR结果路径',
   `errormessage` varchar(255) DEFAULT NULL COMMENT '异常提示消息',
   `enablewebrtc` tinyint(4) DEFAULT '0' COMMENT '启用WebRTC',
+  `bustype` varchar(32) DEFAULT NULL COMMENT '业务类型（电销sale/问卷quesurvey）',
+  `proid` varchar(32) DEFAULT NULL COMMENT '（产品ID）',
+  `queid` varchar(32) DEFAULT NULL COMMENT '（问卷ID）',
+  `aitype` varchar(32) DEFAULT NULL COMMENT '机器人类型（smartai/quesurvey）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='分机信息表';
 
@@ -2998,6 +3002,8 @@ CREATE TABLE `uk_que_survey_question` (
   `memo` text COMMENT '备注',
   `score` int(11) DEFAULT NULL COMMENT '问题分值',
   `processid` varchar(32) DEFAULT NULL COMMENT '问卷ID',
+  `wvtype` varchar(32) DEFAULT NULL COMMENT '类型（文字/语音）',
+  `quevoice` varchar(32) DEFAULT NULL COMMENT '语音ID',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题表';
 

@@ -440,3 +440,11 @@ CREATE TABLE `uk_que_survey_answer` (
   `correct`  varchar(32) DEFAULT NULL COMMENT '是否是正确答案（0正确1不正确）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题答案表';
+
+
+ALTER TABLE uk_callcenter_extention ADD bustype varchar(32) default null  COMMENT '业务类型（电销sale/问卷quesurvey）';
+ALTER TABLE uk_callcenter_extention ADD proid varchar(32) default null  COMMENT '（产品ID）';
+ALTER TABLE uk_callcenter_extention ADD queid varchar(32) default null  COMMENT '（问卷ID）';
+ALTER TABLE uk_callcenter_extention ADD aitype varchar(32) default null  COMMENT '机器人类型（smartai/quesurvey）';
+ALTER TABLE uk_que_survey_question ADD wvtype varchar(32) default null  COMMENT '类型（文字/语音）';
+ALTER TABLE uk_que_survey_question ADD quevoice varchar(32) default null  COMMENT '语音ID';
