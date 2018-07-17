@@ -46,6 +46,12 @@ public class QueSurveyQuestion implements java.io.Serializable{
 	private String errortype;//回答错误语
 	private String errorword;//回答错误语文字
 	private String errorvoice;//回答错误语语音
+	
+	private String replykeyword ;	//遇到设置的关键词后重复播放语音
+	private String replytype;//重复提示类型
+	private String replyword;//重复提示语文字
+	private String replyvoice;//重复提示语语音
+	
 
 	
 	@Id
@@ -193,6 +199,28 @@ public class QueSurveyQuestion implements java.io.Serializable{
 	public void setErrorvoice(String errorvoice) {
 		this.errorvoice = errorvoice;
 	}
-	
-	
+	public String getReplykeyword() {
+		return replykeyword;
+	}
+	public void setReplykeyword(String replykeyword) {
+		this.replykeyword = replykeyword;
+	}
+	public String getReplytype() {
+		return replytype;
+	}
+	public void setReplytype(String replytype) {
+		this.replytype = replytype;
+	}
+	public String getReplyword() {
+		return replyword;
+	}
+	public void setReplyword(String replyword) {
+		this.replyword = replyword;
+	}
+	public String getReplyvoice() {
+		return replyvoice;
+	}
+	public void setReplyvoice(String replyvoice) {
+		this.replyvoice = replyvoice;
+	}
 }
