@@ -27,7 +27,6 @@ import com.ukefu.webim.service.repository.SipTrunkRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Extention;
 import com.ukefu.webim.web.model.PbxHost;
-import com.ukefu.webim.web.model.Product;
 import com.ukefu.webim.web.model.User;
 
 @Controller
