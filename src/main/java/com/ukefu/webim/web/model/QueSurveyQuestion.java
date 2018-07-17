@@ -34,6 +34,18 @@ public class QueSurveyQuestion implements java.io.Serializable{
 	private String processid;//问卷ID
 	private String wvtype;//类型（文字/语音）
 	private String quevoice;//问题语音ID
+	
+	private String confirmtype;//答案确认语类型
+	private String confirmword;//答案确认语文字
+	private String confirmvoice;//答案确认语语音
+	
+	private String overtimetype;//回答超时语
+	private String overtimeword;//回答超时语文字
+	private String overtimevoice;//回答超时语语音
+	
+	private String errortype;//回答错误语
+	private String errorword;//回答错误语文字
+	private String errorvoice;//回答错误语语音
 
 	
 	@Id
@@ -126,6 +138,60 @@ public class QueSurveyQuestion implements java.io.Serializable{
 	}
 	public void setQuevoice(String quevoice) {
 		this.quevoice = quevoice;
+	}
+	public String getConfirmtype() {
+		return confirmtype;
+	}
+	public void setConfirmtype(String confirmtype) {
+		this.confirmtype = confirmtype;
+	}
+	public String getConfirmword() {
+		return confirmword;
+	}
+	public void setConfirmword(String confirmword) {
+		this.confirmword = confirmword;
+	}
+	public String getConfirmvoice() {
+		return confirmvoice;
+	}
+	public void setConfirmvoice(String confirmvoice) {
+		this.confirmvoice = confirmvoice;
+	}
+	public String getOvertimetype() {
+		return overtimetype;
+	}
+	public void setOvertimetype(String overtimetype) {
+		this.overtimetype = overtimetype;
+	}
+	public String getOvertimeword() {
+		return overtimeword;
+	}
+	public void setOvertimeword(String overtimeword) {
+		this.overtimeword = overtimeword;
+	}
+	public String getOvertimevoice() {
+		return overtimevoice;
+	}
+	public void setOvertimevoice(String overtimevoice) {
+		this.overtimevoice = overtimevoice;
+	}
+	public String getErrortype() {
+		return errortype;
+	}
+	public void setErrortype(String errortype) {
+		this.errortype = errortype;
+	}
+	public String getErrorword() {
+		return errorword;
+	}
+	public void setErrorword(String errorword) {
+		this.errorword = errorword;
+	}
+	public String getErrorvoice() {
+		return errorvoice;
+	}
+	public void setErrorvoice(String errorvoice) {
+		this.errorvoice = errorvoice;
 	}
 	
 	
