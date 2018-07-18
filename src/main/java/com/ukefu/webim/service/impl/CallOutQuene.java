@@ -12,7 +12,7 @@ import com.hazelcast.query.PagingPredicate;
 import com.hazelcast.query.SqlPredicate;
 import com.ukefu.util.freeswitch.model.CallCenterAgent;
 import com.ukefu.webim.service.cache.CacheHelper;
-import com.ukefu.webim.service.quene.AgentStatusOrgiFilter;
+import com.ukefu.webim.service.quene.AiCallOutFilter;
 
 @SuppressWarnings("deprecation")
 @Service("calloutquene")
@@ -64,7 +64,7 @@ public class CallOutQuene {
 		 * 统计当前在线的坐席数量
 		 */
 		IMap callOutMap = (IMap<String, Object>) CacheHelper.getCallOutCacheBean().getCache() ;
-		AgentStatusOrgiFilter filter = new AgentStatusOrgiFilter(orgi) ;
+		AiCallOutFilter filter = new AiCallOutFilter(orgi) ;
 		Long names = (Long) callOutMap.aggregate(Supplier.fromKeyPredicate(filter), Aggregations.count()) ;
 		return names!=null ? names.intValue() : 0 ;
 	}
