@@ -1056,7 +1056,7 @@ public class OnlineUserUtils {
 			param = UKTools.getTemplet(templet.getTemplettext(), values) ;
 		}
 		String result = HttpClientUtil.doPost(sessionConfig.getOqrsearchurl(), param)  , text = null;
-		if(!StringUtils.isBlank(sessionConfig.getOqrsearchoutput()) && !result.equals("error")) {
+		if(!StringUtils.isBlank(result) && !StringUtils.isBlank(sessionConfig.getOqrsearchoutput()) && !result.equals("error")) {
 			Template templet = UKTools.getTemplate(sessionConfig.getOqrsearchoutput()) ;
 			@SuppressWarnings("unchecked")
 			Map<String,Object> jsonData = objectMapper.readValue(result, Map.class) ;

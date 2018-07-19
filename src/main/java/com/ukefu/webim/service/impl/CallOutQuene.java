@@ -59,6 +59,7 @@ public class CallOutQuene {
 		return agentList ;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static int countOrgiCallOut(String orgi) {
 		/**
 		 * 统计当前在线的坐席数量

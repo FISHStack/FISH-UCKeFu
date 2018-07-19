@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -27,6 +28,8 @@ public class CallOutNames implements java.io.Serializable{
 	private String organ ;		//创建部门
 	private String creater ;	//创建人
 	private String batid ;		//导入 批次ID
+	
+	private String calltype ;	//缓存里的临时字段， 人工外呼和机器人外呼，不存储进数据库
 	
 	private Date createtime = new Date();	//创建时间
 	
@@ -356,5 +359,17 @@ public class CallOutNames implements java.io.Serializable{
 
 	public void setFirstcallstatus(String firstcallstatus) {
 		this.firstcallstatus = firstcallstatus;
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	@Transient
+	public String getCalltype() {
+		return calltype;
+	}
+
+	public void setCalltype(String calltype) {
+		this.calltype = calltype;
 	}
 }

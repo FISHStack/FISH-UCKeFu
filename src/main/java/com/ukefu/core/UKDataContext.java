@@ -778,6 +778,15 @@ public class UKDataContext {
 	}
 
 
+	public enum CallOutType{
+		AGENT,
+		AI;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+
 	/**
 	 * 
 	 * @param resource
