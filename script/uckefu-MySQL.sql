@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-07-17 09:14:18
+Date: 2018-07-19 11:55:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -2936,7 +2936,7 @@ DROP TABLE IF EXISTS `uk_que_survey_answer`;
 CREATE TABLE `uk_que_survey_answer` (
   `id` varchar(32) NOT NULL,
   `questionid` varchar(32) DEFAULT NULL COMMENT '问题ID',
-  `questionname` varchar(32) DEFAULT NULL COMMENT '问题名称',
+  `questionname` varchar(255) DEFAULT NULL COMMENT '问题名称',
   `answer` text COMMENT '问题答案',
   `queid` varchar(32) DEFAULT NULL COMMENT '跳转问题ID',
   `answerscore` int(11) DEFAULT '0' COMMENT '答案评分',
@@ -2961,11 +2961,11 @@ CREATE TABLE `uk_que_survey_process` (
   `id` varchar(32) NOT NULL,
   `name` varchar(32) DEFAULT NULL COMMENT '问卷名称',
   `scene` varchar(32) DEFAULT NULL COMMENT '问卷适用场景（机器人呼出/坐席手动）',
-  `welword` varchar(32) DEFAULT NULL COMMENT '问卷欢迎语（文字）',
-  `welvoice` varchar(32) DEFAULT NULL COMMENT '问卷欢迎语ID（语音）',
+  `welword` varchar(255) DEFAULT NULL COMMENT '问卷欢迎语（文字）',
+  `welvoice` varchar(255) DEFAULT NULL COMMENT '问卷欢迎语ID（语音）',
   `weltype` varchar(32) DEFAULT NULL COMMENT '问卷欢迎语类型',
-  `endword` varchar(32) DEFAULT NULL COMMENT '问卷结束语（文字）',
-  `endvoice` varchar(32) DEFAULT NULL COMMENT '问卷结束语ID（语音）',
+  `endword` varchar(255) DEFAULT NULL COMMENT '问卷结束语（文字）',
+  `endvoice` varchar(255) DEFAULT NULL COMMENT '问卷结束语ID（语音）',
   `endtype` varchar(32) DEFAULT NULL COMMENT '问卷结束语类型',
   `totalscore` varchar(32) DEFAULT NULL COMMENT '参考评分值',
   `score` varchar(32) DEFAULT '0' COMMENT '是否评分（0否1是）',
@@ -2991,7 +2991,7 @@ CREATE TABLE `uk_que_survey_process` (
 DROP TABLE IF EXISTS `uk_que_survey_question`;
 CREATE TABLE `uk_que_survey_question` (
   `id` varchar(32) NOT NULL,
-  `name` varchar(32) DEFAULT NULL COMMENT '问题名称',
+  `name` varchar(255) DEFAULT NULL COMMENT '问题名称',
   `sortindex` int(11) DEFAULT '0' COMMENT '问题序号',
   `quetype` int(11) DEFAULT '0' COMMENT '问题类型（0选择题1问答题）',
   `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
@@ -3004,6 +3004,19 @@ CREATE TABLE `uk_que_survey_question` (
   `processid` varchar(32) DEFAULT NULL COMMENT '问卷ID',
   `wvtype` varchar(32) DEFAULT NULL COMMENT '类型（文字/语音）',
   `quevoice` varchar(32) DEFAULT NULL COMMENT '语音ID',
+  `confirmtype` varchar(32) DEFAULT NULL COMMENT '答案确认语类型',
+  `confirmword` varchar(255) DEFAULT NULL COMMENT '答案确认语文字',
+  `confirmvoice` varchar(255) DEFAULT NULL COMMENT '答案确认语语音',
+  `overtimetype` varchar(255) DEFAULT NULL COMMENT '回答超时语',
+  `overtimeword` varchar(255) DEFAULT NULL COMMENT '回答超时语文字',
+  `overtimevoice` varchar(255) DEFAULT NULL COMMENT '回答超时语语音',
+  `errortype` varchar(255) DEFAULT NULL COMMENT '回答错误语',
+  `errorword` varchar(255) DEFAULT NULL COMMENT '回答错误语文字',
+  `errorvoice` varchar(255) DEFAULT NULL COMMENT '回答错误语语音',
+  `replykeyword` varchar(255) DEFAULT NULL COMMENT '关键词重复',
+  `replytype` varchar(255) DEFAULT NULL COMMENT '重复提示类型',
+  `replyword` varchar(255) DEFAULT NULL COMMENT '重复提示语文字',
+  `replyvoice` varchar(255) DEFAULT NULL COMMENT '重复提示语语音',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题表';
 
@@ -3351,6 +3364,7 @@ CREATE TABLE `uk_sales_product` (
   `endtime` datetime DEFAULT NULL COMMENT '有效期结束时间',
   `parentid` varchar(32) DEFAULT NULL COMMENT '上级ID',
   `quota` int(11) DEFAULT '0' COMMENT '配额',
+  `provoice` varchar(255) DEFAULT NULL COMMENT '语音介绍',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电销产品';
 
@@ -8350,7 +8364,7 @@ CREATE TABLE `uk_user` (
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-06-29 17:40:30', '4028811b645dc08f01645e0bf45c099f', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '0', null, null, null, '0', '0', '0', '2018-06-29 17:40:37', null, null, null, '0', '0', '0', '0', null);
 INSERT INTO `uk_user` VALUES ('4028811b642f5f8c01642f60ed440683', null, 'test1', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'ad@te.com', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-06-24 09:20:38', null, '2018-07-03 10:51:17', '4028811b645dc08f01645e0bf45c099f', '18510129433', '2018-06-24 09:20:38', null, '0', 'test1', null, '1', null, null, null, '0', '0', '0', '2018-07-03 10:51:25', null, null, null, '0', '0', '0', '0', null);
 INSERT INTO `uk_user` VALUES ('4028811b645dc08f01645e0512ce0935', null, 'yiliao', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'asd@ac.com', null, null, null, null, null, null, null, null, null, null, null, '4028811b645dc08f01645e005f3d08dd', 'ukewo', null, '2018-07-03 10:42:28', null, '2018-07-03 10:43:31', '4028811b645dc08f01645e057eab0945', '18512212955', '2018-07-03 10:42:28', null, '0', '医疗', null, '0', null, null, null, '0', '0', '0', '2018-07-03 10:43:39', null, null, null, '0', '0', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2018-07-02 20:23:24', '4028811b63b028dc0163b032c3ed0590', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-07-12 18:29:29', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2018-07-02 20:23:24', '4028811b63b028dc0163b032c3ed0590', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-07-19 11:21:00', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
