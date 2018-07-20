@@ -490,3 +490,5 @@ ALTER TABLE uk_callcenter_extention ADD aitype varchar(32) default null  COMMENT
 
 
 ALTER TABLE uk_sales_product ADD provoice varchar(255) default null  COMMENT '语音介绍';
+
+ALTER TABLE uk_callcenter_pbxhost ADD dissipphone tinyint default 0 COMMENT '外呼隐藏话机上的号码';
