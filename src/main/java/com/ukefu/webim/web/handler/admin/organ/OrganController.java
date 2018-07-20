@@ -199,34 +199,32 @@ public class OrganController extends Handler{
     @RequestMapping("/update")
     @Menu(type = "admin" , subtype = "organ")
     public ModelAndView update(HttpServletRequest request ,@Valid Organ organ) {
-    	Organ org = organRepository.findByNameAndOrgi(organ.getName(), super.getOrgi(request));
+    	//Organ org = organRepository.findByNameAndOrgi(organ.getName(), super.getOrgi(request));
     	String msg = "admin_organ_update_success" ;
-    	if(org != null){
-    		msg = "admin_organ_update_name_not" ;//分类名字重复
+    	
+		Organ tempOrgan = organRepository.findByIdAndOrgi(organ.getId(), super.getOrgiByTenantshare(request)) ;
+    	
+    	if(tempOrgan != null){
+    		tempOrgan.setName(organ.getName());
+    		tempOrgan.setUpdatetime(new Date());
+    		tempOrgan.setOrgi(super.getOrgiByTenantshare(request));
+    		tempOrgan.setSkill(organ.isSkill());
+    		
+    		tempOrgan.setParent(organ.getParent());
+    		
+    		tempOrgan.setArea(organ.getArea());
+    		
+    		if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
+    			tempOrgan.setOrgid(super.getUser(request).getOrgid());
+    		}else {
+    			tempOrgan.setOrgid(UKDataContext.SYSTEM_ORGI);
+    		}
+    		organRepository.save(tempOrgan) ;
+    		OnlineUserUtils.clean(super.getOrgi(request));
     	}else{
-    		Organ tempOrgan = organRepository.findByIdAndOrgi(organ.getId(), super.getOrgiByTenantshare(request)) ;
-        	
-        	if(tempOrgan != null){
-        		tempOrgan.setName(organ.getName());
-        		tempOrgan.setUpdatetime(new Date());
-        		tempOrgan.setOrgi(super.getOrgiByTenantshare(request));
-        		tempOrgan.setSkill(organ.isSkill());
-        		
-        		tempOrgan.setParent(organ.getParent());
-        		
-        		tempOrgan.setArea(organ.getArea());
-        		
-        		if(!StringUtils.isBlank(super.getUser(request).getOrgid())) {
-        			tempOrgan.setOrgid(super.getUser(request).getOrgid());
-        		}else {
-        			tempOrgan.setOrgid(UKDataContext.SYSTEM_ORGI);
-        		}
-        		organRepository.save(tempOrgan) ;
-        		OnlineUserUtils.clean(super.getOrgi(request));
-        	}else{
-        		msg =  "admin_organ_update_not_exist";//修改失败
-        	}
+    		msg =  "admin_organ_update_not_exist";//修改失败
     	}
+    	
     	
     	return request(super.createRequestPageTempletResponse("redirect:/admin/organ/index.html?msg="+msg+"&organ="+organ.getId()));
     }
