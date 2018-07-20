@@ -34,7 +34,8 @@
 		<script src="/js/data-set.min.js"></script>
 	</head>
 
-	<body class="layui-layout-content">	
+	<body class="layui-layout-content">
+		<#if report??>	
 		<div class="layui-side layui-bg-black">
 			<div class="layui-side-scroll">
 				<#include "/apps/business/view/include/left.html">
@@ -75,7 +76,7 @@
 			</#if>
 			<div class="content design" style="overflow:auto;margin-top:0px;height: calc(100% - 45px);">
 				<#if reportModels??>
-				<#list reportModels as model>
+				<#list reportModels?reverse as model>
 				<#if model.parentid == report.id>
 				<#assign templet = model.templet()>
 				<#include "/apps/business/report/design/layout.html"/>
@@ -84,6 +85,19 @@
 				</#if>
 			</div>
 		</div>
+		<#else>
+		<div class="box default-box" style="height: 100%;">
+			<div class="box-header">
+				<h3 class="box-title">数据报表</h3>
+			</div>
+			<div class="box-body ukefu-im-theme">
+				<div class="ukefu-empty">
+					<i class="kfont" style="position: relative;margin:2px;">&#xe6d6;</i>
+					<div style="">还没有数据报表</div>
+				</div>	
+			</div>
+		</div>
+		</#if>
 		<script>
 			layui.use('element', function(){
 			  var element = layui.element;
