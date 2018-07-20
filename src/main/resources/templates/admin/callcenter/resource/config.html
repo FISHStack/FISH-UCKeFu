@@ -223,7 +223,7 @@
 									</div>
 								</div>
 								<div class="ukefu-webim-prop">
-									<div class="ukefu-webim-tl" style="clear:both;">8、启用WebRTC</div>
+									<div class="ukefu-webim-tl" style="clear:both;">15、启用WebRTC</div>
 									<div class="box-item">
 										<div class="row">
 											<div class="col-lg-8">
@@ -260,6 +260,20 @@
 											<div class="col-lg-4">
 												
 												<input type="checkbox" title="启用" name="webrtcssl" id="webrtcssl" <#if pbxHost?? && pbxHost.webrtcssl == true>checked="checked"</#if>>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="ukefu-webim-prop">
+									<div class="ukefu-webim-tl" style="clear:both;">16、外呼时在SIP客户端隐藏外呼号码</div>
+									<div class="box-item">
+										<div class="row">
+											<div class="col-lg-8">
+												<p>启用此功能后，外呼的SIP客户端（包括SIP话机）上隐藏外呼号码</p>
+												<p style="color:#888888;font-size:13px;margin-top:10px;">需要启用电销组件，并且需要在电销组件的元数据里开启字段隐藏号码功能</p>
+											</div>
+											<div class="col-lg-4" style="text-align:right;">
+												<input type="checkbox" title="启用" name="dissipphone" id="dissipphone" <#if pbxHost?? && pbxHost.dissipphone>checked="checked"</#if>>
 											</div>
 										</div>
 									</div>

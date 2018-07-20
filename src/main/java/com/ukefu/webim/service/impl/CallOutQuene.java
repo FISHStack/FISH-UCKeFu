@@ -12,7 +12,9 @@ import com.hazelcast.query.PagingPredicate;
 import com.hazelcast.query.SqlPredicate;
 import com.ukefu.util.freeswitch.model.CallCenterAgent;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.quene.AgentCallOutFilter;
 import com.ukefu.webim.service.quene.AiCallOutFilter;
+import com.ukefu.webim.web.model.CallOutNames;
 
 @SuppressWarnings("deprecation")
 @Service("calloutquene")
@@ -60,7 +62,7 @@ public class CallOutQuene {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static int countOrgiCallOut(String orgi) {
+	public static int countAiCallOut(String orgi) {
 		/**
 		 * 统计当前在线的坐席数量
 		 */
@@ -68,5 +70,32 @@ public class CallOutQuene {
 		AiCallOutFilter filter = new AiCallOutFilter(orgi) ;
 		Long names = (Long) callOutMap.aggregate(Supplier.fromKeyPredicate(filter), Aggregations.count()) ;
 		return names!=null ? names.intValue() : 0 ;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static int countAgentCallOut(String orgi) {
+		/**
+		 * 统计当前在线的坐席数量
+		 */
+		IMap callOutMap = (IMap<String, Object>) CacheHelper.getCallOutCacheBean().getCache() ;
+		AgentCallOutFilter filter = new AgentCallOutFilter(orgi) ;
+		Long names = (Long) callOutMap.aggregate(Supplier.fromKeyPredicate(filter), Aggregations.count()) ;
+		return names!=null ? names.intValue() : 0 ;
+	}
+	
+	
+	/**
+	 * 外呼监控，包含机器人和人工两个部分
+	 * @param agentStatus
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<CallOutNames> callOutNames(String calltype , int p , int ps){
+		List<CallOutNames> callOutNamesList = new ArrayList<CallOutNames>();
+		if(CacheHelper.getCallOutCacheBean()!=null && CacheHelper.getCallOutCacheBean().getCache()!=null) {
+			PagingPredicate<String, CallOutNames> pagingPredicate = new PagingPredicate<String, CallOutNames>(  new SqlPredicate( "calltype = '"+calltype+"'") , 10 ) ;
+			pagingPredicate.setPage(p);
+			callOutNamesList.addAll(((IMap<String , CallOutNames>) CacheHelper.getCallOutCacheBean().getCache()).values(pagingPredicate)) ;
+		}
+		return callOutNamesList ;
 	}
 }

@@ -8,7 +8,7 @@ import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.web.model.CallOutNames;
 
 @SuppressWarnings("deprecation")
-public class AiCallOutFilter implements KeyPredicate<String>{
+public class AgentCallOutFilter implements KeyPredicate<String>{
 	/**
 	 * 
 	 */
@@ -17,11 +17,11 @@ public class AiCallOutFilter implements KeyPredicate<String>{
 	/**
 	 * 
 	 */
-	public AiCallOutFilter(String orgi){
+	public AgentCallOutFilter(String orgi){
 		this.orgi = orgi ;
 	}
 	public boolean evaluate(String key) {
 		CallOutNames callOutNames = (CallOutNames) CacheHelper.getCallOutCacheBean().getCacheObject(key, orgi);
-		return callOutNames!=null && !StringUtils.isBlank(orgi) && orgi.equals(callOutNames.getOrgi()) && UKDataContext.CallOutType.AI.toString().equals(callOutNames.getCalltype());
+		return callOutNames!=null && !StringUtils.isBlank(orgi) && orgi.equals(callOutNames.getOrgi()) && UKDataContext.CallOutType.AGENT.toString().equals(callOutNames.getCalltype());
 	}
 }

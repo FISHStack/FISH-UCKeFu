@@ -68,6 +68,8 @@ public class PbxHost implements java.io.Serializable{
 	private String webrtcport; 		//WebRTC端口
 	private boolean webrtcssl;		//启用SSL
 	
+	private boolean dissipphone ;	//外呼的时候，是否隐藏SIP话机上的号码
+	
 	
 	private Date createtime = new Date();
 	private Date updatetime = new Date();
@@ -279,5 +281,11 @@ public class PbxHost implements java.io.Serializable{
 	}
 	public void setWebrtcssl(boolean webrtcssl) {
 		this.webrtcssl = webrtcssl;
+	}
+	public boolean isDissipphone() {
+		return dissipphone;
+	}
+	public void setDissipphone(boolean dissipphone) {
+		this.dissipphone = dissipphone;
 	}
 }

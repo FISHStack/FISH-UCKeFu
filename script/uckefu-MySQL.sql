@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-07-19 11:55:59
+Date: 2018-07-20 08:36:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1105,6 +1105,7 @@ CREATE TABLE `uk_callcenter_pbxhost` (
   `webrtcaddress` varchar(100) DEFAULT NULL COMMENT 'WebRTC地址',
   `webrtcport` varchar(100) DEFAULT NULL COMMENT 'WebRTC端口',
   `webrtcssl` tinyint(4) DEFAULT '0' COMMENT 'WebRTC启用SSL',
+  `dissipphone` tinyint(4) DEFAULT '0' COMMENT '外呼隐藏话机上的号码',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='FS服务器信息';
 
