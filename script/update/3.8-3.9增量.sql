@@ -454,7 +454,7 @@ DROP TABLE IF EXISTS `uk_que_survey_question`;
 CREATE TABLE `uk_que_survey_question` (
   `id` varchar(32) NOT NULL,
   `name` varchar(255) DEFAULT NULL COMMENT '问题名称',
-  `sortindex` int(11) DEFAULT '0' COMMENT '问题序号',
+  `sortindex` varchar(32) DEFAULT NULL COMMENT '问题序号',
   `quetype` int(11) DEFAULT '0' COMMENT '问题类型（0选择题1问答题）',
   `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
   `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
@@ -492,3 +492,24 @@ ALTER TABLE uk_callcenter_extention ADD aitype varchar(32) default null  COMMENT
 ALTER TABLE uk_sales_product ADD provoice varchar(255) default null  COMMENT '语音介绍';
 
 ALTER TABLE uk_callcenter_pbxhost ADD dissipphone tinyint default 0 COMMENT '外呼隐藏话机上的号码';
+
+ALTER TABLE uk_que_survey_question ADD replyrepeat varchar(32) DEFAULT NULL COMMENT '重复确认语-最大重复次数';
+ALTER TABLE uk_que_survey_question ADD replyoperate varchar(32) DEFAULT NULL COMMENT '重复确认语-到达最大次数的操作（转接trans/挂断/handup）';
+ALTER TABLE uk_que_survey_question ADD replytrans varchar(32) DEFAULT NULL COMMENT '重复确认语-转接号码';
+ALTER TABLE uk_que_survey_question ADD replytypeup varchar(32) DEFAULT NULL COMMENT '重复确认语-转接号码';
+ALTER TABLE uk_que_survey_question ADD replywordup varchar(32) DEFAULT NULL COMMENT '重复确认语-挂断提示语（文字）';
+ALTER TABLE uk_que_survey_question ADD replyvoiceup varchar(32) DEFAULT NULL COMMENT '重复确认语-挂断提示语（语音ID）';
+
+ALTER TABLE uk_que_survey_question ADD overtimerepeat varchar(32) DEFAULT NULL COMMENT '回答超时语-最大重复次数';
+ALTER TABLE uk_que_survey_question ADD overtimeoperate varchar(32) DEFAULT NULL COMMENT '回答超时语-到达最大次数的操作（转接trans/挂断/handup）';
+ALTER TABLE uk_que_survey_question ADD overtimetrans varchar(32) DEFAULT NULL COMMENT '回答超时语-转接号码';
+ALTER TABLE uk_que_survey_question ADD overtimetypeup varchar(32) DEFAULT NULL COMMENT '回答超时语-挂断提示语类型';
+ALTER TABLE uk_que_survey_question ADD overtimewordup varchar(32) DEFAULT NULL COMMENT '回答超时语-挂断提示语（文字）';
+ALTER TABLE uk_que_survey_question ADD overtimevoiceup varchar(32) DEFAULT NULL COMMENT '回答超时语-挂断提示语（语音ID）';
+
+ALTER TABLE uk_que_survey_question ADD errorepeat varchar(32) DEFAULT NULL COMMENT '回答错误语-最大重复次数';
+ALTER TABLE uk_que_survey_question ADD erroroperate varchar(32) DEFAULT NULL COMMENT '回答错误语-到达最大次数的操作（转接trans/挂断/handup）';
+ALTER TABLE uk_que_survey_question ADD errortrans varchar(32) DEFAULT NULL COMMENT '回答错误语-转接号码';
+ALTER TABLE uk_que_survey_question ADD errortypeup varchar(32) DEFAULT NULL COMMENT '回答错误语-挂断提示语类型';
+ALTER TABLE uk_que_survey_question ADD errorwordup varchar(32) DEFAULT NULL COMMENT '回答错误语-挂断提示语（文字）';
+ALTER TABLE uk_que_survey_question ADD errorvoiceup varchar(32) DEFAULT NULL COMMENT '回答错误语-挂断提示语（语音ID）';
