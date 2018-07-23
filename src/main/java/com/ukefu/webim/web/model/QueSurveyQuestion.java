@@ -52,7 +52,26 @@ public class QueSurveyQuestion implements java.io.Serializable{
 	private String replyword;//重复提示语文字
 	private String replyvoice;//重复提示语语音
 	
-
+	private String replyrepeat;//重复确认语-最大重复次数
+	private String replyoperate;//重复确认语-到达最大次数的操作（转接trans/挂断/handup）
+	private String replytrans;//重复确认语-转接号码
+	private String replytypeup;//重复确认语-挂断提示语类型
+	private String replywordup;//重复确认语-挂断提示语（文字）
+	private String replyvoiceup;//重复确认语-挂断提示语（语音ID）
+	
+	private String overtimerepeat;//回答超时语-最大重复次数
+	private String overtimeoperate;//回答超时语-到达最大次数的操作（转接trans/挂断/handup）
+	private String overtimetrans;//回答超时语-转接号码
+	private String overtimetypeup;//回答超时语-挂断提示语类型
+	private String overtimewordup;//回答超时语-挂断提示语（文字）
+	private String overtimevoiceup;//回答超时语-挂断提示语（语音ID）
+	
+	private String errorepeat;//回答错误语-最大重复次数
+	private String erroroperate;//回答错误语-到达最大次数的操作（转接trans/挂断/handup）
+	private String errortrans;//回答错误语-转接号码
+	private String errortypeup;//回答错误语-挂断提示语类型
+	private String errorwordup;//回答错误语-挂断提示语（文字）
+	private String errorvoiceup;//回答错误语-挂断提示语（语音ID）
 	
 	@Id
 	@Column(length = 32)
@@ -223,4 +242,113 @@ public class QueSurveyQuestion implements java.io.Serializable{
 	public void setReplyvoice(String replyvoice) {
 		this.replyvoice = replyvoice;
 	}
+	public String getReplyrepeat() {
+		return replyrepeat;
+	}
+	public void setReplyrepeat(String replyrepeat) {
+		this.replyrepeat = replyrepeat;
+	}
+	public String getReplyoperate() {
+		return replyoperate;
+	}
+	public void setReplyoperate(String replyoperate) {
+		this.replyoperate = replyoperate;
+	}
+	public String getReplytrans() {
+		return replytrans;
+	}
+	public void setReplytrans(String replytrans) {
+		this.replytrans = replytrans;
+	}
+	public String getReplytypeup() {
+		return replytypeup;
+	}
+	public void setReplytypeup(String replytypeup) {
+		this.replytypeup = replytypeup;
+	}
+	public String getReplywordup() {
+		return replywordup;
+	}
+	public void setReplywordup(String replywordup) {
+		this.replywordup = replywordup;
+	}
+	public String getReplyvoiceup() {
+		return replyvoiceup;
+	}
+	public void setReplyvoiceup(String replyvoiceup) {
+		this.replyvoiceup = replyvoiceup;
+	}
+	public String getOvertimerepeat() {
+		return overtimerepeat;
+	}
+	public void setOvertimerepeat(String overtimerepeat) {
+		this.overtimerepeat = overtimerepeat;
+	}
+	public String getOvertimeoperate() {
+		return overtimeoperate;
+	}
+	public void setOvertimeoperate(String overtimeoperate) {
+		this.overtimeoperate = overtimeoperate;
+	}
+	public String getOvertimetrans() {
+		return overtimetrans;
+	}
+	public void setOvertimetrans(String overtimetrans) {
+		this.overtimetrans = overtimetrans;
+	}
+	public String getOvertimetypeup() {
+		return overtimetypeup;
+	}
+	public void setOvertimetypeup(String overtimetypeup) {
+		this.overtimetypeup = overtimetypeup;
+	}
+	public String getOvertimewordup() {
+		return overtimewordup;
+	}
+	public void setOvertimewordup(String overtimewordup) {
+		this.overtimewordup = overtimewordup;
+	}
+	public String getOvertimevoiceup() {
+		return overtimevoiceup;
+	}
+	public void setOvertimevoiceup(String overtimevoiceup) {
+		this.overtimevoiceup = overtimevoiceup;
+	}
+	public String getErrorepeat() {
+		return errorepeat;
+	}
+	public void setErrorepeat(String errorepeat) {
+		this.errorepeat = errorepeat;
+	}
+	public String getErroroperate() {
+		return erroroperate;
+	}
+	public void setErroroperate(String erroroperate) {
+		this.erroroperate = erroroperate;
+	}
+	public String getErrortrans() {
+		return errortrans;
+	}
+	public void setErrortrans(String errortrans) {
+		this.errortrans = errortrans;
+	}
+	public String getErrortypeup() {
+		return errortypeup;
+	}
+	public void setErrortypeup(String errortypeup) {
+		this.errortypeup = errortypeup;
+	}
+	public String getErrorwordup() {
+		return errorwordup;
+	}
+	public void setErrorwordup(String errorwordup) {
+		this.errorwordup = errorwordup;
+	}
+	public String getErrorvoiceup() {
+		return errorvoiceup;
+	}
+	public void setErrorvoiceup(String errorvoiceup) {
+		this.errorvoiceup = errorvoiceup;
+	}
+	
 }
