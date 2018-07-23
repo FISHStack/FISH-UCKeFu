@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -332,11 +333,11 @@ public class ReportDesignController extends Handler {
 					reportData = reportCubeService.getReportData(model, cube.getCube(), request, true,semap) ;
 					map.addAttribute("reportData",reportData);
 				}catch(Exception ex) {
-					map.addAttribute("msg",ex.getMessage());
+					map.addAttribute("msg",(ExceptionUtils.getMessage(ex).replaceAll("\r\n","") + ExceptionUtils.getRootCauseMessage(ex)).replaceAll("\"", "'"));
 				}
 			}
+			map.addAttribute("eltemplet", templateRes.findByIdAndOrgi(model.getTempletid(), super.getOrgi(request)));
 		}
-		map.addAttribute("eltemplet", templateRes.findByIdAndOrgi(model.getTempletid(), super.getOrgi(request)));
 		map.addAttribute("tabid", tabid);
 		return request(super.createRequestPageTempletResponse("/apps/business/report/design/modeldesign"));
 	}

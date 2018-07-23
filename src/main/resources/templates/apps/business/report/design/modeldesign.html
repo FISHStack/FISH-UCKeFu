@@ -7,7 +7,8 @@
 		<meta name="viewport"
 			content="width=device-width, maximum-scale=1.0, initial-scale=1.0,initial-scale=1.0,user-scalable=no" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<title>${reportModel.name!''}-UCKeFu-全渠道客服系统</title>
+		<title><#if systemConfig?? && systemConfig.title?? && systemConfig.title != ''>${systemConfig.title}<#else>UCKeFu-全渠道客服系统</#if></title>
+		<link rel="shortcut icon" type="image/x-icon" href="<#if systemConfig?? && systemConfig.favlogo?? && systemConfig.favlogo != ''>/res/image.html?id=${systemConfig.favlogo?url}<#else>/images/favicon.ico</#if>?t=${.now?long}"/>
 		
 		<link rel="stylesheet" href="/layui/css/layui.css">
 		<link rel="stylesheet" href="/res/css/system.html">
@@ -45,7 +46,7 @@
 											style="font-size: 24px;margin-left:5px;color:#fff">&#xe642;</i>
 							</a>
 					</span>
-					<span style="color:#ffffff;margin-left:20px;font-size:12px;">创建于：${reportModel.createtime?string('yyyy-MM-dd HH:mm:ss')}</span>
+					<span style="color:#ffffff;margin-left:20px;font-size:12px;"><#if reportModel.createtime??>创建于：${reportModel.createtime?string('yyyy-MM-dd HH:mm:ss')}</#if></span>
 					<!-- <button id="rmLayout" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-disabled" disabled href="javascript:void(0)" data-toggle="tip" data-title="请确认是否从页面中删除组件？" data-callback="deletemodel('')"  >
 							删除
 						</button> -->

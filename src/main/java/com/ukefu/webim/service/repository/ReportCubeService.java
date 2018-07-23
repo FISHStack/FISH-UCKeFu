@@ -180,7 +180,11 @@ public class ReportCubeService{
 			}
 		}
 		if(mainMetaData!=null) {
-			strb.append(" ").append(tableMap.get(mainMetaData.getTb().getId())).append(".* ").append(",").append(columns.toString()).append(" ").append(mainTable).append(tables);
+			strb.append(" ").append(tableMap.get(mainMetaData.getTb().getId())).append(".* ");
+			if(columns.length() > 0) {
+				strb.append(",").append(columns.toString()) ;
+			}
+			strb.append(" ").append(mainTable).append(tables);
 		}else {
 			strb.append(" * ").append(mainTable).append(tables);
 		}

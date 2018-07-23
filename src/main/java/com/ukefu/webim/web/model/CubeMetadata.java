@@ -1,5 +1,7 @@
 package com.ukefu.webim.web.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,7 +23,7 @@ public class CubeMetadata implements java.io.Serializable{
 	private String name ;
 	private String code;
 	private String title ;
-	private String createtime ;
+	private Date createtime = new Date();
 	private String creater;
 	private String cubeid;
 	private String postop;
@@ -80,13 +82,12 @@ public class CubeMetadata implements java.io.Serializable{
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getCreatetime() {
+	public Date getCreatetime() {
 		return createtime;
 	}
-	public void setCreatetime(String createtime) {
+	public void setCreatetime(Date createtime) {
 		this.createtime = createtime;
 	}
-	
 	public String getPostop() {
 		return postop;
 	}

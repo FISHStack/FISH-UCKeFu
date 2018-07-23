@@ -43,7 +43,7 @@
 			<div class="layui-header header header-ukefu">
 				<div class="layui-main">
 					<span style="color:#ffffff;padding-left:10px;font-size:20px;line-height:47.5px;">${report.name!''}</span>
-					<span style="color:#ffffff;margin-left:20px;font-size:12px;">创建于：${report.createtime?string('yyyy-MM-dd HH:mm:ss')}</span>
+					<span style="color:#ffffff;margin-left:20px;font-size:12px;"><#if report.createtime??>创建于：${report.createtime?string('yyyy-MM-dd HH:mm:ss')}</#if></span>
 					<button id="rmLayout" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-disabled" disabled href="javascript:void(0)" data-toggle="tip" data-title="请确认是否从页面中删除组件？" data-callback="deletemodel('')"  >
 							删除
 						</button>

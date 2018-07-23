@@ -112,7 +112,6 @@ public class TopicRepositoryImpl implements TopicEsCommonRepository{
 		QueryBuilder endFilter = QueryBuilders.boolQuery().should(QueryBuilders.missingQuery("endtime")).should(QueryBuilders.rangeQuery("endtime").from(new Date().getTime())) ;
 		
 	    NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder).withFilter(QueryBuilders.boolQuery().must(beginFilter).must(endFilter)).withSort(new FieldSortBuilder("createtime").unmappedType("date").order(SortOrder.DESC));
-	    
 	    SearchQuery searchQuery = searchQueryBuilder.build().setPageable(new PageRequest(p, ps)) ;
 	    if(elasticsearchTemplate.indexExists(Topic.class)){
 	    	pages = elasticsearchTemplate.queryForPage(searchQuery, Topic.class);
