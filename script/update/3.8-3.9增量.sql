@@ -497,19 +497,24 @@ ALTER TABLE uk_que_survey_question ADD replyrepeat varchar(32) DEFAULT NULL COMM
 ALTER TABLE uk_que_survey_question ADD replyoperate varchar(32) DEFAULT NULL COMMENT '重复确认语-到达最大次数的操作（转接trans/挂断/handup）';
 ALTER TABLE uk_que_survey_question ADD replytrans varchar(32) DEFAULT NULL COMMENT '重复确认语-转接号码';
 ALTER TABLE uk_que_survey_question ADD replytypeup varchar(32) DEFAULT NULL COMMENT '重复确认语-转接号码';
-ALTER TABLE uk_que_survey_question ADD replywordup varchar(32) DEFAULT NULL COMMENT '重复确认语-挂断提示语（文字）';
+ALTER TABLE uk_que_survey_question ADD replywordup varchar(255) DEFAULT NULL COMMENT '重复确认语-挂断提示语（文字）';
 ALTER TABLE uk_que_survey_question ADD replyvoiceup varchar(32) DEFAULT NULL COMMENT '重复确认语-挂断提示语（语音ID）';
 
 ALTER TABLE uk_que_survey_question ADD overtimerepeat varchar(32) DEFAULT NULL COMMENT '回答超时语-最大重复次数';
 ALTER TABLE uk_que_survey_question ADD overtimeoperate varchar(32) DEFAULT NULL COMMENT '回答超时语-到达最大次数的操作（转接trans/挂断/handup）';
 ALTER TABLE uk_que_survey_question ADD overtimetrans varchar(32) DEFAULT NULL COMMENT '回答超时语-转接号码';
 ALTER TABLE uk_que_survey_question ADD overtimetypeup varchar(32) DEFAULT NULL COMMENT '回答超时语-挂断提示语类型';
-ALTER TABLE uk_que_survey_question ADD overtimewordup varchar(32) DEFAULT NULL COMMENT '回答超时语-挂断提示语（文字）';
+ALTER TABLE uk_que_survey_question ADD overtimewordup varchar(255) DEFAULT NULL COMMENT '回答超时语-挂断提示语（文字）';
 ALTER TABLE uk_que_survey_question ADD overtimevoiceup varchar(32) DEFAULT NULL COMMENT '回答超时语-挂断提示语（语音ID）';
 
 ALTER TABLE uk_que_survey_question ADD errorepeat varchar(32) DEFAULT NULL COMMENT '回答错误语-最大重复次数';
 ALTER TABLE uk_que_survey_question ADD erroroperate varchar(32) DEFAULT NULL COMMENT '回答错误语-到达最大次数的操作（转接trans/挂断/handup）';
 ALTER TABLE uk_que_survey_question ADD errortrans varchar(32) DEFAULT NULL COMMENT '回答错误语-转接号码';
 ALTER TABLE uk_que_survey_question ADD errortypeup varchar(32) DEFAULT NULL COMMENT '回答错误语-挂断提示语类型';
-ALTER TABLE uk_que_survey_question ADD errorwordup varchar(32) DEFAULT NULL COMMENT '回答错误语-挂断提示语（文字）';
+ALTER TABLE uk_que_survey_question ADD errorwordup varchar(255) DEFAULT NULL COMMENT '回答错误语-挂断提示语（文字）';
 ALTER TABLE uk_que_survey_question ADD errorvoiceup varchar(32) DEFAULT NULL COMMENT '回答错误语-挂断提示语（语音ID）';
+
+ALTER TABLE uk_que_survey_answer ADD hanguptype varchar(32) DEFAULT NULL COMMENT '挂断提示语类型';
+ALTER TABLE uk_que_survey_answer ADD hangupmsg varchar(255) DEFAULT NULL COMMENT '挂断提示语文字';
+ALTER TABLE uk_que_survey_answer ADD hangupvoice varchar(32) DEFAULT NULL COMMENT '挂断提示语语音';
+
