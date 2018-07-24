@@ -1114,19 +1114,21 @@ public class OnlineUserUtils {
 			values.put("user", user) ;
 			param = UKTools.getTemplet(templet.getTemplettext(), values) ;
 		}
-		String result = HttpClientUtil.doPost(sessionConfig.getOqrdetailurl(), param)  , text = null;
-		if(!StringUtils.isBlank(sessionConfig.getOqrdetailoutput()) && !result.equals("error")) {
-			Template templet = UKTools.getTemplate(sessionConfig.getOqrdetailoutput()) ;
-			@SuppressWarnings("unchecked")
-			Map<String,Object> jsonData = objectMapper.readValue(result, Map.class) ;
-			Map<String,Object> values = new HashMap<String,Object>();
-			values.put("id",id) ;
-			values.put("user", user) ;
-			values.put("data", jsonData) ;
-			text = UKTools.getTemplet(templet.getTemplettext(), values) ;
-		}
-		if(!StringUtils.isBlank(text)){
-			otherMessageItem = objectMapper.readValue(text, OtherMessageItem.class) ;
+		if(!StringUtils.isBlank(sessionConfig.getOqrdetailurl())) {
+			String result = HttpClientUtil.doPost(sessionConfig.getOqrdetailurl(), param)  , text = null;
+			if(!StringUtils.isBlank(sessionConfig.getOqrdetailoutput()) && !result.equals("error")) {
+				Template templet = UKTools.getTemplate(sessionConfig.getOqrdetailoutput()) ;
+				@SuppressWarnings("unchecked")
+				Map<String,Object> jsonData = objectMapper.readValue(result, Map.class) ;
+				Map<String,Object> values = new HashMap<String,Object>();
+				values.put("id",id) ;
+				values.put("user", user) ;
+				values.put("data", jsonData) ;
+				text = UKTools.getTemplet(templet.getTemplettext(), values) ;
+			}
+			if(!StringUtils.isBlank(text)){
+				otherMessageItem = objectMapper.readValue(text, OtherMessageItem.class) ;
+			}
 		}
 		return otherMessageItem ;
 	}
