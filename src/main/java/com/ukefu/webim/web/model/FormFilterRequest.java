@@ -6,6 +6,10 @@ public class FormFilterRequest {
 	private String[] value;
 	private String[] comp ;	
 	
+	private String[] hanguptype ;
+	private String[] hangupmsg ;
+	private String[] hangupvoice ;
+	
 	public String[] getField() {
 		return field;
 	}
@@ -37,4 +41,29 @@ public class FormFilterRequest {
 	public void setComp(String[] comp) {
 		this.comp = comp;
 	}
+
+	public String[] getHanguptype() {
+		return hanguptype;
+	}
+
+	public void setHanguptype(String[] hanguptype) {
+		this.hanguptype = hanguptype;
+	}
+
+	public String[] getHangupmsg() {
+		return hangupmsg;
+	}
+
+	public void setHangupmsg(String[] hangupmsg) {
+		this.hangupmsg = hangupmsg;
+	}
+
+	public String[] getHangupvoice() {
+		return hangupvoice;
+	}
+
+	public void setHangupvoice(String[] hangupvoice) {
+		this.hangupvoice = hangupvoice;
+	}
+	
 }

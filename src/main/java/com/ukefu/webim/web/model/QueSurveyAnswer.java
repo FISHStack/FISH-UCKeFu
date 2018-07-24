@@ -31,6 +31,10 @@ public class QueSurveyAnswer implements java.io.Serializable{
 	private Date updatetime;//更新时间
 	private String processid;//问卷ID
 	private String correct;//是否是正确答案（0正确1不正确）
+	
+	private String hanguptype ;		//结束类型
+	private String hangupmsg ;		//结束文字
+	private String hangupvoice ;	//结束语音
 
 	
 	@Id
@@ -109,6 +113,22 @@ public class QueSurveyAnswer implements java.io.Serializable{
 	public void setCorrect(String correct) {
 		this.correct = correct;
 	}
-	
-	
+	public String getHanguptype() {
+		return hanguptype;
+	}
+	public void setHanguptype(String hanguptype) {
+		this.hanguptype = hanguptype;
+	}
+	public String getHangupmsg() {
+		return hangupmsg;
+	}
+	public void setHangupmsg(String hangupmsg) {
+		this.hangupmsg = hangupmsg;
+	}
+	public String getHangupvoice() {
+		return hangupvoice;
+	}
+	public void setHangupvoice(String hangupvoice) {
+		this.hangupvoice = hangupvoice;
+	}
 }

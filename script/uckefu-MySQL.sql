@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-07-20 08:36:48
+Date: 2018-07-24 09:35:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -2947,6 +2947,9 @@ CREATE TABLE `uk_que_survey_answer` (
   `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
   `processid` varchar(32) DEFAULT NULL COMMENT '问卷ID',
   `correct` varchar(32) DEFAULT NULL COMMENT '是否是正确答案（0正确1不正确）',
+  `hanguptype` varchar(32) DEFAULT NULL COMMENT '挂断提示语类型',
+  `hangupmsg` varchar(255) DEFAULT NULL COMMENT '挂断提示语文字',
+  `hangupvoice` varchar(32) DEFAULT NULL COMMENT '挂断提示语语音',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题答案表';
 
@@ -3018,6 +3021,24 @@ CREATE TABLE `uk_que_survey_question` (
   `replytype` varchar(255) DEFAULT NULL COMMENT '重复提示类型',
   `replyword` varchar(255) DEFAULT NULL COMMENT '重复提示语文字',
   `replyvoice` varchar(255) DEFAULT NULL COMMENT '重复提示语语音',
+  `replyrepeat` varchar(32) DEFAULT NULL COMMENT '重复确认语-最大重复次数',
+  `replyoperate` varchar(32) DEFAULT NULL COMMENT '重复确认语-到达最大次数的操作（转接trans/挂断/handup）',
+  `replytrans` varchar(32) DEFAULT NULL COMMENT '重复确认语-转接号码',
+  `replytypeup` varchar(32) DEFAULT NULL COMMENT '重复确认语-转接号码',
+  `replywordup` varchar(255) DEFAULT NULL COMMENT '重复确认语-挂断提示语（文字）',
+  `replyvoiceup` varchar(32) DEFAULT NULL COMMENT '重复确认语-挂断提示语（语音ID）',
+  `overtimerepeat` varchar(32) DEFAULT NULL COMMENT '回答超时语-最大重复次数',
+  `overtimeoperate` varchar(32) DEFAULT NULL COMMENT '回答超时语-到达最大次数的操作（转接trans/挂断/handup）',
+  `overtimetrans` varchar(32) DEFAULT NULL COMMENT '回答超时语-转接号码',
+  `overtimetypeup` varchar(32) DEFAULT NULL COMMENT '回答超时语-挂断提示语类型',
+  `overtimewordup` varchar(255) DEFAULT NULL COMMENT '回答超时语-挂断提示语（文字）',
+  `overtimevoiceup` varchar(32) DEFAULT NULL COMMENT '回答超时语-挂断提示语（语音ID）',
+  `errorepeat` varchar(32) DEFAULT NULL COMMENT '回答错误语-最大重复次数',
+  `erroroperate` varchar(32) DEFAULT NULL COMMENT '回答错误语-到达最大次数的操作（转接trans/挂断/handup）',
+  `errortrans` varchar(32) DEFAULT NULL COMMENT '回答错误语-转接号码',
+  `errortypeup` varchar(32) DEFAULT NULL COMMENT '回答错误语-挂断提示语类型',
+  `errorwordup` varchar(255) DEFAULT NULL COMMENT '回答错误语-挂断提示语（文字）',
+  `errorvoiceup` varchar(32) DEFAULT NULL COMMENT '回答错误语-挂断提示语（语音ID）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题表';
 
@@ -3689,7 +3710,6 @@ CREATE TABLE `uk_sysdic` (
 -- ----------------------------
 INSERT INTO `uk_sysdic` VALUES ('297e1e874f5ae37e014f5af969e30120', '性别', 'pub', 'com.dic.contacts.sex', 'ukewo', 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2015-08-23 22:32:19', '2015-08-23 22:32:19', '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('297e1e874f5ae37e014f5af9ceba0126', '男', 'pub', '1', 'ukewo', 'layui-icon', '297e1e874f5ae37e014f5af969e30120', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2015-08-23 22:32:44', '2016-10-13 16:37:40', '0', '1', '297e1e874f5ae37e014f5af969e30120', '0', '0', null, null, null, null, null);
-INSERT INTO `uk_sysdic` VALUES ('0000000064b82eeb0164b83c8fb60763', '数据报表', 'pub', 'A13', NULL, 'auth', '402888815d2fe37f015d2fe75cc80002', NULL, NULL, ' ', NULL, NULL, '4028cac3614cd2f901614cf8be1f0324', '2018-7-20 23:08:54', NULL, 0, 0, '402888815d2fe37f015d2fe75cc80002', 0, 0, ' ', 'webim', '1', NULL, 'left');
 INSERT INTO `uk_sysdic` VALUES ('297e1e874f5ae37e014f5af9cecf0127', '女', 'pub', '0', 'ukewo', 'layui-icon', '297e1e874f5ae37e014f5af969e30120', '', null, '', '', null, '297e8c7b455798280145579c73e501c1', '2015-08-23 22:32:45', '2015-08-27 17:20:25', '0', '2', '297e1e874f5ae37e014f5af969e30120', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('297e1e874f83129d014f832090e200b8', '国家、省市区县', 'pub', 'com.dic.address.area', 'ukewo', 'data', '0', '', null, null, null, null, '297e8c7b455798280145579c73e501c1', '2015-08-31 17:39:53', '2015-08-31 17:39:53', '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('297e1e874f83129d014f832154c800c3', '北京市', 'pub', '110000', 'ukewo', null, '297e1e874f83129d014f832090e200b8', null, null, null, null, null, '297e8c7b455798280145579c73e501c1', '2015-08-31 17:40:43', '2015-08-31 17:40:43', '0', '1', '297e1e874f83129d014f832090e200b8', '0', '0', null, null, null, null, null);
@@ -8366,7 +8386,7 @@ CREATE TABLE `uk_user` (
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-06-29 17:40:30', '4028811b645dc08f01645e0bf45c099f', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '0', null, null, null, '0', '0', '0', '2018-06-29 17:40:37', null, null, null, '0', '0', '0', '0', null);
 INSERT INTO `uk_user` VALUES ('4028811b642f5f8c01642f60ed440683', null, 'test1', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'ad@te.com', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-06-24 09:20:38', null, '2018-07-03 10:51:17', '4028811b645dc08f01645e0bf45c099f', '18510129433', '2018-06-24 09:20:38', null, '0', 'test1', null, '1', null, null, null, '0', '0', '0', '2018-07-03 10:51:25', null, null, null, '0', '0', '0', '0', null);
 INSERT INTO `uk_user` VALUES ('4028811b645dc08f01645e0512ce0935', null, 'yiliao', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'asd@ac.com', null, null, null, null, null, null, null, null, null, null, null, '4028811b645dc08f01645e005f3d08dd', 'ukewo', null, '2018-07-03 10:42:28', null, '2018-07-03 10:43:31', '4028811b645dc08f01645e057eab0945', '18512212955', '2018-07-03 10:42:28', null, '0', '医疗', null, '0', null, null, null, '0', '0', '0', '2018-07-03 10:43:39', null, null, null, '0', '0', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2018-07-02 20:23:24', '4028811b63b028dc0163b032c3ed0590', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-07-19 11:21:00', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2018-07-02 20:23:24', '4028811b63b028dc0163b032c3ed0590', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-07-23 22:55:56', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
