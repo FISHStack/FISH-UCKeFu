@@ -30,6 +30,10 @@ public class AiUser implements java.io.Serializable{
 	private int userask ;	//访客提问数量
 	private boolean agent ; //直接转人工
 	
+	private int timeoutnums ;	//超时次数
+	private int retimes ;		//重复次数
+	private int errortimes ;	//错误次数
+	
 	public AiUser(String id , String userid, long time,String orgi , IP ipdata){
 		this.id = id.replace("-", "") ;
 		this.userid = userid ;
@@ -183,5 +187,29 @@ public class AiUser implements java.io.Serializable{
 
 	public void setBussend(boolean bussend) {
 		this.bussend = bussend;
+	}
+
+	public int getTimeoutnums() {
+		return timeoutnums;
+	}
+
+	public void setTimeoutnums(int timeoutnums) {
+		this.timeoutnums = timeoutnums;
+	}
+
+	public int getRetimes() {
+		return retimes;
+	}
+
+	public void setRetimes(int retimes) {
+		this.retimes = retimes;
+	}
+
+	public int getErrortimes() {
+		return errortimes;
+	}
+
+	public void setErrortimes(int errortimes) {
+		this.errortimes = errortimes;
 	}
 }
