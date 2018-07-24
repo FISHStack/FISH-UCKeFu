@@ -42,6 +42,7 @@ import com.ukefu.webim.util.server.message.NewRequestMessage;
 import com.ukefu.webim.util.server.message.OtherMessageItem;
 import com.ukefu.webim.web.model.AgentReport;
 import com.ukefu.webim.web.model.AgentUser;
+import com.ukefu.webim.web.model.AiConfig;
 import com.ukefu.webim.web.model.AreaType;
 import com.ukefu.webim.web.model.Contacts;
 import com.ukefu.webim.web.model.CousultInvite;
@@ -1071,6 +1072,35 @@ public class OnlineUserUtils {
 			otherMessageItemList = objectMapper.readValue(text, javaType) ;
 		}
 		return otherMessageItemList ;
+	}
+	
+	public static OtherMessageItem suggestdetail(AiConfig aiCofig , String id , String orgi , User user) throws IOException, TemplateException {
+		OtherMessageItem otherMessageItem = null ;
+		String param = "" ;
+		if(!StringUtils.isBlank(aiCofig.getOqrdetailinput())) {
+			Template templet = UKTools.getTemplate(aiCofig.getOqrdetailinput()) ;
+			Map<String,Object> values = new HashMap<String,Object>();
+			values.put("id", id) ;
+			values.put("user", user) ;
+			param = UKTools.getTemplet(templet.getTemplettext(), values) ;
+		}
+		if(!StringUtils.isBlank(aiCofig.getOqrdetailurl())) {
+			String result = HttpClientUtil.doPost(aiCofig.getOqrdetailurl(), param)  , text = null;
+			if(!StringUtils.isBlank(aiCofig.getOqrdetailoutput()) && !result.equals("error")) {
+				Template templet = UKTools.getTemplate(aiCofig.getOqrdetailoutput()) ;
+				@SuppressWarnings("unchecked")
+				Map<String,Object> jsonData = objectMapper.readValue(result, Map.class) ;
+				Map<String,Object> values = new HashMap<String,Object>();
+				values.put("id",id) ;
+				values.put("user", user) ;
+				values.put("data", jsonData) ;
+				text = UKTools.getTemplet(templet.getTemplettext(), values) ;
+			}
+			if(!StringUtils.isBlank(text)){
+				otherMessageItem = objectMapper.readValue(text, OtherMessageItem.class) ;
+			}
+		}
+		return otherMessageItem ;
 	}
 	
 	public static OtherMessageItem detail(String id , String orgi , User user) throws IOException, TemplateException {
