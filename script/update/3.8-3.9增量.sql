@@ -518,3 +518,7 @@ ALTER TABLE uk_que_survey_answer ADD hanguptype varchar(32) DEFAULT NULL COMMENT
 ALTER TABLE uk_que_survey_answer ADD hangupmsg varchar(255) DEFAULT NULL COMMENT '挂断提示语文字';
 ALTER TABLE uk_que_survey_answer ADD hangupvoice varchar(32) DEFAULT NULL COMMENT '挂断提示语语音';
 
+
+ALTER TABLE uk_jobdetail ADD organid varchar(32) DEFAULT NULL COMMENT '获取远程批次时的部门ID';
+ALTER TABLE uk_jobdetail ADD localserver varchar(255) DEFAULT NULL COMMENT '获取远程的本地服务URL';
+

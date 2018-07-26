@@ -27,4 +27,7 @@ public abstract interface JobDetailRepository extends JpaRepository<JobDetail, S
 	public abstract List<JobDetail> findAll(Specification<JobDetail> spec) ;
 	
 	public abstract List<JobDetail> findByOrgiAndTasktypeAndOrganLike(String orgi, String tasktype, String organ);
+	
+	
+	public abstract List<JobDetail> findByOrgiAndBatchtypeAndOrganid(String orgi, String batchtype, String organ);
 }

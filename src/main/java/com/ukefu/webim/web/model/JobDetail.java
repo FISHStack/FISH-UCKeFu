@@ -40,6 +40,9 @@ public class JobDetail implements Serializable{
 	
 	private String parentid ;	//目录ID
 	
+	private String organid ;	//接口获取数据的时候，部门ID
+	private String localserver ;	//远程推送的是，本地访问地址
+	
 	private int threads ;		//并发限制
 	
 	private String impurl ;
@@ -801,5 +804,21 @@ public class JobDetail implements Serializable{
 
 	public void setMapping(boolean mapping) {
 		this.mapping = mapping;
+	}
+
+	public String getOrganid() {
+		return organid;
+	}
+
+	public void setOrganid(String organid) {
+		this.organid = organid;
+	}
+
+	public String getLocalserver() {
+		return localserver;
+	}
+
+	public void setLocalserver(String localserver) {
+		this.localserver = localserver;
 	}
 }

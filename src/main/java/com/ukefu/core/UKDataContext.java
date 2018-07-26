@@ -786,6 +786,17 @@ public class UKDataContext {
 			return super.toString().toLowerCase() ;
 		}
 	}
+	
+	public enum BatchTypeEnum{
+		PLAN,
+		TEMP,
+		EXT;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+
 
 	/**
 	 * 
