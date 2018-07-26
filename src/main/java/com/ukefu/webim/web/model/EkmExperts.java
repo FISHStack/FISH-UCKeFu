@@ -22,9 +22,10 @@ public class EkmExperts implements java.io.Serializable{
 	
 	private String id ;
 	private String userid ;//用户ID
+	private String username ;//用户名
 	private String roleid ;//角色ID
 	private String organ ;//用户所属部门ID
-	private String bustype ;//业务类型（知识库专家experts/）
+	private String bustype ;//业务类型（审核人audit/知识库专家experts/）
 	private Date createtime ;
 	private String creater;
 	private String orgi ;
@@ -48,6 +49,12 @@ public class EkmExperts implements java.io.Serializable{
 	}
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getRoleid() {
 		return roleid;

@@ -94,4 +94,7 @@ public abstract interface OnlineUserRepository extends JpaRepository<OnlineUser,
 	
 	@Query("delete from CallOutNames where actid = ?2 AND ORGI = ?1")
 	void deleteByOrgiAndActid(String orgi, String actid);
+	
+	@Query("SELECT e from EkmExperts e WHERE orgi = ?1 AND (bustype = ?2 or bustype = ?3 )")
+	Page<Object> findByExperts(String orgi, String exp, String au, Pageable paramPageable);
 }
