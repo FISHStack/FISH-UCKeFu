@@ -143,6 +143,8 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String datestr = UKTools.simpleDateFormat.format(new Date());
 	private String hourstr = new SimpleDateFormat("HH").format(new Date());
 	
+	private String userid;
+	
 
 	@Id
 	@Column(length = 32)
@@ -618,4 +620,11 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	public void setPrefix(boolean prefix) {
 		this.prefix = prefix;
 	}
+	public String getUserid() {
+		return userid;
+	}
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+	
 }
