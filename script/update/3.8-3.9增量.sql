@@ -522,7 +522,7 @@ ALTER TABLE uk_que_survey_answer ADD hangupvoice varchar(32) DEFAULT NULL COMMEN
 ALTER TABLE uk_jobdetail ADD organid varchar(32) DEFAULT NULL COMMENT '获取远程批次时的部门ID';
 ALTER TABLE uk_jobdetail ADD localserver varchar(255) DEFAULT NULL COMMENT '获取远程的本地服务URL';
 
-ALTER TABLE uk_callcenter_event ADD userid varchar(32) COMMENT '坐席用户ID';
-ALTER TABLE uk_callcenter_event ADD username varchar(32) COMMENT '坐席用户名';
-ALTER TABLE uk_callcenter_event ADD organ varchar(32) COMMENT '坐席用户所属部门';
+ALTER TABLE uk_callcenter_event ADD userid varchar(32) DEFAULT NULL  COMMENT '坐席用户ID';
+
+ALTER TABLE uk_callcenter_event ADD organ varchar(32) DEFAULT NULL  COMMENT '坐席用户所属部门';
 
