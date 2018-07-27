@@ -10,6 +10,7 @@ public class CallCenterAgent implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = -884536468331333053L;
 	private String userid ;
+	private String username ;
 	private String extno ;
 	
 	private String orgi ;
@@ -101,5 +102,13 @@ public class CallCenterAgent implements java.io.Serializable{
 
 	public void setSiptrunk(String siptrunk) {
 		this.siptrunk = siptrunk;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }
