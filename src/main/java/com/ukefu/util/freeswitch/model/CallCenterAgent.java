@@ -11,6 +11,8 @@ public class CallCenterAgent implements java.io.Serializable{
 	private static final long serialVersionUID = -884536468331333053L;
 	private String userid ;
 	private String username ;
+	private String organ ;
+	
 	private String extno ;
 	
 	private String orgi ;
@@ -110,5 +112,13 @@ public class CallCenterAgent implements java.io.Serializable{
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getOrgan() {
+		return organ;
+	}
+
+	public void setOrgan(String organ) {
+		this.organ = organ;
 	}
 }
