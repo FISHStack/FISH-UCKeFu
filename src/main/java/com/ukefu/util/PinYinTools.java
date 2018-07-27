@@ -117,7 +117,7 @@ public class PinYinTools {
             } else {  
                 value = key;  
             }  
-            buffer.append(value+" ");  
+            buffer.append(value);  
         }  
         return buffer.toString();  
     }  
@@ -133,6 +133,23 @@ public class PinYinTools {
     		firstWord = pinYin.substring(0,1) ;
     	}
     	return firstWord ;
+    }
+    
+    public String getFirstPinYinAll(String word){
+    	String key, value;  
+        buffer = new StringBuilder();  
+        for (int i = 0; i < word.length(); i++) {  
+            key = word.substring(i, i + 1);  
+            if (key.getBytes().length >= 2) {  
+                value = (String) convert(key);  
+            } else {  
+                value = key;  
+            }  
+            if(value!=null && value.length() > 0) {
+            	buffer.append(value.substring(0, 1));  
+            }
+        }  
+        return buffer.toString();  
     }
   
 }  
