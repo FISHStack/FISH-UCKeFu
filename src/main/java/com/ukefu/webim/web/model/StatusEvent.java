@@ -144,8 +144,15 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String hourstr = new SimpleDateFormat("HH").format(new Date());
 	
 	private String userid;
+	private String username;
 	
 
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
