@@ -145,6 +145,7 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	
 	private String userid;
 	private String username;
+	private String organ;
 	
 
 	public String getUsername() {
@@ -632,6 +633,12 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+	public String getOrgan() {
+		return organ;
+	}
+	public void setOrgan(String organ) {
+		this.organ = organ;
 	}
 	
 }
