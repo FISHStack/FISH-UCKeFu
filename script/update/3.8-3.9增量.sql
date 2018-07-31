@@ -526,3 +526,6 @@ ALTER TABLE uk_callcenter_event ADD userid varchar(32) DEFAULT NULL  COMMENT '�
 
 ALTER TABLE uk_callcenter_event ADD organ varchar(32) DEFAULT NULL  COMMENT '坐席用户所属部门';
 
+
+
+ALTER TABLE uk_callcenter_pbxhost ADD sipport int default 5060  COMMENT 'SIP服务端口';
