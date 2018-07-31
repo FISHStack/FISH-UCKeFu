@@ -151,13 +151,13 @@ public class UsersController extends Handler{
     		if(!StringUtils.isBlank(user.getPassword())){
     			tempUser.setPassword(UKTools.md5(user.getPassword()));
     		}
-    		
-    		if(request.getParameter("admin")!=null){
-    			tempUser.setUsertype("0");
-    		}else{
-    			tempUser.setUsertype(null);
+    		if(!tempUser.isSuperuser()) {
+	    		if(request.getParameter("admin")!=null){
+	    			tempUser.setUsertype("0");
+	    		}else{
+	    			tempUser.setUsertype(null);
+	    		}
     		}
-    		
     		if(tempUser.getCreatetime() == null){
     			tempUser.setCreatetime(new Date());
     		}
