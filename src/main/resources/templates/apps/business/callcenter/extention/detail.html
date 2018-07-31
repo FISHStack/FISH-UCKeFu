@@ -6,6 +6,7 @@
 	"webrtc":"<#if extention.enablewebrtc?? && extention.enablewebrtc == true && pbxhost?? && pbxhost.enablewebrtc?? && pbxhost.enablewebrtc == true>true<#else>false</#if>",
 	"webrtchost":"<#if pbxhost??>${pbxhost.webrtcaddress!''}</#if>",
 	"webrtcport":"<#if pbxhost??>${pbxhost.webrtcport!''}</#if>",
+	"sipport":"<#if pbxhost??>${pbxhost.sipport!'5060'}<#else>5060</#if>",
 	"webrtcssl":"<#if pbxhost?? && pbxhost.webrtcssl == true>true<#else>false</#if>",
 	"orgi":"${extention.orgi!''}",
 	"userid":"${user.id!''}"

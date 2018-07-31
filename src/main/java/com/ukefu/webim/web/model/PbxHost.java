@@ -24,6 +24,8 @@ public class PbxHost implements java.io.Serializable{
 	private String hostname ;	//host name
 	private String ipaddr ;		//IP
 	private int port ;
+	
+	private int sipport = 5060;		//SIP 服务端口， 默认 5060,
 	private String password ;	//pbx host password
 	
 	private boolean connected ;
@@ -287,5 +289,11 @@ public class PbxHost implements java.io.Serializable{
 	}
 	public void setDissipphone(boolean dissipphone) {
 		this.dissipphone = dissipphone;
+	}
+	public int getSipport() {
+		return sipport;
+	}
+	public void setSipport(int sipport) {
+		this.sipport = sipport;
 	}
 }
