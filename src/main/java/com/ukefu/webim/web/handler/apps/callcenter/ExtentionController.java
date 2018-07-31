@@ -166,7 +166,7 @@ public class ExtentionController extends Handler{
 			}
 			map.addAttribute("extention" , extention);
 		}
-		response.setContentType("Content-type: text/json; charset=utf-8"); 
+		response.setContentType("text/plain"); 
     	return request(super.createRequestPageTempletResponse("/apps/business/callcenter/extention/detail"));
     }
 	
