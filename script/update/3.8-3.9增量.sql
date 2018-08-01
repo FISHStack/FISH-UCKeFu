@@ -483,6 +483,94 @@ CREATE TABLE `uk_que_survey_question` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='问卷调查-问题表';
 
 
+
+CREATE TABLE `uk_callcenter_event_kill` (
+  `ID` varchar(100) NOT NULL COMMENT '主键ID',
+  `NAME` varchar(50) DEFAULT NULL COMMENT '名称',
+  `CODE` varchar(50) DEFAULT NULL COMMENT '代码',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `CREATER` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `UPDATETIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `ORGI` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `SOURCE` varchar(50) DEFAULT NULL COMMENT '来源',
+  `ANSWER` varchar(50) DEFAULT NULL COMMENT '应答时间',
+  `scurrent` tinyint(4) DEFAULT NULL COMMENT '是否当前通话',
+  `INIT` tinyint(4) DEFAULT NULL COMMENT '初始通话',
+  `CALLER` varchar(50) DEFAULT NULL COMMENT '呼叫发起号码',
+  `CALLING` varchar(50) DEFAULT NULL COMMENT '呼叫对象',
+  `CALLED` varchar(50) DEFAULT NULL COMMENT '被叫号码',
+  `AGENTYPE` varchar(50) DEFAULT NULL COMMENT '坐席类型',
+  `QUENE` varchar(50) DEFAULT NULL COMMENT '队列名称',
+  `ANI` varchar(50) DEFAULT NULL COMMENT '主叫号码',
+  `TOUSER` varchar(50) DEFAULT NULL COMMENT '目标用户',
+  `DIRECTION` varchar(50) DEFAULT NULL COMMENT '呼叫方向',
+  `STATE` varchar(50) DEFAULT NULL COMMENT '状态',
+  `AGENT` varchar(50) DEFAULT NULL COMMENT '坐席工号',
+  `ACTION` varchar(50) DEFAULT NULL COMMENT '事件动作',
+  `HOST` varchar(50) DEFAULT NULL COMMENT '时间主机',
+  `IPADDR` varchar(50) DEFAULT NULL COMMENT '主机IP',
+  `LOCALDATETIME` varchar(50) DEFAULT NULL COMMENT '时间发起时间',
+  `STATUS` varchar(50) DEFAULT NULL COMMENT '状态代码',
+  `TIME` decimal(20,0) DEFAULT NULL COMMENT '时间秒值',
+  `STARTTIME` datetime DEFAULT NULL COMMENT '通话开始时间',
+  `ENDTIME` datetime DEFAULT NULL COMMENT '通话结束时间',
+  `DURATION` int(11) DEFAULT NULL COMMENT '通话时长',
+  `INSIDE` tinyint(4) DEFAULT NULL COMMENT '内线',
+  `MISSCALL` tinyint(4) DEFAULT NULL COMMENT '是否漏话',
+  `srecord` tinyint(4) DEFAULT NULL COMMENT '是否录音',
+  `RECORDTIME` int(11) DEFAULT NULL COMMENT '录音时长',
+  `STARTRECORD` datetime DEFAULT NULL COMMENT '开始录音时间',
+  `ENDRECORD` datetime DEFAULT NULL COMMENT '结束录音时间',
+  `ANSWERTIME` datetime DEFAULT NULL COMMENT '应答时间',
+  `RINGDURATION` int(11) DEFAULT NULL COMMENT '振铃时长',
+  `SERVICESUMMARY` tinyint(4) DEFAULT NULL COMMENT '是否记录服务小结',
+  `SERVICEID` varchar(32) DEFAULT NULL COMMENT '服务记录ID',
+  `RECORDFILE` varchar(255) DEFAULT NULL COMMENT '录音文件名',
+  `CALLBACK` tinyint(4) DEFAULT NULL COMMENT '回呼',
+  `CCQUENE` varchar(50) DEFAULT NULL COMMENT '转接队列',
+  `SERVICESTATUS` varchar(20) DEFAULT NULL COMMENT '当前呼叫状态',
+  `CHANNELSTATUS` varchar(50) DEFAULT NULL COMMENT '事件中的呼叫状态',
+  `COUNTRY` varchar(50) DEFAULT NULL COMMENT '来电国家',
+  `PROVINCE` varchar(50) DEFAULT NULL COMMENT '来电号码归属省份',
+  `CITY` varchar(50) DEFAULT NULL COMMENT '来电归属号码城市',
+  `ISP` varchar(50) DEFAULT NULL COMMENT '来电号码运营商',
+  `VOICECALLED` varchar(50) DEFAULT NULL COMMENT '语音呼叫',
+  `CONTACTSID` varchar(32) DEFAULT NULL COMMENT '联系人ID',
+  `EXTENTION` varchar(32) DEFAULT NULL COMMENT '分机ID',
+  `HOSTID` varchar(32) DEFAULT NULL COMMENT 'PBX服务器ID',
+  `CALLTYPE` varchar(20) DEFAULT NULL COMMENT '呼叫方向类型|计费类型',
+  `CALLDIR` varchar(30) DEFAULT NULL COMMENT '呼叫方向',
+  `OTHERDIR` varchar(30) DEFAULT NULL COMMENT '对边呼叫方向',
+  `OTHERLEGDEST` varchar(50) DEFAULT NULL COMMENT '呼叫另一方号码',
+  `BRIDGEID` varchar(100) DEFAULT NULL COMMENT '桥接ID',
+  `BRIDGE` tinyint(4) DEFAULT NULL COMMENT '是否有桥接',
+  `RECORDFILENAME` varchar(100) DEFAULT NULL COMMENT '录音文件名',
+  `DISCALLER` varchar(50) DEFAULT NULL COMMENT '显示主叫',
+  `DISCALLED` varchar(50) DEFAULT NULL COMMENT '显示被叫',
+  `SATISF` tinyint(4) DEFAULT '0' COMMENT '满意度',
+  `SATISFACTION` varchar(32) DEFAULT NULL COMMENT '满意度结果',
+  `SATISFDATE` datetime DEFAULT NULL COMMENT '满意度时间',
+  `datestr` varchar(32) DEFAULT '0' COMMENT '坐席通话日期（yyyy-MM-dd）用于每小时通话数量折线图',
+  `hourstr` varchar(32) DEFAULT '0' COMMENT '坐席通话时间小时（HH）用于每小时通话数量折线图',
+  `taskid` varchar(32) DEFAULT NULL COMMENT '任务ID',
+  `actid` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `batid` varchar(32) DEFAULT NULL COMMENT '批次ID',
+  `dataid` varchar(32) DEFAULT NULL COMMENT '数据ID',
+  `statustype` varchar(32) DEFAULT NULL COMMENT '号码隐藏状态',
+  `disphonenum` varchar(32) DEFAULT NULL COMMENT '号码',
+  `distype` varchar(32) DEFAULT NULL COMMENT '显示类型',
+  `nameid` varchar(50) DEFAULT NULL COMMENT '名单ID',
+  `siptrunk` varchar(32) DEFAULT NULL COMMENT '拨打的网关',
+  `prefix` tinyint(4) DEFAULT '0' COMMENT '是否在号码前加拨0',
+  `userid` varchar(32) DEFAULT NULL COMMENT '坐席用户ID',
+  `organ` varchar(32) DEFAULT NULL COMMENT '坐席用户所属部门',
+  `tracesip` text COMMENT 'SIP消息记录',
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='通话记录表';
+
+
+
 ALTER TABLE uk_callcenter_extention ADD bustype varchar(32) default null  COMMENT '业务类型（电销sale/问卷quesurvey）';
 ALTER TABLE uk_callcenter_extention ADD proid varchar(32) default null  COMMENT '（产品ID）';
 ALTER TABLE uk_callcenter_extention ADD queid varchar(32) default null  COMMENT '（问卷ID）';
@@ -529,3 +617,7 @@ ALTER TABLE uk_callcenter_event ADD organ varchar(32) DEFAULT NULL  COMMENT '坐
 
 
 ALTER TABLE uk_callcenter_pbxhost ADD sipport int default 5060  COMMENT 'SIP服务端口';
+ALTER TABLE uk_callcenter_pbxhost ADD blacklist varchar(255) COMMENT '黑名单筛选条件';
+
+
+ALTER TABLE uk_callcenter_event ADD tracesip text COMMENT 'SIP消息记录';
