@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.extra.CallCenterInterface;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.PbxHostRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.PbxHost;
@@ -129,6 +130,7 @@ public class CallCenterController extends Handler{
 					}
 				}
 			}
+			CacheHelper.getSystemCacheBean().put(pbxHost.getIpaddr() ,pbxHost , pbxHost.getOrgi()) ;
 		}
 		if(!StringUtils.isBlank(msg)){
 			view = request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/pbxhost.html?msg="+msg));
@@ -140,6 +142,7 @@ public class CallCenterController extends Handler{
     @Menu(type = "callcenter" , subtype = "pbxhost" , access = false , admin = true)
     public ModelAndView mediadelete(ModelMap map , HttpServletRequest request , @Valid String id) {
 		if(!StringUtils.isBlank(id)){
+			PbxHost pbxHost = pbxHostRes.findById(id) ;
 			pbxHostRes.delete(id);
 			if(UKDataContext.model.get("callcenter")!=null){
 				CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
@@ -147,6 +150,7 @@ public class CallCenterController extends Handler{
 					callCenterImpl.remove(id);
 				}
 			}
+			CacheHelper.getSystemCacheBean().delete(pbxHost.getIpaddr() ,pbxHost.getOrgi()) ;
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/pbxhost.html"));
     }

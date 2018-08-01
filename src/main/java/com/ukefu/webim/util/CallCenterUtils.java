@@ -31,6 +31,7 @@ import com.ukefu.webim.service.repository.ExtentionRepository;
 import com.ukefu.webim.service.repository.FormFilterRepository;
 import com.ukefu.webim.service.repository.JobDetailRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
+import com.ukefu.webim.service.repository.PbxHostRepository;
 import com.ukefu.webim.service.repository.SaleStatusRepository;
 import com.ukefu.webim.service.repository.SipTrunkRepository;
 import com.ukefu.webim.service.repository.UserRepository;
@@ -43,6 +44,7 @@ import com.ukefu.webim.web.model.Extention;
 import com.ukefu.webim.web.model.FormFilter;
 import com.ukefu.webim.web.model.JobDetail;
 import com.ukefu.webim.web.model.Organ;
+import com.ukefu.webim.web.model.PbxHost;
 import com.ukefu.webim.web.model.SaleStatus;
 import com.ukefu.webim.web.model.SipTrunk;
 import com.ukefu.webim.web.model.UKeFuDic;
@@ -82,6 +84,29 @@ public class CallCenterUtils {
 		}
 		return sipTrunk;
 	}
+	
+	/**
+	 * 
+	 * @param user
+	 * @param orgi
+	 * @param id
+	 * @param service
+	 * @return
+	 * @throws Exception
+	 */
+	public static PbxHost pbxhost(String ip){
+		PbxHost pbxHost =  (PbxHost) CacheHelper.getSystemCacheBean().getCacheObject(ip, UKDataContext.SYSTEM_ORGI) ;
+		if(pbxHost == null) {
+			PbxHostRepository pbxHostRes = UKDataContext.getContext().getBean(PbxHostRepository.class) ;
+			List<PbxHost> pbxHostList = pbxHostRes.findByHostnameOrIpaddr(ip, ip) ;
+			if(pbxHostList!=null && pbxHostList.size() > 0) {
+				pbxHost = pbxHostList.get(0) ;
+				CacheHelper.getSystemCacheBean().put(pbxHost.getIpaddr() ,pbxHost , pbxHost.getOrgi()) ;
+			}
+		}
+		return pbxHost;
+	}
+	
 	
 	/**
 	 * 

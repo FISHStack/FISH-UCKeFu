@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.DateConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -34,6 +36,7 @@ public class StartedEventListener implements ApplicationListener<ContextRefreshe
 	
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+    	ConvertUtils.register(new DateConverter(null), java.util.Date.class);
     	if(UKDataContext.getContext() == null){
     		UKDataContext.setApplicationContext(event.getApplicationContext());
     	}

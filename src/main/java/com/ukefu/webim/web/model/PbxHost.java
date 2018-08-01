@@ -28,6 +28,8 @@ public class PbxHost implements java.io.Serializable{
 	private int sipport = 5060;		//SIP 服务端口， 默认 5060,
 	private String password ;	//pbx host password
 	
+	private String blacklist ;	//拦截字符串
+	
 	private boolean connected ;
 	
 	private boolean callcenter ;
@@ -295,5 +297,11 @@ public class PbxHost implements java.io.Serializable{
 	}
 	public void setSipport(int sipport) {
 		this.sipport = sipport;
+	}
+	public String getBlacklist() {
+		return blacklist;
+	}
+	public void setBlacklist(String blacklist) {
+		this.blacklist = blacklist;
 	}
 }

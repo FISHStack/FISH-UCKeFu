@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.extra.CallCenterInterface;
+import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.ExtentionRepository;
 import com.ukefu.webim.service.repository.PbxHostRepository;
 import com.ukefu.webim.service.repository.ServiceAiRepository;
@@ -80,6 +81,7 @@ public class CallCenterResourceController extends Handler{
 				CallCenterInterface callCenterImpl = (CallCenterInterface) UKDataContext.getContext().getBean("callcenter") ;
 				callCenterImpl.init(pbxHost);
 			}
+			CacheHelper.getSystemCacheBean().put(pbxHost.getIpaddr() ,pbxHost , pbxHost.getOrgi()) ;
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/admin/callcenter/resource.html?hostid="+pbxHost.getId()));
     }

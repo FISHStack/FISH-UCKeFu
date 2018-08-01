@@ -55,6 +55,7 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private boolean current ;//
 	
 	private boolean init ;//
+	private String tracesip ;	//SIP消息记录
 	
 	private String caller ;//呼叫发起号码
 	
@@ -640,5 +641,10 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	public void setOrgan(String organ) {
 		this.organ = organ;
 	}
-	
+	public String getTracesip() {
+		return tracesip;
+	}
+	public void setTracesip(String tracesip) {
+		this.tracesip = tracesip;
+	}
 }
