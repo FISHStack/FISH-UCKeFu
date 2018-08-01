@@ -430,11 +430,11 @@ public class SystemConfig implements java.io.Serializable{
 	public String getColor(){
 		String color = "color:#32c24d;" ;
 		if(!StringUtils.isBlank(this.theme) && this.theme.equals("01")){
-			color = "color:#32c24d !important;" ;
+			color = "color:#32c24d " ;
 		}else if(!StringUtils.isBlank(this.theme) && this.theme.equals("02")){
-			color = "color:#32c24d !important;" ;
+			color = "color:#32c24d " ;
 		}else if(!StringUtils.isBlank(this.theme) && this.theme.equals("03")){
-			color = "color:#1E90FF !important;" ;
+			color = "color:#1E90FF " ;
 		}
 		return color ;
 	}
