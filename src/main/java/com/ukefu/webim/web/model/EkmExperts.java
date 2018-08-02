@@ -30,9 +30,9 @@ public class EkmExperts implements java.io.Serializable{
 	private String creater;
 	private String orgi ;
 	
-	private String auditimes;//审核知识总条数
-	private String auditpass;//审核知识通过总条数
-	private String auditreject;//审核知识驳回总条数
+	private int auditimes;//审核知识总条数
+	private int auditpass;//审核知识通过总条数
+	private int auditreject;//审核知识驳回总条数
 	
 	@Id
 	@Column(length = 32)
@@ -92,23 +92,24 @@ public class EkmExperts implements java.io.Serializable{
 	public void setOrgi(String orgi) {
 		this.orgi = orgi;
 	}
-	public String getAuditimes() {
+	public int getAuditimes() {
 		return auditimes;
 	}
-	public void setAuditimes(String auditimes) {
+	public void setAuditimes(int auditimes) {
 		this.auditimes = auditimes;
 	}
-	public String getAuditpass() {
+	public int getAuditpass() {
 		return auditpass;
 	}
-	public void setAuditpass(String auditpass) {
+	public void setAuditpass(int auditpass) {
 		this.auditpass = auditpass;
 	}
-	public String getAuditreject() {
+	public int getAuditreject() {
 		return auditreject;
 	}
-	public void setAuditreject(String auditreject) {
+	public void setAuditreject(int auditreject) {
 		this.auditreject = auditreject;
 	}
+	
 	
 }
