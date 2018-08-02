@@ -9,10 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.elasticsearch.annotations.Document;
 /**
  * EKM-知识表
  *
  */
+@Document(indexName = "uckefu", type = "uk_ekm_knowledge")
 @Entity
 @Table(name = "uk_ekm_knowledge")
 @org.hibernate.annotations.Proxy(lazy = false)
@@ -56,6 +58,114 @@ public class EkmKnowledge implements java.io.Serializable{
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getSummary() {
+		return summary;
+	}
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public String getTags() {
+		return tags;
+	}
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+	public String getKeyword() {
+		return keyword;
+	}
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+	public String getDismenid() {
+		return dismenid;
+	}
+	public void setDismenid(String dismenid) {
+		this.dismenid = dismenid;
+	}
+	public String getDismentypeid() {
+		return dismentypeid;
+	}
+	public void setDismentypeid(String dismentypeid) {
+		this.dismentypeid = dismentypeid;
+	}
+	public String getOrgan() {
+		return organ;
+	}
+	public void setOrgan(String organ) {
+		this.organ = organ;
+	}
+	public String getKnowledgetypeid() {
+		return knowledgetypeid;
+	}
+	public void setKnowledgetypeid(String knowledgetypeid) {
+		this.knowledgetypeid = knowledgetypeid;
+	}
+	public String getKnowbaseid() {
+		return knowbaseid;
+	}
+	public void setKnowbaseid(String knowbaseid) {
+		this.knowbaseid = knowbaseid;
+	}
+	public String getPubstatus() {
+		return pubstatus;
+	}
+	public void setPubstatus(String pubstatus) {
+		this.pubstatus = pubstatus;
+	}
+	public boolean isDatastatus() {
+		return datastatus;
+	}
+	public void setDatastatus(boolean datastatus) {
+		this.datastatus = datastatus;
+	}
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	public Date getBegintime() {
+		return begintime;
+	}
+	public void setBegintime(Date begintime) {
+		this.begintime = begintime;
+	}
+	public Date getEndtime() {
+		return endtime;
+	}
+	public void setEndtime(Date endtime) {
+		this.endtime = endtime;
+	}
+	public Date getCreatetime() {
+		return createtime;
+	}
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
+	}
+	public String getCreater() {
+		return creater;
+	}
+	public void setCreater(String creater) {
+		this.creater = creater;
+	}
+	public String getOrgi() {
+		return orgi;
+	}
+	public void setOrgi(String orgi) {
+		this.orgi = orgi;
 	}
 	
 	
