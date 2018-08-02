@@ -39,4 +39,6 @@ public interface StatusEventRepository extends JpaRepository<StatusEvent, String
 	
 	public int countByCalled(String called);
 	
+	public Page<StatusEvent> findByRecordAndUseridAndOrgi(boolean record ,String userid,String orgi , Pageable page) ;
+	
 }
