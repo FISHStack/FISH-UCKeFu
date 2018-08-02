@@ -490,6 +490,16 @@ public class CallCenterUtils {
 		PageImpl<UKDataBean> dataList = SearchTools.search(queryBuilder,p, ps);
 		return dataList.getContent().size();
 	}
-	
-	
+	/**
+	 * 获取语音渠道中的查询条件
+	 * @param map
+	 * @param orgi
+	 */
+	public static void getCallCenterSearch(ModelMap map,@Valid String orgi){
+		UserRepository userRes = UKDataContext.getContext().getBean(UserRepository.class) ;
+		OrganRepository organRes = UKDataContext.getContext().getBean(OrganRepository.class) ;
+		
+		map.put("allUserList",userRes.findByOrgi(orgi));
+		map.put("skillList",organRes.findByOrgi(orgi));
+	}
 }
