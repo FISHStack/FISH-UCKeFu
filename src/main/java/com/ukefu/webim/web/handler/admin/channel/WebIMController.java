@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
@@ -26,11 +27,14 @@ import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
 import com.ukefu.webim.service.repository.SNSAccountRepository;
 import com.ukefu.webim.service.repository.ServiceAiRepository;
+import com.ukefu.webim.service.repository.TemplateRepository;
 import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.CousultInvite;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.OrgiSkillRel;
+import com.ukefu.webim.web.model.SysDic;
+import com.ukefu.webim.web.model.UKeFuDic;
 import com.ukefu.webim.web.model.User;
 
 @Controller
@@ -57,6 +61,9 @@ public class WebIMController extends Handler{
 	
 	@Autowired
 	private SNSAccountRepository snsAccountRes;
+	
+	@Autowired
+	private TemplateRepository templateRes ;
 
     @RequestMapping("/index")
     @Menu(type = "webim" , subtype = "webim" , admin= true)
@@ -129,6 +136,25 @@ public class WebIMController extends Handler{
     	map.addAttribute("snsAccount", snsAccountRes.findBySnsidAndOrgi(snsid, super.getOrgi(request))) ;
     	
     	map.put("serviceAiList",serviceAiRes.findByOrgi(super.getOrgi(request)) ) ;
+    	
+    	
+    	List<SysDic> dicList = UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_DIC) ;
+    	SysDic inputDic = null , outputDic = null ;
+    	for(SysDic dic : dicList){
+    		if(dic.getCode().equals(UKDataContext.UKEFU_SYSTEM_AI_INPUT)){
+    			inputDic = dic ;
+    		}
+    		if(dic.getCode().equals(UKDataContext.UKEFU_SYSTEM_AI_OUTPUT)){
+    			outputDic = dic ;
+    		}
+    	}
+    	if(inputDic!=null){
+    		map.addAttribute("innputtemlet", templateRes.findByTemplettypeAndOrgi(inputDic.getId(), super.getOrgi(request))) ;
+    	}
+    	if(outputDic!=null){
+    		map.addAttribute("outputtemlet", templateRes.findByTemplettypeAndOrgi(outputDic.getId(), super.getOrgi(request))) ;
+    	}
+    	
         return request(super.createAdminTempletResponse("/admin/webim/profile"));
     }
     
@@ -185,6 +211,17 @@ public class WebIMController extends Handler{
     			
     			
     			tempInviteData.setMaxwordsnum(inviteData.getMaxwordsnum());
+    			
+    			tempInviteData.setEnableother(inviteData.isEnableother());
+    			tempInviteData.setOtherssl(inviteData.isOtherssl());
+    			tempInviteData.setOtherlogin(inviteData.isOtherlogin());
+    			
+    			tempInviteData.setOtherurl(inviteData.getOtherurl());
+    			tempInviteData.setOthertempletinput(inviteData.getOthertempletinput());
+    			tempInviteData.setOthertempletoutput(inviteData.getOthertempletoutput());
+    			
+    			tempInviteData.setSuggestnum(inviteData.getSuggestnum());
+    			
     			
     			tempInviteData.setCtrlenter(inviteData.isCtrlenter());
     			

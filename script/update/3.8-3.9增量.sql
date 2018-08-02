@@ -621,3 +621,23 @@ ALTER TABLE uk_callcenter_pbxhost ADD blacklist varchar(255) COMMENT '黑名单�
 
 
 ALTER TABLE uk_callcenter_event ADD tracesip text COMMENT 'SIP消息记录';
+
+
+ALTER TABLE uk_consult_invite ADD enableother tinyint DEFAULT 0 COMMENT '启用外部推荐内容';
+
+ALTER TABLE uk_consult_invite ADD otherurl varchar(255) COMMENT '启用外部推荐内容';
+ALTER TABLE uk_consult_invite ADD otherssl tinyint DEFAULT 0 COMMENT '外部推荐启用SSL';
+ALTER TABLE uk_consult_invite ADD otherlogin tinyint DEFAULT 0 COMMENT '需要登录';
+
+ALTER TABLE uk_consult_invite ADD otherappkey varchar(50) COMMENT '外部推荐APPKey';
+ALTER TABLE uk_consult_invite ADD otherappsec varchar(100) COMMENT '推荐AppSec';
+
+ALTER TABLE uk_consult_invite ADD otherparam varchar(255) COMMENT '推荐AppSec';
+ALTER TABLE uk_consult_invite ADD othermethod varchar(50) COMMENT '外部推荐请求方式';
+ALTER TABLE uk_consult_invite ADD othertempletinput varchar(50) COMMENT '外部推荐输入格式化模板';
+ALTER TABLE uk_consult_invite ADD othertempletoutput varchar(50) COMMENT '外部推荐输出格式化模板';
+
+ALTER TABLE uk_consult_invite ADD oqrdetailurl varchar(255) COMMENT '外部推荐内容URL';
+ALTER TABLE uk_consult_invite ADD oqrdetailinput varchar(32) COMMENT '外部推荐详情输入格式化模板';
+ALTER TABLE uk_consult_invite ADD oqrdetailoutput varchar(32) COMMENT '外部推荐详情输出格式化模板';
+ALTER TABLE uk_consult_invite ADD suggestnum int DEFAULT 0 COMMENT '显示外部推荐条数';

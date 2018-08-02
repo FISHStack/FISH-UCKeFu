@@ -536,6 +536,80 @@
 												</div>
 											</div>
 										</div>
+										<div class="ukefu-webim-prop">
+											<div class="ukefu-webim-tl" style="clear:both;">16、启用外部智能推荐</div>
+											<div class="box-item">
+												<div class="row">
+													<div class="col-lg-8">
+														<p>启用外部智能推荐功能，通过接口访问</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">外部智能推荐的输入和输出参数</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="checkbox" title="启用" name="enableother" id="enableother" lay-filter="othersuggest" <#if inviteData?? && inviteData.enableother == true>checked="checked"</#if>>
+													</div>
+												</div>
+											</div>
+											<div class="box-item" id="othersuggest_op" style="<#if inviteData?? && inviteData.enableother == false>display:none;</#if>">	
+												<div class="row"  style="margin-bottom:20px;">
+													<div class="col-lg-8">
+														<p>a、外部智能推荐启用HTTPS访问</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="checkbox" id="otherssl" name="otherssl" title="启用" <#if inviteData?? && inviteData.otherssl == true>checked="checked"</#if>>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-lg-8">
+														<p>b、外部智能推荐的接口地址</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="text" name="otherurl" id="otherurl" value="<#if inviteData??>${inviteData.otherurl!''}</#if>" autocomplete="off" class="layui-input" style="display:inline;">
+													</div>
+												</div>
+												<div class="row" style="margin-top:10px;">
+													<div class="col-lg-8">
+														<p>c、外部智能推荐的接口输入参数</p>
+													</div>
+													<div class="col-lg-4">
+														<select name="othertempletinput">
+															<option value="">请选择接口输入参数格式化模板</option>
+															<#if innputtemlet??>
+															<#list innputtemlet as it>
+															<option value="${it.id!''}" <#if inviteData?? && inviteData.othertempletinput?? && inviteData.othertempletinput == it.id>selected="selected"</#if>>${it.name!''}</option>
+															</#list>
+															</#if>
+														</select>
+													</div>
+												</div>
+												<div class="row" style="margin-top:10px;">
+													<div class="col-lg-8">
+														<p>d、外部智能推荐的输出参数</p>
+													</div>
+													<div class="col-lg-4">
+														<select name="othertempletoutput">
+															<option value="">请选择接口输出参数格式化模板</option>
+															<#if outputtemlet??>
+															<#list outputtemlet as it>
+															<option value="${it.id!''}" <#if inviteData?? && inviteData.othertempletoutput?? && inviteData.othertempletoutput == it.id>selected="selected"</#if>>${it.name!''}</option>
+															</#list>
+															</#if>
+														</select>
+													</div>
+												</div>
+												<div class="row" style="margin-top:10px;">
+													<div class="col-lg-8">
+														<p>e、最多显示推荐数量</p>
+													</div>
+													<div class="col-lg-4">
+														<select name="suggestnum">
+															<#list 3..10 as num>
+															<option value="${num}" <#if inviteData?? && inviteData.suggestnum?? && inviteData.suggestnum == num>selected="selected"</#if>>${num}</option>
+															</#list>
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 									<div class="col-md-5">
 										<div class="ukefu-im-preview ukefu-im-preview-dialog" id="pv" style="width:380px;position: fixed;">
@@ -657,6 +731,14 @@
 				$('#consult_info').show();		
 			}else{
 				$('#consult_info').hide();
+			}
+		});
+		form.on("checkbox(othersuggest)" , function(data){
+			if(data.elem.checked == true){
+				$('#othersuggest_op').show();		
+			}else{
+				
+				$('#othersuggest_op').hide();
 			}
 		});
 	});

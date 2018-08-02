@@ -619,6 +619,16 @@ public class IMController extends Handler{
 		return view;
     }
     
+
+    @RequestMapping("/suggest/{appid}")
+    @Menu(type = "im" , subtype = "index" , access = true)
+    public ModelAndView suggest(ModelMap map , HttpServletRequest request , HttpServletResponse response,  @PathVariable String appid ,@Valid String q ,@Valid String traceid,@Valid String aiid ,@Valid String p ,@Valid String exchange, @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String phone,@Valid String ai,@Valid String orgi ,@Valid String product,@Valid String description,@Valid String imgurl,@Valid String pid,@Valid String purl) throws Exception {
+    	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/suggest")) ;
+    	map.addAttribute("contentList" , OnlineUserUtils.suggest(q, orgi, userid, OnlineUserUtils.cousult(appid, orgi, inviteRepository))) ;
+		return view;
+    }
+    
+    
     
     @RequestMapping("/leavemsg/save")
     @Menu(type = "admin" , subtype = "user")

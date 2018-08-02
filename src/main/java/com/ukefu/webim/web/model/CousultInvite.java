@@ -131,6 +131,24 @@ public class CousultInvite implements java.io.Serializable{
 	private String agent_online;
 
 	
+	private boolean enableother ;	//启用外部推荐内容
+	private String otherurl ;		//外部推荐URL
+	private boolean otherssl ;		//外部推荐启用SSL
+	private boolean otherlogin;		//需要登录
+	private String otherappkey;		//外部推荐APPKey
+	private String otherappsec;		//推荐AppSec
+	private String otherparam ;		//外部推荐参数
+	private String othermethod ;		//外部推荐请求方式  ， GET/POST
+	private String othertempletinput ;	//外部推荐输入格式化模板
+	private String othertempletoutput ;	//外部推荐输出格式化模板
+	
+	private int suggestnum;			//推荐条数
+	
+	private String oqrdetailurl ;		//外部推荐内容URL
+	private String oqrdetailinput ;	//外部推荐详情输入格式化模板
+	private String oqrdetailoutput ;	//外部推荐详情输出格式化模板
+	
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -705,5 +723,89 @@ public class CousultInvite implements java.io.Serializable{
 	}
 	public void setCtrlenter(boolean ctrlenter) {
 		this.ctrlenter = ctrlenter;
+	}
+	public boolean isEnableother() {
+		return enableother;
+	}
+	public void setEnableother(boolean enableother) {
+		this.enableother = enableother;
+	}
+	public String getOtherurl() {
+		return otherurl;
+	}
+	public void setOtherurl(String otherurl) {
+		this.otherurl = otherurl;
+	}
+	public boolean isOtherssl() {
+		return otherssl;
+	}
+	public void setOtherssl(boolean otherssl) {
+		this.otherssl = otherssl;
+	}
+	public boolean isOtherlogin() {
+		return otherlogin;
+	}
+	public void setOtherlogin(boolean otherlogin) {
+		this.otherlogin = otherlogin;
+	}
+	public String getOtherappkey() {
+		return otherappkey;
+	}
+	public void setOtherappkey(String otherappkey) {
+		this.otherappkey = otherappkey;
+	}
+	public String getOtherappsec() {
+		return otherappsec;
+	}
+	public void setOtherappsec(String otherappsec) {
+		this.otherappsec = otherappsec;
+	}
+	public String getOtherparam() {
+		return otherparam;
+	}
+	public void setOtherparam(String otherparam) {
+		this.otherparam = otherparam;
+	}
+	public String getOthermethod() {
+		return othermethod;
+	}
+	public void setOthermethod(String othermethod) {
+		this.othermethod = othermethod;
+	}
+	public String getOthertempletinput() {
+		return othertempletinput;
+	}
+	public void setOthertempletinput(String othertempletinput) {
+		this.othertempletinput = othertempletinput;
+	}
+	public String getOthertempletoutput() {
+		return othertempletoutput;
+	}
+	public void setOthertempletoutput(String othertempletoutput) {
+		this.othertempletoutput = othertempletoutput;
+	}
+	public String getOqrdetailurl() {
+		return oqrdetailurl;
+	}
+	public void setOqrdetailurl(String oqrdetailurl) {
+		this.oqrdetailurl = oqrdetailurl;
+	}
+	public String getOqrdetailinput() {
+		return oqrdetailinput;
+	}
+	public void setOqrdetailinput(String oqrdetailinput) {
+		this.oqrdetailinput = oqrdetailinput;
+	}
+	public String getOqrdetailoutput() {
+		return oqrdetailoutput;
+	}
+	public void setOqrdetailoutput(String oqrdetailoutput) {
+		this.oqrdetailoutput = oqrdetailoutput;
+	}
+	public int getSuggestnum() {
+		return suggestnum;
+	}
+	public void setSuggestnum(int suggestnum) {
+		this.suggestnum = suggestnum;
 	}
 }

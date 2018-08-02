@@ -1044,6 +1044,45 @@ public class OnlineUserUtils {
 		}
 		return result;
 	}
+	/**
+	 * 智能推荐内容
+	 * @param q
+	 * @param orgi
+	 * @param userid
+	 * @param invite
+	 * @return
+	 * @throws IOException
+	 * @throws TemplateException
+	 */
+	public static List<OtherMessageItem> suggest(String q , String orgi , String userid , CousultInvite invite) throws IOException, TemplateException {
+		List<OtherMessageItem> suggestItemList = null ;
+		String param = "" ;
+		if(!StringUtils.isBlank(invite.getOtherurl())) {
+			if(!StringUtils.isBlank(invite.getOthertempletinput())) {
+				Template templet = UKTools.getTemplate(invite.getOthertempletinput()) ;
+				Map<String,Object> values = new HashMap<String,Object>();
+				values.put("q", q) ;
+				values.put("userid", userid) ;
+				param = UKTools.getTemplet(templet.getTemplettext(), values) ;
+			}
+			String result = HttpClientUtil.doPost(invite.getOtherurl(), param)  , text = null;
+			if(!StringUtils.isBlank(result) && !StringUtils.isBlank(invite.getOthertempletoutput()) && !result.equals("error")) {
+				Template templet = UKTools.getTemplate(invite.getOthertempletoutput()) ;
+				@SuppressWarnings("unchecked")
+				Map<String,Object> jsonData = objectMapper.readValue(result, Map.class) ;
+				Map<String,Object> values = new HashMap<String,Object>();
+				values.put("q", q) ;
+				values.put("userid", userid) ;
+				values.put("data", jsonData) ;
+				text = UKTools.getTemplet(templet.getTemplettext(), values) ;
+			}
+			if(!StringUtils.isBlank(text)){
+				JavaType javaType = getCollectionType(ArrayList.class, OtherMessageItem.class); 
+				suggestItemList = objectMapper.readValue(text, javaType) ;
+			}
+		}
+		return suggestItemList ;
+	}
 	
 	public static List<OtherMessageItem> search(String q , String orgi , User user) throws IOException, TemplateException {
 		List<OtherMessageItem> otherMessageItemList = null ;
