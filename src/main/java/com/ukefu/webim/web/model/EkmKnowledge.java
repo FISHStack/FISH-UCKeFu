@@ -10,6 +10,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.elasticsearch.annotations.Document;
+
+import com.ukefu.util.UKTools;
 /**
  * EKM-知识表
  *
@@ -25,7 +27,7 @@ public class EkmKnowledge implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 1115593425069549681L;
 	
-	private String id ;
+	private String id  = UKTools.getUUID();
 	private String title ;//名称
 	private String summary;//摘要
 	private String content;//内容
@@ -52,7 +54,7 @@ public class EkmKnowledge implements java.io.Serializable{
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")	
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")	
 	public String getId() {
 		return id;
 	}
