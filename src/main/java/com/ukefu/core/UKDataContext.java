@@ -796,6 +796,19 @@ public class UKDataContext {
 			return super.toString().toLowerCase() ;
 		}
 	}
+	
+	public enum PubStatusEnum{
+		NEW,
+		WAIT,
+		PASS,
+		REJECTED,
+		DOWN;
+		
+		public String toString(){
+			return super.toString().toLowerCase() ;
+		}
+	}
+	
 
 
 	/**
