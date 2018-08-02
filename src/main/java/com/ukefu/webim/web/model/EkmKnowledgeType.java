@@ -37,6 +37,7 @@ public class EkmKnowledgeType implements java.io.Serializable{
 	private Date createtime ;
 	private String creater;
 	private String orgi ;
+	private boolean datastatus;
 	
 
 	
@@ -121,6 +122,12 @@ public class EkmKnowledgeType implements java.io.Serializable{
 	}
 	public void setKnowbaseid(String knowbaseid) {
 		this.knowbaseid = knowbaseid;
+	}
+	public boolean isDatastatus() {
+		return datastatus;
+	}
+	public void setDatastatus(boolean datastatus) {
+		this.datastatus = datastatus;
 	}
 	
 	

@@ -35,7 +35,7 @@ public class EkmKnowledge implements java.io.Serializable{
 	private String knowledgetypeid ;//所属知识分类ID
 	private String knowbaseid ;//所属知识库ID
 	private String pubstatus ;//知识状态（新建 new/审核中 wait/发布成功 pass/被驳回 rejected /已下架 down）
-	private boolean datastatus;//数据状态（false未删除/true删除）
+	private boolean datastatus;//数据状态
 	private String version;//版本号
 
 	private Date begintime ;//有效期-开始

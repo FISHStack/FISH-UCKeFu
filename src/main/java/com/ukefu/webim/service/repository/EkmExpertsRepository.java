@@ -20,7 +20,7 @@ public abstract interface EkmExpertsRepository  extends JpaRepository<EkmExperts
 	
 	//public abstract Page<EkmExperts> findByOrgiAndBustypeOr(String orgi ,String bustype,String bus ,Pageable paramPageable);
 	
-	public abstract List<EkmExperts> findByOrgi(String orgi);
+	public abstract List<EkmExperts> findByOrgiAndDatastatus(String orgi,boolean datastatus);
 	
 }
 

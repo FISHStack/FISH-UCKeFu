@@ -33,6 +33,7 @@ public class EkmExperts implements java.io.Serializable{
 	private int auditimes;//审核知识总条数
 	private int auditpass;//审核知识通过总条数
 	private int auditreject;//审核知识驳回总条数
+	private boolean datastatus;//数据状态
 	
 	@Id
 	@Column(length = 32)
@@ -109,6 +110,12 @@ public class EkmExperts implements java.io.Serializable{
 	}
 	public void setAuditreject(int auditreject) {
 		this.auditreject = auditreject;
+	}
+	public boolean isDatastatus() {
+		return datastatus;
+	}
+	public void setDatastatus(boolean datastatus) {
+		this.datastatus = datastatus;
 	}
 	
 	
