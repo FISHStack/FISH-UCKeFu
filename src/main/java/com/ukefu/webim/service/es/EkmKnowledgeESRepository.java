@@ -18,6 +18,8 @@ public abstract interface EkmKnowledgeESRepository  extends ElasticsearchReposit
 	
 	public abstract Page<EkmKnowledge> findByDatastatusAndOrgi(boolean datastatus ,String orgi,Pageable page);
 	
+	public abstract List<EkmKnowledge> findByOrgiAndDatastatus(String orgi,boolean datastatus);
+	
 	public abstract Page<EkmKnowledge> findByKnowbaseidAndKnowledgetypeidAndDatastatusAndOrgi(String knowbaseid,String knowledgetypeid,boolean datastatus ,String orgi,Pageable page);
 	
 	public abstract List<EkmKnowledge> findByKnowbaseidAndDatastatusAndOrgi(String knowbaseid,boolean datastatus ,String orgi);

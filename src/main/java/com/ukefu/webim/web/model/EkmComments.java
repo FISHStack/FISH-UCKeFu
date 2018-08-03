@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 /**
- * 知识库表
+ * 评论表
  *
  */
 @Entity
@@ -23,6 +23,7 @@ public class EkmComments implements java.io.Serializable{
 	
 	private String id ;
 	private String knowledgeid ;//知识ID
+	private String knowledgeower ;//知识ID
 	private String dismenid ;//所属维度ID（根级目录）
 	private String dismentypeid ;//所属维度分类ID（分支ID）
 	private String knowledgetypeid ;//所属知识分类ID
@@ -112,6 +113,12 @@ public class EkmComments implements java.io.Serializable{
 	}
 	public void setDatastatus(boolean datastatus) {
 		this.datastatus = datastatus;
+	}
+	public String getKnowledgeower() {
+		return knowledgeower;
+	}
+	public void setKnowledgeower(String knowledgeower) {
+		this.knowledgeower = knowledgeower;
 	}
 	
 	
