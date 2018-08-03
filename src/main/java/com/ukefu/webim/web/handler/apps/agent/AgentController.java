@@ -203,7 +203,7 @@ public class AgentController extends Handler {
 		SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
 		
 		view.addObject("sessionConfig", sessionConfig) ;
-		if(sessionConfig.isOtherquickplay()) {
+		if(sessionConfig.isOtherquickplay() && !StringUtils.isBlank(sessionConfig.getOqrsearchurl())) {
 			view.addObject("topicList", OnlineUserUtils.search(null, super.getOrgi(request), super.getUser(request))) ;
 		}
 		
