@@ -32,6 +32,31 @@
 			-webkit-touch-callout: none; 
 		  -webkit-user-select: none; 
 		}
+		.ukefu-suggest{
+			position: absolute;
+		    width: 100%;
+		    bottom: 0px;
+		    margin-bottom: 73px;
+		    border: 1px solid #dedede;
+		    border-left:0px;
+		    border-right:0px;
+		    background-color: #ffffff;
+		    padding: 0px 5px 0 5px;
+		    line-height: 25px;
+		    font-size: 16px;
+		    display:none;
+		    z-index:1000;
+		}
+		.ukefu-suggest a{
+			color:#333333;
+			text-decoration: none;
+		}
+		.ukefu-suggest-change{
+			position: absolute;
+		    right: 0px;
+		    padding: 0px 5px;
+		    color: #4665d4;
+		}
     </style>
     
     <script src="/im/js/socket.io.js"></script>
@@ -140,6 +165,25 @@
 		}
 	}
 	$(document).ready(function(){
+		$(document).on("click" , '[data-toggle="suggest"]' , function(e){
+			$('#message').val($(this).data("content"));
+			$("#ukefu-suggest").empty().hide();
+			sendMessage();	
+		});
+		$(document).on("click" , '[data-toggle="change"]' , function(e){
+			var blocks = $('.ukefu-suggest-block') ;
+			for(var i=0 ; i<blocks.length ; i++){
+				if($(blocks[i]).is(":hidden") == false){
+					$(blocks[i]).hide();
+					if(i + 1 < blocks.length){
+						$(blocks[i]).next().show();
+					}else{
+						$(blocks[0]).show();
+					}
+					break ;
+				}
+			}
+		});
 		window.addEventListener('resize', function () {
 		     if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
 		        window.setTimeout(function () {
@@ -194,8 +238,8 @@
 			<button id="offcoop-btn" style="border-color:#009688 !important;color:#FFFFFF;display: inline-block;height: 38px;line-height: 38px;padding: 0 18px;background-color: #009688;color: #fff;white-space: nowrap;text-align: center;font-size: 14px;margin-right:10px;border: none;border-radius: 2px;cursor: pointer;opacity: .9;filter: alpha(opacity=90);background-color: #377FED !important;border:1px solid #FFFFFF;" onclick="offCoop();">退出协作</button>
 		</div>
 	</div>
-	<div class="chat-above" id="above" style="height:calc(100% - 60px);padding-bottom:100px;">
-		<div class="clearfix message  welcome">
+	<div class="chat-above" id="above" style="height:calc(100% - 60px);padding-bottom:100px;padding-left:0px;padding-right:0px;">
+		<div class="clearfix message  welcome" style="margin:5px;">
 			<span id="welcome-message">${(inviteData.dialog_message!'欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.')?no_esc}</span>
 		</div>
 		<#if chatMessageList?? && chatMessageList.content??> 
@@ -233,8 +277,8 @@
 			</div>
 		</div>
 		</#if> </#list> </#if>
+		<div class="ukefu-suggest" id="ukefu-suggest"></div>
 	</div>
-	
 	<div class="mobile-chat-bottom" id="bottom">
 		<form id="imgForm" action="/im/image/upload.html?userid=${userid!''}&appid=${appid!''}&username=${username!''}&orgi=${orgi!''}" data-toggle="ajax-form"" enctype="multipart/form-data">
 			<a href="javascript:;" class="imgFile" onclick="closeFaceDialog(0)">
@@ -294,6 +338,21 @@
 			service_end = true ;
 			//editor.readonly();
 		}
+    })
+    $('#message').on("input propertychange",function(){
+    	var value = $(this).val();
+    	if(value.trim()!=''){
+    		$.ajax({
+    			url: "/im/suggest/mobile/${appid!''}.html?userid=${userid!''}&q="+encodeURIComponent(value),
+    			success:function(data){
+    				if(data.trim() != ''){
+    					$("#ukefu-suggest").empty().html(data).show();
+    				}else{
+    					$("#ukefu-suggest").empty().hide();
+    				}
+    			}
+    		});
+    	}
     })
     socket.on('message', function(data) {
         var chat=document.getElementsByClassName('chatting-left').innerText;

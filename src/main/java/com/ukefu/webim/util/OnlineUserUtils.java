@@ -844,7 +844,7 @@ public class OnlineUserUtils {
 			ipdata = IPTools.getInstance().findGeography(ip);
 		}
 		if(StringUtils.isBlank(nickname)){
-			nickname = "Guest_" + userid;
+			nickname = "Guest_" + UKTools.genIDByKey(userid);
 		}
 		
 		return newRequestMessage(userid , nickname, orgi, session, appid, ip, osname, browser , "" , ipdata , channel , skill , agent , title ,url , traceid , initiator , session) ;
