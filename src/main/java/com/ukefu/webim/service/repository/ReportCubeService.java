@@ -378,8 +378,8 @@ public class ReportCubeService{
 		 if(model!=null && !model.getFilters().isEmpty()){
 			 for(ReportFilter filter : model.getFilters()){
 				 if("range".toString().equals(filter.getValuefiltertype())){
-					 filter.setRequeststartvalue(request.getParameter(filter.getCode()+"_start")) ;
-					 filter.setRequestendvalue(request.getParameter(filter.getCode()+"_end")) ;
+					 filter.setRequeststartvalue(request.getParameter(filter.getCode())) ;
+					 filter.setRequestendvalue(request.getParameter(filter.getCode()+"_endvalue")) ;
 					 
 					 filter.setRequeststartvalue(getStartValue(filter, request)) ;
 					 filter.setRequestendvalue(getEndValue(filter, request)) ;
