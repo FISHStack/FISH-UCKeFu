@@ -28,6 +28,7 @@
 		<script src="/js/maps.js"></script>
 		<script src="/js/main.js"></script>
 		<script src="/js/ukefu-report.js"></script>
+		<script src="/js/ukefu-report.design.js"></script>
 		<script src="/js/ukefu-report.chart.js"></script>
 		<script src="/js/UKeFu_Util.js"></script>
 		<script src="/js/g2.min.js"></script>
@@ -56,7 +57,7 @@
 			<#if reportFilters?? && reportFilters?size gt 0>
 			<div class="ukefu-filters-content layui-form">
 				<form  action="/apps/report/view.html?id=${report.id!''}" method="post">
-				<div  class="ui-sortable layui-row" >
+				<div  class="ui-sortable layui-row " >
 					<div class="layui-col-md11" id="ukefu-filter-list">
 						<#if reportFilters??>
 						<#list reportFilters as filter>
