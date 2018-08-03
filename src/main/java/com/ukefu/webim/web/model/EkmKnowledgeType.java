@@ -28,7 +28,7 @@ public class EkmKnowledgeType implements java.io.Serializable{
 	private int total;//该分类下的知识条数
 	private int viewnum;//该分类下的知识被浏览次数
 	private int collectnum;//该分类下的知识被收藏次数
-	private int audit;//是否审核（0是/1否）
+	private boolean audit;//是否审核（1是/0否）
 	private String auditer ;//审核人
 	private String organ ;//用户所属部门ID
 	private String parentid ;//父级ID
@@ -75,10 +75,10 @@ public class EkmKnowledgeType implements java.io.Serializable{
 	public void setCollectnum(int collectnum) {
 		this.collectnum = collectnum;
 	}
-	public int getAudit() {
+	public boolean isAudit() {
 		return audit;
 	}
-	public void setAudit(int audit) {
+	public void setAudit(boolean audit) {
 		this.audit = audit;
 	}
 	public String getOrgan() {
