@@ -770,10 +770,9 @@ public class AgentController extends Handler {
     public ModelAndView messageimage(HttpServletResponse response,ModelMap map, @Valid String id, @Valid String t) throws IOException {
     	ChatMessage message = chatMessageRepository.findById(id) ;
     	map.addAttribute("chatMessage", message) ;
-    	map.addAttribute("agentUser", CacheHelper.getAgentUserCacheBean().getCacheObject(message.getUserid(), message.getOrgi())) ;
-    	/*if(!StringUtils.isBlank(t)){
-    		map.addAttribute("t", t) ;
-    	}*/
+    	if(message!=null) {
+    		map.addAttribute("agentUser", CacheHelper.getAgentUserCacheBean().getCacheObject(message.getUserid(), message.getOrgi())) ;
+    	}
     	map.addAttribute("t", true) ;
     	return request(super.createRequestPageTempletResponse("/apps/agent/media/messageimage")) ; 
     }

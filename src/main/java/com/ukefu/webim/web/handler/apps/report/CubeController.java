@@ -104,7 +104,7 @@ public class CubeController extends Handler{
     		//判断名称是否重复
     		CubeType ct = cubeTypeRes.findByOrgiAndName(super.getOrgi(request),cubeType.getName());
     		if(ct!=null && !ct.getId().equals(cubeType.getId())) {
-    			return request(super.createRequestPageTempletResponse("redirect:/apps/business/report/cube/index.html?msg=ct_type_exist&typeid="+cubeType.getId()));
+    			return request(super.createRequestPageTempletResponse("redirect:/apps/report/cube/index.html?msg=ct_type_exist&typeid="+cubeType.getId()));
     		}
     		tempCubeType.setName(cubeType.getName());
     		tempCubeType.setDescription(cubeType.getDescription());
@@ -112,7 +112,7 @@ public class CubeController extends Handler{
     		tempCubeType.setParentid(cubeType.getParentid());
     		cubeTypeRes.save(tempCubeType) ;
     	}
-    	return request(super.createRequestPageTempletResponse("redirect:/apps/business/report/cube/index.html?typeid="+cubeType.getId()));
+    	return request(super.createRequestPageTempletResponse("redirect:/apps/report/cube/index.html?typeid="+cubeType.getId()));
     }
     
     @RequestMapping({"/type/delete"})
