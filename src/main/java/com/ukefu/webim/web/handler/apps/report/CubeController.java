@@ -109,6 +109,7 @@ public class CubeController extends Handler{
     		tempCubeType.setName(cubeType.getName());
     		tempCubeType.setDescription(cubeType.getDescription());
     		tempCubeType.setInx(cubeType.getInx());
+    		tempCubeType.setUpdatetime(new Date());
     		tempCubeType.setParentid(cubeType.getParentid());
     		cubeTypeRes.save(tempCubeType) ;
     	}
