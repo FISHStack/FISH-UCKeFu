@@ -112,6 +112,16 @@ var WebIM = {
 	            player.appendChild(mp3);
 	        }
 	    }
+	},
+	audiostop:function(id){
+		var player = document.getElementById(id);
+		if(player!=null){
+			player.pause();
+			player.currentTime = 0;
+			if($('#'+id).length > 0){
+				$('#'+id).remove();
+			}
+		}
 	}
 }
 

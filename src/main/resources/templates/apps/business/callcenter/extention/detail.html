@@ -8,6 +8,7 @@
 	"webrtcport":"<#if pbxhost??>${pbxhost.webrtcport!''}</#if>",
 	"sipport":"<#if pbxhost??>${pbxhost.sipport!'5060'}<#else>5060</#if>",
 	"webrtcssl":"<#if pbxhost?? && pbxhost.webrtcssl == true>true<#else>false</#if>",
+	"webrtcring":"<#if pbxhost??>${pbxhost.webrtcring!''}</#if>",
 	"orgi":"${extention.orgi!''}",
 	"userid":"${user.id!''}"
 }

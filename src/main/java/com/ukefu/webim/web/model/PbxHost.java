@@ -72,6 +72,8 @@ public class PbxHost implements java.io.Serializable{
 	private String webrtcport; 		//WebRTC端口
 	private boolean webrtcssl;		//启用SSL
 	
+	private String webrtcring ;		//来电铃声
+	
 	private boolean dissipphone ;	//外呼的时候，是否隐藏SIP话机上的号码
 	
 	
@@ -303,5 +305,11 @@ public class PbxHost implements java.io.Serializable{
 	}
 	public void setBlacklist(String blacklist) {
 		this.blacklist = blacklist;
+	}
+	public String getWebrtcring() {
+		return webrtcring;
+	}
+	public void setWebrtcring(String webrtcring) {
+		this.webrtcring = webrtcring;
 	}
 }

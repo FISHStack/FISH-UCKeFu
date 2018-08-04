@@ -17,6 +17,7 @@ import com.ukefu.util.Menu;
 import com.ukefu.util.extra.CallCenterInterface;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.ExtentionRepository;
+import com.ukefu.webim.service.repository.MediaRepository;
 import com.ukefu.webim.service.repository.PbxHostRepository;
 import com.ukefu.webim.service.repository.ServiceAiRepository;
 import com.ukefu.webim.web.handler.Handler;
@@ -33,6 +34,9 @@ public class CallCenterResourceController extends Handler{
 	private ExtentionRepository extentionRes;
 	
 	@Autowired
+	private MediaRepository mediaRes ;
+	
+	@Autowired
 	private ServiceAiRepository serviceAiRes ;
 	
 	@RequestMapping(value = "/resource")
@@ -40,7 +44,7 @@ public class CallCenterResourceController extends Handler{
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String hostid) {
 		List<PbxHost> pbxHostList = pbxHostRes.findByOrgi(super.getOrgi(request)) ;
 		map.addAttribute("pbxHostList" , pbxHostList);
-		
+		map.addAttribute("mediaList" , mediaRes.findByHostidAndOrgi(hostid, super.getOrgi(request)));
 		map.put("serviceAiList",serviceAiRes.findByOrgi(super.getOrgi(request)) ) ;
 		
 		PbxHost pbxHost = null ;
@@ -56,6 +60,7 @@ public class CallCenterResourceController extends Handler{
     public ModelAndView config(ModelMap map , HttpServletRequest request , @Valid String hostid) {
 		List<PbxHost> pbxHostList = pbxHostRes.findByOrgi(super.getOrgi(request)) ;
 		map.addAttribute("pbxHostList" , pbxHostList);
+		map.addAttribute("mediaList" , mediaRes.findByHostidAndOrgi(hostid, super.getOrgi(request)));
 		PbxHost pbxHost = null ;
 		if(pbxHostList.size() > 0){
 			map.addAttribute("pbxHost" , pbxHost = getPbxHost(pbxHostList, hostid));

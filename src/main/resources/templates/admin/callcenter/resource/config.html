@@ -271,6 +271,22 @@
 												<input type="checkbox" title="启用" name="webrtcssl" id="webrtcssl" <#if pbxHost?? && pbxHost.webrtcssl == true>checked="checked"</#if>>
 											</div>
 										</div>
+										
+										<div class="row" style="margin-top:20px;">
+											<div class="col-lg-8">
+												<p>呼入来电铃声</p>
+											</div>
+											<div class="col-lg-4">
+												<select name="webrtcring">
+								                	<option values="">请选择播报录音</option>
+								                	<#if mediaList??>
+								                	<#list mediaList as media>
+								                	<option value="${media.filename!''}" <#if pbxHost.webrtcring?? && pbxHost.webrtcring == media.filename>selected="selected"</#if>>${media.name!''}</option>
+								                	</#list>
+								                	</#if>
+								                </select>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="ukefu-webim-prop">

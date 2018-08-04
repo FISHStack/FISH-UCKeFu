@@ -641,3 +641,7 @@ ALTER TABLE uk_consult_invite ADD oqrdetailurl varchar(255) COMMENT '外部推�
 ALTER TABLE uk_consult_invite ADD oqrdetailinput varchar(32) COMMENT '外部推荐详情输入格式化模板';
 ALTER TABLE uk_consult_invite ADD oqrdetailoutput varchar(32) COMMENT '外部推荐详情输出格式化模板';
 ALTER TABLE uk_consult_invite ADD suggestnum int DEFAULT 0 COMMENT '显示外部推荐条数';
+
+
+ALTER TABLE uk_callcenter_pbxhost ADD webrtcring varchar(255) COMMENT '来电铃声';
+
