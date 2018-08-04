@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-08-02 17:17:09
+Date: 2018-08-04 12:28:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1204,6 +1204,7 @@ CREATE TABLE `uk_callcenter_pbxhost` (
   `dissipphone` tinyint(4) DEFAULT '0' COMMENT '外呼隐藏话机上的号码',
   `sipport` int(11) DEFAULT '5060' COMMENT 'SIP服务端口',
   `blacklist` varchar(255) DEFAULT NULL COMMENT '黑名单筛选条件',
+  `webrtcring` varchar(255) DEFAULT NULL COMMENT '来电铃声',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='FS服务器信息';
 
