@@ -1,15 +1,20 @@
 package com.ukefu.webim.web.handler.apps.service;
 
+import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,12 +33,14 @@ import com.ukefu.util.IP;
 import com.ukefu.util.Menu;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.client.NettyClients;
+import com.ukefu.util.task.export.ExcelExporterProcess;
 import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.AgentServiceRepository;
 import com.ukefu.webim.service.repository.AgentStatusRepository;
 import com.ukefu.webim.service.repository.AgentUserRepository;
 import com.ukefu.webim.service.repository.LeaveMsgRepository;
+import com.ukefu.webim.service.repository.MetadataRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.OrgiSkillRelRepository;
 import com.ukefu.webim.service.repository.UserRepository;
@@ -44,6 +51,7 @@ import com.ukefu.webim.web.model.AgentStatus;
 import com.ukefu.webim.web.model.AgentUser;
 import com.ukefu.webim.web.model.AiUser;
 import com.ukefu.webim.web.model.LeaveMsg;
+import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.Organ;
 import com.ukefu.webim.web.model.OrgiSkillRel;
 import com.ukefu.webim.web.model.User;
@@ -72,6 +80,9 @@ public class ChatServiceController extends Handler{
 	
 	@Autowired
 	private OrganRepository organ ;
+	
+	@Autowired
+	private MetadataRepository metadataRes ;
 	
 	@Autowired
 	private UserRepository user ;
@@ -443,4 +454,107 @@ public class ChatServiceController extends Handler{
 		}
 		return request(super.createRequestPageTempletResponse("redirect:/service/leavemsg/index.html"));
     }
+	
+	
+	@RequestMapping("/expids")
+	@Menu(type = "callcenter", subtype = "callcenter")
+	public void expids(ModelMap map, HttpServletRequest request, HttpServletResponse response, @Valid String[] ids)
+			throws IOException {
+		if (ids != null && ids.length > 0) {
+			Iterable<AgentService> agentServiceList = agentServiceRes.findAll(Arrays.asList(ids));
+			MetadataTable table = metadataRes.findByTablename("uk_agentservice");
+			List<Map<String, Object>> values = new ArrayList<Map<String, Object>>();
+			for (AgentService agentService : agentServiceList) {
+				values.add(UKTools.transBean2Map(agentService));
+			}
+
+			response.setHeader("content-disposition", "attachment;filename=UCKeFu-AgentService-History-"
+					+ new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ".xls");
+
+			ExcelExporterProcess excelProcess = new ExcelExporterProcess(values, table, response.getOutputStream());
+			excelProcess.process();
+		}
+
+		return;
+	}
+
+	@RequestMapping("/expall")
+	@Menu(type = "callcenter", subtype = "callcenter")
+	public void expall(ModelMap map, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Iterable<AgentService> agentServiceList = agentServiceRes.findAll(new PageRequest(0, 10000));
+
+		MetadataTable table = metadataRes.findByTablename("uk_agentservice");
+		List<Map<String, Object>> values = new ArrayList<Map<String, Object>>();
+		for (AgentService agentService : agentServiceList) {
+			values.add(UKTools.transBean2Map(agentService));
+		}
+
+		response.setHeader("content-disposition", "attachment;filename=UCKeFu-AgentService-History-"
+				+ new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ".xls");
+
+		ExcelExporterProcess excelProcess = new ExcelExporterProcess(values, table, response.getOutputStream());
+		excelProcess.process();
+		return;
+	}
+
+	@RequestMapping("/expsearch")
+	@Menu(type = "callcenter", subtype = "callcenter")
+	public void expall(ModelMap map , HttpServletResponse response , HttpServletRequest request ,final String username,final String channel ,final String servicetype,final String skill,final String agent,final String servicetimetype,final String begin,final String end , final String sbegin,final String send) throws IOException {
+		final String orgi = super.getOrgi(request);
+		Page<AgentService> page = agentServiceRes.findAll(new Specification<AgentService>(){
+			@Override
+			public Predicate toPredicate(Root<AgentService> root, CriteriaQuery<?> query,CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<Predicate>();  
+				if(!StringUtils.isBlank(username)) {
+					list.add(cb.equal(root.get("username").as(String.class), username)) ;
+				}
+				
+				list.add(cb.equal(root.get("orgi").as(String.class), orgi)) ;
+				
+				if(!StringUtils.isBlank(channel)) {
+					list.add(cb.equal(root.get("channel").as(String.class), channel)) ;
+				}
+				if(!StringUtils.isBlank(agent)) {
+					list.add(cb.equal(root.get("agentno").as(String.class), agent)) ;
+				}
+				if(!StringUtils.isBlank(skill)) {
+					list.add(cb.equal(root.get("skill").as(String.class), skill)) ;
+				}
+				try {
+					if(!StringUtils.isBlank(begin) && begin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
+						list.add(cb.greaterThanOrEqualTo(root.get("logindate").as(Date.class), UKTools.dateFormate.parse(begin))) ;
+					}
+					if(!StringUtils.isBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
+						list.add(cb.lessThanOrEqualTo(root.get("logindate").as(Date.class), UKTools.dateFormate.parse(end))) ;
+					}
+					
+					if(!StringUtils.isBlank(sbegin) && sbegin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
+						list.add(cb.greaterThanOrEqualTo(root.get("servicetime").as(Date.class), UKTools.dateFormate.parse(sbegin))) ;
+					}
+					if(!StringUtils.isBlank(send) && send.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
+						list.add(cb.lessThanOrEqualTo(root.get(servicetimetype).as(Date.class), UKTools.dateFormate.parse(send))) ;
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				
+				Predicate[] p = new Predicate[list.size()];  
+			    return cb.and(list.toArray(p));   
+			}
+		},new PageRequest(super.getP(request), super.getPs(request), Direction.DESC , "createtime")) ;
+
+		MetadataTable table = metadataRes.findByTablename("uk_agentservice");
+		List<Map<String, Object>> values = new ArrayList<Map<String, Object>>();
+		for (AgentService agentService : page.getContent()) {
+			values.add(UKTools.transBean2Map(agentService));
+		}
+
+		response.setHeader("content-disposition", "attachment;filename=UCKeFu-AgentService-History-"
+				+ new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + ".xls");
+
+		ExcelExporterProcess excelProcess = new ExcelExporterProcess(values, table, response.getOutputStream());
+		excelProcess.process();
+
+		return;
+	}
 }
