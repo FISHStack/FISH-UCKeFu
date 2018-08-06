@@ -649,7 +649,7 @@ public class UKDataContext {
 	
 	public enum AgentUserStatusEnum{
 		INSERVICE,
-		INQUENE, END;
+		INQUENE, END  , INVIT;
 		
 		public String toString(){
 			return super.toString().toLowerCase() ;

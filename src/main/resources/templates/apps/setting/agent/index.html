@@ -375,7 +375,17 @@
 															<p style="color:#888888;font-size:13px;margin-top:10px;">满意度调查功能，所有实时渠道适用（WebIM，微信）</p>
 														</div>
 														<div class="col-lg-4" style="text-align:right;">
-															<input type="checkbox" title="启用" name="satisfaction" id="satisfaction" <#if sessionConfig?? && sessionConfig.satisfaction == true>checked="checked"</#if>>
+															<input type="checkbox" title="启用" name="satisfaction" id="satisfaction" lay-filter="satisfaction" <#if sessionConfig?? && sessionConfig.satisfaction == true>checked="checked"</#if>>
+														</div>
+													</div>
+												</div>
+												<div class="box-item" id="satisf_op" style="<#if sessionConfig?? && sessionConfig.satisfaction == false>display:none;</#if>">	
+													<div class="row">
+														<div class="col-lg-8">
+															<p>邀请访客评价的提示信息（坐席使用{agent}替换）</p>
+														</div>
+														<div class="col-lg-4" style="text-align:right;">
+															<input type="text" name="satisftext" id="satisftext" max-length="255" value="<#if sessionConfig?? && sessionConfig.satisftext??>${sessionConfig.satisftext}<#else>请对我们的服务做出评价</#if>" autocomplete="off" class="layui-input">
 														</div>
 													</div>
 												</div>
@@ -684,6 +694,14 @@
 			}else{
 				
 				$('#otherquickplay_op').hide();
+			}
+		});
+		form.on("checkbox(satisfaction)" , function(data){
+			if(data.elem.checked == true){
+				$('#satisf_op').show();		
+			}else{
+				
+				$('#satisf_op').hide();
 			}
 		});
 	});

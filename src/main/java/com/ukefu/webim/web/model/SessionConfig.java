@@ -39,6 +39,8 @@ public class SessionConfig implements java.io.Serializable{
 	private int retimeout = 120;				//再次超时时长 ， 默认2分钟
 	private String retimeoutmsg ;		//再次超时断开
 	private boolean satisfaction ;	//启用满意度调查
+	private String satisftext ;		//邀请满意度评价的提示消息
+	private boolean multisatisf ;	//允许访客多次评价
 	
 	private String noagentmsg ;		//无客服在线提示信息
 	private String agentbusymsg ;	//坐席忙提示信息
@@ -378,5 +380,16 @@ public class SessionConfig implements java.io.Serializable{
 	public void setOtherssl(boolean otherssl) {
 		this.otherssl = otherssl;
 	}
-	
+	public String getSatisftext() {
+		return satisftext;
+	}
+	public void setSatisftext(String satisftext) {
+		this.satisftext = satisftext;
+	}
+	public boolean isMultisatisf() {
+		return multisatisf;
+	}
+	public void setMultisatisf(boolean multisatisf) {
+		this.multisatisf = multisatisf;
+	}
 }

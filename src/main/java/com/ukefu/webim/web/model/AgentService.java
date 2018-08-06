@@ -34,6 +34,11 @@ public class AgentService implements Serializable {
 	private String channel;
 	private Date logindate;
 	
+	private boolean invite ;	//是否邀请评价
+	private Date invitedate ;	//邀请评价时间
+	
+	private String servicekind;	//服务类型
+	
 	private String sessionid ;
 	
 	private int queneindex = -1;
@@ -849,5 +854,29 @@ public class AgentService implements Serializable {
 
 	public void setOwner(String owner) {
 		this.owner = owner;
+	}
+
+	public boolean isInvite() {
+		return invite;
+	}
+
+	public void setInvite(boolean invite) {
+		this.invite = invite;
+	}
+
+	public Date getInvitedate() {
+		return invitedate;
+	}
+
+	public void setInvitedate(Date invitedate) {
+		this.invitedate = invitedate;
+	}
+
+	public String getServicekind() {
+		return servicekind;
+	}
+
+	public void setServicekind(String servicekind) {
+		this.servicekind = servicekind;
 	}
 }

@@ -658,3 +658,13 @@ ALTER TABLE uk_consult_invite ADD tipagenttitle varchar(100) DEFAULT NULL COMMEN
 ALTER TABLE uk_consult_invite ADD tipusertitle varchar(100) DEFAULT NULL COMMENT '访客端气泡提醒的标题';
 ALTER TABLE uk_consult_invite ADD tipusericon varchar(100) DEFAULT NULL COMMENT '访客端气泡提醒的图标';||||||| .r1083
 INSERT INTO `uk_sysdic` (`ID`, `NAME`, `TITLE`, `CODE`, `ORGI`, `CTYPE`, `PARENTID`, `DESCRIPTION`, `MEMO`, `ICONSTR`, `ICONSKIN`, `CATETYPE`, `CREATER`, `CREATETIME`, `UPDATETIME`, `HASCHILD`, `SORTINDEX`, `DICID`, `DEFAULTVALUE`, `DISCODE`, `URL`, `MODULE`, `MLEVEL`, `RULES`, `MENUTYPE`) VALUES ('297e74066464004b01646402379d068f', '活动状态分类', 'pub', 'com.dic.callout.activity', NULL, 'data', '0', '', NULL, NULL, NULL, NULL, '4028cac3614cd2f901614cf8be1f0324', '2018-07-04 14:37:04', NULL, '1', '0', NULL, '0', '0', NULL, NULL, NULL, NULL, NULL);
+
+
+
+ALTER TABLE uk_agentservice ADD invite tinyint DEFAULT 0 COMMENT '是否已邀请评价';
+ALTER TABLE uk_agentservice ADD invitedate datetime DEFAULT NULL COMMENT '邀请评价状态';
+
+ALTER TABLE uk_agentservice ADD servicekind varchar(32) DEFAULT NULL COMMENT '服务分类';
+
+ALTER TABLE uk_sessionconfig ADD multisatisf tinyint DEFAULT 0 COMMENT '是否运行访客多次评价';
+ALTER TABLE uk_sessionconfig ADD satisftext varchar(255) DEFAULT NULL COMMENT '显示邀请评价的提示文本';

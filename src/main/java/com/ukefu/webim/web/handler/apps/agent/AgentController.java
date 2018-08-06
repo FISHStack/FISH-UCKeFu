@@ -587,19 +587,33 @@ public class AgentController extends Handler {
 	
 	@RequestMapping({ "/statf" })
 	@Menu(type = "apps", subtype = "statf")
-	public ModelAndView statf(HttpServletRequest request, @Valid String userid)
+	public ModelAndView statf(HttpServletRequest request, @Valid String userid , @Valid String id)
 			throws Exception {
-		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(userid, super.getOrgi(request));
-		if(agentUser!=null && super.getUser(request).getId().equals(agentUser.getAgentno())){
-			ServiceQuene.deleteAgentUser(agentUser, super.getOrgi(request));
-			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
-				AgentService agentService = agentServiceRepository.findByIdAndOrgi(agentUser.getAgentserviceid(), super.getOrgi(request)) ;
-				agentService.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
-				agentServiceRepository.save(agentService) ;
+		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(id, super.getOrgi(request)) ;
+		if(agentUser!=null) {
+			AgentService agentService = agentServiceRepository.findByIdAndOrgi(agentUser.getAgentserviceid(), super.getOrgi(request)) ;
+			if(agentService!=null) {
+				agentService.setInvite(true);
+				agentService.setInvitedate(new Date());
+				agentServiceRepository.save(agentService) ;	
+			}
+			OutMessageRouter router  = (OutMessageRouter) UKDataContext.getContext().getBean(agentUser.getChannel()) ;
+			if(router!=null){
+				MessageOutContent outMessage = new MessageOutContent() ;
+				outMessage.setMessageType(UKDataContext.AgentUserStatusEnum.INVIT.toString());
+				outMessage.setCalltype(UKDataContext.CallTypeEnum.IN.toString());
+				outMessage.setCreatetime(UKTools.dateFormate.format(new Date()));
+				outMessage.setAgentserviceid(agentUser.getAgentserviceid());
+				SessionConfig sessionConfig = ServiceQuene.initSessionConfig(super.getOrgi(request)) ;
+				if(!StringUtils.isBlank(sessionConfig.getSatisftext())) {
+					String queneTip = "<span id='agentno'>"+agentService.getAgentusername()+"</span>" ;
+					outMessage.setMessage(sessionConfig.getSatisftext().replaceAll("\\{agent\\}", queneTip));
+				}
+				
+				router.handler(agentUser.getUserid(), UKDataContext.MessageTypeEnum.STATUS.toString(), agentUser.getAppid(), outMessage);
 			}
 		}
-		return request(super
-				.createRequestPageTempletResponse("redirect:/agent/index.html"));
+		return request(super.createRequestPageTempletResponse("redirect:/agent/agentuser.html?id="+id));
 	}
 	
 	@RequestMapping({ "/readmsg" })

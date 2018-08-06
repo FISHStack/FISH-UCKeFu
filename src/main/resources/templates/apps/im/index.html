@@ -488,13 +488,28 @@
     	<#if welcomeAd>
 		output('<span id="connect-message">'+data.message+'</span>' , 'message connect-message' , false);
 		<#else>
-		output('<span id="connect-message">'+data.message+'</span>' , 'message connect-message' , true);
+    	if(data.messageType == "invit"){
+    		var message = '请您对我们的服务做出评价' ;
+    		if(data.message != ''){
+    			message = data.message ; 	
+    		}
+			output('<span id="connect-message">'+message+'</span>' , 'message connect-message' , true);
+    	}else{
+    		output('<span id="connect-message">'+data.message+'</span>' , 'message connect-message' , true);
+    	}
 		</#if>     
 		if(data.messageType == "end"){
 			service_end = true ;
 			editor.readonly();
 			<#if sessionConfig?? && sessionConfig.satisfaction?? && sessionConfig.satisfaction>
 			
+			document.getElementById("diaShade").style.display = "block" ;
+			document.getElementById("dialogWrap").style.display = "block" ;
+			</#if>
+		}
+		
+		if(data.messageType == "invit"){
+			<#if sessionConfig?? && sessionConfig.satisfaction?? && sessionConfig.satisfaction>
 			document.getElementById("diaShade").style.display = "block" ;
 			document.getElementById("dialogWrap").style.display = "block" ;
 			</#if>
