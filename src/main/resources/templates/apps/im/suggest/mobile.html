@@ -9,7 +9,7 @@
 	</#if>
 	<li><a data-toggle="suggest" href="javascript:void(0)" data-id="${content.id!''}" data-content="${content.content!''}" >${content.title!''}</a></li>
 </#list>
-<#if contentList?size%3 !=0 && contentList?size gt 0 >
+<#if contentList?size % invite.suggestnum !=0 && contentList?size gt 0 >
 </ul>
 </#if>
 </#if>
