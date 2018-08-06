@@ -83,7 +83,8 @@ public class ChatServiceController extends Handler{
 	
 	@RequestMapping("/history/index")
     @Menu(type = "service" , subtype = "history" , admin= true)
-    public ModelAndView index(ModelMap map , HttpServletRequest request ,final String username,final String channel ,final String servicetype,final String allocation,final String servicetimetype,final String begin,final String end) {
+    public ModelAndView index(ModelMap map , HttpServletRequest request ,final String username,final String channel ,final String servicetype,final String skill,final String agent,final String servicetimetype,final String begin,final String end , final String sbegin,final String send) {
+		final String orgi = super.getOrgi(request);
 		Page<AgentService> page = agentServiceRes.findAll(new Specification<AgentService>(){
 			@Override
 			public Predicate toPredicate(Root<AgentService> root, CriteriaQuery<?> query,CriteriaBuilder cb) {
@@ -91,25 +92,36 @@ public class ChatServiceController extends Handler{
 				if(!StringUtils.isBlank(username)) {
 					list.add(cb.equal(root.get("username").as(String.class), username)) ;
 				}
+				
+				list.add(cb.equal(root.get("orgi").as(String.class), orgi)) ;
+				
 				if(!StringUtils.isBlank(channel)) {
 					list.add(cb.equal(root.get("channel").as(String.class), channel)) ;
 				}
-				if(!StringUtils.isBlank(servicetype)&&!StringUtils.isBlank(allocation)) {  
-					list.add(cb.equal(root.get(servicetype).as(String.class), allocation));
+				if(!StringUtils.isBlank(agent)) {
+					list.add(cb.equal(root.get("agentno").as(String.class), agent)) ;
 				}
-				if(!StringUtils.isBlank(servicetimetype)) {
-					try {
-						if(!StringUtils.isBlank(begin) && begin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
-							list.add(cb.greaterThanOrEqualTo(root.get(servicetimetype).as(Date.class), UKTools.dateFormate.parse(begin))) ;
-						}
-						if(!StringUtils.isBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
-							list.add(cb.lessThanOrEqualTo(root.get(servicetimetype).as(Date.class), UKTools.dateFormate.parse(end))) ;
-						}
-					} catch (ParseException e) {
-						e.printStackTrace();
+				if(!StringUtils.isBlank(skill)) {
+					list.add(cb.equal(root.get("skill").as(String.class), skill)) ;
+				}
+				try {
+					if(!StringUtils.isBlank(begin) && begin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
+						list.add(cb.greaterThanOrEqualTo(root.get("logindate").as(Date.class), UKTools.dateFormate.parse(begin))) ;
+					}
+					if(!StringUtils.isBlank(end) && end.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
+						list.add(cb.lessThanOrEqualTo(root.get("logindate").as(Date.class), UKTools.dateFormate.parse(end))) ;
 					}
 					
+					if(!StringUtils.isBlank(sbegin) && sbegin.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
+						list.add(cb.greaterThanOrEqualTo(root.get("servicetime").as(Date.class), UKTools.dateFormate.parse(sbegin))) ;
+					}
+					if(!StringUtils.isBlank(send) && send.matches("[\\d]{4}-[\\d]{2}-[\\d]{2} [\\d]{2}:[\\d]{2}:[\\d]{2}")){
+						list.add(cb.lessThanOrEqualTo(root.get(servicetimetype).as(Date.class), UKTools.dateFormate.parse(send))) ;
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
 				}
+				
 				Predicate[] p = new Predicate[list.size()];  
 			    return cb.and(list.toArray(p));   
 			}
@@ -119,10 +131,13 @@ public class ChatServiceController extends Handler{
 		map.put("channel", channel) ;
 		map.put("servicetype", servicetype) ;
 		map.put("servicetimetype", servicetimetype) ;
-		map.put("allocation", allocation);
+		map.put("agent", agent);
+		map.put("skill", skill);
 		map.put("begin", begin) ;
 		map.put("end", end) ;
-		map.put("deptlist",organ.findByOrgi(super.getOrgi(request)));
+		map.put("sbegin", begin) ;
+		map.put("send", end) ;
+		map.put("organlist",organ.findByOrgi(super.getOrgi(request)));
 		map.put("userlist",user.findByOrgiAndDatastatus(super.getOrgi(request), false));
 		
         return request(super.createAppsTempletResponse("/apps/service/history/index"));

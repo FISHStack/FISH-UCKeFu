@@ -585,6 +585,23 @@ public class AgentController extends Handler {
 				.createRequestPageTempletResponse("redirect:/agent/index.html"));
 	}
 	
+	@RequestMapping({ "/statf" })
+	@Menu(type = "apps", subtype = "statf")
+	public ModelAndView statf(HttpServletRequest request, @Valid String userid)
+			throws Exception {
+		AgentUser agentUser = agentUserRepository.findByIdAndOrgi(userid, super.getOrgi(request));
+		if(agentUser!=null && super.getUser(request).getId().equals(agentUser.getAgentno())){
+			ServiceQuene.deleteAgentUser(agentUser, super.getOrgi(request));
+			if(!StringUtils.isBlank(agentUser.getAgentserviceid())){
+				AgentService agentService = agentServiceRepository.findByIdAndOrgi(agentUser.getAgentserviceid(), super.getOrgi(request)) ;
+				agentService.setStatus(UKDataContext.AgentUserStatusEnum.END.toString());
+				agentServiceRepository.save(agentService) ;
+			}
+		}
+		return request(super
+				.createRequestPageTempletResponse("redirect:/agent/index.html"));
+	}
+	
 	@RequestMapping({ "/readmsg" })
 	@Menu(type = "apps", subtype = "agent")
 	public ModelAndView readmsg(HttpServletRequest request, @Valid String userid)
