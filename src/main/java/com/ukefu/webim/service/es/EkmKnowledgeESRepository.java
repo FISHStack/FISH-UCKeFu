@@ -23,7 +23,10 @@ public abstract interface EkmKnowledgeESRepository  extends ElasticsearchReposit
 	
 	public abstract List<EkmKnowledge> findByKnowbaseidAndDatastatusAndOrgi(String knowbaseid,boolean datastatus ,String orgi);
 	
+	public abstract List<EkmKnowledge> findByCreaterAndDatastatusAndOrgi(String creater,boolean datastatus ,String orgi);
+	
 	public abstract Page<EkmKnowledge> findByPubstatusAndDatastatusAndOrgi(String pubstatus, boolean datastatus ,String orgi, Pageable pageable);
 	
+
 }
 

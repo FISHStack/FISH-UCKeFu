@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -16,7 +17,7 @@ import com.ukefu.util.UKTools;
  * EKM-知识表
  *
  */
-@Document(indexName = "uckefu", type = "uk_ekm_knowledge")
+@Document(indexName = "uckefu", type = "uk_ekm_knowledge", createIndex = false )
 @Entity
 @Table(name = "uk_ekm_knowledge")
 @org.hibernate.annotations.Proxy(lazy = false)
@@ -40,7 +41,7 @@ public class EkmKnowledge implements java.io.Serializable{
 	private String knowbaseid ;//所属知识库ID
 	private String pubstatus ;//知识状态（新建 new/审核中 wait/发布成功 pass/被驳回 rejected /已下架 down）
 	private boolean datastatus;//数据状态
-	private String version;//版本号
+	private int version;//版本号
 
 	private Date begintime ;//有效期-开始
 	private Date endtime ;//有效期-结束
@@ -49,6 +50,9 @@ public class EkmKnowledge implements java.io.Serializable{
 	private String creater;
 	private String orgi ;
 	
+	private EkmKnowledgeTimes knowledgetimes;
+	
+	private String knowledgeid;
 
 	
 	@Id
@@ -133,10 +137,11 @@ public class EkmKnowledge implements java.io.Serializable{
 	public void setDatastatus(boolean datastatus) {
 		this.datastatus = datastatus;
 	}
-	public String getVersion() {
+	
+	public int getVersion() {
 		return version;
 	}
-	public void setVersion(String version) {
+	public void setVersion(int version) {
 		this.version = version;
 	}
 	public Date getBegintime() {
@@ -168,6 +173,20 @@ public class EkmKnowledge implements java.io.Serializable{
 	}
 	public void setOrgi(String orgi) {
 		this.orgi = orgi;
+	}
+	@Transient
+	public EkmKnowledgeTimes getKnowledgetimes() {
+		return knowledgetimes;
+	}
+	public void setKnowledgetimes(EkmKnowledgeTimes knowledgetimes) {
+		this.knowledgetimes = knowledgetimes;
+	}
+	@Transient
+	public String getKnowledgeid() {
+		return knowledgeid;
+	}
+	public void setKnowledgeid(String knowledgeid) {
+		this.knowledgeid = knowledgeid;
 	}
 	
 	
