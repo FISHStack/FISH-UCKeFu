@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
+import com.ukefu.util.UKTools;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.service.repository.OrganRepository;
@@ -160,7 +162,7 @@ public class WebIMController extends Handler{
     
     @RequestMapping("/profile/save")
     @Menu(type = "admin" , subtype = "profile" , admin= true)
-    public ModelAndView saveprofile(HttpServletRequest request , @Valid CousultInvite inviteData, @RequestParam(value = "dialogad", required = false) MultipartFile dialogad) throws IOException {
+    public ModelAndView saveprofile(HttpServletRequest request , @Valid CousultInvite inviteData, BindingResult result, @RequestParam(value = "dialogad", required = false) MultipartFile dialogad, @RequestParam(value = "tipusericon", required = false) MultipartFile tipusericon, @RequestParam(value = "tipagenticon", required = false) MultipartFile tipagenticon) throws IOException {
     	CousultInvite tempInviteData  ;
     	if(inviteData!=null && !StringUtils.isBlank(inviteData.getId())){
     		tempInviteData = invite.findOne(inviteData.getId()) ;
@@ -222,6 +224,12 @@ public class WebIMController extends Handler{
     			
     			tempInviteData.setSuggestnum(inviteData.getSuggestnum());
     			
+    			tempInviteData.setTipagent(inviteData.isTipagent());
+    			tempInviteData.setTipagenttitle(inviteData.getTipagenttitle());
+    			
+    			tempInviteData.setTipuser(inviteData.isTipuser());
+    			tempInviteData.setTipusertitle(inviteData.getTipusertitle());
+    			
     			
     			tempInviteData.setCtrlenter(inviteData.isCtrlenter());
     			
@@ -233,6 +241,24 @@ public class WebIMController extends Handler{
 	    			}
 	        		FileCopyUtils.copy(dialogad.getBytes(), file);
 	        		tempInviteData.setDialog_ad(fileName);
+    			}
+    			if(tipusericon!=null && !StringUtils.isBlank(tipusericon.getName()) && tipusericon.getBytes()!=null && tipusericon.getBytes().length >0){
+	    			String fileName = "logo/"+UKTools.md5("tipusericon_"+inviteData.getId())+tipusericon.getOriginalFilename().substring(tipusericon.getOriginalFilename().lastIndexOf(".")) ;
+	    			File file = new File(path , fileName) ;
+	    			if(!file.getParentFile().exists()){
+	    				file.getParentFile().mkdirs();
+	    			}
+	        		FileCopyUtils.copy(tipusericon.getBytes(), file);
+	        		tempInviteData.setTipusericon(fileName);
+    			}
+    			if(tipagenticon!=null && !StringUtils.isBlank(tipagenticon.getName()) && tipagenticon.getBytes()!=null && tipagenticon.getBytes().length >0){
+	    			String fileName = "logo/"+UKTools.md5("tipagenticon_"+inviteData.getId())+tipagenticon.getOriginalFilename().substring(tipagenticon.getOriginalFilename().lastIndexOf(".")) ;
+	    			File file = new File(path , fileName) ;
+	    			if(!file.getParentFile().exists()){
+	    				file.getParentFile().mkdirs();
+	    			}
+	        		FileCopyUtils.copy(tipagenticon.getBytes(), file);
+	        		tempInviteData.setTipagenticon(fileName);
     			}
         		invite.save(tempInviteData) ;
         		inviteData = tempInviteData ;

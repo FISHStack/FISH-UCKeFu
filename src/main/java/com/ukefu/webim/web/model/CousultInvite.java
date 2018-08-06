@@ -77,6 +77,17 @@ public class CousultInvite implements java.io.Serializable{
 	
 	private int consult_vsitorbtn_display	;
 	
+	private boolean tipagent ;		//在坐席端弹出气泡提示
+	private boolean tipuser ;		//在访客端弹出气泡提示
+	
+	private String tipagenticon ;		//坐席端气泡提醒的图标
+	private String tipusericon ;		//访客端气泡提醒的图标
+	
+	private String tipagenttitle ;		//访客端气泡提醒的图标
+	private String tipusertitle ;		//坐席端气泡提醒的图标
+		
+	private String tipicon ;		//气泡提醒的图标
+	
 	private boolean recordhis ;			//记录访客的网页访问记录
 	private boolean traceuser;			//实时追踪访客
 	
@@ -807,5 +818,47 @@ public class CousultInvite implements java.io.Serializable{
 	}
 	public void setSuggestnum(int suggestnum) {
 		this.suggestnum = suggestnum;
+	}
+	public boolean isTipagent() {
+		return tipagent;
+	}
+	public void setTipagent(boolean tipagent) {
+		this.tipagent = tipagent;
+	}
+	public boolean isTipuser() {
+		return tipuser;
+	}
+	public void setTipuser(boolean tipuser) {
+		this.tipuser = tipuser;
+	}
+	public String getTipicon() {
+		return tipicon;
+	}
+	public void setTipicon(String tipicon) {
+		this.tipicon = tipicon;
+	}
+	public String getTipagenticon() {
+		return tipagenticon;
+	}
+	public void setTipagenticon(String tipagenticon) {
+		this.tipagenticon = tipagenticon;
+	}
+	public String getTipusericon() {
+		return tipusericon;
+	}
+	public void setTipusericon(String tipusericon) {
+		this.tipusericon = tipusericon;
+	}
+	public String getTipagenttitle() {
+		return tipagenttitle;
+	}
+	public void setTipagenttitle(String tipagenttitle) {
+		this.tipagenttitle = tipagenttitle;
+	}
+	public String getTipusertitle() {
+		return tipusertitle;
+	}
+	public void setTipusertitle(String tipusertitle) {
+		this.tipusertitle = tipusertitle;
 	}
 }

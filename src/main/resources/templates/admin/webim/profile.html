@@ -610,6 +610,92 @@
 												</div>
 											</div>
 										</div>
+										
+										<div class="ukefu-webim-prop">
+											<div class="ukefu-webim-tl" style="clear:both;">17、启用坐席端新消息气泡提醒</div>
+											<div class="box-item">
+												<div class="row">
+													<div class="col-lg-8">
+														<p>坐席端桌面提示消息，在右下角弹出气泡提醒</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">部分浏览器支持</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="checkbox" title="启用" name="tipagent" id="tipagent" lay-filter="tipagent" <#if inviteData?? && inviteData.tipagent == true>checked="checked"</#if>>
+													</div>
+												</div>
+											</div>
+											<div class="box-item" id="tipagent_op" style="<#if inviteData?? && inviteData.tipagent == false>display:none;</#if>">	
+												<div class="row"  style="margin-bottom:20px;">
+													<div class="col-lg-8">
+														<p>a、坐席端气泡提醒标题</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="input" name="tipagenttitle" maxlength="50" id="tipagenttitle" value="${inviteData.tipagenttitle!''}" class="layui-input">
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-lg-8">
+														<p>b、坐席端气泡提醒图标</p>
+														<p id="tipagenticon_img" style="margin-top:10px;">
+															<#if inviteData.tipagenticon?? && inviteData.tipagenticon!=''>
+															<img src="<#if inviteData??>/res/image.html?id=${inviteData.tipagenticon!''}</#if>" style="max-width:200px;max-height:150px">
+															</#if>
+														</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<div class="box-item" style="position: relative;">
+															<div class="layui-box layui-upload-button">
+																<input type="file" name="tipagenticon" accept="image/gif, image/jpeg, image/png" lay-ext="jpg|png|gif"  class="layui-upload-file" onchange="$('#tipagenticon_img').html($(this).val());">
+																<span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div class="ukefu-webim-prop">
+											<div class="ukefu-webim-tl" style="clear:both;">18、启用访客端新消息气泡提醒</div>
+											<div class="box-item">
+												<div class="row">
+													<div class="col-lg-8">
+														<p>访客端桌面提示消息，在右下角弹出气泡提醒</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">部分浏览器支持</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="checkbox" title="启用" name="tipuser" id="tipuser" lay-filter="tipuser" <#if inviteData?? && inviteData.tipuser == true>checked="checked"</#if>>
+													</div>
+												</div>
+											</div>
+											<div class="box-item" id="tipuser_op" style="<#if inviteData?? && inviteData.tipuser == false>display:none;</#if>">	
+												<div class="row"  style="margin-bottom:20px;">
+													<div class="col-lg-8">
+														<p>a、访客端气泡提醒标题</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<input type="input" name="tipusertitle" maxlength="50" id="tipusertitle" value="${inviteData.tipusertitle!''}" class="layui-input">
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-lg-8">
+														<p>b、访客端气泡提醒图标</p>
+														<p id="tipusericon_img" style="margin-top:10px;">
+															<#if inviteData.tipagenticon?? && inviteData.tipagenticon!=''>
+															<img src="<#if inviteData??>/res/image.html?id=${inviteData.tipagenticon!''}</#if>" style="max-width:200px;max-height:150px">
+															</#if>
+														</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<div class="box-item" style="position: relative;">
+															<div class="layui-box layui-upload-button">
+																<input type="file" name="tipusericon" accept="image/gif, image/jpeg, image/png" lay-ext="jpg|png|gif"  class="layui-upload-file" onchange="$('#tipusericon_img').html($(this).val());">
+																<span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 									<div class="col-md-5">
 										<div class="ukefu-im-preview ukefu-im-preview-dialog" id="pv" style="width:380px;position: fixed;">
@@ -739,6 +825,22 @@
 			}else{
 				
 				$('#othersuggest_op').hide();
+			}
+		});
+		form.on("checkbox(tipagent)" , function(data){
+			if(data.elem.checked == true){
+				$('#tipagent_op').show();		
+			}else{
+				
+				$('#tipagent_op').hide();
+			}
+		});
+		form.on("checkbox(tipuser)" , function(data){
+			if(data.elem.checked == true){
+				$('#tipuser_op').show();		
+			}else{
+				
+				$('#tipuser_op').hide();
 			}
 		});
 	});

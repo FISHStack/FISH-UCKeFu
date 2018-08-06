@@ -1,4 +1,5 @@
 var title = "UCKeFu-全渠道客服系统" ;
+var tipagent = '' , tipagenttitle = '', tipagenticon = '' ;
 var socket  , newuser = [] , newmessage = [] , ring = [];
 newuser['mp3'] = '/images/new.mp3'; 
 newmessage['mp3'] = '/images/message.mp3';
@@ -33,6 +34,9 @@ $(document).ready(function(){
     	if($('#multiMediaDialogWin').length > 0 && multiMediaDialogWin != null && multiMediaDialogWin.$ && multiMediaDialogWin.$('#agentusers').length > 0){
     		multiMediaDialogWin.Proxy.newAgentUserMessage(data);
     		if(data.type == 'message'){
+    			if(tipagent && tipagent == 'true'){
+    				WebIM.showNotice(tipagenttitle , data.message , tipagenticon);
+    			}
         		WebIM.audioplayer('audioplane', newmessage, false); // 播放
         	}
     	}else{
@@ -76,6 +80,22 @@ var WebIM = {
 			attachmentid:attachmentid
         });
 	},
+	showNotice:function (title , content , icon) {   
+	    Notification.requestPermission(function (perm) {  
+	        if (perm == "granted") {  
+	            var notification = new Notification(title, {  
+	                dir: "auto",  
+	                lang: "zh",  
+	                tag: "UCKeFu", 
+	                icon:icon,
+	                body: content
+	            });  
+	            setTimeout(function(){
+	            	notification.close();
+	            },5000);    
+	        }  
+	    });  
+	}, 
 	ping : function(){
 		loadURL("/message/ping.html") ;	
 		console.log("ping:" + new Date().getTime());

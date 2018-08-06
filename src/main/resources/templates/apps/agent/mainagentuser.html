@@ -1,6 +1,9 @@
 <script language="javascript">
 	cursession = "<#if curagentuser??>${curagentuser.userid!''}</#if>" ;
 	var userid = "${curagentuser.userid!''}" , agentserviceid = "${curagentuser.agentserviceid!''}" , agentuserid = "${curagentuser.id}";
+	top.tipagent = '<#if inviteData??>${inviteData.tipagent}</#if>' ;
+	top.tipagenttitle = '<#if inviteData??>${inviteData.tipagenttitle!"您有一条新的消息"}</#if>';
+	top.tipagenticon = '<#if inviteData??>/res/image.html?id=${inviteData.tipagenticon!"/images/logo2.png"}</#if>' ;
 </script>
 
 <div class="main-agentuser">
