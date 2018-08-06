@@ -1,10 +1,10 @@
 <#if contentList?? && contentList?size gt 0>
 <div class="ukefu-suggest-change"><a href="javascript:void(0)" data-toggle="change">换一批</a></div>
 	<#list contentList as content>
-	<#if content_index!= 0 && content_index%3==0>
+	<#if content_index!= 0 && invite.suggestnum!=0 && content_index % invite.suggestnum == 0>
 </ul>
 	</#if>
-	<#if content_index%3==0>
+	<#if invite.suggestnum!=0 && content_index % invite.suggestnum == 0>
 <ul class="ukefu-suggest-block" style="<#if content_index gt 0>display:none;</#if>">
 	</#if>
 	<li><a data-toggle="suggest" href="javascript:void(0)" data-id="${content.id!''}" data-content="${content.content!''}" >${content.title!''}</a></li>

@@ -624,7 +624,9 @@ public class IMController extends Handler{
     @Menu(type = "im" , subtype = "index" , access = true)
     public ModelAndView mobilesuggest(ModelMap map , HttpServletRequest request , HttpServletResponse response,  @PathVariable String appid ,@Valid String q ,@Valid String traceid,@Valid String aiid ,@Valid String p ,@Valid String exchange, @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String phone,@Valid String ai,@Valid String orgi ,@Valid String product,@Valid String description,@Valid String imgurl,@Valid String pid,@Valid String purl) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/suggest/mobile")) ;
-    	map.addAttribute("contentList" , OnlineUserUtils.suggest(q, orgi, userid, OnlineUserUtils.cousult(appid, orgi, inviteRepository))) ;
+    	CousultInvite invite = OnlineUserUtils.cousult(appid, orgi, inviteRepository) ;
+    	map.addAttribute("invite" , invite) ;
+    	map.addAttribute("contentList" , OnlineUserUtils.suggest(q, orgi, userid,invite )) ;
 		return view;
     }
     
@@ -633,7 +635,9 @@ public class IMController extends Handler{
     @Menu(type = "im" , subtype = "index" , access = true)
     public ModelAndView pcsuggest(ModelMap map , HttpServletRequest request , HttpServletResponse response,  @PathVariable String appid ,@Valid String q ,@Valid String traceid,@Valid String aiid ,@Valid String p ,@Valid String exchange, @Valid String title ,@Valid String url, @Valid String skill, @Valid String id , @Valid String userid , @Valid String agent , @Valid String name , @Valid String email ,@Valid String phone,@Valid String ai,@Valid String orgi ,@Valid String product,@Valid String description,@Valid String imgurl,@Valid String pid,@Valid String purl) throws Exception {
     	ModelAndView view = request(super.createRequestPageTempletResponse("/apps/im/suggest/pc")) ;
-    	map.addAttribute("contentList" , OnlineUserUtils.suggest(q, orgi, userid, OnlineUserUtils.cousult(appid, orgi, inviteRepository))) ;
+    	CousultInvite invite = OnlineUserUtils.cousult(appid, orgi, inviteRepository) ;
+    	map.addAttribute("invite" , invite) ;
+    	map.addAttribute("contentList" , OnlineUserUtils.suggest(q, orgi, userid,invite )) ;;
 		return view;
     }
     
