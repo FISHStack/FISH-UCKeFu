@@ -42,15 +42,17 @@ public class EkmKnowledge implements java.io.Serializable{
 	private String pubstatus ;//知识状态（新建 new/审核中 wait/发布成功 pass/被驳回 rejected /已下架 down）
 	private boolean datastatus;//数据状态
 	private int version;//版本号
+	private String knowledgetype ;//知识类型
 
 	private Date begintime ;//有效期-开始
 	private Date endtime ;//有效期-结束
 	
-	private Date createtime ;
+	private Date createtime = new Date();
 	private String creater;
 	private String orgi ;
 	
 	private EkmKnowledgeTimes knowledgetimes;
+	private EkmKnowledgeCollect knowledgecollect;
 	
 	private String knowledgeid;
 
@@ -187,6 +189,19 @@ public class EkmKnowledge implements java.io.Serializable{
 	}
 	public void setKnowledgeid(String knowledgeid) {
 		this.knowledgeid = knowledgeid;
+	}
+	public String getKnowledgetype() {
+		return knowledgetype;
+	}
+	public void setKnowledgetype(String knowledgetype) {
+		this.knowledgetype = knowledgetype;
+	}
+	@Transient
+	public EkmKnowledgeCollect getKnowledgecollect() {
+		return knowledgecollect;
+	}
+	public void setKnowledgecollect(EkmKnowledgeCollect knowledgecollect) {
+		this.knowledgecollect = knowledgecollect;
 	}
 	
 	

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.ukefu.core.UKDataContext;
 import com.ukefu.webim.web.model.EkmKnowledge;
+import com.ukefu.webim.web.model.EkmKnowledgeCollect;
 import com.ukefu.webim.web.model.EkmKnowledgeTimes;
 import com.ukefu.webim.web.model.Favorites;
 import com.ukefu.webim.web.model.WorkOrders;
@@ -31,7 +32,10 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
         }
     	if (!elasticSearchTemplate.indexExists(EkmKnowledgeTimes.class)) {
            elasticSearchTemplate.createIndex(EkmKnowledgeTimes.class);
-       }
+        }
+    	if (!elasticSearchTemplate.indexExists(EkmKnowledgeCollect.class)) {
+    		elasticSearchTemplate.createIndex(EkmKnowledgeCollect.class);
+    	}
     	try {
     		elasticSearchTemplate.getMapping(WorkOrders.class);
         } catch (ElasticsearchException e) {
@@ -42,6 +46,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     		elasticSearchTemplate.getMapping(EkmKnowledge.class);
         } catch (ElasticsearchException e) {
         	elasticSearchTemplate.putMapping(EkmKnowledgeTimes.class);
+        	elasticSearchTemplate.putMapping(EkmKnowledgeCollect.class);
         	elasticSearchTemplate.putMapping(EkmKnowledge.class);
         }
     	UKDataContext.setTemplet(elasticSearchTemplate);

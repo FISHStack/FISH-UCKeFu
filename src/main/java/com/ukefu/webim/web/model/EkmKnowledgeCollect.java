@@ -16,21 +16,21 @@ import org.springframework.data.elasticsearch.annotations.Parent;
 
 import com.ukefu.util.UKTools;
 
-@Document(indexName = "uckefu", type = "uk_ekm_knowledge_times" , createIndex = false )
+@Document(indexName = "uckefu", type = "uk_ekm_knowledge_collect" , createIndex = false )
 @Entity
-@Table(name = "uk_ekm_knowledge_times")
+@Table(name = "uk_ekm_knowledge_collect")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class EkmKnowledgeTimes implements java.io.Serializable{
+public class EkmKnowledgeCollect implements java.io.Serializable{
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8667838872697390231L;
+	private static final long serialVersionUID = 3569382502397170880L;
+	
 	private String id = UKTools.getUUID();
-	private int viewtimes;//被浏览次数
-	private int commentstimes;//被评论次数
-	private int collectimes;//被收藏次数
 	private int version;//版本号
+	private String status = "true";//收藏状态
+	private String knowledgeower ;//知识作者
 	
 	@Field(type = FieldType.String, store = true)  
     @Parent(type = "uk_ekm_knowledge")  
@@ -38,6 +38,7 @@ public class EkmKnowledgeTimes implements java.io.Serializable{
 	
 	private EkmKnowledge knowledge;
 	
+	private String creater;
 	private Date createtime ;
 	private String orgi ;
 	
@@ -51,24 +52,7 @@ public class EkmKnowledgeTimes implements java.io.Serializable{
 	public void setId(String id) {
 		this.id = id;
 	}
-	public int getViewtimes() {
-		return viewtimes;
-	}
-	public void setViewtimes(int viewtimes) {
-		this.viewtimes = viewtimes;
-	}
-	public int getCommentstimes() {
-		return commentstimes;
-	}
-	public void setCommentstimes(int commentstimes) {
-		this.commentstimes = commentstimes;
-	}
-	public int getCollectimes() {
-		return collectimes;
-	}
-	public void setCollectimes(int collectimes) {
-		this.collectimes = collectimes;
-	}
+	
 	public String getKnowledgeid() {
 		return knowledgeid;
 	}
@@ -99,6 +83,24 @@ public class EkmKnowledgeTimes implements java.io.Serializable{
 	}
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	public String getCreater() {
+		return creater;
+	}
+	public void setCreater(String creater) {
+		this.creater = creater;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getKnowledgeower() {
+		return knowledgeower;
+	}
+	public void setKnowledgeower(String knowledgeower) {
+		this.knowledgeower = knowledgeower;
 	}
 	
 }
