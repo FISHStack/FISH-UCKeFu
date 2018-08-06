@@ -20,7 +20,7 @@
     <script type="text/javascript" src="/im/js/kindeditor/lang/zh-CN.js"></script>
     <script src="/im/js/socket.io.js"></script>
     <script type="text/javascript">
-		var editor , words;
+		var editor , words  , invite = false ;
 		var tipuser = '<#if inviteData??>${inviteData.tipuser}</#if>' , tipusertitle = '<#if inviteData??>${inviteData.tipusertitle!"您有一条新的消息"}</#if>', tipusericon = '<#if inviteData??>/res/image.html?id=${inviteData.tipusericon!"/images/logo2.png"}</#if>' ;
 		var newmessage = [] , ring = [];
 		newmessage['mp3'] = '/images/message.mp3';
@@ -502,16 +502,20 @@
 			service_end = true ;
 			editor.readonly();
 			<#if sessionConfig?? && sessionConfig.satisfaction?? && sessionConfig.satisfaction>
-			
-			document.getElementById("diaShade").style.display = "block" ;
-			document.getElementById("dialogWrap").style.display = "block" ;
+			if(invite == false){
+				document.getElementById("diaShade").style.display = "block" ;
+				document.getElementById("dialogWrap").style.display = "block" ;
+			}
 			</#if>
 		}
 		
 		if(data.messageType == "invit"){
 			<#if sessionConfig?? && sessionConfig.satisfaction?? && sessionConfig.satisfaction>
-			document.getElementById("diaShade").style.display = "block" ;
-			document.getElementById("dialogWrap").style.display = "block" ;
+			if(invite == false){
+				document.getElementById("diaShade").style.display = "block" ;
+				document.getElementById("dialogWrap").style.display = "block" ;
+				invite = true ;
+			}
 			</#if>
 		}
 		if(document.getElementById("agentserviceid")){
