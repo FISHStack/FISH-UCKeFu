@@ -402,7 +402,7 @@ public class ServiceQuene {
 				if(workMonitorList.size() > 0) {
 					WorkMonitor firstWorkMonitor = workMonitorList.get(0) ;
 					if(firstWorkMonitor.getFirsttimes() == 0) {
-						firstWorkMonitor.setFirsttimes((int) (System.currentTimeMillis() - firstWorkMonitor.getCreatetime().getTime()));
+						firstWorkMonitor.setFirsttimes((int) (System.currentTimeMillis() - firstWorkMonitor.getCreatetime().getTime())/1000);
 						workMonitorRes.save(firstWorkMonitor) ;
 					}
 				}
