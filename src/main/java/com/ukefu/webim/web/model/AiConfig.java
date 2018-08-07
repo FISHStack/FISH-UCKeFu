@@ -26,6 +26,8 @@ public class AiConfig implements java.io.Serializable{
 	private String name ;
 	private String aiid;
 	
+	private String aiicon ;	//机器人头像
+	
 	private String welcomemsg ;
 	private String waitmsg ;
 	
@@ -327,5 +329,11 @@ public class AiConfig implements java.io.Serializable{
 	}
 	public void setOthersuggestmsg(String othersuggestmsg) {
 		this.othersuggestmsg = othersuggestmsg;
+	}
+	public String getAiicon() {
+		return aiicon;
+	}
+	public void setAiicon(String aiicon) {
+		this.aiicon = aiicon;
 	}
 }

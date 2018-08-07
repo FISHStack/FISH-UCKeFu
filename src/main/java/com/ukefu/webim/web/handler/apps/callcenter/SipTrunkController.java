@@ -95,11 +95,19 @@ public class SipTrunkController extends Handler{
 					}
 				}
 			}
-			if(StringUtils.isBlank(agent) && !StringUtils.isBlank(sipTrunk.getNoname())){
+			if(StringUtils.isBlank(agent)){
+				/**
+				 * 名单未分配 ， 转给网关进来的任何一个坐席 ， 从当前登录系统的 坐席中选取一个
+				 */
+				List<CallCenterAgent> agentList = CallOutQuene.service(sipTrunk.getId()) ;
 				/**
 				 * 未找到名单，从 SIPTrunk里选取一个 转移号码
 				 */
-				agent = sipTrunk.getNoname() ;
+				if(agentList.size() == 0 && !StringUtils.isBlank(sipTrunk.getNotready())) {
+					agent = sipTrunk.getNotready() ;
+				}else if( !StringUtils.isBlank(sipTrunk.getNoname())){
+					agent = sipTrunk.getNoname() ;
+				}
 			}
 		}
 		map.addAttribute("agent" , agent);

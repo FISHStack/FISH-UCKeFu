@@ -68,7 +68,7 @@ public class SNSAccountIMController extends Handler{
     @Menu(type = "admin" , subtype = "weixin")
     public ModelAndView save(HttpServletRequest request ,@Valid SNSAccount snsAccount) throws NoSuchAlgorithmException {
     	if(!StringUtils.isBlank(snsAccount.getBaseURL())){
-	    	snsAccount.setSnsid(Base62.encode(snsAccount.getBaseURL()));
+	    	snsAccount.setSnsid(Base62.encode(snsAccount.getBaseURL() + super.getOrgi(request)));
 	    	int count = snsAccountRes.countBySnsidAndOrgi(snsAccount.getSnsid() , super.getOrgi(request)) ;
 	    	if(count == 0){
 	    		snsAccount.setOrgi(super.getOrgi(request));

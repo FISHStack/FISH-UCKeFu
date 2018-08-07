@@ -668,3 +668,7 @@ ALTER TABLE uk_agentservice ADD servicekind varchar(32) DEFAULT NULL COMMENT '�
 
 ALTER TABLE uk_sessionconfig ADD multisatisf tinyint DEFAULT 0 COMMENT '是否运行访客多次评价';
 ALTER TABLE uk_sessionconfig ADD satisftext varchar(255) DEFAULT NULL COMMENT '显示邀请评价的提示文本';
+ALTER TABLE uk_sessionconfig ADD aiicon varchar(255) DEFAULT NULL COMMENT 'AI机器人头像';
+
+ALTER TABLE uk_xiaoe_config ADD aiicon varchar(255) DEFAULT NULL COMMENT 'AI机器人头像';
+ALTER TABLE uk_consult_invite ADD aiicon varchar(255) DEFAULT NULL COMMENT 'AI机器人头像';

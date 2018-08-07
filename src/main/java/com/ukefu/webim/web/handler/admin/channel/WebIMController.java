@@ -162,7 +162,7 @@ public class WebIMController extends Handler{
     
     @RequestMapping("/profile/save")
     @Menu(type = "admin" , subtype = "profile" , admin= true)
-    public ModelAndView saveprofile(HttpServletRequest request , @Valid CousultInvite inviteData, BindingResult result, @RequestParam(value = "dialogad", required = false) MultipartFile dialogad, @RequestParam(value = "tipusericon", required = false) MultipartFile tipusericon, @RequestParam(value = "tipagenticon", required = false) MultipartFile tipagenticon) throws IOException {
+    public ModelAndView saveprofile(HttpServletRequest request , @Valid CousultInvite inviteData, BindingResult result, @RequestParam(value = "dialogad", required = false) MultipartFile dialogad, @RequestParam(value = "tipusericon", required = false) MultipartFile tipusericon, @RequestParam(value = "tipagenticon", required = false) MultipartFile tipagenticon, @RequestParam(value = "aiicon", required = false) MultipartFile aiicon) throws IOException {
     	CousultInvite tempInviteData  ;
     	if(inviteData!=null && !StringUtils.isBlank(inviteData.getId())){
     		tempInviteData = invite.findOne(inviteData.getId()) ;
@@ -259,6 +259,15 @@ public class WebIMController extends Handler{
 	    			}
 	        		FileCopyUtils.copy(tipagenticon.getBytes(), file);
 	        		tempInviteData.setTipagenticon(fileName);
+    			}
+    			if(aiicon!=null && !StringUtils.isBlank(aiicon.getName()) && aiicon.getBytes()!=null && aiicon.getBytes().length >0){
+	    			String fileName = "logo/"+UKTools.md5("aiicon_"+inviteData.getId())+aiicon.getOriginalFilename().substring(aiicon.getOriginalFilename().lastIndexOf(".")) ;
+	    			File file = new File(path , fileName) ;
+	    			if(!file.getParentFile().exists()){
+	    				file.getParentFile().mkdirs();
+	    			}
+	        		FileCopyUtils.copy(aiicon.getBytes(), file);
+	        		tempInviteData.setAiicon(fileName);
     			}
         		invite.save(tempInviteData) ;
         		inviteData = tempInviteData ;

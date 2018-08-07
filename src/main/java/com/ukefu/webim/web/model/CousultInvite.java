@@ -135,6 +135,7 @@ public class CousultInvite implements java.io.Serializable{
 	private String aimsg ;		//AI欢迎信息，可以使用 HTML
 	private String aisuccesstip ;//AI服务连接成功的消息提示
 	private String ainame ;		//AI服务 昵称
+	private String aiicon ;		//AI头像
 	
 	private String aiid;		//默认的机器人
 	
@@ -860,5 +861,11 @@ public class CousultInvite implements java.io.Serializable{
 	}
 	public void setTipusertitle(String tipusertitle) {
 		this.tipusertitle = tipusertitle;
+	}
+	public String getAiicon() {
+		return aiicon;
+	}
+	public void setAiicon(String aiicon) {
+		this.aiicon = aiicon;
 	}
 }
