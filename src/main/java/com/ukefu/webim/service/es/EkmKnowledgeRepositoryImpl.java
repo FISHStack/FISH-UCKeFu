@@ -168,8 +168,8 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
-		boolQueryBuilder1.should(termQuery("pubstatus" , pubstatus)) ;
-		boolQueryBuilder1.should(termQuery("datastatus" , datastatus)) ;
+		boolQueryBuilder1.must(termQuery("pubstatus" , pubstatus)) ;
+		boolQueryBuilder1.must(termQuery("datastatus" , datastatus)) ;
 		boolQueryBuilder.must(boolQueryBuilder1) ;
 		boolQueryBuilder.must(termQuery("orgi" ,orgi)) ;
 		

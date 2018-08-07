@@ -55,7 +55,8 @@ public class EkmKnowledge implements java.io.Serializable{
 	private EkmKnowledgeCollect knowledgecollect;
 	
 	private String knowledgeid;
-
+	
+	private String auditor;
 	
 	@Id
 	@Column(length = 32)
@@ -202,6 +203,12 @@ public class EkmKnowledge implements java.io.Serializable{
 	}
 	public void setKnowledgecollect(EkmKnowledgeCollect knowledgecollect) {
 		this.knowledgecollect = knowledgecollect;
+	}
+	public String getAuditor() {
+		return auditor;
+	}
+	public void setAuditor(String auditor) {
+		this.auditor = auditor;
 	}
 	
 	
