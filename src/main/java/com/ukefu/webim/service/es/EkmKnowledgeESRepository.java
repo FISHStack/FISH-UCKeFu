@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 import com.ukefu.webim.web.model.EkmKnowledge;
 
-public abstract interface EkmKnowledgeESRepository  extends ElasticsearchRepository<EkmKnowledge, String>
+public abstract interface EkmKnowledgeESRepository  
 {
 	
 	public abstract EkmKnowledge findByTitleAndOrgi(String title , String orgi );
@@ -26,7 +26,7 @@ public abstract interface EkmKnowledgeESRepository  extends ElasticsearchReposit
 	public abstract List<EkmKnowledge> findByCreaterAndDatastatusAndOrgi(String creater,boolean datastatus ,String orgi);
 	
 	public abstract Page<EkmKnowledge> findByPubstatusAndDatastatusAndOrgi(String pubstatus, boolean datastatus ,String orgi, Pageable pageable);
-	
+
 
 }
 
