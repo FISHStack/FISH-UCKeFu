@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-08-06 17:31:47
+Date: 2018-08-07 15:45:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1693,6 +1693,7 @@ CREATE TABLE `uk_consult_invite` (
   `tipagenttitle` varchar(100) DEFAULT NULL COMMENT '坐席端气泡提醒的标题',
   `tipusertitle` varchar(100) DEFAULT NULL COMMENT '访客端气泡提醒的标题',
   `tipicon` varchar(255) DEFAULT NULL COMMENT '气泡提示图标',
+  `aiicon` varchar(255) DEFAULT NULL COMMENT 'AI机器人头像',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='访客网站配置表';
 
@@ -3701,6 +3702,7 @@ CREATE TABLE `uk_sessionconfig` (
   `otherssl` tinyint(4) DEFAULT '0' COMMENT '外部知识库启用SSL',
   `multisatisf` tinyint(4) DEFAULT '0' COMMENT '是否运行访客多次评价',
   `satisftext` varchar(255) DEFAULT NULL COMMENT '显示邀请评价的提示文本',
+  `aiicon` varchar(255) DEFAULT NULL COMMENT 'AI机器人头像',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='会话设置';
 
@@ -7395,6 +7397,7 @@ INSERT INTO `uk_sysdic` VALUES ('4028811b63c5281b0163c5c6cbf905d4', '全部隐�
 INSERT INTO `uk_sysdic` VALUES ('4028811b63f83f5d0163f84fd56605bb', '未知', 'pub', '-1', 'ukewo', 'layui-icon', '297e1e874f5ae37e014f5af969e30120', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-06-13 16:42:51', null, '1', '0', '297e1e874f5ae37e014f5af969e30120', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028811b642af06f01642af9cfa304c6', '输入参数', 'pub', 'inputparam', 'ukewo', null, '297e63f05d1da6be015d1dae6de20002', null, null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-06-23 12:49:32', '2018-06-23 12:49:32', '0', '1', '297e63f05d1da6be015d1dae6de20002', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('4028811b642af06f01642af9cfaf04c7', '输出参数', 'pub', 'outputparam', 'ukewo', null, '297e63f05d1da6be015d1dae6de20002', null, null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-06-23 12:49:32', '2018-06-23 12:49:32', '0', '2', '297e63f05d1da6be015d1dae6de20002', '0', '0', null, null, null, null, null);
+INSERT INTO `uk_sysdic` VALUES ('4028811b650e8f4801651248fa87050d', '唯一计数（Distinct Count）', 'pub', 'distinct-count', 'ukewo', 'layui-icon', '402881e861c0b7280161c0cbd1450375', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-08-07 10:48:17', null, '1', '0', '402881e861c0b7280161c0cbd1450375', '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402881e8618cc9ab01618cd99f40035a', '模型类型', 'pub', 'com.dic.cube.modeltype', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-13 09:48:47', null, '1', '0', null, '0', '0', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402881e8618cc9ab01618cd9cfae035b', '立方体', 'pub', 'cube', 'ukewo', 'layui-icon', '402881e8618cc9ab01618cd99f40035a', '', null, '', '', null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-13 09:49:00', '2018-02-13 09:49:00', '0', '1', '402881e8618cc9ab01618cd99f40035a', '0', '1', null, null, null, null, null);
 INSERT INTO `uk_sysdic` VALUES ('402881e86191fd51016191ff64550355', '维度成员数据类型', 'pub', 'com.dic.cubelevel.type', null, 'data', '0', '', null, null, null, null, '4028cac3614cd2f901614cf8be1f0324', '2018-02-14 09:48:09', null, '1', '0', null, '0', '0', null, null, null, null, null);
@@ -8515,9 +8518,7 @@ CREATE TABLE `uk_user` (
 -- Records of uk_user
 -- ----------------------------
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-06-29 17:40:30', '4028811b645dc08f01645e0bf45c099f', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '0', null, null, null, '0', '0', '0', '2018-06-29 17:40:37', null, null, null, '0', '0', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028811b642f5f8c01642f60ed440683', null, 'test1', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'ad@te.com', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-06-24 09:20:38', null, '2018-07-03 10:51:17', '4028811b645dc08f01645e0bf45c099f', '18510129433', '2018-06-24 09:20:38', null, '0', 'test1', null, '1', null, null, null, '0', '0', '0', '2018-07-03 10:51:25', null, null, null, '0', '0', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028811b645dc08f01645e0512ce0935', null, 'yiliao', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'asd@ac.com', null, null, null, null, null, null, null, null, null, null, null, '4028811b645dc08f01645e005f3d08dd', 'ukewo', null, '2018-07-03 10:42:28', null, '2018-07-03 10:43:31', '4028811b645dc08f01645e057eab0945', '18512212955', '2018-07-03 10:42:28', null, '0', '医疗', null, '0', null, null, null, '0', '0', '0', '2018-07-03 10:43:39', null, null, null, '0', '0', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2018-07-02 20:23:24', '4028811b63b028dc0163b032c3ed0590', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-08-06 17:27:12', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2018-07-02 20:23:24', '4028811b63b028dc0163b032c3ed0590', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-08-07 15:12:14', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
@@ -8925,6 +8926,7 @@ CREATE TABLE `uk_xiaoe_config` (
   `oqrdetailinput` varchar(32) DEFAULT NULL COMMENT '外部机器人详情输入参数',
   `oqrdetailoutput` varchar(32) DEFAULT NULL COMMENT '外部机器人详情输出参数',
   `othersuggestmsg` text COMMENT '命中结果的推荐的提示信息',
+  `aiicon` varchar(255) DEFAULT NULL COMMENT 'AI机器人头像',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='机器人配置';
 
