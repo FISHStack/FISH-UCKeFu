@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-08-07 15:45:11
+Date: 2018-08-08 09:27:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -173,6 +173,56 @@ CREATE TABLE `uk_act_callnames` (
 
 -- ----------------------------
 -- Records of uk_act_callnames
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_act_callnames_his`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_act_callnames_his`;
+CREATE TABLE `uk_act_callnames_his` (
+  `ID` varchar(32) NOT NULL COMMENT '主键ID',
+  `NAME` varchar(50) DEFAULT NULL COMMENT '名单名称',
+  `CODE` varchar(50) DEFAULT NULL COMMENT '名单代码',
+  `CREATETIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `CREATER` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `UPDATETIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `ORGI` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `USERNAME` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `STATUS` varchar(50) DEFAULT NULL COMMENT '名单状态',
+  `PARENTID` varchar(32) DEFAULT NULL COMMENT '上级ID',
+  `ACTID` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `BATID` varchar(32) DEFAULT NULL COMMENT '活动ID',
+  `DATASTATUS` varchar(32) DEFAULT NULL COMMENT '数据状态',
+  `CALLS` int(11) DEFAULT '0' COMMENT '拨打次数',
+  `FAILDCALLS` int(11) DEFAULT '0' COMMENT '拨打失败次数',
+  `invalid` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `failed` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  `WORKSTATUS` varchar(32) DEFAULT NULL COMMENT '名单业务状态',
+  `OPTIME` datetime DEFAULT NULL COMMENT '分配时间',
+  `ORGAN` varchar(32) DEFAULT NULL COMMENT '部门',
+  `BATNAME` varchar(100) DEFAULT NULL COMMENT '批次名称',
+  `TASKNAME` varchar(100) DEFAULT NULL COMMENT '任务名称',
+  `owneruser` varchar(100) DEFAULT NULL COMMENT '所属用户',
+  `ownerdept` varchar(100) DEFAULT NULL COMMENT '所属部门',
+  `dataid` varchar(100) DEFAULT NULL COMMENT '数据ID',
+  `taskid` varchar(100) DEFAULT NULL COMMENT '任务ID',
+  `filterid` varchar(100) DEFAULT NULL COMMENT '筛选表单ID',
+  `phonenumber` varchar(100) DEFAULT NULL COMMENT '电话号码',
+  `leavenum` int(11) DEFAULT '0' COMMENT '剩余名单数量',
+  `metaname` varchar(100) DEFAULT NULL COMMENT '元数据名称',
+  `distype` varchar(100) DEFAULT NULL COMMENT '分配类型',
+  `previewtime` int(11) DEFAULT '0' COMMENT '预览时长',
+  `previewtimes` int(11) DEFAULT '0' COMMENT '预览次数',
+  `servicetype` text COMMENT '服务类型',
+  `reservation` tinyint(4) DEFAULT '0' COMMENT '是否预约',
+  `memo` text COMMENT '预约备注',
+  `firstcalltime` datetime DEFAULT NULL COMMENT '首次拨打时间',
+  `firstcallstatus` varchar(20) DEFAULT NULL COMMENT '首次拨打状态',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电销名单表';
+
+-- ----------------------------
+-- Records of uk_act_callnames_his
 -- ----------------------------
 
 -- ----------------------------
@@ -2055,6 +2105,276 @@ CREATE TABLE `uk_drilldown` (
 
 -- ----------------------------
 -- Records of uk_drilldown
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ekm_access`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ekm_access`;
+CREATE TABLE `uk_ekm_access` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `knowledgeid` varchar(32) DEFAULT NULL COMMENT '知识ID',
+  `knowledgeower` varchar(32) DEFAULT NULL COMMENT '知识所属人ID',
+  `version` int(11) DEFAULT '0' COMMENT '版本号',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人（访客ID）',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间（访问时间）',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库-访客记录，浏览表';
+
+-- ----------------------------
+-- Records of uk_ekm_access
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ekm_audit`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ekm_audit`;
+CREATE TABLE `uk_ekm_audit` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `knowid` varchar(32) NOT NULL COMMENT '知识ID',
+  `knowtime` datetime DEFAULT NULL COMMENT '知识创建时间',
+  `pubstatus` varchar(32) DEFAULT NULL COMMENT '审核状态（待审核 wait/通过 pass/驳回 rejected）',
+  `auditor` varchar(32) DEFAULT NULL COMMENT '审核人ID',
+  `auditime` datetime DEFAULT NULL COMMENT '审核时间',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人（知识所属人，提交审核人）',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间（提交审核时间）',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `reject` text COMMENT '驳回原因',
+  `version` int(11) DEFAULT NULL COMMENT '版本号',
+  `datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态',
+  `knowtitle` varchar(64) DEFAULT NULL COMMENT '知识标题',
+  `auditorname` varchar(32) DEFAULT NULL COMMENT '审核人名称',
+  `knowcreatername` varchar(32) DEFAULT NULL COMMENT '知识创建人名称',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库-审核表';
+
+-- ----------------------------
+-- Records of uk_ekm_audit
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ekm_comments`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ekm_comments`;
+CREATE TABLE `uk_ekm_comments` (
+  `id` varchar(32) NOT NULL,
+  `knowledgeid` varchar(32) DEFAULT NULL COMMENT '知识ID',
+  `knowledgeower` varchar(32) DEFAULT NULL COMMENT '知识所属人ID',
+  `dismenid` varchar(32) DEFAULT NULL COMMENT '所属维度ID（根级目录）',
+  `dismentypeid` varchar(32) DEFAULT NULL COMMENT '所属维度分类ID（分支ID）',
+  `knowledgetypeid` varchar(32) DEFAULT NULL COMMENT '所属知识分类ID',
+  `knowbaseid` varchar(32) DEFAULT NULL COMMENT '所属知识库ID',
+  `datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态',
+  `content` text COMMENT '评论内容',
+  `createtime` datetime DEFAULT NULL COMMENT '评论时间',
+  `creater` varchar(32) DEFAULT NULL COMMENT '评论人',
+  `organ` varchar(32) DEFAULT NULL COMMENT '评论人所属部门',
+  `orgi` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='EKM知识 - 评论表';
+
+-- ----------------------------
+-- Records of uk_ekm_comments
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ekm_dimension`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ekm_dimension`;
+CREATE TABLE `uk_ekm_dimension` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `name` varchar(32) DEFAULT NULL COMMENT '名称',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `organ` varchar(32) DEFAULT NULL COMMENT '所属部门',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `authorgan` varchar(32) DEFAULT NULL COMMENT '授权部门',
+  `datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态',
+  `total` int(11) DEFAULT '0' COMMENT '维度下的知识条数',
+  `viewnum` int(11) DEFAULT '0' COMMENT '维度下的知识被浏览次数',
+  `collectnum` int(11) DEFAULT '0' COMMENT '维度下的知识被收藏次数',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='EKM - 维度表';
+
+-- ----------------------------
+-- Records of uk_ekm_dimension
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ekm_dimension_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ekm_dimension_type`;
+CREATE TABLE `uk_ekm_dimension_type` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `name` varchar(32) NOT NULL COMMENT '维度名',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `organ` varchar(32) DEFAULT NULL COMMENT '所属部门',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态',
+  `parent` varchar(32) DEFAULT '0' COMMENT '父级ID',
+  `dimensionid` varchar(32) DEFAULT '0' COMMENT '维度ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='EKM - 维度分类表';
+
+-- ----------------------------
+-- Records of uk_ekm_dimension_type
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ekm_experts`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ekm_experts`;
+CREATE TABLE `uk_ekm_experts` (
+  `id` varchar(32) NOT NULL,
+  `userid` varchar(50) DEFAULT NULL COMMENT '用户ID',
+  `username` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `roleid` varchar(50) DEFAULT NULL COMMENT '角色ID',
+  `bustype` varchar(50) DEFAULT NULL COMMENT '业务类型（电销/回访/知识库专家）',
+  `auditimes` int(11) DEFAULT '0' COMMENT '审核知识总条数',
+  `auditpass` int(11) DEFAULT '0' COMMENT '审核知识通过总条数',
+  `auditreject` int(11) DEFAULT '0' COMMENT '审核知识驳回总条数',
+  `organ` varchar(50) DEFAULT NULL COMMENT '用户所属部门ID',
+  `datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态',
+  `createtime` datetime DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='EKM知识库专家-授权表';
+
+-- ----------------------------
+-- Records of uk_ekm_experts
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ekm_knowbase`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ekm_knowbase`;
+CREATE TABLE `uk_ekm_knowbase` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(255) DEFAULT NULL COMMENT '名称',
+  `total` int(11) DEFAULT '0' COMMENT '知识库下的知识条数',
+  `viewnum` int(11) DEFAULT '0' COMMENT '知识库下的知识被浏览次数',
+  `collectnum` int(11) DEFAULT '0' COMMENT '知识库下的知识被收藏次数',
+  `organ` varchar(32) DEFAULT NULL COMMENT '所属部门ID',
+  `audit` int(11) DEFAULT '0' COMMENT '是否审核（0是/1否）',
+  `datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态',
+  `createtime` datetime DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='EKM知识库表';
+
+-- ----------------------------
+-- Records of uk_ekm_knowbase
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ekm_knowledge`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ekm_knowledge`;
+CREATE TABLE `uk_ekm_knowledge` (
+  `id` varchar(32) NOT NULL DEFAULT '0',
+  `title` text COMMENT '知识标题',
+  `summary` text COMMENT '摘要',
+  `content` text COMMENT '知识内容',
+  `tags` text COMMENT '知识标签',
+  `keyword` text COMMENT '关键字',
+  `dismenid` varchar(32) DEFAULT NULL COMMENT '所属维度ID（根级目录）',
+  `dismentypeid` varchar(32) DEFAULT NULL COMMENT '所属维度分类ID（分支ID）',
+  `organ` varchar(32) DEFAULT NULL COMMENT '部门ID',
+  `knowledgetypeid` varchar(32) DEFAULT NULL COMMENT '所属知识分类ID',
+  `knowbaseid` varchar(32) DEFAULT NULL COMMENT '所属知识库ID',
+  `pubstatus` varchar(32) DEFAULT NULL COMMENT '知识状态（新建 new/审核中 wait/发布成功 pass/被驳回 rejected /已下架 down）',
+  `datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态',
+  `version` int(11) DEFAULT '0' COMMENT '版本号',
+  `knowledgetype` varchar(32) DEFAULT NULL COMMENT '知识类型（字典项）',
+  `begintime` datetime DEFAULT NULL COMMENT '有效开始时间',
+  `endtime` datetime DEFAULT NULL COMMENT '有效结束时间',
+  `createtime` datetime DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  `auditor` varchar(32) DEFAULT '0' COMMENT '审核人ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='EKM - 知识表';
+
+-- ----------------------------
+-- Records of uk_ekm_knowledge
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ekm_knowledge_times`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ekm_knowledge_times`;
+CREATE TABLE `uk_ekm_knowledge_times` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `knowledgeid` varchar(32) DEFAULT NULL COMMENT '知识ID',
+  `viewtimes` int(11) DEFAULT '0' COMMENT '被浏览次数',
+  `commentstimes` int(11) DEFAULT '0' COMMENT '被评论次数',
+  `collectimes` int(11) DEFAULT '0' COMMENT '被收藏次数',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间（访问时间）',
+  `version` int(11) DEFAULT '0' COMMENT '版本号',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识-字表（统计相关次数）';
+
+-- ----------------------------
+-- Records of uk_ekm_knowledge_times
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ekm_knowledge_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ekm_knowledge_type`;
+CREATE TABLE `uk_ekm_knowledge_type` (
+  `id` varchar(32) NOT NULL,
+  `name` varchar(50) DEFAULT NULL COMMENT '分类名称',
+  `total` int(11) DEFAULT '0' COMMENT '该分类下的知识条数',
+  `viewnum` int(11) DEFAULT '0' COMMENT '该分类下的知识被浏览次数',
+  `collectnum` int(11) DEFAULT '0' COMMENT '该分类下的知识被收藏次数',
+  `organ` varchar(32) DEFAULT NULL COMMENT '所属部门ID',
+  `audit` int(11) DEFAULT '0' COMMENT '是否审核（0是/1否）',
+  `auditer` varchar(32) DEFAULT '0' COMMENT '审核人',
+  `parentid` varchar(32) DEFAULT NULL COMMENT '父级ID',
+  `knowbaseid` varchar(32) DEFAULT NULL COMMENT '所属知识库ID',
+  `datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态',
+  `createtime` datetime DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库-对应的知识分类树表';
+
+-- ----------------------------
+-- Records of uk_ekm_knowledge_type
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `uk_ekm_user`
+-- ----------------------------
+DROP TABLE IF EXISTS `uk_ekm_user`;
+CREATE TABLE `uk_ekm_user` (
+  `id` varchar(32) NOT NULL,
+  `username` varchar(50) DEFAULT NULL COMMENT '个人用户名',
+  `userid` varchar(50) DEFAULT NULL COMMENT '个人用户ID',
+  `topicnum` int(11) DEFAULT '0' COMMENT '个人创建知识总条数',
+  `topicpubnum` int(11) DEFAULT '0' COMMENT '个人发布知识总条数',
+  `commentsnum` int(11) DEFAULT '0' COMMENT '个人发出评论总条数',
+  `auditnum` int(11) DEFAULT '0' COMMENT '个人审核知识总次数',
+  `organ` varchar(32) DEFAULT NULL COMMENT '所属部门',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+  `datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库-个人贡献信息表';
+
+-- ----------------------------
+-- Records of uk_ekm_user
 -- ----------------------------
 
 -- ----------------------------
@@ -8518,7 +8838,9 @@ CREATE TABLE `uk_user` (
 -- Records of uk_user
 -- ----------------------------
 INSERT INTO `uk_user` VALUES ('4028811b61834723016183ec57760392', null, 'chenfarong', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'chen@ukewo.cn', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-02-11 16:12:39', null, '2018-06-29 17:40:30', '4028811b645dc08f01645e0bf45c099f', '18510129455', '2018-02-11 16:12:39', null, '0', '陈法蓉', null, '0', null, null, null, '0', '0', '0', '2018-06-29 17:40:37', null, null, null, '0', '0', '0', '0', null);
-INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2018-07-02 20:23:24', '4028811b63b028dc0163b032c3ed0590', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-08-07 15:12:14', null, null, null, '0', '1', '1', '0', null);
+INSERT INTO `uk_user` VALUES ('4028811b642f5f8c01642f60ed440683', null, 'test1', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'ad@te.com', null, null, null, null, null, null, null, null, null, null, null, 'ukewo', 'ukewo', null, '2018-06-24 09:20:38', null, '2018-07-03 10:51:17', '4028811b645dc08f01645e0bf45c099f', '18510129433', '2018-06-24 09:20:38', null, '0', 'test1', null, '1', null, null, null, '0', '0', '0', '2018-07-03 10:51:25', null, null, null, '0', '0', '0', '0', null);
+INSERT INTO `uk_user` VALUES ('4028811b645dc08f01645e0512ce0935', null, 'yiliao', 'd477887b0636e5d87f79cc25c99d7dc9', '5', 'asd@ac.com', null, null, null, null, null, null, null, null, null, null, null, '4028811b645dc08f01645e005f3d08dd', 'ukewo', null, '2018-07-03 10:42:28', null, '2018-07-03 10:43:31', '4028811b645dc08f01645e057eab0945', '18512212955', '2018-07-03 10:42:28', null, '0', '医疗', null, '0', null, null, null, '0', '0', '0', '2018-07-03 10:43:39', null, null, null, '0', '0', '0', '0', null);
+INSERT INTO `uk_user` VALUES ('4028cac3614cd2f901614cf8be1f0324', null, 'admin', '14e1b600b1fd579f47433b88e8d85291', '5', 'admin@ukewo.com', null, null, null, null, null, '0', null, null, '0', null, null, 'ukewo', 'ukewo', null, '2017-03-16 13:56:34', '北京', '2018-07-02 20:23:24', '4028811b63b028dc0163b032c3ed0590', '18510129577', null, null, '0', '系统管理员', '0', '1', null, '北京', '北京', '2', '1', '0', '2018-08-08 09:18:58', null, null, null, '0', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `uk_userevent`
