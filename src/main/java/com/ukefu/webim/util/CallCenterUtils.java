@@ -2,7 +2,9 @@ package com.ukefu.webim.util;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -13,6 +15,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.validation.Valid;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.data.domain.PageImpl;
@@ -25,6 +28,7 @@ import com.ukefu.util.es.UKDataBean;
 import com.ukefu.webim.service.cache.CacheHelper;
 import com.ukefu.webim.service.repository.CallAgentRepository;
 import com.ukefu.webim.service.repository.CallOutFilterRepository;
+import com.ukefu.webim.service.repository.CallOutNamesHisRepository;
 import com.ukefu.webim.service.repository.CallOutRoleRepository;
 import com.ukefu.webim.service.repository.CallOutTaskRepository;
 import com.ukefu.webim.service.repository.ExtentionRepository;
@@ -38,6 +42,8 @@ import com.ukefu.webim.service.repository.UserRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
 import com.ukefu.webim.web.model.CallAgent;
 import com.ukefu.webim.web.model.CallOutFilter;
+import com.ukefu.webim.web.model.CallOutNames;
+import com.ukefu.webim.web.model.CallOutNamesHis;
 import com.ukefu.webim.web.model.CallOutRole;
 import com.ukefu.webim.web.model.CallOutTask;
 import com.ukefu.webim.web.model.Extention;
@@ -501,5 +507,47 @@ public class CallCenterUtils {
 		
 		map.put("allUserList",userRes.findByOrgi(orgi));
 		map.put("skillList",organRes.findByOrgi(orgi));
+	}
+	
+	public static void saveCallOutNamesHis(@Valid CallOutNames callOutNames) {
+		CallOutNamesHisRepository calloutRes = UKDataContext.getContext().getBean(CallOutNamesHisRepository.class);
+		CallOutNamesHis callOutNamesHis = new CallOutNamesHis();
+		callOutNamesHis.setActid(callOutNames.getActid());
+		callOutNamesHis.setBatid(callOutNames.getBatid());
+		callOutNamesHis.setBatname(callOutNames.getBatname());
+		callOutNamesHis.setCalls(callOutNames.getCalls());
+		callOutNamesHis.setCalltype(callOutNames.getCalltype());
+		callOutNamesHis.setCreater(callOutNames.getCreater());
+		callOutNamesHis.setCreatetime(new Date());
+		callOutNamesHis.setDataid(callOutNames.getDataid());
+		callOutNamesHis.setDatastatus(callOutNames.getDatastatus());
+		callOutNamesHis.setDistype(callOutNames.getDistype());
+		callOutNamesHis.setFaildcalls(callOutNames.getFaildcalls());
+		callOutNamesHis.setFailed(callOutNames.isFailed());
+		callOutNamesHis.setFilterid(callOutNames.getFilterid());
+		callOutNamesHis.setFirstcallstatus(callOutNames.getFirstcallstatus());
+		callOutNamesHis.setFirstcalltime(callOutNames.getFirstcalltime());
+		callOutNamesHis.setInvalid(callOutNames.isInvalid());
+		callOutNamesHis.setLeavenum(callOutNames.getLeavenum());
+		callOutNamesHis.setMemo(callOutNames.getMemo());
+		callOutNamesHis.setMetaname(callOutNames.getMetaname());
+		callOutNamesHis.setName(callOutNames.getName());
+		callOutNamesHis.setOptime(callOutNames.getOptime());
+		callOutNamesHis.setOrgan(callOutNames.getOrgan());
+		callOutNamesHis.setOrgi(callOutNames.getOrgi());
+		callOutNamesHis.setOwnerdept(callOutNames.getOwnerdept());
+		callOutNamesHis.setOwneruser(callOutNames.getOwneruser());
+		callOutNamesHis.setPhonenumber(callOutNames.getPhonenumber());
+		callOutNamesHis.setPreviewtime(callOutNames.getPreviewtime());
+		callOutNamesHis.setPreviewtimes(callOutNames.getPreviewtimes());
+		callOutNamesHis.setReservation(callOutNames.isReservation());
+		callOutNamesHis.setServicetype(callOutNames.getServicetype());
+		callOutNamesHis.setStatus(callOutNames.getStatus());
+		callOutNamesHis.setTaskid(callOutNames.getTaskid());
+		callOutNamesHis.setTaskname(callOutNames.getTaskname());
+		callOutNamesHis.setUpdatetime(callOutNames.getUpdatetime());
+		callOutNamesHis.setWorkstatus(callOutNames.getWorkstatus());
+		
+		calloutRes.save(callOutNamesHis);
 	}
 }
