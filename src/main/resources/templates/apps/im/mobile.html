@@ -167,7 +167,6 @@
 	$(document).ready(function(){
 		$(document).on("click" , '[data-toggle="suggest"]' , function(e){
 			$('#message').val($(this).data("content"));
-			$("#ukefu-suggest").empty().hide();
 			sendMessage();	
 		});
 		$(document).on("click" , '[data-toggle="change"]' , function(e){
@@ -417,6 +416,9 @@
 		document.getElementById("cooperation").style.display = "none" ;
 	}
 	function sendMessage() {
+		if($("#ukefu-suggest").length >0){
+			$("#ukefu-suggest").empty().hide();
+		}
 		var count = document.getElementById('message').value.length;
 		if (count > 0 && service_end == false) {
 			var message = $("#message").val();
