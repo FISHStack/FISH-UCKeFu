@@ -343,7 +343,7 @@
 			//editor.readonly();
 		}
     })
-    var insuggest = false , timer ;
+    var insuggest = false;
     $('#message').on("input propertychange",function(){
     	var value = $(this).val();
     	if(value.trim()!='' && insuggest == false){
@@ -353,12 +353,6 @@
     			success:function(data){
     				if(data.trim() != ''){
     					$("#ukefu-suggest").empty().html(data).show();
-    					if(timer != null){
-    						clearTimeout(timer);	
-    					}
-    					timer = setTimeout(function(){
-    						$("#ukefu-suggest").empty().hide();
-    					} , 5000);
     				}else{
     					$("#ukefu-suggest").empty().hide();
     				}
@@ -432,10 +426,6 @@
 	function sendMessage() {
 		insuggest = false ;
 		$("#ukefu-suggest").empty().hide();
-		if(timer!=null){
-			clearTimeout(timer);
-			timer = null ;
-		}
 		var count = document.getElementById('message').value.length;
 		if (count > 0 && service_end == false) {
 			var message = $("#message").val();
