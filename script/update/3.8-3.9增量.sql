@@ -921,3 +921,7 @@ CREATE TABLE `uk_act_callnames_his` (
   `firstcallstatus` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+
+
+ALTER TABLE uk_tableproperties ADD privatefield tinyint DEFAULT 0 COMMENT '本地私有字段'; 
