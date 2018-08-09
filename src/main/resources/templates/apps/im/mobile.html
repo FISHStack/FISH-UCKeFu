@@ -46,6 +46,7 @@
 		    font-size: 16px;
 		    display:none;
 		    z-index:1000;
+			-webkit-transform: translate3d(0,0,0);
 		}
 		.ukefu-suggest a{
 			color:#333333;
@@ -302,8 +303,8 @@
 			</div>
 		</div>
 		</#if> </#list> </#if>
-		<div class="ukefu-suggest" id="ukefu-suggest"></div>
 	</div>
+	<div class="ukefu-suggest" id="ukefu-suggest"></div>
 	<div class="mobile-chat-bottom" id="bottom">
 		<form id="imgForm" action="/im/image/upload.html?userid=${userid!''}&appid=${appid!''}&username=${username!''}&orgi=${orgi!''}" data-toggle="ajax-form"" enctype="multipart/form-data">
 			<a href="javascript:;" class="imgFile" onclick="closeFaceDialog(0)">
