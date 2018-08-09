@@ -346,6 +346,9 @@
     			success:function(data){
     				if(data.trim() != ''){
     					$("#ukefu-suggest").empty().html(data).show();
+    					setTimeOut(function(){
+    						$("#ukefu-suggest").empty().hide();
+    					} , 5000);
     				}else{
     					$("#ukefu-suggest").empty().hide();
     				}
