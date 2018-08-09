@@ -347,7 +347,6 @@
     			url: "/im/suggest/mobile/${appid!''}.html?userid=${userid!''}&q="+encodeURIComponent(value),
     			success:function(data){
     				if(data.trim() != ''){
-    					$('#welcome-message').html(data);
     					$("#ukefu-suggest").empty().html(data).show();
     					setTimeout(function(){
     						$("#ukefu-suggest").empty().hide();
