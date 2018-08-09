@@ -27,6 +27,10 @@ public abstract interface EkmKnowledgeESRepository
 	
 	public abstract Page<EkmKnowledge> findByPubstatusAndDatastatusAndOrgi(String pubstatus, boolean datastatus ,String orgi, Pageable pageable);
 
+	public abstract Page<EkmKnowledge> getByDimenidAndDatastatusAndOrgi(String dimenid, boolean datastatus ,String orgi, Pageable pageable);
+	
+	public abstract Page<EkmKnowledge> getByDimentypeidAndDatastatusAndOrgi(String dimentypeid, boolean datastatus ,String orgi, Pageable pageable);
+
 
 }
 

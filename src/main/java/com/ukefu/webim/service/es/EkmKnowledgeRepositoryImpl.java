@@ -176,6 +176,31 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		return processQuery(boolQueryBuilder , pageable);
 	}
 	
+	@Override
+	public Page<EkmKnowledge> getByDimenidAndDatastatusAndOrgi(String dimenid,
+			boolean datastatus, String orgi, Pageable pageable) {
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
+		boolQueryBuilder1.must(QueryBuilders.wildcardQuery("dimenid", "*"+dimenid+"*"));
+		boolQueryBuilder1.must(termQuery("datastatus" , datastatus));
+		boolQueryBuilder.must(boolQueryBuilder1);
+		boolQueryBuilder.must(termQuery("orgi" ,orgi)) ;
+		return processQuery(boolQueryBuilder , pageable);
+	}
+
+	@Override
+	public Page<EkmKnowledge> getByDimentypeidAndDatastatusAndOrgi(
+			String dimentypeid, boolean datastatus, String orgi,
+			Pageable pageable) {
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
+		boolQueryBuilder1.must(QueryBuilders.wildcardQuery("dimentypeid", "*"+dimentypeid+"*"));
+		boolQueryBuilder1.must(termQuery("datastatus" , datastatus));
+		boolQueryBuilder.must(boolQueryBuilder1);
+		boolQueryBuilder.must(termQuery("orgi" ,orgi)) ;
+		return processQuery(boolQueryBuilder , pageable);
+	}
+	
 	private Page<EkmKnowledge> processQuery(BoolQueryBuilder boolQueryBuilder, Pageable page){
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder).withSort(new FieldSortBuilder("createtime").unmappedType("date").order(SortOrder.DESC));
 		
@@ -187,4 +212,6 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		}
 		return knowledgeList;
 	}
+
+	
 }

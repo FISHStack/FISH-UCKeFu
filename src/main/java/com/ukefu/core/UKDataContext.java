@@ -425,7 +425,7 @@ public class UKDataContext {
 		WORKORDERS ,
 		KBS, 
 		SUMMARY,
-		CCSUMMARY,WEBIM,CALLOUT;
+		CCSUMMARY,WEBIM,CALLOUT,EKM;
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}

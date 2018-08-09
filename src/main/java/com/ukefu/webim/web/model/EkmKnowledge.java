@@ -34,8 +34,8 @@ public class EkmKnowledge implements java.io.Serializable{
 	private String content;//内容
 	private String tags;//标签
 	private String keyword;//关键字
-	private String dismenid;//所属维度ID（根级目录）
-	private String dismentypeid;//所属维度分类ID（分支ID）
+	private String dimenid;//所属维度ID（根级目录）
+	private String dimentypeid;//所属维度分类ID（分支ID）
 	private String organ ;//所属部门ID
 	private String knowledgetypeid ;//所属知识分类ID
 	private String knowbaseid ;//所属知识库ID
@@ -98,17 +98,17 @@ public class EkmKnowledge implements java.io.Serializable{
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
-	public String getDismenid() {
-		return dismenid;
+	public String getDimenid() {
+		return dimenid;
 	}
-	public void setDismenid(String dismenid) {
-		this.dismenid = dismenid;
+	public void setDimenid(String dimenid) {
+		this.dimenid = dimenid;
 	}
-	public String getDismentypeid() {
-		return dismentypeid;
+	public String getDimentypeid() {
+		return dimentypeid;
 	}
-	public void setDismentypeid(String dismentypeid) {
-		this.dismentypeid = dismentypeid;
+	public void setDimentypeid(String dimentypeid) {
+		this.dimentypeid = dimentypeid;
 	}
 	public String getOrgan() {
 		return organ;

@@ -133,9 +133,11 @@ public class MediaController extends Handler{
     	        response.setHeader("Content-Disposition", "attachment;filename="+java.net.URLEncoder.encode(attachmentFile.getTitle(), "UTF-8"));  
     	        if(!StringUtils.isBlank(attachmentFile.getModel()) && attachmentFile.getModel().equals("webim")){
     	        	response.getOutputStream().write(FileUtils.readFileToByteArray(new File(path , "app/webim/"+attachmentFile.getFileid())));
-    	        }else{
+    	        }else if(!StringUtils.isBlank(attachmentFile.getModel()) && attachmentFile.getModel().equals("workorders")){
     	        	response.getOutputStream().write(FileUtils.readFileToByteArray(new File(path , "app/workorders/"+attachmentFile.getFileid())));
-    	        }
+    	        }else {
+    	        	response.getOutputStream().write(FileUtils.readFileToByteArray(new File(path , "app/ekm/"+attachmentFile.getFileid())));
+				}
     		}
     	}
     }
