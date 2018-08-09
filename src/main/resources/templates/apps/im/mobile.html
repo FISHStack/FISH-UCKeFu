@@ -98,7 +98,7 @@
             elem.style.resize = 'none';
             
             var textchange = function(){
-            	changeTextArea(38);
+            	changeTextArea(0);
             }
             
             var change = function () {
@@ -131,6 +131,13 @@
     }
     
     function openFaceDialog(){
+    	if($("#ukefu-suggest").length >0){
+			$("#ukefu-suggest").empty().hide();
+			if(timer!=null){
+				clearTimeout(timer);
+				timer = null ;
+			}
+		}
 		if(document.getElementById("faceindex").style.display == "none"){
 			document.getElementById("faceindex").style.display= "block";
 			document.getElementById("bottom").style.height = $('#message').height()+ 20 + document.getElementById("faceindex").offsetHeight + "px" ;
@@ -143,7 +150,7 @@
 	
 	function closeFaceDialog(height){
 		document.getElementById("faceindex").style.display= "none";
-		document.getElementById("bottom").style.height = $('#message').height() + height + "px" ;
+		document.getElementById("bottom").style.height = $('#message').height() + "px" ;
 		document.getElementById("above").style.height = "calc(100% - "+($('#message').height())+"px)" ;
 	}
 	
@@ -338,7 +345,7 @@
 			//editor.readonly();
 		}
     })
-    var insuggest = false ;
+    var insuggest = false , timer ;
     $('#message').on("input propertychange",function(){
     	var value = $(this).val();
     	if(value.trim()!='' && insuggest == false){
@@ -348,7 +355,10 @@
     			success:function(data){
     				if(data.trim() != ''){
     					$("#ukefu-suggest").empty().html(data).show();
-    					setTimeout(function(){
+    					if(timer != null){
+    						clearTimeout(timer);	
+    					}
+    					timer = setTimeout(function(){
     						$("#ukefu-suggest").empty().hide();
     					} , 5000);
     				}else{
@@ -424,6 +434,10 @@
 	function sendMessage() {
 		if($("#ukefu-suggest").length >0){
 			$("#ukefu-suggest").empty().hide();
+			if(timer!=null){
+				clearTimeout(timer);
+				timer = null ;
+			}
 		}
 		var count = document.getElementById('message').value.length;
 		if (count > 0 && service_end == false) {

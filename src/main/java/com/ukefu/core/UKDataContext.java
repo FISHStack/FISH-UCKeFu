@@ -177,8 +177,8 @@ public class UKDataContext {
 	
 	public enum NameStatusTypeEnum{
 		CALLED,	//已拨打
-		NOTCALL	//未拨打
-		;
+		NOTCALL,	//未拨打
+		WASTE;//已作废名单
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}
@@ -191,8 +191,8 @@ public class UKDataContext {
 		EMPNO,	//空号
 		ARREARS,//欠费
 		APPO,	//预约拨打
-		INVALID,//无效名单
-		WASTE;//已作废名单
+		INVALID;//无效名单
+		
 		public String toString(){
 			return super.toString().toLowerCase() ;
 		}
