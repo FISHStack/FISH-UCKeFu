@@ -338,20 +338,24 @@
 			//editor.readonly();
 		}
     })
+    var insuggest = false ;
     $('#message').on("input propertychange",function(){
     	var value = $(this).val();
-    	if(value.trim()!=''){
+    	if(value.trim()!='' && insuggest == false){
+    		insuggest = true ;
     		$.ajax({
     			url: "/im/suggest/mobile/${appid!''}.html?userid=${userid!''}&q="+encodeURIComponent(value),
     			success:function(data){
     				if(data.trim() != ''){
+    					$('#welcome-message').html(data);
     					$("#ukefu-suggest").empty().html(data).show();
-    					setTimeOut(function(){
+    					setTimeout(function(){
     						$("#ukefu-suggest").empty().hide();
     					} , 5000);
     				}else{
     					$("#ukefu-suggest").empty().hide();
     				}
+    				insuggest = false ;
     			}
     		});
     	}
