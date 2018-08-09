@@ -58,7 +58,6 @@
 		    color: #4665d4;
 		}
     </style>
-    
     <script src="/im/js/socket.io.js"></script>
     <script type="text/javascript">
 	var editor , words , textheight , wordinx = 0 ;
@@ -97,18 +96,41 @@
             
             elem.style.resize = 'none';
             
-            var textchange = function(){
-            	changeTextArea(0);
-            }
-            
             var change = function () {
-                changeTextArea(0);
-                wordinx = getPositionForTextArea(document.getElementById('message'));
+                    var scrollTop, height,
+                            padding = 0,
+                            style = elem.style;
+                    
+                    if (elem._length === elem.value.length) return;
+                    elem._length = elem.value.length;
+                    
+                    if (!isFirefox && !isOpera) {
+                            padding = parseInt(getStyle('paddingTop')) + parseInt(getStyle('paddingBottom'));
+                    };
+                    scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+                    
+                    elem.style.height = minHeight + 'px';
+                    if (elem.scrollHeight > minHeight) {
+                            if (maxHeight && elem.scrollHeight > maxHeight) {
+                                    height = maxHeight - padding;
+                                    style.overflowY = 'auto';
+                            } else {
+                                    height = elem.scrollHeight - padding;
+                                    style.overflowY = 'hidden';
+                            };
+                            style.height = height + extra + 'px';
+                            scrollTop += parseInt(style.height) - elem.currHeight;
+                            document.body.scrollTop = scrollTop;
+                            document.documentElement.scrollTop = scrollTop;
+                            elem.currHeight = parseInt(style.height);
+                    };
+                    changeTextArea();
+                    wordinx = getPositionForTextArea(document.getElementById('message'));
             };
             
-            addEvent('propertychange', textchange);
-            addEvent('input', textchange);
-            addEvent('focus', changeTextArea);
+            addEvent('propertychange', change);
+            addEvent('input', change);
+            addEvent('focus', change);
             change();
     };
   	//多行文本框 
@@ -130,35 +152,31 @@
         return (CaretPos);
     }
     
-    function openFaceDialog(){
-    	$("#ukefu-suggest").empty().hide();
-		if(timer!=null){
-			clearTimeout(timer);
-			timer = null ;
-		}
+	function openFaceDialog(){
+		$("#ukefu-suggest").empty().hide();
 		if(document.getElementById("faceindex").style.display == "none"){
 			document.getElementById("faceindex").style.display= "block";
 			document.getElementById("bottom").style.height = $('#message').height()+ 20 + document.getElementById("faceindex").offsetHeight + "px" ;
-			document.getElementById("above").style.height = "calc(100% - " + ($('#bottom').height() + 80)+"px)"
+			document.getElementById("above").style.height = "calc(100% - "+($('#bottom').height())+"px)"
 		}else{
-			closeFaceDialog(0);
+			closeFaceDialog();
 		}
 		return false ;
 	}	
 	
-	function closeFaceDialog(height){
+	function closeFaceDialog(){
 		document.getElementById("faceindex").style.display= "none";
 		document.getElementById("bottom").style.height = $('#message').height() + "px" ;
-		document.getElementById("above").style.height = "calc(100% - "+($('#message').height() + 80)+"px)" ;
+		document.getElementById("above").style.height = "calc(100% - "+($('#message').height() + 20)+"px)" ;
 	}
 	
-	function changeTextArea(height){
+	function changeTextArea(){
 		if(document.getElementById("faceindex").style.display == "none"){
-			$('#bottom').height($('#message').height() + height);
-			document.getElementById("above").style.height = "calc(100% - "+($('#message').height() + 80)+"px)"
+			$('#bottom').height(document.getElementById('message').scrollHeight);
+			document.getElementById("above").style.height = "calc(100% - "+(document.getElementById('message').scrollHeight+20)+"px)"
 		}else{
-			$('#bottom').height($('#message').height() + $('#faceindex').height());
-			document.getElementById("above").style.height = "calc(100% - "+($('#message').height() + 80)+"px)"
+			$('#bottom').height(document.getElementById('message').scrollHeight+document.getElementById("faceindex").offsetHeight);
+			document.getElementById("above").style.height = "calc(100% - "+(document.getElementById('bottom').scrollHeight)+"px)"
 		}
 	}
 	function insertImg(obj){
@@ -196,7 +214,10 @@
 		      }
 		});
 		// 在输入框获取焦点, 键盘弹起后, 真的是一行代码
-		
+		var interval = setInterval(function() {
+		    document.body.scrollTop = document.body.scrollHeight
+		}, 100)
+
 		$(document).on('submit.form.data-api','[data-toggle="ajax-form"]', function ( e ) {
 			var formValue = $(e.target) ;
 			$(this).ajaxSubmit({	  
@@ -214,7 +235,7 @@
   </script>
     <!-- kindeditor -->
 </head>
-<body class="ukefu-im-theme" style="overflow:hidden;height:calc(100%);overflow-y: atuo;/* 或者scroll */-webkit-overflow-scrolling: touch;/* 解决ios滑动不流畅问题 */" class="ukefu-point-text">
+<body class="ukefu-im-theme" style="overflow:hidden;height:calc(100% - 50px);overflow-y: atuo;/* 或者scroll */-webkit-overflow-scrolling: touch;/* 解决ios滑动不流畅问题 */" class="ukefu-point-text">
 	<div id="header" class="theme${inviteData.consult_dialog_color!''}">
 		<img
 			src="<#if inviteData?? && inviteData.consult_dialog_logo??>/res/image.html?id=${inviteData.consult_dialog_logo?url}<#else>/images/logo.png</#if>"
@@ -242,7 +263,7 @@
 			<button id="offcoop-btn" style="border-color:#009688 !important;color:#FFFFFF;display: inline-block;height: 38px;line-height: 38px;padding: 0 18px;background-color: #009688;color: #fff;white-space: nowrap;text-align: center;font-size: 14px;margin-right:10px;border: none;border-radius: 2px;cursor: pointer;opacity: .9;filter: alpha(opacity=90);background-color: #377FED !important;border:1px solid #FFFFFF;" onclick="offCoop();">退出协作</button>
 		</div>
 	</div>
-	<div class="chat-above" id="above" style="height:calc(100% - 110px);padding-bottom:100px;padding-left:0px;padding-right:0px;">
+	<div class="chat-above" id="above" style="height:calc(100% - 110px);">
 		<div class="clearfix message  welcome" style="margin:5px;">
 			<span id="welcome-message">${(inviteData.dialog_message!'欢迎您来咨询！所有客户均可以免费注册试用，有关技术支持和商业咨询可以申请加入我们官方QQ群：555834343.')?no_esc}</span>
 		</div>
@@ -469,9 +490,9 @@
 		document.getElementById(id).innerHTML = message;
 	}
 	autoTextarea(document.getElementById("message"));// 调用
-	$('#message').click(function() {
+	$('#message').click(function(){
 		wordinx = getPositionForTextArea(document.getElementById('message'));
-		closeFaceDialog(44);
+		closeFaceDialog();
 	});
 
 	var message = {
