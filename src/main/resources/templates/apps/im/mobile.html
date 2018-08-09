@@ -131,12 +131,10 @@
     }
     
     function openFaceDialog(){
-    	if($("#ukefu-suggest").length >0){
-			$("#ukefu-suggest").empty().hide();
-			if(timer!=null){
-				clearTimeout(timer);
-				timer = null ;
-			}
+    	$("#ukefu-suggest").empty().hide();
+		if(timer!=null){
+			clearTimeout(timer);
+			timer = null ;
 		}
 		if(document.getElementById("faceindex").style.display == "none"){
 			document.getElementById("faceindex").style.display= "block";
@@ -432,12 +430,11 @@
 		document.getElementById("cooperation").style.display = "none" ;
 	}
 	function sendMessage() {
-		if($("#ukefu-suggest").length >0){
-			$("#ukefu-suggest").empty().hide();
-			if(timer!=null){
-				clearTimeout(timer);
-				timer = null ;
-			}
+		insuggest = false ;
+		$("#ukefu-suggest").empty().hide();
+		if(timer!=null){
+			clearTimeout(timer);
+			timer = null ;
 		}
 		var count = document.getElementById('message').value.length;
 		if (count > 0 && service_end == false) {

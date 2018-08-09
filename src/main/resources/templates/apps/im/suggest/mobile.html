@@ -7,7 +7,7 @@
 	<#if invite.suggestnum!=0 && content_index % invite.suggestnum == 0>
 <ul class="ukefu-suggest-block" style="<#if content_index gt 0>display:none;</#if>">
 	</#if>
-	<li><a data-toggle="suggest" href="javascript:void(0)" data-id="${content.id!''}" data-content="${content.content!''}" >${content.title!''}</a></li>
+	<li><a data-toggle="suggest" href="javascript:void(0)" data-id="${content.id!''}" data-content="${content.title!''}" >${content.title!''}</a></li>
 </#list>
 <#if contentList?size % invite.suggestnum !=0 && contentList?size gt 0 >
 </ul>
