@@ -925,3 +925,23 @@ CREATE TABLE `uk_act_callnames_his` (
 
 
 ALTER TABLE uk_tableproperties ADD privatefield tinyint DEFAULT 0 COMMENT '本地私有字段'; 
+
+CREATE TABLE `uk_ekm_knowbase_role` (
+  `id` varchar(32) NOT NULL,
+  `knowbaseid` varchar(32) DEFAULT NULL COMMENT '知识库ID',
+  `roleid` varchar(32) DEFAULT NULL COMMENT '角色id',
+  `createtime` datetime DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库 - 角色授权表';
+
+CREATE TABLE `uk_ekm_knowbase_organ` (
+  `id` varchar(32) NOT NULL,
+  `knowbaseid` varchar(32) DEFAULT NULL COMMENT '知识库ID',
+  `organid` varchar(32) DEFAULT NULL COMMENT '部门id',
+  `createtime` datetime DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库 - 部门授权表';
