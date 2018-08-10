@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-08-08 09:27:24
+Date: 2018-08-10 13:39:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -8589,6 +8589,7 @@ CREATE TABLE `uk_tableproperties` (
   `secdistype` varchar(50) DEFAULT NULL COMMENT '字段隐藏方式',
   `styletype` varchar(32) DEFAULT NULL COMMENT '样式',
   `sysfield` tinyint(4) DEFAULT '0' COMMENT '系统字段',
+  `privatefield` tinyint(4) DEFAULT '0' COMMENT '本地私有字段',
   PRIMARY KEY (`ID`) USING BTREE,
   UNIQUE KEY `SQL130112140848940` (`ID`) USING BTREE,
   KEY `FKF8D74787854BC62` (`DBTABLEID`) USING BTREE,
