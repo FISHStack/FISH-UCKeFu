@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import com.ukefu.webim.web.model.EkmKnowledge;
+import com.ukefu.webim.web.model.User;
 
 public abstract interface EkmKnowledgeESRepository  
 {
@@ -15,13 +15,15 @@ public abstract interface EkmKnowledgeESRepository
 	
 	public abstract EkmKnowledge findByIdAndOrgi(String id , String orgi);
 	
-	public abstract Page<EkmKnowledge> findByDatastatusAndOrgi(boolean datastatus ,String orgi,Pageable pageable);
+	public abstract Page<EkmKnowledge> findByDatastatusAndOrgi(boolean datastatus ,String orgi,User user,Pageable pageable);
 	
 	public abstract List<EkmKnowledge> findByOrgiAndDatastatus(String orgi,boolean datastatus);
 	
 	public abstract Page<EkmKnowledge> findByKnowbaseidAndKnowledgetypeidAndDatastatusAndOrgi(String knowbaseid,String knowledgetypeid,boolean datastatus ,String orgi,Pageable page);
 	
 	public abstract List<EkmKnowledge> findByKnowbaseidAndDatastatusAndOrgi(String knowbaseid,boolean datastatus ,String orgi);
+	
+	public abstract Page<EkmKnowledge> findByDatastatusAndKnowbaseidAndOrgi(boolean datastatus ,String knowbaseid,String orgi,Pageable pageable);
 	
 	public abstract List<EkmKnowledge> findByCreaterAndDatastatusAndOrgi(String creater,boolean datastatus ,String orgi);
 	

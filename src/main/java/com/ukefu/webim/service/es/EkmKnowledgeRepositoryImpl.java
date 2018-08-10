@@ -2,6 +2,7 @@ package com.ukefu.webim.service.es;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -17,10 +18,27 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.stereotype.Component;
 
 import com.ukefu.core.UKDataContext;
+import com.ukefu.webim.service.repository.EkmKnowbaseOrganRepository;
+import com.ukefu.webim.service.repository.EkmKnowbaseRoleRepository;
+import com.ukefu.webim.service.repository.UserRoleRepository;
+import com.ukefu.webim.web.model.EkmKnowbaseOrgan;
+import com.ukefu.webim.web.model.EkmKnowbaseRole;
 import com.ukefu.webim.web.model.EkmKnowledge;
+import com.ukefu.webim.web.model.User;
+import com.ukefu.webim.web.model.UserRole;
 
 @Component
 public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
+	
+	
+	@Autowired
+	private EkmKnowbaseOrganRepository ekmKnowbaseOrganRes ;	//查询知识库 - 部门授权
+	
+	@Autowired
+	private UserRoleRepository userRoleRes ;	//用户- 角色关联
+	
+	@Autowired
+	private EkmKnowbaseRoleRepository ekmKnowbaseRoleRes ;	//查询知识库 - 角色授权
 	
 	private ElasticsearchTemplate elasticsearchTemplate;
 
@@ -66,13 +84,43 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 	}
 
 	@Override
-	public Page<EkmKnowledge> findByDatastatusAndOrgi(boolean datastatus, String orgi, Pageable pageable) {
+	public Page<EkmKnowledge> findByDatastatusAndOrgi(boolean datastatus, String orgi,User user, Pageable pageable) {
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
-		boolQueryBuilder1.should(termQuery("datastatus" , datastatus)) ;
+		
+		
+		
+		final List<String> knowbaseRoleList = new ArrayList<>();
+		final List<String> knowbaseOrganList = new ArrayList<>();
+		
+		List<UserRole> userRoleList = userRoleRes.findByOrgiAndUser(orgi, user);
+		for(UserRole userRole :userRoleList){
+			List<EkmKnowbaseRole> tempRoleList = ekmKnowbaseRoleRes.findByRoleidAndOrgi(userRole.getRole().getId(), orgi);
+			for(EkmKnowbaseRole knowbaseRole : tempRoleList){
+				knowbaseRoleList.add(knowbaseRole.getKnowbaseid());
+			}
+		}
+		
+		List<EkmKnowbaseOrgan> tempOrganList = ekmKnowbaseOrganRes.findByOrganidAndOrgi(user.getOrgan(), orgi);
+		for(EkmKnowbaseOrgan knowbaseOrgan : tempOrganList){
+			knowbaseOrganList.add(knowbaseOrgan.getKnowbaseid());
+		}
+		
+		if(knowbaseRoleList.size() > 0){
+			for(String id : knowbaseRoleList){
+				boolQueryBuilder1.should(termQuery("knowbaseid" , id));
+			}
+		}
+		if(knowbaseOrganList.size() > 0){
+			for(String id : knowbaseOrganList){
+				boolQueryBuilder1.should(termQuery("knowbaseid" , id));
+			}
+		}
+		
 		boolQueryBuilder.must(boolQueryBuilder1) ;
 		boolQueryBuilder.must(termQuery("orgi" ,orgi)) ;
+		boolQueryBuilder.must(termQuery("datastatus" , datastatus)) ;
 		
 		return processQuery(boolQueryBuilder , pageable);
 	}
@@ -213,5 +261,22 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		return knowledgeList;
 	}
 
-	
+
+	@Override
+	public Page<EkmKnowledge> findByDatastatusAndKnowbaseidAndOrgi(boolean datastatus, String knowbaseid, String orgi,
+			Pageable pageable) {
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
+		boolQueryBuilder1.must(termQuery("datastatus" , datastatus)) ;
+		boolQueryBuilder.must(boolQueryBuilder1) ;
+		boolQueryBuilder.must(termQuery("orgi" ,orgi)) ;
+		if(!StringUtils.isBlank(knowbaseid)){
+			boolQueryBuilder.must(termQuery("knowbaseid" , knowbaseid)) ;
+		}else{
+			boolQueryBuilder.must(termQuery("knowbaseid" , UKDataContext.UKEFU_SYSTEM_NO_DAT)) ;
+		}
+		
+		return processQuery(boolQueryBuilder , pageable);
+	}
+
 }
