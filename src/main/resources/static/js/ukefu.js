@@ -1,4 +1,4 @@
-var layer , iframe , layerwin , cursession ;
+var layer , iframe , layerwin , cursession , acceptCallOut = true ;
 $(document).ready(function(){
 	var hide ;
 	$('.dropdown-menu').on("click" , function(){
@@ -121,6 +121,7 @@ $(document).ready(function(){
 		var href = 	$(this).attr('href')  ;
 		var confirm = $(this).data('confirm')  ;
 		var target = $(this).data('target')  ;
+		var callbackurl = $(this).data('callbackurl')  ;
 		if(href == null){
 			href = $(this).data('href') ;
 		}
@@ -145,7 +146,14 @@ $(document).ready(function(){
 					
 				});
 			}else{
-				if(href){
+				if(callbackurl){
+					loadURL(callbackurl , null , function(data){
+						if($(target).length > 0){
+							$(target).empty().html(data);
+						}
+						location.href = href ;
+					});
+				}else if(href){
 					if(callback!=null){
 						eval(callback+"('"+href+"' , '"+target+"')");
 					}else{

@@ -137,6 +137,8 @@ public class CousultInvite implements java.io.Serializable{
 	private String ainame ;		//AI服务 昵称
 	private String aiicon ;		//AI头像
 	
+	private boolean hideagent ;	//在机器人界面上隐藏 转人工坐席 按钮 
+	
 	private String aiid;		//默认的机器人
 	
 	private String datadept;
@@ -867,5 +869,11 @@ public class CousultInvite implements java.io.Serializable{
 	}
 	public void setAiicon(String aiicon) {
 		this.aiicon = aiicon;
+	}
+	public boolean isHideagent() {
+		return hideagent;
+	}
+	public void setHideagent(boolean hideagent) {
+		this.hideagent = hideagent;
 	}
 }

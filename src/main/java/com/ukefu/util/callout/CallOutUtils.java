@@ -133,7 +133,13 @@ public class CallOutUtils {
 			MetadataTable table = UKDataContext.getContext().getBean(MetadataRepository.class).findByTablename(batch.getActid()) ;
 			for(TableProperties tp : table.getTableproperty()) {
 				if(tp.isPhonenumber()) {
-					dial_number = (String) name.getValues().get(tp.getFieldname()) ; 
+					if(tp.isPrivatefield()) {
+						if(!tp.isSystemfield()) {
+							dial_number = (String) name.getValues().get("pri_"+tp.getFieldname()) ;
+						}
+					}else {
+						dial_number = (String) name.getValues().get(tp.getFieldname()) ;
+					}
 					disphonenum = tp.isSecfield() ;
 					distype = tp.getSecdistype() ;
 					break ;

@@ -29,6 +29,7 @@ public class PbxHost implements java.io.Serializable{
 	private String password ;	//pbx host password
 	
 	private String blacklist ;	//拦截字符串
+	private String whitelist ;	//请求头中必须包含的字符串，无特殊字符串即被拦截
 	
 	private boolean connected ;
 	
@@ -311,5 +312,11 @@ public class PbxHost implements java.io.Serializable{
 	}
 	public void setWebrtcring(String webrtcring) {
 		this.webrtcring = webrtcring;
+	}
+	public String getWhitelist() {
+		return whitelist;
+	}
+	public void setWhitelist(String whitelist) {
+		this.whitelist = whitelist;
 	}
 }

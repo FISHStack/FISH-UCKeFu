@@ -5,6 +5,7 @@ public class QueryParams {
 	private String end ;
 	private String id ;
 	private String p;
+	private String type ;
 	private String ps ;
 	public String getBegin() {
 		return begin;
@@ -36,6 +37,10 @@ public class QueryParams {
 	public void setPs(String ps) {
 		this.ps = ps;
 	}
-	
-	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 }

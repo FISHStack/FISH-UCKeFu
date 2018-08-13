@@ -43,6 +43,9 @@ public class AiConfig implements java.io.Serializable{
 	private String othertempletinput ;	//外部机器人输入格式化模板
 	private String othertempletoutput ;	//外部机器人输出格式化模板
 	
+	private boolean othertrans ;		//启用外部机器人转人工坐席
+	private int othertimeout ;			//超时时长
+	
 	private String oqrdetailurl ;		//外部机器人内容URL
 	private String oqrdetailinput ;	//外部机器人详情输入格式化模板
 	private String oqrdetailoutput ;	//外部机器人详情输出格式化模板
@@ -58,6 +61,8 @@ public class AiConfig implements java.io.Serializable{
 	private boolean scenefirst = false;
 	private boolean enablekeyword = false;
 	private int keywordnum = 5;
+	
+	private boolean transagent ;	//在每一条机器人消息后面 显示转人工坐席
 	
 	private boolean askqs ;	//询问访客是否解决问题
 	private int asktimes ;	//最长多久开始询问 默认 120秒（访客空闲时间超过120秒即断开链接）
@@ -335,5 +340,23 @@ public class AiConfig implements java.io.Serializable{
 	}
 	public void setAiicon(String aiicon) {
 		this.aiicon = aiicon;
+	}
+	public boolean isOthertrans() {
+		return othertrans;
+	}
+	public void setOthertrans(boolean othertrans) {
+		this.othertrans = othertrans;
+	}
+	public int getOthertimeout() {
+		return othertimeout;
+	}
+	public void setOthertimeout(int othertimeout) {
+		this.othertimeout = othertimeout;
+	}
+	public boolean isTransagent() {
+		return transagent;
+	}
+	public void setTransagent(boolean transagent) {
+		this.transagent = transagent;
 	}
 }

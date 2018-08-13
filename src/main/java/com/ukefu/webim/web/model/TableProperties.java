@@ -109,6 +109,8 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	
 	private boolean reffk = false ; 		//是否外键关联
 	
+	private boolean privatefield ;			//本地字段 ， 数据类型为接口推送数据的时候，标记为私密字段的 数据不会推送到远端服务
+	
 	private boolean sysfield ; 				//系统字段
 	/**
 	 * @return the id
@@ -491,5 +493,10 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	public void setSysfield(boolean sysfield) {
 		this.sysfield = sysfield;
 	}
-	
+	public boolean isPrivatefield() {
+		return privatefield;
+	}
+	public void setPrivatefield(boolean privatefield) {
+		this.privatefield = privatefield;
+	}
 }
