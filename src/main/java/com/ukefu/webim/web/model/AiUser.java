@@ -33,6 +33,7 @@ public class AiUser implements java.io.Serializable{
 	private int timeoutnums ;	//超时次数
 	private int retimes ;		//重复次数
 	private int errortimes ;	//错误次数
+	private String queresultid ;//问卷结果主表ID
 	
 	public AiUser(String id , String userid, long time,String orgi , IP ipdata){
 		this.id = id.replace("-", "") ;
@@ -212,4 +213,13 @@ public class AiUser implements java.io.Serializable{
 	public void setErrortimes(int errortimes) {
 		this.errortimes = errortimes;
 	}
+
+	public String getQueresultid() {
+		return queresultid;
+	}
+
+	public void setQueresultid(String queresultid) {
+		this.queresultid = queresultid;
+	}
+	
 }
