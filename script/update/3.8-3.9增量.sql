@@ -966,9 +966,9 @@ CREATE TABLE `uk_que_result` (
 	`asktimes` int(11) DEFAULT '0' COMMENT '提问次数',
 	`answertimes` int(11) DEFAULT '0' COMMENT '回答次数',
 	`answertime` int(11) DEFAULT '0' COMMENT '回答时长（每个回答时间总和）',
-`errortimes` int(11) DEFAULT '0' COMMENT '回答错误次数',
-`timeouttimes` int(11) DEFAULT '0' COMMENT '回答超时次数',
-`retimes` int(11) DEFAULT '0' COMMENT '重复次数',
+	`errortimes` int(11) DEFAULT '0' COMMENT '回答错误次数',
+	`timeouttimes` int(11) DEFAULT '0' COMMENT '回答超时次数',
+	`retimes` int(11) DEFAULT '0' COMMENT '重复次数',
 	`actid` varchar(32) DEFAULT NULL COMMENT '活动ID',
 	`batchid` varchar(32) DEFAULT NULL COMMENT '批次ID',
 	`filterid` varchar(32) DEFAULT NULL COMMENT '筛选表单ID',
@@ -976,10 +976,10 @@ CREATE TABLE `uk_que_result` (
 	`nameid` varchar(32) DEFAULT NULL COMMENT '名单ID',
 	`mobile` varchar(32) DEFAULT NULL COMMENT '手机号',
 	`sumscore` int(11) DEFAULT '0' COMMENT '问卷总评分',
-  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+	`createtime` datetime DEFAULT NULL COMMENT '创建时间',
 	`endtime` datetime DEFAULT NULL COMMENT '结束时间',
-  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
-  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+	`creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+	`orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
 	`organ` varchar(32) DEFAULT NULL COMMENT '部门',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT '问卷结果主表';
@@ -992,15 +992,12 @@ CREATE TABLE `uk_que_result_answer` (
 	`quetype` int(11) DEFAULT '0' COMMENT '问题类型（0选择题1问答题）',
 	`answerid` varchar(32) DEFAULT NULL COMMENT '答案ID',
 	`answertime` int(11) DEFAULT '0' COMMENT '回答时长（单个问题回答时长）',
-  `answer` text COMMENT '问题答案（问答题）',
-  `answerscore` int(11) DEFAULT '0' COMMENT '答案评分',
+	`answer` text COMMENT '问题答案（问答题）',
+	`answerscore` int(11) DEFAULT '0' COMMENT '答案评分',
 	`correct` varchar(32) DEFAULT NULL COMMENT '是否是正确答案（0正确1不正确）',
-  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
-  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
-  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+	`createtime` datetime DEFAULT NULL COMMENT '创建时间',
+	`creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+	`orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
 	`anstatus` varchar(32) DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT '问卷结果字表';
-
-
-
