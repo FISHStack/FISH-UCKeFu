@@ -955,4 +955,52 @@ CREATE TABLE `uk_ekm_knowbase_organ` (
   `creater` varchar(32) DEFAULT NULL,
   `orgi` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库 - 部门授权表';>>>>>>> .r1125
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库 - 部门授权表';
+
+CREATE TABLE `uk_que_result` (
+  `ID` varchar(32) NOT NULL COMMENT '主键ID',
+  `eventid` varchar(100) DEFAULT NULL COMMENT '通话记录ID',
+	`processid` varchar(32) DEFAULT NULL COMMENT '问卷ID',
+	`questionid` varchar(32) DEFAULT NULL COMMENT '问题ID',
+	`processtime` int(11) DEFAULT '0' COMMENT '问答时长',
+	`asktimes` int(11) DEFAULT '0' COMMENT '提问次数',
+	`answertimes` int(11) DEFAULT '0' COMMENT '回答次数',
+	`answertime` int(11) DEFAULT '0' COMMENT '回答时长（每个回答时间总和）',
+`errortimes` int(11) DEFAULT '0' COMMENT '回答错误次数',
+`timeouttimes` int(11) DEFAULT '0' COMMENT '回答超时次数',
+`retimes` int(11) DEFAULT '0' COMMENT '重复次数',
+	`actid` varchar(32) DEFAULT NULL COMMENT '活动ID',
+	`batchid` varchar(32) DEFAULT NULL COMMENT '批次ID',
+	`filterid` varchar(32) DEFAULT NULL COMMENT '筛选表单ID',
+	`formfilterid` varchar(32) DEFAULT NULL COMMENT '筛选记录ID',
+	`nameid` varchar(32) DEFAULT NULL COMMENT '名单ID',
+	`mobile` varchar(32) DEFAULT NULL COMMENT '手机号',
+	`sumscore` int(11) DEFAULT '0' COMMENT '问卷总评分',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+	`endtime` datetime DEFAULT NULL COMMENT '结束时间',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+	`organ` varchar(32) DEFAULT NULL COMMENT '部门',
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT '问卷结果主表';
+
+CREATE TABLE `uk_que_result_answer` (
+  `ID` varchar(32) NOT NULL COMMENT '主键ID',
+  `resultid` varchar(100) DEFAULT NULL COMMENT '结果主表ID',
+	`processid` varchar(32) DEFAULT NULL COMMENT '问卷ID',
+	`questionid` varchar(32) DEFAULT NULL COMMENT '问题ID',
+	`quetype` int(11) DEFAULT '0' COMMENT '问题类型（0选择题1问答题）',
+	`answerid` varchar(32) DEFAULT NULL COMMENT '答案ID',
+	`answertime` int(11) DEFAULT '0' COMMENT '回答时长（单个问题回答时长）',
+  `answer` text COMMENT '问题答案（问答题）',
+  `answerscore` int(11) DEFAULT '0' COMMENT '答案评分',
+	`correct` varchar(32) DEFAULT NULL COMMENT '是否是正确答案（0正确1不正确）',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `creater` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `orgi` varchar(32) DEFAULT NULL COMMENT '租户ID',
+	`anstatus` varchar(32) DEFAULT NULL COMMENT '状态',
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT '问卷结果字表';
+
+
+
