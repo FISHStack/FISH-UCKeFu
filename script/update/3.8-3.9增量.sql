@@ -925,6 +925,17 @@ CREATE TABLE `uk_act_callnames_his` (
 
 
 ALTER TABLE uk_tableproperties ADD privatefield tinyint DEFAULT 0 COMMENT '本地私有字段'; 
+ALTER TABLE uk_consult_invite ADD hideagent tinyint DEFAULT 0 COMMENT '在机器人界面上隐藏人工坐席';
+
+
+
+ALTER TABLE uk_xiaoe_config ADD transagent tinyint(4) DEFAULT 0 COMMENT "显示转人工坐席按钮";
+
+ALTER TABLE uk_xiaoe_config ADD othertimeout int(4) DEFAULT 0 COMMENT "接口超时时长";
+ALTER TABLE uk_xiaoe_config ADD othertrans tinyint(4) DEFAULT 0 COMMENT "接口超时自动转人工";
+
+ALTER TABLE uk_callcenter_pbxhost ADD whitelist varchar(255) COMMENT '请求信息中必须包含信息，否则请求被拦截';
+ALTER TABLE uk_tableproperties ADD privatefield tinyint DEFAULT 0 COMMENT '本地私有字段';
 
 CREATE TABLE `uk_ekm_knowbase_role` (
   `id` varchar(32) NOT NULL,
@@ -944,4 +955,4 @@ CREATE TABLE `uk_ekm_knowbase_organ` (
   `creater` varchar(32) DEFAULT NULL,
   `orgi` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库 - 部门授权表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库 - 部门授权表';>>>>>>> .r1125
