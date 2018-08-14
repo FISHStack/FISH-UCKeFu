@@ -58,6 +58,12 @@ public class EkmKnowledge implements java.io.Serializable{
 	
 	private String auditor;
 	
+	private String nlpnr;//人名nr
+	private String nlpns;//地名ns
+	private String nlpnt;//机构名称nt
+	private String nlpnz;//其他专有名词nz
+	private String keyphrase;//关键短语
+	
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -209,6 +215,36 @@ public class EkmKnowledge implements java.io.Serializable{
 	}
 	public void setAuditor(String auditor) {
 		this.auditor = auditor;
+	}
+	public String getNlpnr() {
+		return nlpnr;
+	}
+	public void setNlpnr(String nlpnr) {
+		this.nlpnr = nlpnr;
+	}
+	public String getNlpns() {
+		return nlpns;
+	}
+	public void setNlpns(String nlpns) {
+		this.nlpns = nlpns;
+	}
+	public String getNlpnt() {
+		return nlpnt;
+	}
+	public void setNlpnt(String nlpnt) {
+		this.nlpnt = nlpnt;
+	}
+	public String getNlpnz() {
+		return nlpnz;
+	}
+	public void setNlpnz(String nlpnz) {
+		this.nlpnz = nlpnz;
+	}
+	public String getKeyphrase() {
+		return keyphrase;
+	}
+	public void setKeyphrase(String keyphrase) {
+		this.keyphrase = keyphrase;
 	}
 	
 	
