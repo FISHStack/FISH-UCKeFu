@@ -1001,3 +1001,9 @@ CREATE TABLE `uk_que_result_answer` (
 	`anstatus` varchar(32) DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT '问卷结果字表';
+
+
+
+
+
+ALTER TABLE uk_callcenter_event ADD busstype varchar(32) DEFAULT NULL COMMENT '业务类型';
