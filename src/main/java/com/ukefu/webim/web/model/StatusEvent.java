@@ -106,6 +106,8 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String disphonenum ;	//是否隐藏号码 
 	private String distype ;		//号码隐藏方式
 	
+	private String busstype ;		//业务类型
+	
 	private String siptrunk ;		//自定义 SIP Trunk
 	private boolean prefix ;		//是否启用加0前缀
 	
@@ -646,5 +648,11 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setTracesip(String tracesip) {
 		this.tracesip = tracesip;
+	}
+	public String getBusstype() {
+		return busstype;
+	}
+	public void setBusstype(String busstype) {
+		this.busstype = busstype;
 	}
 }
