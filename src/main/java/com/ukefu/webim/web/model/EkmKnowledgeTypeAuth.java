@@ -28,12 +28,12 @@ public class EkmKnowledgeTypeAuth implements java.io.Serializable{
 	private String knowledgebaseid;//知识库ID
 	
 	private String auth;//按钮
+	private boolean view;
 	
 	private String organ ;
 	private String orgi ;
 	private String creater;
 	private Date createtime ;
-	private Date updatetime ;
 	
 	@Id
 	@Column(length = 32)
@@ -93,12 +93,12 @@ public class EkmKnowledgeTypeAuth implements java.io.Serializable{
 	public void setCreatetime(Date createtime) {
 		this.createtime = createtime;
 	}
-	public Date getUpdatetime() {
-		return updatetime;
+	public boolean isView() {
+		return view;
 	}
-	public void setUpdatetime(Date updatetime) {
-		this.updatetime = updatetime;
+	public void setView(boolean view) {
+		this.view = view;
 	}
-
+	
 	
 }

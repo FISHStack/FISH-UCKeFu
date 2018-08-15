@@ -22,7 +22,7 @@ public class EkmKnowbaseOrgan implements java.io.Serializable{
 	
 	private String id ;
 	private String knowbaseid ;//知识库ID
-	private String organid ;//角色ID
+	private String organid ;//部门ID
 	private Date createtime ;
 	private String creater;
 	private String orgi ;

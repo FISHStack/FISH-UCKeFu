@@ -15,7 +15,7 @@ public abstract interface EkmKnowledgeESRepository
 	
 	public abstract EkmKnowledge findByIdAndOrgi(String id , String orgi);
 	
-	public abstract Page<EkmKnowledge> findByDatastatusAndOrgi(boolean datastatus ,String orgi,User user,Pageable pageable);
+	public abstract Page<EkmKnowledge> findByDatastatusAndOrgi(boolean datastatus, String orgi,User user,Pageable pageable);
 	
 	public abstract List<EkmKnowledge> findByOrgiAndDatastatus(String orgi,boolean datastatus);
 	
@@ -33,6 +33,9 @@ public abstract interface EkmKnowledgeESRepository
 	
 	public abstract Page<EkmKnowledge> getByDimentypeidAndDatastatusAndOrgi(String dimentypeid, boolean datastatus ,String orgi, Pageable pageable);
 
-
+	public abstract Page<EkmKnowledge> findByKnowtypeidAuth(boolean datastatus,List<String>  ekmKnowledgeType,String knowbaseid,String orgi,Pageable pageable);
+	
+	public abstract Page<EkmKnowledge> findByKnowledge(boolean datastatus,List<String>  ekmKnowledgeType,String orgi, User user,Pageable pageable);
+	
 }
 

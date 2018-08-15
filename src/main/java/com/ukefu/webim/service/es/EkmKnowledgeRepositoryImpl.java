@@ -158,13 +158,10 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 			boolQueryBuilder.must(termQuery("knowbaseid" , UKDataContext.UKEFU_SYSTEM_NO_DAT)) ;
 		}
 		if(!StringUtils.isBlank(knowledgetypeid)){
-			
 			boolQueryBuilder.must(termQuery("knowledgetypeid" , knowledgetypeid)) ;
 		}else{
 			boolQueryBuilder.must(termQuery("knowledgetypeid" , UKDataContext.UKEFU_SYSTEM_NO_DAT)) ;
-			
 		}
-		
 		return processQuery(boolQueryBuilder , page);
 	}
 
@@ -275,6 +272,75 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		}else{
 			boolQueryBuilder.must(termQuery("knowbaseid" , UKDataContext.UKEFU_SYSTEM_NO_DAT)) ;
 		}
+		
+		return processQuery(boolQueryBuilder , pageable);
+	}
+
+	@Override
+	public Page<EkmKnowledge> findByKnowtypeidAuth(boolean datastatus, List<String> ekmKnowledgeType,
+			String knowbaseid, String orgi, Pageable pageable) {
+		
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
+		boolQueryBuilder.must(termQuery("datastatus" , datastatus)) ;
+		boolQueryBuilder.must(termQuery("knowbaseid" , knowbaseid)) ;
+		for(String id : ekmKnowledgeType){
+			boolQueryBuilder1.should(termQuery("knowledgetypeid" ,id)) ;
+		}
+		boolQueryBuilder.must(boolQueryBuilder1) ;
+		boolQueryBuilder.must(termQuery("orgi" ,orgi)) ;
+		return processQuery(boolQueryBuilder , pageable);
+	}
+
+	@Override
+	public Page<EkmKnowledge> findByKnowledge(boolean datastatus, List<String> ekmKnowledgeType, String orgi, User user,
+			Pageable pageable) {
+		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
+		
+		/*final List<String> knowbaseRoleList = new ArrayList<>();
+		final List<String> knowbaseOrganList = new ArrayList<>();
+		
+		List<UserRole> userRoleList = userRoleRes.findByOrgiAndUser(orgi, user);
+		for(UserRole userRole :userRoleList){
+			List<EkmKnowbaseRole> tempRoleList = ekmKnowbaseRoleRes.findByRoleidAndOrgi(userRole.getRole().getId(), orgi);
+			for(EkmKnowbaseRole knowbaseRole : tempRoleList){
+				knowbaseRoleList.add(knowbaseRole.getKnowbaseid());
+			}
+		}
+		
+		List<EkmKnowbaseOrgan> tempOrganList = ekmKnowbaseOrganRes.findByOrganidAndOrgi(user.getOrgan(), orgi);
+		for(EkmKnowbaseOrgan knowbaseOrgan : tempOrganList){
+			knowbaseOrganList.add(knowbaseOrgan.getKnowbaseid());
+		}
+		
+		if(knowbaseRoleList.size() > 0){
+			for(String id : knowbaseRoleList){
+				boolQueryBuilder1.should(termQuery("knowbaseid" , id));
+			}
+		}
+		if(knowbaseOrganList.size() > 0){
+			for(String id : knowbaseOrganList){
+				boolQueryBuilder1.should(termQuery("knowbaseid" , id));
+			}
+		}*/
+		if(user.isSuperuser() == true){
+			boolQueryBuilder.must(boolQueryBuilder1) ;
+		}else{
+			 
+			if(ekmKnowledgeType.size() > 0){
+				for(String id : ekmKnowledgeType){
+					boolQueryBuilder1.should(termQuery("knowledgetypeid" ,id)) ;
+				}
+			}else{
+				boolQueryBuilder1.must(termQuery("knowledgetypeid" ,UKDataContext.UKEFU_SYSTEM_NO_DAT)) ;
+			}
+		}
+		
+		
+		boolQueryBuilder.must(boolQueryBuilder1) ;
+		boolQueryBuilder.must(termQuery("orgi" ,orgi)) ;
+		boolQueryBuilder.must(termQuery("datastatus" , datastatus)) ;
 		
 		return processQuery(boolQueryBuilder , pageable);
 	}
