@@ -1004,3 +1004,31 @@ CREATE TABLE `uk_que_result_answer` (
 
 
 ALTER TABLE uk_callcenter_event ADD busstype varchar(32) DEFAULT NULL COMMENT '业务类型';
+
+CREATE TABLE `uk_ekm_knowledge_share` (
+  `id` varchar(32) NOT NULL,
+  `knowledgeid` varchar(32) DEFAULT NULL COMMENT '知识ID',
+	`knowledgeower` varchar(32) DEFAULT NULL COMMENT '知识作者',
+	`shareuser` varchar(32) DEFAULT NULL COMMENT '分享给用户',
+	`organid` varchar(32) DEFAULT NULL COMMENT '部门id',
+	`createtime` datetime DEFAULT NULL,
+	`creater` varchar(32) DEFAULT NULL,
+	`orgi` varchar(32) DEFAULT NULL,
+	`datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识 - 分享表';
+
+CREATE TABLE `uk_ekm_knowledge_auth` (
+	`id` varchar(32) NOT NULL,
+	`userid` varchar(32) DEFAULT NULL COMMENT '用户ID',
+	`knowledgetypeid` varchar(32) DEFAULT NULL COMMENT '知识分类ID',
+	`knowledgebaseid` varchar(32) DEFAULT NULL COMMENT '知识库ID',
+	`organ` varchar(32) DEFAULT NULL COMMENT '所属部门',
+	`auth` text COMMENT '按钮',
+	`view` tinyint(4) DEFAULT '0' COMMENT '查看分类权限',
+	`createtime` datetime DEFAULT NULL,
+	`creater` varchar(32) DEFAULT NULL,
+	`orgi` varchar(32) DEFAULT NULL,
+	`datastatus` tinyint(4) DEFAULT '0' COMMENT '数据状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库 - 分类授权表';
