@@ -3,6 +3,7 @@ package com.ukefu.webim.service.es;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -152,6 +153,7 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		boolQueryBuilder1.must(termQuery("datastatus" , datastatus)) ;
 		boolQueryBuilder.must(boolQueryBuilder1) ;
 		boolQueryBuilder.must(termQuery("orgi" ,orgi)) ;
+		//boolQueryBuilder.must(termQuery("pubstatus" , UKDataContext.PubStatusEnum.PASS.toString())) ;//审核通过
 		if(!StringUtils.isBlank(knowbaseid)){
 			boolQueryBuilder.must(termQuery("knowbaseid" , knowbaseid)) ;
 		}else{
@@ -267,6 +269,8 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		boolQueryBuilder1.must(termQuery("datastatus" , datastatus)) ;
 		boolQueryBuilder.must(boolQueryBuilder1) ;
 		boolQueryBuilder.must(termQuery("orgi" ,orgi)) ;
+		//boolQueryBuilder.must(termQuery("pubstatus" , UKDataContext.PubStatusEnum.PASS.toString())) ;//审核通过
+		
 		if(!StringUtils.isBlank(knowbaseid)){
 			boolQueryBuilder.must(termQuery("knowbaseid" , knowbaseid)) ;
 		}else{
@@ -289,6 +293,7 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		}
 		boolQueryBuilder.must(boolQueryBuilder1) ;
 		boolQueryBuilder.must(termQuery("orgi" ,orgi)) ;
+		//boolQueryBuilder.must(termQuery("pubstatus" , UKDataContext.PubStatusEnum.PASS.toString())) ;//审核通过
 		return processQuery(boolQueryBuilder , pageable);
 	}
 
@@ -341,8 +346,16 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		boolQueryBuilder.must(boolQueryBuilder1) ;
 		boolQueryBuilder.must(termQuery("orgi" ,orgi)) ;
 		boolQueryBuilder.must(termQuery("datastatus" , datastatus)) ;
+		boolQueryBuilder.must(termQuery("pubstatus" , UKDataContext.PubStatusEnum.PASS.toString())) ;//审核通过
 		
 		return processQuery(boolQueryBuilder , pageable);
+	}
+
+	@Override
+	public Page<EkmKnowledge> findBySearchKnowledge(boolean datastatus, String q, String tag, String knowledgetype,
+			String orgi, User user, Date begin, Date end, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

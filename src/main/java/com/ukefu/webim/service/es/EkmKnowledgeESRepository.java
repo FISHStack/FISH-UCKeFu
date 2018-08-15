@@ -1,5 +1,6 @@
 package com.ukefu.webim.service.es;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -37,5 +38,7 @@ public abstract interface EkmKnowledgeESRepository
 	
 	public abstract Page<EkmKnowledge> findByKnowledge(boolean datastatus,List<String>  ekmKnowledgeType,String orgi, User user,Pageable pageable);
 	
+	//知识地图查询
+	public abstract Page<EkmKnowledge> findBySearchKnowledge(boolean datastatus,String  q , String tag, String knowledgetype,String orgi, User user, Date begin, Date end,Pageable pageable);
 }
 
