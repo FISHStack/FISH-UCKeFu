@@ -1005,6 +1005,10 @@ CREATE TABLE `uk_que_result_answer` (
 
 ALTER TABLE uk_callcenter_event ADD busstype varchar(32) DEFAULT NULL COMMENT '业务类型';
 
+
+ALTER TABLE uk_act_callnames ADD callresult varchar(255) DEFAULT NULL COMMENT '呼叫结果消息';
+ALTER TABLE uk_act_callnames ADD callsuccess tinyint DEFAULT 0 COMMENT '是否呼叫成功';
+
 CREATE TABLE `uk_ekm_knowledge_share` (
   `id` varchar(32) NOT NULL,
   `knowledgeid` varchar(32) DEFAULT NULL COMMENT '知识ID',
