@@ -403,7 +403,6 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for `uk_que_survey_answer`
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_que_survey_answer`;
 CREATE TABLE `uk_que_survey_answer` (
   `id` varchar(32) NOT NULL,
   `questionid` varchar(32) DEFAULT NULL COMMENT '问题ID',
@@ -422,7 +421,6 @@ CREATE TABLE `uk_que_survey_answer` (
 -- ----------------------------
 -- Table structure for `uk_que_survey_process`
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_que_survey_process`;
 CREATE TABLE `uk_que_survey_process` (
   `id` varchar(32) NOT NULL,
   `name` varchar(32) DEFAULT NULL COMMENT '问卷名称',
@@ -450,7 +448,6 @@ CREATE TABLE `uk_que_survey_process` (
 -- ----------------------------
 -- Table structure for `uk_que_survey_question`
 -- ----------------------------
-DROP TABLE IF EXISTS `uk_que_survey_question`;
 CREATE TABLE `uk_que_survey_question` (
   `id` varchar(32) NOT NULL,
   `name` varchar(255) DEFAULT NULL COMMENT '问题名称',
