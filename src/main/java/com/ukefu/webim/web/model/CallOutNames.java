@@ -58,6 +58,8 @@ public class CallOutNames implements java.io.Serializable{
 	
 	private String metaname ;	//表名
 	
+	private boolean callsuccess;
+	private String callresult;
 	
 	private String owneruser ;	//分配 坐席
 	private String ownerdept ;	//分配 部门
@@ -371,5 +373,21 @@ public class CallOutNames implements java.io.Serializable{
 
 	public void setCalltype(String calltype) {
 		this.calltype = calltype;
+	}
+
+	public String getCallresult() {
+		return callresult;
+	}
+
+	public void setCallresult(String callresult) {
+		this.callresult = callresult;
+	}
+
+	public boolean isCallsuccess() {
+		return callsuccess;
+	}
+
+	public void setCallsuccess(boolean callsuccess) {
+		this.callsuccess = callsuccess;
 	}
 }

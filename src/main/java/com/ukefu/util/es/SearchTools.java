@@ -221,6 +221,31 @@ public class SearchTools {
 		return search(queryBuilder, p, ps);
 	}
 	
+	/**
+	 * 
+	 * @param orgi
+	 * @param agent
+	 * @param p
+	 * @param ps
+	 * @return
+	 */
+	public static PageImpl<UKDataBean> ainamesearch(String orgi , String phonenum){
+		BoolQueryBuilder queryBuilder = new BoolQueryBuilder();
+		queryBuilder.must(termQuery("orgi", orgi)) ;
+		queryBuilder.must(termQuery("validresult", "valid")) ;
+		StringBuffer strb = new StringBuffer();
+		if(!StringUtils.isBlank(phonenum)) {
+			if(phonenum.startsWith("0")) {
+				strb.append(phonenum.substring(1)) ;
+			}else {
+				strb.append(phonenum) ;
+			}
+		}else {
+			strb.append(UKDataContext.UKEFU_SYSTEM_NO_DAT) ;
+		}
+		queryBuilder.must(new QueryStringQueryBuilder(strb.toString()).defaultOperator(Operator.OR) );
+		return search(queryBuilder,0, 1);
+	}
 
 	
 	/**

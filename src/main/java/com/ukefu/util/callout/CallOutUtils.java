@@ -205,8 +205,8 @@ public class CallOutUtils {
 			callOutName.setOrgan((String) name.getValues().get(UKDataContext.UKEFU_SYSTEM_DIS_ORGAN));
 			callOutName.setCreatetime(new Date());
 			callOutName.setUpdatetime(new Date());
-			String apstatus = (String) name.getValues().get("apstatus") ;
-			if(!StringUtils.isBlank(apstatus) && apstatus.equals("true")) {
+			Object apstatus = name.getValues().get("apstatus") ;
+			if(apstatus!=null && !StringUtils.isBlank(apstatus.toString()) && apstatus.toString().toLowerCase().equals("true")) {
 				callOutName.setReservation(true);
 			}else {
 				callOutName.setReservation(false);
