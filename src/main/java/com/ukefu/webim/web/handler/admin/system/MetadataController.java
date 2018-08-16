@@ -131,6 +131,53 @@ public class MetadataController extends Handler{
     	return request(super.createRequestPageTempletResponse("redirect:/admin/metadata/index.html"));
     }
     
+    @RequestMapping("/sync")
+    @Menu(type = "admin" , subtype = "metadata" , admin = true)
+    public ModelAndView sync(ModelMap map , HttpServletRequest request , @Valid String id) throws SQLException {
+    	final MetadataTable table = metadataRes.findById(id) ;
+    	Session session = (Session) em.getDelegate();
+		session.doWork(new Work() {
+			public void execute(Connection connection) throws SQLException {
+				try {
+					MetadataTable metaDataTable = new MetadataTable();
+					//当前记录没有被添加过，进行正常添加
+	  				metaDataTable.setTablename(table.getTablename());
+	  				metaDataTable.setOrgi(table.getOrgi());
+	  				metaDataTable.setId(UKTools.md5(metaDataTable.getTablename()));
+	  				metaDataTable.setTabledirid("0");
+	  				metaDataTable.setCreater(table.getCreater());
+	  				metaDataTable.setCreatername(table.getCreatername());
+	  				metaDataTable.setName(table.getName());
+	  				metaDataTable.setUpdatetime(new Date());
+	  				metaDataTable.setCreatetime(new Date());
+					int nums = 0 ;
+					processMetadataTable( DatabaseMetaDataHandler.getTable(connection, metaDataTable.getTablename()) , metaDataTable) ;
+					for(TableProperties temp : metaDataTable.getTableproperty()) {
+						boolean found = false ;
+						for(TableProperties tp : table.getTableproperty()) {
+							if(temp.getFieldname().equals(tp.getFieldname())) {
+								found = true ;
+								break ;
+							}
+						}
+						if(found == false) {
+							table.getTableproperty().add(temp) ;
+							nums = nums + 1;
+						}
+					}
+					if(nums > 0) {
+						metadataRes.save(metaDataTable) ;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally{
+		    		connection.close();
+		    	}
+			}
+		});
+    	return request(super.createRequestPageTempletResponse("redirect:/admin/metadata/table.html?id="+id));
+    }
+    
     @RequestMapping("/batdelete")
     @Menu(type = "admin" , subtype = "metadata" , admin = true)
     public ModelAndView batdelete(ModelMap map , HttpServletRequest request , @Valid String[] ids) throws SQLException {
