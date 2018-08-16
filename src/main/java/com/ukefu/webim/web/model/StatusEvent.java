@@ -85,6 +85,7 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private Date endtime ;//通话结束时间
 	
 	private int duration ;//通话时长
+
 	
 	private String status ;//
 	private String state ;//
@@ -97,6 +98,7 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String extention ;//联系人ID
 	private String hostid ;//服务器ID
 	
+	private String metaname ;		//呼叫名单表名称
 	private String taskid ;			//呼叫ID，电销业务产生的
 	private String actid ;			//呼叫ID，电销业务产生的
 	private String batid ;			//呼叫ID，电销业务产生的
@@ -654,5 +656,11 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setBusstype(String busstype) {
 		this.busstype = busstype;
+	}
+	public String getMetaname() {
+		return metaname;
+	}
+	public void setMetaname(String metaname) {
+		this.metaname = metaname;
 	}
 }
