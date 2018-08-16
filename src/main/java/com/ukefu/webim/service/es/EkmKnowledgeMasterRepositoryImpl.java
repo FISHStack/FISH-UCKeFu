@@ -24,12 +24,12 @@ import com.ukefu.webim.service.repository.EkmKnowbaseRoleRepository;
 import com.ukefu.webim.service.repository.UserRoleRepository;
 import com.ukefu.webim.web.model.EkmKnowbaseOrgan;
 import com.ukefu.webim.web.model.EkmKnowbaseRole;
-import com.ukefu.webim.web.model.EkmKnowledge;
+import com.ukefu.webim.web.model.EkmKnowledgeMaster;
 import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
 
 @Component
-public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
+public class EkmKnowledgeMasterRepositoryImpl implements EkmKnowledgeMasterESRepository{
 	
 	
 	@Autowired
@@ -49,7 +49,7 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
     }
 
 	@Override
-	public EkmKnowledge findByTitleAndOrgi(String title, String orgi) {
+	public EkmKnowledgeMaster findByTitleAndOrgi(String title, String orgi) {
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		BoolQueryBuilder bq = QueryBuilders.boolQuery() ; 
@@ -58,16 +58,16 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		boolQueryBuilder.must(bq); 
 		
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder) ;
-		Page<EkmKnowledge> knowledgeList = null ;
-		if(elasticsearchTemplate.indexExists(EkmKnowledge.class)){
-			knowledgeList = elasticsearchTemplate.queryForPage(searchQueryBuilder.build() , EkmKnowledge.class ) ;
+		Page<EkmKnowledgeMaster> knowledgeList = null ;
+		if(elasticsearchTemplate.indexExists(EkmKnowledgeMaster.class)){
+			knowledgeList = elasticsearchTemplate.queryForPage(searchQueryBuilder.build() , EkmKnowledgeMaster.class ) ;
 	    }
 		
 		return knowledgeList.getContent().get(0);
 	}
 
 	@Override
-	public EkmKnowledge findByIdAndOrgi(String id, String orgi) {
+	public EkmKnowledgeMaster findByIdAndOrgi(String id, String orgi) {
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		BoolQueryBuilder bq = QueryBuilders.boolQuery() ; 
@@ -76,16 +76,16 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		boolQueryBuilder.must(bq); 
 		
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder) ;
-		Page<EkmKnowledge> knowledgeList = null ;
-		if(elasticsearchTemplate.indexExists(EkmKnowledge.class)){
-			knowledgeList = elasticsearchTemplate.queryForPage(searchQueryBuilder.build() , EkmKnowledge.class ) ;
+		Page<EkmKnowledgeMaster> knowledgeList = null ;
+		if(elasticsearchTemplate.indexExists(EkmKnowledgeMaster.class)){
+			knowledgeList = elasticsearchTemplate.queryForPage(searchQueryBuilder.build() , EkmKnowledgeMaster.class ) ;
 	    }
 		
 		return knowledgeList.getContent().get(0);
 	}
 
 	@Override
-	public Page<EkmKnowledge> findByDatastatusAndOrgi(boolean datastatus, String orgi,User user, Pageable pageable) {
+	public Page<EkmKnowledgeMaster> findByDatastatusAndOrgi(boolean datastatus, String orgi,User user, Pageable pageable) {
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
@@ -127,7 +127,7 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 	}
 
 	@Override
-	public List<EkmKnowledge> findByOrgiAndDatastatus(String orgi, boolean datastatus) {
+	public List<EkmKnowledgeMaster> findByOrgiAndDatastatus(String orgi, boolean datastatus) {
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		BoolQueryBuilder bq = QueryBuilders.boolQuery() ; 
@@ -136,16 +136,16 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		boolQueryBuilder.must(bq); 
 		
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder) ;
-		Page<EkmKnowledge> knowledgeList = null ;
-		if(elasticsearchTemplate.indexExists(EkmKnowledge.class)){
-			knowledgeList = elasticsearchTemplate.queryForPage(searchQueryBuilder.build() , EkmKnowledge.class ) ;
+		Page<EkmKnowledgeMaster> knowledgeList = null ;
+		if(elasticsearchTemplate.indexExists(EkmKnowledgeMaster.class)){
+			knowledgeList = elasticsearchTemplate.queryForPage(searchQueryBuilder.build() , EkmKnowledgeMaster.class ) ;
 	    }
 		
 		return knowledgeList.getContent();
 	}
 
 	@Override
-	public Page<EkmKnowledge> findByKnowbaseidAndKnowledgetypeidAndDatastatusAndOrgi(String knowbaseid,
+	public Page<EkmKnowledgeMaster> findByKnowbaseidAndKnowledgetypeidAndDatastatusAndOrgi(String knowbaseid,
 			String knowledgetypeid, boolean datastatus, String orgi, Pageable page) {
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -168,7 +168,7 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 	}
 
 	@Override
-	public List<EkmKnowledge> findByKnowbaseidAndDatastatusAndOrgi(String knowbaseid, boolean datastatus, String orgi) {
+	public List<EkmKnowledgeMaster> findByKnowbaseidAndDatastatusAndOrgi(String knowbaseid, boolean datastatus, String orgi) {
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		BoolQueryBuilder bq = QueryBuilders.boolQuery() ; 
@@ -182,16 +182,16 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		boolQueryBuilder.must(bq); 
 		
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder) ;
-		Page<EkmKnowledge> knowledgeList = null ;
-		if(elasticsearchTemplate.indexExists(EkmKnowledge.class)){
-			knowledgeList = elasticsearchTemplate.queryForPage(searchQueryBuilder.build() , EkmKnowledge.class ) ;
+		Page<EkmKnowledgeMaster> knowledgeList = null ;
+		if(elasticsearchTemplate.indexExists(EkmKnowledgeMaster.class)){
+			knowledgeList = elasticsearchTemplate.queryForPage(searchQueryBuilder.build() , EkmKnowledgeMaster.class ) ;
 	    }
 		
 		return knowledgeList.getContent();
 	}
 
 	@Override
-	public List<EkmKnowledge> findByCreaterAndDatastatusAndOrgi(String creater, boolean datastatus, String orgi) {
+	public List<EkmKnowledgeMaster> findByCreaterAndDatastatusAndOrgi(String creater, boolean datastatus, String orgi) {
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		BoolQueryBuilder bq = QueryBuilders.boolQuery() ; 
@@ -201,16 +201,16 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		boolQueryBuilder.must(bq); 
 		
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder) ;
-		Page<EkmKnowledge> knowledgeList = null ;
-		if(elasticsearchTemplate.indexExists(EkmKnowledge.class)){
-			knowledgeList = elasticsearchTemplate.queryForPage(searchQueryBuilder.build() , EkmKnowledge.class ) ;
+		Page<EkmKnowledgeMaster> knowledgeList = null ;
+		if(elasticsearchTemplate.indexExists(EkmKnowledgeMaster.class)){
+			knowledgeList = elasticsearchTemplate.queryForPage(searchQueryBuilder.build() , EkmKnowledgeMaster.class ) ;
 	    }
 		
 		return knowledgeList.getContent();
 	}
 
 	@Override
-	public Page<EkmKnowledge> findByPubstatusAndDatastatusAndOrgi(String pubstatus, boolean datastatus, String orgi,
+	public Page<EkmKnowledgeMaster> findByPubstatusAndDatastatusAndOrgi(String pubstatus, boolean datastatus, String orgi,
 			Pageable pageable) {
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -224,7 +224,7 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 	}
 	
 	@Override
-	public Page<EkmKnowledge> getByDimenidAndDatastatusAndOrgi(String dimenid,
+	public Page<EkmKnowledgeMaster> getByDimenidAndDatastatusAndOrgi(String dimenid,
 			boolean datastatus, String orgi, Pageable pageable) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
@@ -236,7 +236,7 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 	}
 
 	@Override
-	public Page<EkmKnowledge> getByDimentypeidAndDatastatusAndOrgi(
+	public Page<EkmKnowledgeMaster> getByDimentypeidAndDatastatusAndOrgi(
 			String dimentypeid, boolean datastatus, String orgi,
 			Pageable pageable) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -248,21 +248,21 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 		return processQuery(boolQueryBuilder , pageable);
 	}
 	
-	private Page<EkmKnowledge> processQuery(BoolQueryBuilder boolQueryBuilder, Pageable page){
+	private Page<EkmKnowledgeMaster> processQuery(BoolQueryBuilder boolQueryBuilder, Pageable page){
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder).withSort(new FieldSortBuilder("createtime").unmappedType("date").order(SortOrder.DESC));
 		
 		searchQueryBuilder.withPageable(page) ;
 		
-		Page<EkmKnowledge> knowledgeList = null ;
-		if(elasticsearchTemplate.indexExists(EkmKnowledge.class)){
-			knowledgeList = elasticsearchTemplate.queryForPage(searchQueryBuilder.build() , EkmKnowledge.class) ;
+		Page<EkmKnowledgeMaster> knowledgeList = null ;
+		if(elasticsearchTemplate.indexExists(EkmKnowledgeMaster.class)){
+			knowledgeList = elasticsearchTemplate.queryForPage(searchQueryBuilder.build() , EkmKnowledgeMaster.class) ;
 		}
 		return knowledgeList;
 	}
 
 
 	@Override
-	public Page<EkmKnowledge> findByDatastatusAndKnowbaseidAndOrgi(boolean datastatus, String knowbaseid, String orgi,
+	public Page<EkmKnowledgeMaster> findByDatastatusAndKnowbaseidAndOrgi(boolean datastatus, String knowbaseid, String orgi,
 			Pageable pageable) {
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
@@ -281,14 +281,14 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 	}
 
 	@Override
-	public Page<EkmKnowledge> findByKnowtypeidAuth(boolean datastatus, List<String> ekmKnowledgeType,
+	public Page<EkmKnowledgeMaster> findByKnowtypeidAuth(boolean datastatus, List<String> EkmKnowledgeMasterType,
 			String knowbaseid, String orgi, Pageable pageable) {
 		
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
 		boolQueryBuilder.must(termQuery("datastatus" , datastatus)) ;
 		boolQueryBuilder.must(termQuery("knowbaseid" , knowbaseid)) ;
-		for(String id : ekmKnowledgeType){
+		for(String id : EkmKnowledgeMasterType){
 			boolQueryBuilder1.should(termQuery("knowledgetypeid" ,id)) ;
 		}
 		boolQueryBuilder.must(boolQueryBuilder1) ;
@@ -298,7 +298,7 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 	}
 
 	@Override
-	public Page<EkmKnowledge> findByKnowledge(BoolQueryBuilder boolQueryBuilder,boolean datastatus, List<String> ekmKnowledgeType, String orgi, User user,
+	public Page<EkmKnowledgeMaster> findByKnowledge(BoolQueryBuilder boolQueryBuilder,boolean datastatus, List<String> EkmKnowledgeMasterType, String orgi, User user,
 			Pageable pageable) {
 		BoolQueryBuilder boolQueryBuild = QueryBuilders.boolQuery();
 		BoolQueryBuilder boolQueryBuilder1 = new BoolQueryBuilder();
@@ -333,8 +333,8 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 			boolQueryBuild.must(boolQueryBuilder1) ;
 		}else{
 			 
-			if(ekmKnowledgeType.size() > 0){
-				for(String id : ekmKnowledgeType){
+			if(EkmKnowledgeMasterType.size() > 0){
+				for(String id : EkmKnowledgeMasterType){
 					boolQueryBuilder1.should(termQuery("knowledgetypeid" ,id)) ;
 				}
 			}else{
@@ -353,7 +353,7 @@ public class EkmKnowledgeRepositoryImpl implements EkmKnowledgeESRepository{
 	}
 
 	@Override
-	public Page<EkmKnowledge> findBySearchKnowledge(boolean datastatus, String q, String tag, String knowledgetype,
+	public Page<EkmKnowledgeMaster> findBySearchKnowledge(boolean datastatus, String q, String tag, String knowledgetype,
 			String orgi, User user, Date begin, Date end, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;

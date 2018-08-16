@@ -3,6 +3,7 @@ package com.ukefu.webim.service.es;
 import java.util.Date;
 import java.util.List;
 
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -36,7 +37,7 @@ public abstract interface EkmKnowledgeESRepository
 
 	public abstract Page<EkmKnowledge> findByKnowtypeidAuth(boolean datastatus,List<String>  ekmKnowledgeType,String knowbaseid,String orgi,Pageable pageable);
 	
-	public abstract Page<EkmKnowledge> findByKnowledge(boolean datastatus,List<String>  ekmKnowledgeType,String orgi, User user,Pageable pageable);
+	public abstract Page<EkmKnowledge> findByKnowledge(BoolQueryBuilder boolQueryBuilder,boolean datastatus,List<String>  ekmKnowledgeType,String orgi, User user,Pageable pageable);
 	
 	//知识地图查询
 	public abstract Page<EkmKnowledge> findBySearchKnowledge(boolean datastatus,String  q , String tag, String knowledgetype,String orgi, User user, Date begin, Date end,Pageable pageable);

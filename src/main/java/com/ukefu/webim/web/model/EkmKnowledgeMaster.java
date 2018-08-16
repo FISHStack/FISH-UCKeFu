@@ -14,14 +14,14 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import com.ukefu.util.UKTools;
 /**
- * EKM-知识-草稿表
+ * EKM-知识-主表
  *
  */
-@Document(indexName = "uckefu", type = "uk_ekm_knowledge", createIndex = false )
+@Document(indexName = "uckefu", type = "uk_ekm_knowledge_master", createIndex = false )
 @Entity
-@Table(name = "uk_ekm_knowledge")
+@Table(name = "uk_ekm_knowledge_master")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class EkmKnowledge implements java.io.Serializable{
+public class EkmKnowledgeMaster implements java.io.Serializable{
 
 	/**
 	 * 
@@ -50,6 +50,11 @@ public class EkmKnowledge implements java.io.Serializable{
 	private Date createtime = new Date();
 	private String creater;
 	private String orgi ;
+	
+	private EkmKnowledgeTimes knowledgetimes;
+	private EkmKnowledgeCollect knowledgecollect;
+	
+	private String knowledgeid;
 	
 	private String auditor;
 	
@@ -180,11 +185,32 @@ public class EkmKnowledge implements java.io.Serializable{
 	public void setOrgi(String orgi) {
 		this.orgi = orgi;
 	}
+	@Transient
+	public EkmKnowledgeTimes getKnowledgetimes() {
+		return knowledgetimes;
+	}
+	public void setKnowledgetimes(EkmKnowledgeTimes knowledgetimes) {
+		this.knowledgetimes = knowledgetimes;
+	}
+	@Transient
+	public String getKnowledgeid() {
+		return knowledgeid;
+	}
+	public void setKnowledgeid(String knowledgeid) {
+		this.knowledgeid = knowledgeid;
+	}
 	public String getKnowledgetype() {
 		return knowledgetype;
 	}
 	public void setKnowledgetype(String knowledgetype) {
 		this.knowledgetype = knowledgetype;
+	}
+	@Transient
+	public EkmKnowledgeCollect getKnowledgecollect() {
+		return knowledgecollect;
+	}
+	public void setKnowledgecollect(EkmKnowledgeCollect knowledgecollect) {
+		this.knowledgecollect = knowledgecollect;
 	}
 	public String getAuditor() {
 		return auditor;

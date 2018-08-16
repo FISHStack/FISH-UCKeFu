@@ -33,10 +33,10 @@ public class EkmKnowledgeTimes implements java.io.Serializable{
 	private int version;//版本号
 	
 	@Field(type = FieldType.String, store = true)  
-    @Parent(type = "uk_ekm_knowledge")  
+    @Parent(type = "uk_ekm_knowledge_master")  
 	private String knowledgeid ;
 	
-	private EkmKnowledge knowledge;
+	private EkmKnowledgeMaster knowledge;
 	
 	private Date createtime ;
 	private String orgi ;
@@ -75,11 +75,12 @@ public class EkmKnowledgeTimes implements java.io.Serializable{
 	public void setKnowledgeid(String knowledgeid) {
 		this.knowledgeid = knowledgeid;
 	}
+	
 	@Transient
-	public EkmKnowledge getKnowledge() {
+	public EkmKnowledgeMaster getKnowledge() {
 		return knowledge;
 	}
-	public void setKnowledge(EkmKnowledge knowledge) {
+	public void setKnowledge(EkmKnowledgeMaster knowledge) {
 		this.knowledge = knowledge;
 	}
 	public Date getCreatetime() {
