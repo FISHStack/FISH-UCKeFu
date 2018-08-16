@@ -1037,3 +1037,35 @@ CREATE TABLE `uk_ekm_knowledge_auth` (
 	`datastatus` tinyint(4) DEFAULT '0' COMMENT '数据状态',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库 - 分类授权表';
+
+CREATE TABLE `uk_ekm_knowledge_master` (
+  `id` varchar(32) NOT NULL DEFAULT '0',
+  `title` text COMMENT '知识标题',
+  `summary` text COMMENT '摘要',
+  `content` text COMMENT '知识内容',
+  `tags` text COMMENT '知识标签',
+  `keyword` text COMMENT '关键字',
+  `dimenid` text COMMENT '所属维度ID（根级目录）',
+  `dimentypeid` text COMMENT '所属维度分类ID（分支ID）',
+  `organ` varchar(32) DEFAULT NULL COMMENT '部门ID',
+  `knowledgetypeid` varchar(32) DEFAULT NULL COMMENT '所属知识分类ID',
+  `knowbaseid` varchar(32) DEFAULT NULL COMMENT '所属知识库ID',
+  `pubstatus` varchar(32) DEFAULT NULL COMMENT '知识状态（新建 new/审核中 wait/发布成功 pass/被驳回 rejected /已下架 down）',
+  `datastatus` tinyint(4) DEFAULT NULL COMMENT '数据状态',
+  `version` int(11) DEFAULT '0' COMMENT '版本号',
+  `knowledgetype` varchar(32) DEFAULT NULL COMMENT '知识类型（字典项）',
+  `begintime` datetime DEFAULT NULL COMMENT '有效开始时间',
+  `endtime` datetime DEFAULT NULL COMMENT '有效结束时间',
+  `createtime` datetime DEFAULT NULL,
+  `creater` varchar(32) DEFAULT NULL,
+  `orgi` varchar(32) DEFAULT NULL,
+  `auditor` varchar(32) DEFAULT '0' COMMENT '审核人ID',
+  `nlpnr` text COMMENT '人名nr',
+  `nlpns` text COMMENT '地名ns',
+  `nlpnt` text COMMENT '机构名称nt',
+  `nlpnz` text COMMENT '其他专有名词nz',
+  `keyphrase` text COMMENT '关键短语',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='EKM - 知识 - 主表';
+
+
