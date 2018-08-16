@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ukefu.core.UKDataContext;
 import com.ukefu.util.Menu;
 import com.ukefu.util.extra.DataExchangeInterface;
+import com.ukefu.webim.service.acd.ServiceQuene;
 import com.ukefu.webim.service.repository.ChatMessageRepository;
 import com.ukefu.webim.service.repository.ConsultInviteRepository;
 import com.ukefu.webim.util.OnlineUserUtils;
@@ -95,5 +96,19 @@ public class ApiIMController extends Handler{
 	@ApiOperation("获取在线客服会话历史消息")
     public ResponseEntity<RestResult> history(HttpServletRequest request , @Valid String userid, @Valid String orgi) {
         return new ResponseEntity<>(new RestResult(RestResultType.OK, chatMessageRes.findByUsessionAndOrgi(userid , orgi, new PageRequest(super.getP(request), super.getPs(request), Direction.DESC , "updatetime"))), HttpStatus.OK);
+    }
+	
+	/**
+	 * 返回访客历史消息
+	 * @param request
+	 * @param userid	访客ID
+	 * @p 分页信息
+	 * @return
+	 */
+	@RequestMapping(value = "/agent", method = RequestMethod.GET)
+	@Menu(type = "apps" , subtype = "webim" , access = true)
+	@ApiOperation("获取在线客服会话历史消息")
+    public ResponseEntity<RestResult> agent(HttpServletRequest request , @Valid String orgi) {
+        return new ResponseEntity<>(new RestResult(RestResultType.OK, ServiceQuene.getAgentReport(orgi)), HttpStatus.OK);
     }
 }
