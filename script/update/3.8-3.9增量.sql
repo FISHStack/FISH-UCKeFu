@@ -1038,6 +1038,10 @@ CREATE TABLE `uk_ekm_knowledge_auth` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='知识库 - 分类授权表';
 
+
+
+ALTER TABLE uk_callcenter_event ADD metaname varchar(50) DEFAULT NULL COMMENT '名单数据表名';
+
 CREATE TABLE `uk_ekm_knowledge_master` (
   `id` varchar(32) NOT NULL DEFAULT '0',
   `title` text COMMENT '知识标题',
@@ -1067,5 +1071,4 @@ CREATE TABLE `uk_ekm_knowledge_master` (
   `keyphrase` text COMMENT '关键短语',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='EKM - 知识 - 主表';
-
 
