@@ -1008,6 +1008,7 @@ ALTER TABLE uk_callcenter_event ADD busstype varchar(32) DEFAULT NULL COMMENT '�
 
 ALTER TABLE uk_act_callnames ADD callresult varchar(255) DEFAULT NULL COMMENT '呼叫结果消息';
 ALTER TABLE uk_act_callnames ADD callsuccess tinyint DEFAULT 0 COMMENT '是否呼叫成功';
+ALTER TABLE uk_act_callnames ADD duration int DEFAULT 0 COMMENT '机器人呼叫通话时长';
 
 CREATE TABLE `uk_ekm_knowledge_share` (
   `id` varchar(32) NOT NULL,

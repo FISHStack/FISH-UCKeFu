@@ -76,6 +76,8 @@ public class CallOutNames implements java.io.Serializable{
 	private int previewtimes ;	//预览次数
 	private int previewtime ;	//预览时长
 	
+	private int duration ;//通话时长
+	
 	private Date firstcalltime ;	//首次拨打时间
 	private String firstcallstatus;	//首次拨打状态
 	
@@ -389,5 +391,13 @@ public class CallOutNames implements java.io.Serializable{
 
 	public void setCallsuccess(boolean callsuccess) {
 		this.callsuccess = callsuccess;
+	}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
 	}
 }
