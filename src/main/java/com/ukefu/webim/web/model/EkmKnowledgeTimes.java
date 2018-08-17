@@ -32,9 +32,11 @@ public class EkmKnowledgeTimes implements java.io.Serializable{
 	private int collectimes;//被收藏次数
 	private int version;//版本号
 	
+	private String knowledgeid ;
+	
 	@Field(type = FieldType.String, store = true)  
     @Parent(type = "uk_ekm_knowledge_master")  
-	private String knowledgeid ;
+	private String kbid;
 	
 	private EkmKnowledgeMaster knowledge;
 	
@@ -100,6 +102,12 @@ public class EkmKnowledgeTimes implements java.io.Serializable{
 	}
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	public String getKbid() {
+		return kbid;
+	}
+	public void setKbid(String kbid) {
+		this.kbid = kbid;
 	}
 	
 }

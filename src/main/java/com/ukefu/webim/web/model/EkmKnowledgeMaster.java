@@ -56,6 +56,7 @@ public class EkmKnowledgeMaster implements java.io.Serializable{
 	
 	private String knowledgeid;
 	
+	
 	private String auditor;
 	
 	private String nlpnr;//人名nr

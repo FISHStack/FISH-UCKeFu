@@ -31,10 +31,11 @@ public class EkmKnowledgeCollect implements java.io.Serializable{
 	private int version;//版本号
 	private String status = "true";//收藏状态
 	private String knowledgeower ;//知识作者
+	private String knowledgeid ;
 	
 	@Field(type = FieldType.String, store = true)  
     @Parent(type = "uk_ekm_knowledge_master")  
-	private String knowledgeid ;
+	private String kbid ;
 	
 	private EkmKnowledgeMaster knowledge;
 	
@@ -103,6 +104,12 @@ public class EkmKnowledgeCollect implements java.io.Serializable{
 	}
 	public void setKnowledgeower(String knowledgeower) {
 		this.knowledgeower = knowledgeower;
+	}
+	public String getKbid() {
+		return kbid;
+	}
+	public void setKbid(String kbid) {
+		this.kbid = kbid;
 	}
 	
 }
