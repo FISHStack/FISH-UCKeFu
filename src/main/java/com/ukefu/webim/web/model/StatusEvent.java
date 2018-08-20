@@ -34,6 +34,8 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private boolean inside ;		//是否内线
 	private String code ;
 	
+	private String creater ;		//变更用处，标识是否已接通
+	
 	private String source ;	//来源
 	private String answer ;//应答时间
 	
@@ -670,5 +672,11 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setWaste(boolean waste) {
 		this.waste = waste;
+	}
+	public String getCreater() {
+		return creater;
+	}
+	public void setCreater(String creater) {
+		this.creater = creater;
 	}
 }
