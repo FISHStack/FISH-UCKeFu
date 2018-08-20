@@ -175,6 +175,7 @@ public class ESDataExchangeImpl{
 					.execute().actionGet();
 			dataBean.setValues(getResponse.getSource());
 			dataBean.setType(getResponse.getType());
+			dataBean.setId(getResponse.getId());
 		}else{
 			dataBean.setValues(new HashMap<String,Object>());
 		}
