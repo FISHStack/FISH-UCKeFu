@@ -76,6 +76,8 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	private String calldir ;	//呼叫方向
 	private String otherdir;	//对边呼叫方向
 	
+	private boolean waste ;		//是否作废名单
+	
 	private String otherlegdest ;	//对边呼叫号码
 	
 	private long time ;///
@@ -662,5 +664,11 @@ public class StatusEvent implements Serializable, Comparable<StatusEvent>{
 	}
 	public void setMetaname(String metaname) {
 		this.metaname = metaname;
+	}
+	public boolean isWaste() {
+		return waste;
+	}
+	public void setWaste(boolean waste) {
+		this.waste = waste;
 	}
 }
