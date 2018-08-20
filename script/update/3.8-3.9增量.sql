@@ -1072,3 +1072,4 @@ CREATE TABLE `uk_ekm_knowledge_master` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='EKM - 知识 - 主表';
 
+ALTER TABLE uk_callcenter_event ADD waste tinyint DEFAULT 0 COMMENT '是否作废名单';
