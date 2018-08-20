@@ -12,6 +12,10 @@ public class FirstTitle implements java.io.Serializable{
 	private String level ;
 	private String description;//标题描述
 	public FirstTitle(){}
+	public FirstTitle(String name , int depth , boolean measure){
+		this.name = name ;
+		this.depth = depth ;
+	}
 	public FirstTitle(String name ){
 		this.name = name ;
 	}
