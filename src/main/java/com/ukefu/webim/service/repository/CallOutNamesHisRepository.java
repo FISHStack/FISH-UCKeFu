@@ -34,6 +34,6 @@ public abstract interface CallOutNamesHisRepository extends JpaRepository<CallOu
 	
 	public abstract Page<CallOutNamesHis> findByOwneruserAndOrgi(String owneruser , String orgi , Pageable page) ;
 	
-	public abstract Page<CallOutNamesHis> findByOrgiAndDataidAndActid(String orgi , String dataid ,  String actid , Pageable page) ;
+	public abstract Page<CallOutNamesHis> findByOrgiAndDataidAndActidAndStatusNot(String orgi , String dataid ,  String actid ,String status, Pageable page) ;
 	
 }
