@@ -17,7 +17,7 @@ import com.ukefu.util.UKTools;
  * EKM-知识-主表
  *
  */
-@Document(indexName = "uckefu", type = "uk_ekm_knowledge_master", createIndex = false )
+@Document(indexName = "uckefu", type = "uk_ekm_kb_master", createIndex = false )
 @Entity
 @Table(name = "uk_ekm_knowledge_master")
 @org.hibernate.annotations.Proxy(lazy = false)

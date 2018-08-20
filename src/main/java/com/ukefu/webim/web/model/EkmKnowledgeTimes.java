@@ -16,7 +16,7 @@ import org.springframework.data.elasticsearch.annotations.Parent;
 
 import com.ukefu.util.UKTools;
 
-@Document(indexName = "uckefu", type = "uk_ekm_knowledge_times" , createIndex = false )
+@Document(indexName = "uckefu", type = "uk_ekm_kb_times" , createIndex = false )
 @Entity
 @Table(name = "uk_ekm_knowledge_times")
 @org.hibernate.annotations.Proxy(lazy = false)
@@ -35,7 +35,7 @@ public class EkmKnowledgeTimes implements java.io.Serializable{
 	private String knowledgeid ;
 	
 	@Field(type = FieldType.String, store = true)  
-    @Parent(type = "uk_ekm_knowledge_master")  
+    @Parent(type = "uk_ekm_kb_master")  
 	private String kbid;
 	
 	private EkmKnowledgeMaster knowledge;
