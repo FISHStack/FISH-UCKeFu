@@ -1,5 +1,7 @@
 <#if contentList?? && contentList?size gt 0>
+<#if contentList?size gt invite.suggestnum>
 <div class="ukefu-suggest-change"><a href="javascript:void(0)" data-toggle="change">换一批</a></div>
+</#if>
 	<#list contentList as content>
 	<#if content_index!= 0 && invite.suggestnum!=0 && content_index % invite.suggestnum == 0>
 </ul>
