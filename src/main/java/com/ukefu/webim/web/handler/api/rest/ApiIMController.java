@@ -133,10 +133,10 @@ public class ApiIMController extends Handler{
 	 * @p 分页信息
 	 * @return
 	 */
-	@RequestMapping(value = "/statf", method = RequestMethod.GET)
+	@RequestMapping(value = "/satis", method = RequestMethod.GET)
 	@Menu(type = "apps" , subtype = "webim" , access = true)
 	@ApiOperation("获取满意度调查")
-    public ResponseEntity<RestResult> statf(HttpServletRequest request , @Valid String orgi) {
+    public ResponseEntity<RestResult> satis(HttpServletRequest request , @Valid String orgi) {
 		Map<String,Object> statfMap = new HashMap<String,Object>();
 		statfMap.put("commentList" , UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_DIC)) ;
 		statfMap.put("commentItemList" , UKeFuDic.getInstance().getDic(UKDataContext.UKEFU_SYSTEM_COMMENT_ITEM_DIC)) ;
@@ -150,10 +150,10 @@ public class ApiIMController extends Handler{
 	 * @p 分页信息
 	 * @return
 	 */
-	@RequestMapping(value = "/satis", method = RequestMethod.POST)
+	@RequestMapping(value = "/satis/save", method = RequestMethod.POST)
 	@Menu(type = "apps" , subtype = "webim" , access = true)
 	@ApiOperation("获取满意度调查")
-    public ResponseEntity<RestResult> satis(HttpServletRequest request , @Valid String orgi , @Valid AgentServiceSatis satis) {
+    public ResponseEntity<RestResult> satissave(HttpServletRequest request , @Valid String orgi , @Valid AgentServiceSatis satis) {
 		if(satis!=null && !StringUtils.isBlank(satis.getId())){
     		int count = agentServiceSatisRes.countById(satis.getId()) ;
     		if(count == 1){
