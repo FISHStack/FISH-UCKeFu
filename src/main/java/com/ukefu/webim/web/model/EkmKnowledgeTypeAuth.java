@@ -29,6 +29,7 @@ public class EkmKnowledgeTypeAuth implements java.io.Serializable{
 	
 	private String auth;//按钮
 	private boolean view;
+	private boolean cover;//是否覆盖由父级继承下来的权限
 	
 	private String organ ;
 	private String orgi ;
@@ -98,6 +99,12 @@ public class EkmKnowledgeTypeAuth implements java.io.Serializable{
 	}
 	public void setView(boolean view) {
 		this.view = view;
+	}
+	public boolean isCover() {
+		return cover;
+	}
+	public void setCover(boolean cover) {
+		this.cover = cover;
 	}
 	
 	

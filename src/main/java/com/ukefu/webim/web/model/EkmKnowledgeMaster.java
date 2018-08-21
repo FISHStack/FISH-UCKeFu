@@ -55,6 +55,7 @@ public class EkmKnowledgeMaster implements java.io.Serializable{
 	private EkmKnowledgeCollect knowledgecollect;
 	
 	private String knowledgeid;
+	private String kbid;
 	
 	
 	private String auditor;
@@ -254,6 +255,13 @@ public class EkmKnowledgeMaster implements java.io.Serializable{
 	}
 	public void setUpdatetime(Date updatetime) {
 		this.updatetime = updatetime;
+	}
+	@Transient
+	public String getKbid() {
+		return kbid;
+	}
+	public void setKbid(String kbid) {
+		this.kbid = kbid;
 	}
 	
 	
