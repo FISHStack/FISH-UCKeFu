@@ -211,6 +211,7 @@ public class WebIMController extends Handler{
     			tempInviteData.setAiname(inviteData.getAiname());
     			tempInviteData.setAiid(inviteData.getAiid());
     			
+    			tempInviteData.setHideagent(inviteData.isHideagent());
     			
     			tempInviteData.setMaxwordsnum(inviteData.getMaxwordsnum());
     			

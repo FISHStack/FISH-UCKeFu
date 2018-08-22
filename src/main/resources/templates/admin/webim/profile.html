@@ -424,7 +424,18 @@
 												</div>
 												<div class="row" style="margin-bottom:20px;">
 													<div class="col-lg-8">
-														<p>b、默认接入的机器人</p>
+														<p>b、关闭人工坐席功能</p>
+														<p style="color:#888888;font-size:13px;margin-top:10px;">关闭人工坐席以后，机器人客服介入界面上将不再显示人工坐席入口</p>
+													</div>
+													<div class="col-lg-4" style="text-align:right;">
+														<div class="layui-input-block">
+														    <input type="checkbox" title="关闭" name="hideagent" <#if inviteData?? && inviteData.hideagent == true>checked="checked"</#if>>
+														</div>	
+													</div>
+												</div>
+												<div class="row" style="margin-bottom:20px;">
+													<div class="col-lg-8">
+														<p>c、默认接入的机器人</p>
 														<p style="color:#888888;font-size:13px;margin-top:10px;">默认使用的机器人</p>
 													</div>
 													<div class="col-lg-4">
@@ -443,7 +454,7 @@
 												
 												<div class="row" style="margin-bottom:20px;">
 													<div class="col-lg-8">
-														<p>b、智能机器人名字</p>
+														<p>d、智能机器人名字</p>
 														<p style="color:#888888;font-size:13px;margin-top:10px;">智能机器人回复消息的时候显示的名称</p>
 													</div>
 													<div class="col-lg-4">
@@ -454,7 +465,7 @@
 												</div>
 												<div class="row" style="margin-bottom:20px;">
 													<div class="col-lg-8">
-														<p>c、智能机器人欢迎语</p>
+														<p>e、智能机器人欢迎语</p>
 														<p style="color:#888888;font-size:13px;margin-top:10px;">接入智能机器人之后，对话窗口顶部显示的欢迎语，支持HTML代码</p>
 													</div>
 												</div>
@@ -467,7 +478,7 @@
 												</div>
 												<div class="row" style="margin-bottom:20px;">
 													<div class="col-lg-8">
-														<p>d、智能机器人对话服务连接成功提示</p>
+														<p>f、智能机器人对话服务连接成功提示</p>
 														<p style="color:#888888;font-size:13px;margin-top:10px;">智能机器人服务连接成功的提示用语</p>
 													</div>
 													<div class="col-lg-4">
@@ -478,7 +489,7 @@
 												</div>
 												<div class="row">
 													<div class="col-lg-8">
-														<p>e、机器人头像</p>
+														<p>g、机器人头像</p>
 														<p id="aiicon_img" style="margin-top:10px;">
 															<#if inviteData.aiicon?? && inviteData.aiicon!=''>
 															<img src="<#if inviteData??>/res/image.html?id=${inviteData.aiicon!''}</#if>" style="max-width:100px;max-height:40px">
