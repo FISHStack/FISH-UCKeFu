@@ -3,6 +3,7 @@ package com.ukefu.webim.web.handler;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 import java.text.ParseException;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +24,11 @@ import com.ukefu.core.UKDataContext;
 import com.ukefu.util.UKTools;
 import com.ukefu.util.UKView;
 import com.ukefu.webim.service.cache.CacheHelper;
+import com.ukefu.webim.service.repository.TablePropertiesRepository;
 import com.ukefu.webim.service.repository.TenantRepository;
 import com.ukefu.webim.web.handler.api.rest.QueryParams;
 import com.ukefu.webim.web.model.SystemConfig;
+import com.ukefu.webim.web.model.TableProperties;
 import com.ukefu.webim.web.model.Tenant;
 import com.ukefu.webim.web.model.User;
 
@@ -212,6 +215,45 @@ public class Handler {
 			queryBuilder.must(termQuery("status", request.getParameter("status"))) ;
 			map.put("status", request.getParameter("status")) ;
 		}
+		TablePropertiesRepository tpRes = UKDataContext.getContext().getBean(TablePropertiesRepository.class) ;
+		
+		if(!StringUtils.isBlank(request.getParameter("nasearch")) && !"".equals(request.getParameter("nasearch"))){
+			BoolQueryBuilder organBu = new BoolQueryBuilder();
+			List<TableProperties> tpList = tpRes.findByName(request.getParameter("nasearch"));
+			if(tpList.size() > 0){
+				for(TableProperties tp : tpList){
+					if(!StringUtils.isBlank(request.getParameter("condition")) ){
+						if(request.getParameter("condition").equals("scope")){//范围
+							if(!StringUtils.isBlank(request.getParameter("nabegin")) ||!StringUtils.isBlank(request.getParameter("naend"))){
+								RangeQueryBuilder tempRangeQuery = null ;
+								if(!StringUtils.isBlank(request.getParameter("nabegin"))) {
+									tempRangeQuery = QueryBuilders.rangeQuery(tp.getFieldname()).from(request.getParameter("nabegin")) ;
+								}
+								if(!StringUtils.isBlank(request.getParameter("naend")) ) {
+									if(tempRangeQuery == null) {
+										tempRangeQuery = QueryBuilders.rangeQuery(tp.getFieldname()).to(request.getParameter("naend")) ;
+									}else {
+										tempRangeQuery.to(request.getParameter("naend")) ;
+									}
+								}
+								organBu.should(tempRangeQuery);
+							}
+						}else if(request.getParameter("condition").equals("equal")){//大于
+							organBu.should(QueryBuilders.termQuery(tp.getFieldname(), request.getParameter("convalue"))) ;
+						}else if(request.getParameter("condition").equals("not")){//大于
+							organBu.mustNot(QueryBuilders.termQuery(tp.getFieldname(), request.getParameter("convalue"))) ;
+						}
+						
+					}
+				}
+				queryBuilder.must(organBu) ;
+			}
+		}
+		map.addAttribute("nasearch", request.getParameter("nasearch"));
+		map.addAttribute("condition", request.getParameter("condition"));
+		map.addAttribute("convalue", request.getParameter("convalue"));
+		map.addAttribute("nabegin", request.getParameter("nabegin"));
+		map.addAttribute("naend", request.getParameter("naend"));
 
 		return queryBuilder ;
 	}
