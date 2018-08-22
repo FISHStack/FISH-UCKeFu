@@ -16,5 +16,5 @@ public abstract interface CubeRepository extends JpaRepository<Cube, String> {
 
 	public List<Cube> findByOrgiAndTypeid(String orgi, String typeid);
 	
-	
+	public List<Cube> findByOrgiAndId(String orgi, String id);
 }

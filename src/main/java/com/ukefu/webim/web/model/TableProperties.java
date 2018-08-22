@@ -10,6 +10,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.ukefu.util.UKTools;
+
 /**
  * @author jaddy0302 Rivulet TableProperties.java 2010-3-22
  * 
@@ -53,7 +55,7 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 		this.orgi = orgi ;
 	}
 	
-	private String id ;
+	private String id = UKTools.getUUID();
 	private String tablename ;
 	private String dbtableid ;
 	private String name ;
@@ -118,7 +120,7 @@ public class TableProperties implements java.io.Serializable,Cloneable{
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")
 	public String getId() {
 		return id;
 	}

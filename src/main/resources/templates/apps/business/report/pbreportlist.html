@@ -46,6 +46,10 @@
 							</td>
 						  <td>${report.createtime?string("yyyy-MM-dd HH:mm:ss")}</td>
 						  <td style="white-space:nowrap;" nowrap="nowrap">
+								<a href="/apps/report/unpub.html?id=${report.id!''}" data-toggle="tip" data-title="请确认是否撤回报表？">
+						  			<i class="layui-icon">&#xe620;</i>
+						  			撤回
+						  		</a>
 								<a href="/apps/report/pbdelete.html?id=${report.id!''}" style="margin-left:10px;" data-toggle="tip" data-title="请确认是否删除报表？">
 									<i class="layui-icon" style="color:red;">&#x1006;</i>
 									删除

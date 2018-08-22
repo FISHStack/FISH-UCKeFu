@@ -37,6 +37,8 @@ import com.ukefu.webim.service.repository.DataDicRepository;
 import com.ukefu.webim.service.repository.MetadataRepository;
 import com.ukefu.webim.service.repository.PublishedReportRepository;
 import com.ukefu.webim.service.repository.ReportCubeService;
+import com.ukefu.webim.service.repository.ReportFilterRepository;
+import com.ukefu.webim.service.repository.ReportModelRepository;
 import com.ukefu.webim.service.repository.ReportRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.DataDic;
@@ -44,6 +46,7 @@ import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.PublishedReport;
 import com.ukefu.webim.web.model.Report;
 import com.ukefu.webim.web.model.ReportFilter;
+import com.ukefu.webim.web.model.ReportModel;
 
 @Controller
 @RequestMapping("/apps/report")
@@ -63,6 +66,12 @@ public class ReportController extends Handler{
 	
 	@Autowired
 	private PublishedReportRepository publishedReportRes;
+	
+	@Autowired
+	private ReportFilterRepository reportFilterRepository;
+	
+	@Autowired
+	private ReportModelRepository reportModelRes;
 	
 	@Autowired
 	private MetadataRepository metadataRes ;
@@ -347,6 +356,30 @@ public class ReportController extends Handler{
     		publishedReportRes.delete(report);
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/apps/report/pbreportindex.html?dicid="+report.getDicid()));
+    }
+    
+    @RequestMapping("/unpub")
+    @Menu(type = "setting" , subtype = "pbreport" , admin= true)
+    public ModelAndView unpub(ModelMap map , HttpServletRequest request , @Valid String id) {
+    	PublishedReport pubReport = publishedReportRes.findOne(id) ;
+    	if(pubReport!=null){
+    		Report report = pubReport.getReport() ;
+    		List<ReportFilter> filters = report.getReportFilters() ;
+    		for(ReportFilter filter : filters) {
+    			if(reportFilterRepository.findById(filter.getId())==null){
+    				reportFilterRepository.save(filter) ;
+    			}
+    		}
+    		for(ReportModel model : report.getReportModels()) {
+    			if(reportModelRes.findById(model.getId()) == null) {
+    				reportModelRes.save(model) ;
+    			}
+    		}
+    		if(reportRes.findByIdAndOrgi(report.getId(), super.getOrgi(request)) == null) {
+    			reportRes.save(report) ;
+    		}
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/apps/report/pbreportindex.html?dicid="+pubReport.getDicid()));
     }
     /**
      * 报表

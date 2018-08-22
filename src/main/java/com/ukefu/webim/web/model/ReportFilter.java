@@ -27,7 +27,7 @@ public class ReportFilter implements java.io.Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -6580407773098864725L;
-	private String id ;
+	private String id = UKTools.getUUID();
 	private String dataid ;
 	private String dataname ;
 	private String title ;
@@ -115,7 +115,7 @@ public class ReportFilter implements java.io.Serializable{
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")
 	public String getId() {
 		return id;
 	}

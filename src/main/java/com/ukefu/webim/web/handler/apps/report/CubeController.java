@@ -27,6 +27,7 @@ import com.ukefu.webim.service.repository.MetadataRepository;
 import com.ukefu.webim.service.repository.PublishedCubeRepository;
 import com.ukefu.webim.web.handler.Handler;
 import com.ukefu.webim.web.model.Cube;
+import com.ukefu.webim.web.model.CubeLevel;
 import com.ukefu.webim.web.model.CubeMeasure;
 import com.ukefu.webim.web.model.CubeMetadata;
 import com.ukefu.webim.web.model.CubeType;
@@ -500,6 +501,64 @@ public class CubeController extends Handler{
     	if(pbCube!=null) {
     		typeid = pbCube.getTypeid();
     		publishedCubeRes.delete(pbCube);
+    	}
+    	return request(super.createRequestPageTempletResponse("redirect:/apps/report/cube/pbcubeindex.html?typeid="+typeid));
+    }
+    
+    /**
+     * 已发布模型列表
+     * @param map
+     * @param request
+     * @param typeid
+     * @param msg
+     * @return
+     */
+    @RequestMapping("/pbcube/unpub")
+    @Menu(type = "report" , subtype = "pbcube" )
+    public ModelAndView unpbcube(ModelMap map , HttpServletRequest request , @Valid String id) {
+    	PublishedCube pbCube = publishedCubeRes.findOne(id);
+    	String typeid = "";
+    	if(pbCube!=null) {
+    		Cube cube = pbCube.getCube() ;
+    		if(cube.getMetadata()!=null && cube.getMetadata().size() >0) {
+    			for(CubeMetadata metadata : cube.getMetadata()) {
+    				MetadataTable tb = metadata.getTb()  ;
+    				if(metadataRes.findById(tb.getId()) == null) {
+    					metadataRes.save(tb) ;
+    				}
+    				cubeMetadataRes.save(metadata) ;
+    			}
+    			List<CubeMeasure> measureList = cubeMeasureRes.findByCubeid(cube.getId()) ;
+    			for(CubeMeasure measure : cube.getMeasure()) {
+    				boolean found = false ;
+    				for(CubeMeasure temp : measureList) {
+    					if(measure.getId().equals(temp.getId())) {
+    						found = true ; break ;
+    					}
+    				}
+    				if(found == false) {
+    					cubeMeasureRes.save(measure) ;
+    				}
+    			}
+    			List<Dimension> dimList = dimensionRes.findByCubeid(cube.getId()) ;
+    			for(Dimension dim : cube.getDimension()) {
+    				boolean found = false ;
+    				for(Dimension temp : dimList) {
+    					if(dim.getId().equals(temp.getId())) {
+    						found = true ; break ;
+    					}
+    				}
+    				if(found == false) {
+    					for(CubeLevel level : dim.getCubeLevel()) {
+    						cubeLevelRes.save(level) ;
+    					}
+    					dimensionRes.save(dim) ;
+    				}
+    			}
+    		}
+    		if(cubeRes.findByOrgiAndId(super.getOrgi(request), cube.getId()).size() == 0) {
+    			cubeRes.save(cube) ;
+    		}
     	}
     	return request(super.createRequestPageTempletResponse("redirect:/apps/report/cube/pbcubeindex.html?typeid="+typeid));
     }

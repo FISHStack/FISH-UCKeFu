@@ -33,7 +33,11 @@ public class ValueData implements java.io.Serializable,Cloneable{
 	private String style ;
 	public ValueData(Object value , String foramatValue, String valueType , boolean canbedrill , String sql , String name , String formatStr , List<ColumnProperties> cols){
 		this.foramatValue = foramatValue ;
-		this.value = value ; 
+		this.value = value ;
+		if("NaN".equals(foramatValue)) {
+			this.foramatValue = "" ;
+			this.value = null ;
+		}
 		this.valueType = valueType ;
 		this.drillthroughsql = sql ;
 		this.canbedrill = canbedrill ;

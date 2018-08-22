@@ -23,7 +23,7 @@ public class Cube implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String id ;
+	private String id = UKTools.getUUID() ;
 	private String name ;	
 	private String code ;
 	private String modeltype ;	//模型类型， 虚拟 立方体：立方体
@@ -50,7 +50,7 @@ public class Cube implements java.io.Serializable{
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")
 	public String getId() {
 		return id;
 	}

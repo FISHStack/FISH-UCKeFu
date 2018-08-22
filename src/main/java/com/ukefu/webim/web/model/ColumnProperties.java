@@ -8,6 +8,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.ukefu.util.UKTools;
+
 @Entity
 @Table(name = "uk_columnproperties")
 @org.hibernate.annotations.Proxy(lazy = false)
@@ -16,7 +18,7 @@ public class ColumnProperties implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String id;
+	private String id = UKTools.getUUID();
 	private String modelid;
 	private String dataid ;
 	private String dataname ; 	//如果存放的是指标，则此处为指标名称
@@ -43,7 +45,7 @@ public class ColumnProperties implements java.io.Serializable {
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")
 	public String getId() {
 		return id;
 	}

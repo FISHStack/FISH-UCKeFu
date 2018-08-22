@@ -15,12 +15,14 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+
+import com.ukefu.util.UKTools;
 @Entity
 @Table(name = "uk_cubelevel")
 @org.hibernate.annotations.Proxy(lazy = false)
 public class CubeLevel implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
-	private String id ;
+	private String id = UKTools.getUUID() ;
 	private String name ;	//维度名称	
 	private String code ;
 	private String formatstr ;
@@ -47,7 +49,7 @@ public class CubeLevel implements java.io.Serializable{
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "assigned")
 	public String getId() {
 		return id;
 	}
