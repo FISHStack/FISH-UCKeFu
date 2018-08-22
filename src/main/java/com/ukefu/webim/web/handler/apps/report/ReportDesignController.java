@@ -25,6 +25,7 @@ import com.ukefu.util.UKTools;
 import com.ukefu.util.bi.ReportData;
 import com.ukefu.webim.service.repository.ColumnPropertiesRepository;
 import com.ukefu.webim.service.repository.MetadataRepository;
+import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.PublishedCubeRepository;
 import com.ukefu.webim.service.repository.PublishedReportRepository;
 import com.ukefu.webim.service.repository.ReportCubeService;
@@ -96,7 +97,9 @@ public class ReportDesignController extends Handler {
 	private SysDicRepository sysDicRes;
 	@Autowired
 	private MetadataRepository metadataRes;
-
+	
+	@Autowired
+	private OrganRepository organRepository; 
 	@RequestMapping("/index")
 	@Menu(type = "report", subtype = "reportdesign")
 	public ModelAndView index(ModelMap map, HttpServletRequest request, @Valid String q, @Valid String id) throws Exception {
@@ -129,7 +132,8 @@ public class ReportDesignController extends Handler {
 						rf.setChildFilter(filterMap.get(rf.getCascadeid()));
 					}
 				}
-			}
+			} 
+			map.addAttribute("organList", organRepository.findByOrgi(super.getOrgi(request)));
 			map.addAttribute("reportFilters", reportCubeService.fillReportFilterData(listFilters, request));
 		}
 		return request(super.createRequestPageTempletResponse("/apps/business/report/design/index"));
@@ -337,7 +341,8 @@ public class ReportDesignController extends Handler {
 				}
 			}
 			map.addAttribute("eltemplet", templateRes.findByIdAndOrgi(model.getTempletid(), super.getOrgi(request)));
-		}
+		} 
+		map.addAttribute("organList", organRepository.findByOrgi(super.getOrgi(request)));
 		map.addAttribute("tabid", tabid);
 		return request(super.createRequestPageTempletResponse("/apps/business/report/design/modeldesign"));
 	}
