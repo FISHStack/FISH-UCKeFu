@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ukefu.util.Menu;
 import com.ukefu.webim.service.repository.DataDicRepository;
+import com.ukefu.webim.service.repository.OrganRepository;
 import com.ukefu.webim.service.repository.PublishedReportRepository;
 import com.ukefu.webim.service.repository.ReportCubeService;
 import com.ukefu.webim.web.handler.Handler;
@@ -44,7 +45,8 @@ public class ReportViewController extends Handler{
 	@Autowired
 	private ReportCubeService reportCubeService;
 	
-	
+	@Autowired
+	private OrganRepository organRepository; 
     @RequestMapping("/index")
     @Menu(type = "setting" , subtype = "report" , admin= true)
     public ModelAndView index(ModelMap map , HttpServletRequest request , @Valid String dicid , @Valid String id) throws Exception {
@@ -83,7 +85,8 @@ public class ReportViewController extends Handler{
 				map.addAttribute("reportFilters", reportCubeService.fillReportFilterData(listFilters, request));
 			}
     		
-    	}
+    	} 
+		map.addAttribute("organList", organRepository.findByOrgi(super.getOrgi(request)));
     	map.put("dataDicList", dataDicRes.findByOrgi(super.getOrgi(request))) ;
     	return request(super.createRequestPageTempletResponse("/apps/business/view/index"));
     }
