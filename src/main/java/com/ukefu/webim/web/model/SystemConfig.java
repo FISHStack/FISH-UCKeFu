@@ -30,6 +30,8 @@ public class SystemConfig implements java.io.Serializable{
 	private String consolelogo ;	//后台页面LOGO
 	private String favlogo ;		//系统Fav图片，icon格式，小图标
 	
+	private boolean savelog ;		//启用日志存储
+	
 	private String code ;
 	private String orgi ;
 	private String description;
@@ -413,6 +415,13 @@ public class SystemConfig implements java.io.Serializable{
 	}
 	public void setFavlogo(String favlogo) {
 		this.favlogo = favlogo;
+	}
+	
+	public boolean isSavelog() {
+		return savelog;
+	}
+	public void setSavelog(boolean savelog) {
+		this.savelog = savelog;
 	}
 	@Transient
 	public String getBackgroundColor(){

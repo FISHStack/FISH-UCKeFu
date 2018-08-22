@@ -85,6 +85,9 @@ public class SessionConfig implements java.io.Serializable{
 	
 	private String servicename ;		//无坐席的时候 回复消息的 昵称
 	
+	private String servicedic ;			//会话分类
+	private boolean servicekind ;		//启用服务分类
+	
 	
 	@Id
 	@Column(length = 32)
@@ -391,5 +394,17 @@ public class SessionConfig implements java.io.Serializable{
 	}
 	public void setMultisatisf(boolean multisatisf) {
 		this.multisatisf = multisatisf;
+	}
+	public String getServicedic() {
+		return servicedic;
+	}
+	public void setServicedic(String servicedic) {
+		this.servicedic = servicedic;
+	}
+	public boolean isServicekind() {
+		return servicekind;
+	}
+	public void setServicekind(boolean servicekind) {
+		this.servicekind = servicekind;
 	}
 }
