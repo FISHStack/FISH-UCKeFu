@@ -64,7 +64,7 @@ public class Report extends ESBean implements java.io.Serializable{
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "assigned")	
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")	
 	public String getId() {
 		return id;
 	}

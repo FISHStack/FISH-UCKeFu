@@ -33,6 +33,7 @@ import com.ukefu.util.task.DSData;
 import com.ukefu.util.task.DSDataEvent;
 import com.ukefu.util.task.ExcelImportProecess;
 import com.ukefu.util.task.export.ExcelExporterProcess;
+import com.ukefu.webim.service.repository.ColumnPropertiesRepository;
 import com.ukefu.webim.service.repository.DataDicRepository;
 import com.ukefu.webim.service.repository.MetadataRepository;
 import com.ukefu.webim.service.repository.PublishedReportRepository;
@@ -41,6 +42,7 @@ import com.ukefu.webim.service.repository.ReportFilterRepository;
 import com.ukefu.webim.service.repository.ReportModelRepository;
 import com.ukefu.webim.service.repository.ReportRepository;
 import com.ukefu.webim.web.handler.Handler;
+import com.ukefu.webim.web.model.ColumnProperties;
 import com.ukefu.webim.web.model.DataDic;
 import com.ukefu.webim.web.model.MetadataTable;
 import com.ukefu.webim.web.model.PublishedReport;
@@ -69,6 +71,9 @@ public class ReportController extends Handler{
 	
 	@Autowired
 	private ReportFilterRepository reportFilterRepository;
+	
+	@Autowired
+	private ColumnPropertiesRepository columnPropertiesRepository;
 	
 	@Autowired
 	private ReportModelRepository reportModelRes;
@@ -371,6 +376,18 @@ public class ReportController extends Handler{
     			}
     		}
     		for(ReportModel model : report.getReportModels()) {
+    			for(ColumnProperties col : model.getColproperties()) {
+    				columnPropertiesRepository.save(col) ;
+    			}
+    			for(ColumnProperties pro : model.getProperties()) {
+    				columnPropertiesRepository.save(pro) ;
+    			}
+    			for(ColumnProperties measure : model.getMeasures()) {
+    				columnPropertiesRepository.save(measure) ;
+    			}
+    			for(ReportFilter filter : model.getFilters()) {
+    				reportFilterRepository.save(filter) ;
+    			}
     			if(reportModelRes.findById(model.getId()) == null) {
     				reportModelRes.save(model) ;
     			}

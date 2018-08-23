@@ -104,6 +104,7 @@ public class CubeService {
 			processTitle(cubeReportData.getRow() , cubeReportData.getRow());
 			
 		}catch(Exception ex){ 
+			ex.printStackTrace();
 			throw ex;
 		}finally{
 			if(connection!=null){

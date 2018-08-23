@@ -201,17 +201,19 @@ public class ReportCubeService{
 				index++;
 			}
 			for(ReportFilter filter : reportFilter){
-				filtertables.append(" left join ").append(tableObjMap.get(filter.getFktableid()).getTablename()).append(" as ").append(tablefilterMap.get(filter.getFktableid()+filter.getId())).append(" on ");
-				StringBuffer onsql = new StringBuffer(); 
-				onsql.append(tableMap.get(mainTableStr)).append(".").append(tableppyMap.get(filter.getFieldid()).getFieldname());
-				onsql.append("=").append(tablefilterMap.get(filter.getFktableid()+filter.getId())).append(".").append(tableppyMap.get(filter.getFkfieldid()).getFieldname());
-				onsql.append(" ");
-				filtertables.append(onsql);
+				if(tableMap.get(filter.getFktableid()) == null) {
+					filtertables.append(" left join ").append(tableObjMap.get(filter.getFktableid()).getTablename()).append(" as ").append(tablefilterMap.get(filter.getFktableid()+filter.getId())).append(" on ");
+					StringBuffer onsql = new StringBuffer(); 
+					onsql.append(tableMap.get(mainTableStr)).append(".").append(tableppyMap.get(filter.getFieldid()).getFieldname());
+					onsql.append("=").append(tablefilterMap.get(filter.getFktableid()+filter.getId())).append(".").append(tableppyMap.get(filter.getFkfieldid()).getFieldname());
+					onsql.append(" ");
+					filtertables.append(onsql);
+				}
 				if("range".equals(filter.getValuefiltertype())){//范围   range code_start 和 code_end
 					if((!StringUtils.isBlank(filter.getCode()))){
 						String startValue = getStartValue(filter , request);
 						String endValue = getEndValue(filter , request);
-						String dataname = tablefilterMap.get(filter.getFktableid()+filter.getId()) + "." + tableppyMap.get(filter.getFilterfieldid()).getFieldname();
+						String dataname = tableppyMap.get(filter.getFilterfieldid()).getFieldname();
 						
 						if(!StringUtils.isBlank(startValue) ){
 							wherecon.append(wherecon.length()>0?" and ":"").append(dataname).append(" >= '").append(startValue).append("' ");
@@ -222,7 +224,7 @@ public class ReportCubeService{
 					}
 				}else{//compare
 					String value = getDefaultValue(filter , request);
-					String dataname = tablefilterMap.get(filter.getFktableid()+filter.getId()) + "." + tableppyMap.get(filter.getFilterfieldid()).getFieldname();
+					String dataname = tableppyMap.get(filter.getFilterfieldid()).getFieldname();
 					if(!StringUtils.isBlank(value)){
 						if(!wherecon.toString().contains(dataname)){
 							if(!StringUtils.isBlank(value)){

@@ -2,6 +2,8 @@ package com.ukefu.util.bi.model;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.ukefu.util.UKTools;
 import com.ukefu.webim.web.model.ColumnProperties;
 
@@ -34,7 +36,7 @@ public class ValueData implements java.io.Serializable,Cloneable{
 	public ValueData(Object value , String foramatValue, String valueType , boolean canbedrill , String sql , String name , String formatStr , List<ColumnProperties> cols){
 		this.foramatValue = foramatValue ;
 		this.value = value ;
-		if("NaN".equals(foramatValue)) {
+		if(!StringUtils.isBlank(foramatValue) && foramatValue.toLowerCase().indexOf("nan") >= 0) {
 			this.foramatValue = "" ;
 			this.value = null ;
 		}
