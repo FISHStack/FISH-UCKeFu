@@ -23,5 +23,7 @@ public abstract interface EkmKnowledgeTypeAuthRepository  extends JpaRepository<
 	
 	//取消部门授权知识库时，同时删除该部门下的人员，对该知识库下的知识分类授权记录
 	public abstract List<EkmKnowledgeTypeAuth> findByUseridAndKnowledgebaseidAndOrgi(String userid, String knowledgebaseid,String orgi );
+	
+	public abstract List<EkmKnowledgeTypeAuth> findByKnowledgebaseidAndOrgi(String knowledgebaseid,String orgi );
 }
 
