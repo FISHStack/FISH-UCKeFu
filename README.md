@@ -1,7 +1,4 @@
 #优客服
-优客服官方技术支持QQ群（555834343，目前项目已发布v3.8.0版本，加入QQ群可以了解最新进度和技术问题咨询。）：
-
-[![输入图片说明](http://git.oschina.net/uploads/images/2017/0123/001823_7efad50c_1200081.png "在这里输入图片标题")](http://shang.qq.com/wpa/qunwpa?idkey=637134af30a27220211c843d801ada14700aca69ee8f4acf13f795fe38ea7b94)
 
 优客服，是一个多渠道融合的客户支持服务平台，包含WebIM，微信，电话，邮件，短信等接入渠道、智能机器人
 
@@ -102,8 +99,6 @@ mvn install:install-file -Dfile=src/main/resources/WEB-INF/lib/aliyun-java-sdk-d
 • 客群分类，建立客户全景式图
 集成企业内部客户数据，分析客户价值，创建客户标签
 
- **微信接入渠道演示微信公众号** 
-![输入图片说明](https://gitee.com/uploads/images/2018/0330/155011_a68bba9e_1200081.jpeg "qrcode_for_gh_b21c83fa3ff9_258.jpg")
 
 优客服部分产品组件截图
 
