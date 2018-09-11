@@ -58,15 +58,13 @@ import com.ukefu.webim.web.model.User;
 import com.ukefu.webim.web.model.UserRole;
 
 public class CallCenterUtils {
-	
+
 	/**
-	 * 
-	 * @param user
-	 * @param orgi
-	 * @param id
-	 * @param service
+	 *
+	 * @param extno
+	 * @param sipTrunkRes
+	 * @param extRes
 	 * @return
-	 * @throws Exception
 	 */
 	public static SipTrunk siptrunk(String extno , SipTrunkRepository sipTrunkRes, ExtentionRepository extRes){
 		SipTrunk sipTrunk = null;
@@ -90,15 +88,11 @@ public class CallCenterUtils {
 		}
 		return sipTrunk;
 	}
-	
+
 	/**
-	 * 
-	 * @param user
-	 * @param orgi
-	 * @param id
-	 * @param service
+	 *
+	 * @param ip
 	 * @return
-	 * @throws Exception
 	 */
 	public static PbxHost pbxhost(String ip){
 		PbxHost pbxHost =  (PbxHost) CacheHelper.getSystemCacheBean().getCacheObject(ip, UKDataContext.SYSTEM_ORGI) ;
@@ -112,16 +106,13 @@ public class CallCenterUtils {
 		}
 		return pbxHost;
 	}
-	
-	
+
+
 	/**
-	 * 
-	 * @param user
-	 * @param orgi
-	 * @param id
-	 * @param service
+	 *
+	 * @param name
+	 * @param sipTrunkRes
 	 * @return
-	 * @throws Exception
 	 */
 	public static SipTrunk siptrunk(String name , SipTrunkRepository sipTrunkRes){
 		SipTrunk sipTrunk = null;

@@ -21,7 +21,6 @@ import com.ukefu.webim.web.model.CallOutNames;
 public class CallOutQuene {
 	/**
 	 * 为外呼坐席分配名单
-	 * @param agentStatus
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<CallCenterAgent> service(){
@@ -35,7 +34,7 @@ public class CallOutQuene {
 	
 	/**
 	 * 为外呼坐席分配名单
-	 * @param agentStatus
+	 * @param sip
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<CallCenterAgent> service(String sip){
@@ -49,7 +48,7 @@ public class CallOutQuene {
 	
 	/**
 	 * 为外呼坐席分配名单
-	 * @param agentStatus
+	 * @param extno
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<CallCenterAgent> extention(String extno){
@@ -82,11 +81,14 @@ public class CallOutQuene {
 		Long names = (Long) callOutMap.aggregate(Supplier.fromKeyPredicate(filter), Aggregations.count()) ;
 		return names!=null ? names.intValue() : 0 ;
 	}
-	
-	
+
+
 	/**
 	 * 外呼监控，包含机器人和人工两个部分
-	 * @param agentStatus
+	 * @param calltype
+	 * @param p
+	 * @param ps
+	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<CallOutNames> callOutNames(String calltype , int p , int ps){
